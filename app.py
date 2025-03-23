@@ -32,7 +32,7 @@ with st.form("nutricoach_form"):
         massa_magra = st.text_input("Massa magra (kg) - opzionale")
 
     obiettivo = st.text_input("Qual è il tuo obiettivo (es. perdere peso, aumentare massa, mantenere)?")
-    attivita = st.text_area("Descrivi la tua attività fisica settimanale (opzionale)")
+    attivita = st.text_area("Descrivi la tua attività fisica settimanale (e.g. quante volte vai in palestra, quanto ti alleni, quanto ti muovi in generale. Piu info dai, meglio è)")
     preferenze = st.text_area("Hai allergie, intolleranze o alimenti da evitare?")
     messaggio = st.text_area("Scrivi qui se hai richieste particolari (es. 'vorrei più proteine', 'sono vegetariano')")
 
@@ -40,38 +40,57 @@ with st.form("nutricoach_form"):
 
 # ---------------------- GENERATE PLAN ----------------------
 def build_prompt():
-    prompt = f"""
-Sei un nutrizionista professionista. Genera una dieta settimanale personalizzata e bilanciata per un utente con i seguenti dati:
-Età: {eta} anni
-Sesso: {sesso}
-Peso: {peso} kg
-Altezza: {altezza} cm
-"""
+    prompt = (
+        "Sei un nutrizionista professionista esperto in nutrizione sportiva e clinica. "
+        "Ti chiedo di creare un piano alimentare settimanale altamente personalizzato per un paziente, "
+        "basato su dati antropometrici, composizione corporea e obiettivi. "
+        "Il piano deve essere bilanciato, realistico, semplice da seguire e clinicamente corretto secondo le linee guida LARN.\n\n"
+        "Tutte le calorie e i valori nutrizionali devono essere calcolati utilizzando le tabelle ufficiali USDA e CREA, "
+        "in modo da garantire la massima accuratezza nella stima energetica degli alimenti.\n\n"
+        "### DATI DEL PAZIENTE:\n"
+        f"- Sesso: {sesso}\n"
+        f"- Età: {eta} anni\n"
+        f"- Altezza: {altezza} cm\n"
+        f"- Peso: {peso} kg\n"
+    )
+
     if massa_grassa:
-        prompt += f"Massa grassa: {massa_grassa}%\n"
+        prompt += f"- Massa grassa: {massa_grassa}%\n"
     if massa_magra:
-        prompt += f"Massa magra: {massa_magra} kg\n"
+        prompt += f"- Massa magra: {massa_magra} kg\n"
     if attivita:
-        prompt += f"Attività fisica: {attivita}\n"
+        prompt += f"- Attività fisica: {attivita}\n"
     if obiettivo:
-        prompt += f"Obiettivo: {obiettivo}\n"
+        prompt += f"- Obiettivo: {obiettivo}\n"
     if preferenze:
-        prompt += f"Allergie o alimenti da evitare: {preferenze}\n"
+        prompt += f"- Preferenze: {preferenze}\n"
     if messaggio:
-        prompt += f"Preferenze aggiuntive: {messaggio}\n"
+        prompt += f"- Altre indicazioni: {messaggio}\n"
 
-    prompt += """
-Genera un piano alimentare settimanale, dal lunedì alla domenica, con colazione, pranzo, cena e spuntini. Includi grammature, kcal giornaliere e proporzione di macronutrienti. Segui le linee guida LARN e utilizza valori nutrizionali dal database USDA. Rispondi in italiano.
-"""
+    prompt += (
+        "\n### STRUTTURA DEL PIANO RICHIESTA:\n"
+        "- Piani giornalieri da Lunedì a Domenica\n"
+        "- Ogni giorno deve includere: Colazione, Spuntino mattina, Pranzo, Merenda, Cena\n"
+        "- Specificare quantità in grammi, Kcal totali per giorno, e percentuale di macronutrienti (Carboidrati, Proteine, Grassi)\n"
+        "- Ogni pasto deve essere facilmente replicabile, con ingredienti comuni\n"
+        "- Varietà: almeno 3 pranzi e 3 cene diversi nella settimana\n"
+        "- Includere una lista della spesa finale con grammature totali suddivise per alimento\n\n"
+        "### OUTPUT:\n"
+        "Fornisci:\n"
+        "1. Il piano alimentare settimanale (in formato leggibile per utente)\n"
+        "2. Le kcal giornaliere e distribuzione dei macronutrienti\n"
+        "3. La lista della spesa con quantità totali per la settimana\n\n"
+        "Scrivi in italiano, in modo chiaro, pratico e motivante. Inizia con una breve introduzione personalizzata per il paziente.\n"
+    )
+
     return prompt
-
 # ---------------------- GPT CALL (updated for openai>=1.0.0) ----------------------
 def get_dieta(prompt):
     client = openai.OpenAI()
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=1800,
+        max_tokens=4000,
         temperature=0.7
     )
     return response.choices[0].message.content.strip()
