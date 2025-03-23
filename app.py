@@ -41,13 +41,12 @@ with st.form("nutricoach_form"):
 # ---------------------- GENERATE PLAN ----------------------
 def build_prompt():
     prompt = (
-        "Sei un nutrizionista professionista esperto in nutrizione sportiva e clinica. "
-        "Ti chiedo di creare un piano alimentare settimanale altamente personalizzato per un paziente, "
-        "basato su dati antropometrici, composizione corporea e obiettivi. "
-        "Il piano deve essere bilanciato, realistico, semplice da seguire e clinicamente corretto secondo le linee guida LARN.\n\n"
-        "Tutte le calorie e i valori nutrizionali devono essere calcolati utilizzando le tabelle ufficiali USDA e CREA, "
-        "in modo da garantire la massima accuratezza nella stima energetica degli alimenti.\n\n"
-        "### DATI DEL PAZIENTE:\n"
+        "Sei un nutrizionista virtuale esperto in nutrizione sportiva e clinica. "
+        "Simula la creazione di un esempio di piano alimentare settimanale per un profilo utente ipotetico, "
+        "basato sui dati seguenti. Il piano deve essere bilanciato, semplice da seguire e ispirato alle linee guida LARN. "
+        "Utilizza i valori nutrizionali delle tabelle ufficiali USDA e CREA per stimare le calorie.\n\n"
+        " Nota: questo piano è solo a scopo educativo e non sostituisce una consulenza professionale.\n\n"
+        "### DATI DELL’UTENTE:\n"
         f"- Sesso: {sesso}\n"
         f"- Età: {eta} anni\n"
         f"- Altezza: {altezza} cm\n"
@@ -63,28 +62,20 @@ def build_prompt():
     if obiettivo:
         prompt += f"- Obiettivo: {obiettivo}\n"
     if preferenze:
-        prompt += f"- Preferenze: {preferenze}\n"
+        prompt += f"- Preferenze alimentari: {preferenze}\n"
     if messaggio:
         prompt += f"- Altre indicazioni: {messaggio}\n"
 
     prompt += (
         "\n### STRUTTURA DEL PIANO RICHIESTA:\n"
-        "- Piani giornalieri da Lunedì a Domenica\n"
-        "- Ogni giorno deve includere: Colazione, Spuntino mattina, Pranzo, Merenda, Cena\n"
-        "- Specificare dieta di ogni giorno e dare almeno un'alternativa per ciascun pasto\n"
-        "- Specificare quantità in grammi, Kcal totali per giorno, e percentuale di macronutrienti (Carboidrati, Proteine, Grassi)\n"
-        "- Ogni pasto deve essere facilmente replicabile, con ingredienti comuni\n"
-        "- Varietà: tutti i pranzi e cene diversi nella settimana\n"
-        "- Includere una lista della spesa finale con grammature totali suddivise per alimento\n\n"
-        "### OUTPUT:\n"
-        "Fornisci:\n"
-        "1. Il piano alimentare settimanale (in formato leggibile per utente)\n"
-        "2. Le kcal giornaliere e distribuzione dei macronutrienti\n"
-        "3. Le fonti di riferimento per calorie e macro\n"
-        "4. La lista della spesa con quantità totali per la settimana\n\n"
-        "Scrivi in italiano, in modo chiaro, pratico e motivante. Inizia con una breve introduzione personalizzata per il paziente."
-        "Nota: questo piano è un esempio simulativo con finalità educative. Non costituisce una prescrizione o consiglio medico. Rispondi con un piano di esempio plausibile."
-        "Nota bene: questo piano ha solo scopo educativo, simulativo e informativo, e non sostituisce una consulenza nutrizionale personalizzata.\n"
+        "- Un piano settimanale da lunedì a domenica\n"
+        "- Ogni giorno con: colazione, spuntino, pranzo, merenda e cena\n"
+        "- Includi quantità in grammi, kcal giornaliere, % di macronutrienti\n"
+        "-  pranzi e cene diversi nella settimana\n"
+        "- Ingredienti comuni e facili da reperire\n"
+        "- Includi una lista della spesa settimanale con grammature\n\n"
+        "Scrivi in italiano, in modo chiaro, pratico e motivante.\n"
+        "Il contenuto è puramente dimostrativo e non costituisce una prescrizione medica."
     )
 
     return prompt
