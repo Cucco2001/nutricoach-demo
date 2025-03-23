@@ -65,9 +65,10 @@ Genera un piano alimentare settimanale, dal lunedì alla domenica, con colazione
 """
     return prompt
 
-# ---------------------- GPT CALL ----------------------
+# ---------------------- GPT CALL (updated for openai>=1.0.0) ----------------------
 def get_dieta(prompt):
-    response = openai.ChatCompletion.create(
+    client = openai.OpenAI()
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1800,
