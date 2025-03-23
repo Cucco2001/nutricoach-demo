@@ -83,6 +83,7 @@ def build_prompt():
         "3. Le fonti di riferimento per calorie e macro\n"
         "4. La lista della spesa con quantità totali per la settimana\n\n"
         "Scrivi in italiano, in modo chiaro, pratico e motivante. Inizia con una breve introduzione personalizzata per il paziente."
+        "Nota: questo piano è un esempio simulativo con finalità educative. Non costituisce una prescrizione o consiglio medico. Rispondi con un piano di esempio plausibile."
         "Nota bene: questo piano ha solo scopo educativo, simulativo e informativo, e non sostituisce una consulenza nutrizionale personalizzata.\n"
     )
 
