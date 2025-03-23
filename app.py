@@ -83,7 +83,7 @@ def build_prompt():
 def get_dieta(prompt):
     client = openai.OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4-0125-preview",
+        model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=4000,
         temperature=0.7
