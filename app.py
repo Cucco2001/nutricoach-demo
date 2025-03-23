@@ -80,7 +80,8 @@ def build_prompt():
         "1. Il piano alimentare settimanale (in formato leggibile per utente)\n"
         "2. Le kcal giornaliere e distribuzione dei macronutrienti\n"
         "3. La lista della spesa con quantità totali per la settimana\n\n"
-        "Scrivi in italiano, in modo chiaro, pratico e motivante. Inizia con una breve introduzione personalizzata per il paziente.\n"
+        "Scrivi in italiano, in modo chiaro, pratico e motivante. Inizia con una breve introduzione personalizzata per il paziente."
+        "Nota bene: questo piano ha solo scopo educativo, simulativo e informativo, e non sostituisce una consulenza nutrizionale personalizzata.\n"
     )
 
     return prompt
