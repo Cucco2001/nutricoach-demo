@@ -90,7 +90,7 @@ def get_dieta(prompt):
     response = client.chat.completions.create(
         model="gpt-4-0125-preview",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=10000,
+        max_tokens=4000,
         temperature=0.7
     )
     return response.choices[0].message.content.strip()
