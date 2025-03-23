@@ -71,7 +71,7 @@ def build_prompt():
         "- Ogni giorno con: colazione, spuntino, pranzo, merenda e cena\n"
         "- Bilancia ciascun pasto secondo direttive LARN, ogni pasto deve avere un apporto bilanciato di grassi, carboidrati e proteine"
         "- Includi due sostituzioni per TUTTI gli alimenti proposto che contenga circa gli stessi macronutrienti al fianco di ciascun cibo\n"
-        "- Includi quantità in grammi (e anche numero cucchiai o cucchiaini ove possibile), kcal giornaliere al termine di ogni giorno, % di macronutrienti per ciascuna giornata\n"
+        "- Includi quantità in grammi (e anche numero cucchiai o cucchiaini ove possibile), kcal giornaliere , % di macronutrienti\n"
         "- Almeno 3 pranzi e 3 cene diversi nella settimana\n"
         "- Ingredienti comuni e facili da reperire\n"
         "- Una spiegazione finale sul ragionamento utilizzato nel definire quel quantitativo di calorie e quella distribuzione di macronutrienti (basato su LARN) \n"
