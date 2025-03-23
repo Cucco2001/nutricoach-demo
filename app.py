@@ -75,7 +75,7 @@ def build_prompt():
         "- Includi quantità in grammi (e anche numero cucchiai o cucchiaini ove possibile), kcal giornaliere al termine di ogni giorno, % di macronutrienti per ciascuna giornata\n"
         "- Almeno 3 pranzi e 3 cene diversi nella settimana\n"
         "- Ingredienti comuni e facili da reperire\n"
-        "- Una spiegazione finale approfondita sul ragionamento utilizzato nel definire quel quantitativo di calorie e quella distribuzione di macronutrienti (basato su LARN, il calcolo per il totale di kcal, come modifica kcal giornaliere in base ad attività fisica del paziente con coefficiente moltiplicativo utilizzato)\n"
+        "- Una spiegazione finale approfondita sul ragionamento utilizzato nel definire quel quantitativo di calorie e quella distribuzione di macronutrienti (basato su LARN) ( precisare il calcolo esatto per il totale di kcal, includendo come dati come altezza, peso, eta, sesso e attività sportiva influiscono nel calcolo)\n"
         "Scrivi in italiano, in modo chiaro, pratico e motivante.\n"
         "Il contenuto è puramente dimostrativo e non costituisce una prescrizione medica."
     )
