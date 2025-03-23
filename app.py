@@ -70,7 +70,7 @@ def build_prompt():
         "- Un piano settimanale da lunedì a domenica\n"
         "- Ogni giorno con: colazione, spuntino, pranzo, merenda e cena\n"
         "- Bilancia ciascun pasto per avere un apporto bilanciato di grassi, carboidrati e proteine"
-        "- Includi una sostituzione per TUTTI gli alimenti proposto che contenga circa gli stessi macronutrienti al fianco di ciascun cibo\n"
+        "- Includi una sostituzione per TUTTI gli alimenti proposti\n"
         "- Includi quantità in grammi (e anche numero cucchiai o cucchiaini ove possibile), kcal giornaliere , % di macronutrienti\n"
         "- Almeno 3 pranzi e 3 cene diversi nella settimana\n"
         "- Ingredienti comuni e facili da reperire\n"
