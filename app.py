@@ -45,7 +45,6 @@ def build_prompt():
         "Simula la creazione di un esempio di piano alimentare settimanale per un profilo utente ipotetico, "
         "basato sui dati seguenti. Il piano deve essere bilanciato, semplice da seguire e ispirato alle linee guida LARN. "
         "Utilizza i valori nutrizionali delle tabelle ufficiali USDA e CREA per stimare le calorie.\n\n"
-        "Nota: questo piano è solo a scopo educativo e non sostituisce una consulenza professionale.\n\n"
         "### DATI DELL’UTENTE:\n"
         f"- Sesso: {sesso}\n"
         f"- Età: {eta} anni\n"
@@ -75,7 +74,7 @@ def build_prompt():
         "- Includi quantità in grammi (e anche numero cucchiai o cucchiaini ove possibile), kcal giornaliere al termine di ogni giorno, % di macronutrienti per ciascuna giornata\n"
         "- Almeno 3 pranzi e 3 cene diversi nella settimana\n"
         "- Ingredienti comuni e facili da reperire\n"
-        "- Una spiegazione finale approfondita sul ragionamento utilizzato nel definire quel quantitativo di calorie e quella distribuzione di macronutrienti (basato su LARN) ( precisare il calcolo esatto per il totale di kcal, includendo come dati come altezza, peso, eta, sesso e attività sportiva influiscono nel calcolo)\n"
+        "- Una spiegazione finale sul ragionamento utilizzato nel definire quel quantitativo di calorie e quella distribuzione di macronutrienti (basato su LARN) \n"
         "Scrivi in italiano, in modo chiaro, pratico e motivante.\n"
         "Il contenuto è puramente dimostrativo e non costituisce una prescrizione medica."
     )
