@@ -130,4 +130,13 @@ if submitted:
         st.success("Ecco la tua dieta settimanale!")
         st.markdown(output)
         st.info("NutriCoach è un prodotto in via di definizione. Il piano proposto ha scopo dimostrativo. Il tuo feedback ci aiuta a migliorarlo.")
-        st.markdown("[Lascia un feedback qui](https://docs.google.com/forms/d/e/1FAIpQLSfzF3OpgEjLpgbPSFJpn6raAEOSdZEqprvcglSNLEJ5niA81w/viewform)")
+
+        st.markdown("---")
+        st.subheader("Hai una richiesta o modifica da fare alla dieta?")
+        followup = st.text_area("Scrivi la tua domanda o modifica (es. 'vorrei più proteine a pranzo', 'sono intollerante al glutine')")
+        if st.button("Chiedi a NutriCoach"):
+            with st.spinner("Sto aggiornando la dieta su tua richiesta..."):
+                followup_prompt = output + "\n\nModifica la dieta secondo questa richiesta dell'utente: " + followup + "\nRispondi con un nuovo piano aggiornato."
+                followup_response = get_dieta(followup_prompt)
+                st.markdown("### Dieta aggiornata su richiesta:")
+                st.markdown(followup_response)
