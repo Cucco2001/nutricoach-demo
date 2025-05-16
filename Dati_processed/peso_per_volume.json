@@ -1,0 +1,68 @@
+{
+  "cacao_in_polvere": {
+    "cucchiaio_colmo": 9,
+    "cucchiaino_colmo": 4,
+    "cucchiaio_raso": 5,
+    "cucchiaino_raso": 2
+  },
+  "farina_di_frumento": {
+    "cucchiaio_colmo": 15,
+    "cucchiaino_colmo": 7,
+    "cucchiaio_raso": 7,
+    "cucchiaino_raso": 4
+  },
+  "formaggio_grattugiato": {
+    "cucchiaio_colmo": 10,
+    "cucchiaino_colmo": 4,
+    "cucchiaio_raso": 7,
+    "cucchiaino_raso": 3
+  },
+  "maionese": {
+    "cucchiaio_colmo": 18,
+    "cucchiaino_colmo": 9,
+    "cucchiaio_raso": 9,
+    "cucchiaino_raso": 5
+  },
+  "marmellata": {
+    "cucchiaio_colmo": 27,
+    "cucchiaino_colmo": 10
+  },
+  "miele": {
+    "cucchiaio_colmo": 22,
+    "cucchiaino_colmo": 8,
+    "cucchiaio_raso": 14,
+    "cucchiaino_raso": 5
+  },
+  "olio": {
+    "cucchiaio_raso": 9,
+    "cucchiaino_raso": 5
+  },
+  "panna": {
+    "cucchiaio_raso": 10,
+    "cucchiaino_raso": 5
+  },
+  "pastina_cruda": {
+    "cucchiaio_colmo": 14,
+    "cucchiaino_colmo": 7
+  },
+  "riso": {
+    "cucchiaio_colmo": 17,
+    "cucchiaino_colmo": 9,
+    "cucchiaio_raso": 10,
+    "cucchiaino_raso": 6
+  },
+  "sale_fino": {
+    "cucchiaio_raso": 14,
+    "cucchiaino_raso": 7
+  },
+  "sale_grosso": {
+    "cucchiaio_raso": 13,
+    "cucchiaino_raso": 6
+  },
+  "zucchero_semolato": {
+    "cucchiaio_colmo": 16,
+    "cucchiaino_colmo": 10,
+    "cucchiaio_raso": 9,
+    "cucchiaino_raso": 5
+  }
+}

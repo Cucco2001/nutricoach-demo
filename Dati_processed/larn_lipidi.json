@@ -1,0 +1,57 @@
+{
+  "lipidi": {
+    "lattanti": {
+      "lipidi_totali": "40% En",
+      "SFA": "<10% En",
+      "PUFA": "5-10% En",
+      "PUFA_n6": "4-8% En",
+      "PUFA_n3": "0.5-2.0% En",
+      "trans": "Il meno possibile",
+      "EPA_DHA": "EPA-DHA 250 mg + DHA 100 mg",
+      "colesterolo": null,
+      "RI": null,
+      "note": "Per 6-12 mesi (secondo semestre di vita)"
+    },
+    "bambini_adolescenti": {
+      "lipidi_totali": {
+        "1-3 anni": "35-40% En",
+        ">4 anni": "20-35% En*"
+      },
+      "SFA": "<10% En",
+      "PUFA": "5-10% En",
+      "PUFA_n6": "4-8% En",
+      "PUFA_n3": "0.5-2.0% En",
+      "trans": "Il meno possibile",
+      "EPA_DHA": "EPA-DHA 250 mg (1-2 anni + DHA 100 mg)",
+      "colesterolo": null
+    },
+    "adulti_anziani": {
+      "lipidi_totali": "20-35% En*",
+      "SFA": "<10% En",
+      "PUFA": "5-10% En",
+      "PUFA_n6": "4-8% En",
+      "PUFA_n3": "0.5-2.0% En",
+      "trans": "Il meno possibile",
+      "EPA_DHA": "EPA-DHA 250 mg",
+      "colesterolo": "<300 mg"
+    },
+    "gravidanza_allattamento": {
+      "lipidi_totali": "20-35% En*",
+      "SFA": "<10% En",
+      "PUFA": "5-10% En",
+      "PUFA_n6": "4-8% En",
+      "PUFA_n3": "0.5-2.0% En",
+      "trans": "Il meno possibile",
+      "EPA_DHA": "EPA-DHA 250 mg + DHA 100-200 mg",
+      "colesterolo": "<300 mg"
+    },
+    "note_generali": [
+      "SFA = acidi grassi saturi",
+      "PUFA = acidi grassi polinsaturi",
+      "MUFA = monoinsaturi calcolati per differenza",
+      "Trans: il meno possibile",
+      "Valori >30% En solo se carboidrati verso limite inferiore del loro RI",
+      "Nessun UL (tolerable upper intake level) definito"
+    ]
+  }
+}

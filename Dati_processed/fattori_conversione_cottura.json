@@ -1,0 +1,266 @@
+{
+  "carni_fresche": {
+    "bollitura": {
+      "carne_rossa": {
+        "fattore": 0.64,
+        "crudo_g": 100,
+        "cotto_g": 64
+      },
+      "carne_bianca": {
+        "fattore": 0.83,
+        "crudo_g": 100,
+        "cotto_g": 83
+      }
+    },
+    "vapore": {
+      "carne_rossa": {
+        "fattore": 0.63,
+        "crudo_g": 100,
+        "cotto_g": 63
+      },
+      "carne_bianca": {
+        "fattore": 0.62,
+        "crudo_g": 100,
+        "cotto_g": 62
+      }
+    },
+    "padella_con_olio": {
+      "carne_rossa": {
+        "fattore": 0.79,
+        "crudo_g": 100,
+        "cotto_g": 79
+      },
+      "carne_bianca": {
+        "fattore": 0.84,
+        "crudo_g": 100,
+        "cotto_g": 84
+      }
+    },
+    "arrostimento": {
+      "carne_rossa": {
+        "fattore": 0.8,
+        "crudo_g": 100,
+        "cotto_g": 80
+      },
+      "carne_bianca": {
+        "fattore": 0.79,
+        "crudo_g": 100,
+        "cotto_g": 79
+      }
+    },
+    "microonde": {
+      "carne_rossa": {
+        "fattore": 0.69,
+        "crudo_g": 100,
+        "cotto_g": 69
+      },
+      "carne_bianca": {
+        "fattore": 0.76,
+        "crudo_g": 100,
+        "cotto_g": 76
+      }
+    }
+  },
+  "pesce": {
+    "bollitura": {
+      "fresco": {
+        "fattore": 0.83,
+        "crudo_g": 150,
+        "cotto_g": 124
+      },
+      "surgelato": {
+        "fattore": 0.85,
+        "crudo_g": 150,
+        "cotto_g": 127
+      }
+    },
+    "vapore": {
+      "fresco_o_surgelato_filetti": {
+        "fattore": 0.84,
+        "crudo_g": 150,
+        "cotto_g": 126
+      }
+    },
+    "padella_con_olio": {
+      "fresco_o_surgelato": {
+        "fattore": 0.64,
+        "crudo_g": 150,
+        "cotto_g": 96
+      },
+      "molluschi": {
+        "fattore": 0.4,
+        "crudo_g": 150,
+        "cotto_g": 60
+      }
+    },
+    "arrostimento": {
+      "fresco": {
+        "fattore": 0.72,
+        "crudo_g": 150,
+        "cotto_g": 108
+      },
+      "surgelato": {
+        "fattore": 0.74,
+        "crudo_g": 150,
+        "cotto_g": 111
+      }
+    },
+    "microonde": {
+      "fresco_o_surgelato": {
+        "fattore": 0.79,
+        "crudo_g": 150,
+        "cotto_g": 118
+      }
+    }
+  },
+  "legumi": {
+    "bollitura_pressione": {
+      "freschi": {
+        "fattore": 0.88,
+        "crudo_g": 150,
+        "cotto_g": 132
+      },
+      "secchi": {
+        "fattore": 2.7,
+        "crudo_g": 50,
+        "cotto_g": 135
+      }
+    }
+  },
+  "cereali_e_tuberi": {
+    "bollitura": {
+      "cous_cous_precotto": {
+        "fattore": 2.25,
+        "crudo_g": 80,
+        "cotto_g": 180
+      },
+      "farro_perlato": {
+        "fattore": 2.28,
+        "crudo_g": 80,
+        "cotto_g": 182
+      },
+      "gnocchi_patate": {
+        "fattore": 1.06,
+        "crudo_g": 200,
+        "cotto_g": 212
+      },
+      "orzo_perlato": {
+        "fattore": 2.67,
+        "crudo_g": 80,
+        "cotto_g": 214
+      },
+      "pasta_uovo_fresca": {
+        "fattore": 1.36,
+        "crudo_g": 100,
+        "cotto_g": 136
+      },
+      "pasta_uovo_secca": {
+        "fattore": 2.99,
+        "crudo_g": 80,
+        "cotto_g": 239
+      },
+      "pasta_semola_corta": {
+        "fattore": 1.88,
+        "crudo_g": 80,
+        "cotto_g": 150
+      },
+      "pasta_semola_lunga": {
+        "fattore": 2.1,
+        "crudo_g": 80,
+        "cotto_g": 168
+      },
+      "farina_mais_polenta": {
+        "fattore": 4.85,
+        "crudo_g": 80,
+        "cotto_g": 388
+      },
+      "riso_basmati": {
+        "fattore": 3.0,
+        "crudo_g": 80,
+        "cotto_g": 240
+      },
+      "riso_brillato": {
+        "fattore": 2.6,
+        "crudo_g": 80,
+        "cotto_g": 208
+      },
+      "riso_parboiled": {
+        "fattore": 2.36,
+        "crudo_g": 80,
+        "cotto_g": 189
+      },
+      "riso_venere": {
+        "fattore": 2.1,
+        "crudo_g": 80,
+        "cotto_g": 168
+      },
+      "ravioli_freschi": {
+        "fattore": 1.4,
+        "crudo_g": 125,
+        "cotto_g": 175
+      },
+      "quinoa": {
+        "fattore": 3.12,
+        "crudo_g": 80,
+        "cotto_g": 250
+      },
+      "tortellini_freschi": {
+        "fattore": 1.92,
+        "crudo_g": 125,
+        "cotto_g": 240
+      },
+      "patate": {
+        "fattore": 0.94,
+        "crudo_g": 200,
+        "cotto_g": 188
+      },
+      "cassava": {
+        "fattore": 1.17,
+        "crudo_g": 100,
+        "cotto_g": 117
+      }
+    }
+  },
+  "verdure": {
+    "bollitura": {
+      "verdure_miste": {
+        "fattore": 0.87,
+        "crudo_g": 200,
+        "cotto_g": 174
+      }
+    },
+    "vapore_pressione": {
+      "brassicaceae": {
+        "fattore": 0.96,
+        "crudo_g": 200,
+        "cotto_g": 192
+      },
+      "foglia_stelo": {
+        "fattore": 0.86,
+        "crudo_g": 200,
+        "cotto_g": 172
+      }
+    },
+    "padella_con_olio": {
+      "verdure_miste": {
+        "fattore": 0.53,
+        "crudo_g": 200,
+        "cotto_g": 106
+      }
+    },
+    "arrostimento": {
+      "verdure_miste": {
+        "fattore": 0.65,
+        "crudo_g": 200,
+        "cotto_g": 130
+      }
+    },
+    "microonde": {
+      "verdure_miste": {
+        "fattore": 0.88,
+        "crudo_g": 200,
+        "cotto_g": 176
+      }
+    }
+  }
+}

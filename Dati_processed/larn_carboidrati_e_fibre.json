@@ -1,0 +1,47 @@
+{
+  "carboidrati": {
+    "tipo": "macronutriente",
+    "AI": null,
+    "SDT": null,
+    "RI": "45-60% En",
+    "note": [
+      "Prediligere fonti amidacee a basso indice glicemico (GI), soprattutto quando l'apporto si avvicina al limite superiore dell'intervallo.",
+      "Limitare alimenti in cui il GI è ridotto tramite aumento di fruttosio o lipidi.",
+      "Un apporto minimo di 2 g/kg peso corporeo/die è sufficiente per prevenire la chetosi.",
+      "Il limite superiore (65% En) può essere accettato in condizioni di elevato dispendio energetico."
+    ]
+  },
+  "zuccheri": {
+    "tipo": "sottotipo dei carboidrati",
+    "AI": null,
+    "SDT": "Limitare il consumo a <15% En; >25% En può essere associato a eventi avversi.",
+    "RI": null,
+    "note": [
+      "Limitare l'uso di fruttosio come dolcificante.",
+      "Evitare alimenti/bevande con sciroppi di mais ad alto contenuto in fruttosio.",
+      "Comprendono zuccheri naturalmente presenti (latte, frutta, verdura) e aggiunti."
+    ]
+  },
+  "fibra_alimentare": {
+    "tipo": "componente non digeribile",
+    "AI": {
+      "età_evolutiva": "8.4 g/1000 kcal (2 g/MJ)",
+      "adulti": "12.6–16.7 g/1000 kcal (3–4 g/MJ)"
+    },
+    "SDT": "Preferire alimenti naturalmente ricchi in fibra (cereali integrali, legumi, frutta, verdura).",
+    "RI": null,
+    "note": [
+      "Negli adulti, consumare almeno 25 g/die anche in caso di apporto energetico <2000 kcal/die."
+    ]
+  },
+  "annotazioni_generali": {
+    "UL": "Non definito per carboidrati, zuccheri o fibra.",
+    "fonti": "LARN SINU 2014",
+    "note": [
+      "I valori sono medi su un ragionevole intervallo temporale.",
+      "GI = indice glicemico.",
+      "% En = percentuale dell’energia totale della dieta.",
+      "nd = non disponibile."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "proteine": {
+    "lattanti": {
+      "6_12_mesi": {
+        "peso": 8.6,
+        "AR": { "g_kg": 1.11, "g_die": 9 },
+        "PRI": { "g_kg": 1.32, "g_die": 11 },
+        "SDT": null
+      }
+    },
+    "bambini_adolescenti": {
+      "1_3_anni": {
+        "peso": 13.7,
+        "AR": { "g_kg": 0.82, "g_die": 11 },
+        "PRI": { "g_kg": 1.00, "g_die": 14 },
+        "SDT": null
+      },
+      "4_6_anni": {
+        "peso": 20.6,
+        "AR": { "g_kg": 0.76, "g_die": 16 },
+        "PRI": { "g_kg": 0.94, "g_die": 19 },
+        "SDT": null
+      },
+      "7_10_anni": {
+        "peso": 31.4,
+        "AR": { "g_kg": 0.81, "g_die": 25 },
+        "PRI": { "g_kg": 0.99, "g_die": 31 },
+        "SDT": null
+      },
+      "maschi_11_14_anni": {
+        "peso": 49.7,
+        "AR": { "g_kg": 0.79, "g_die": 39 },
+        "PRI": { "g_kg": 0.97, "g_die": 48 },
+        "SDT": null
+      },
+      "maschi_15_17_anni": {
+        "peso": 66.6,
+        "AR": { "g_kg": 0.79, "g_die": 50 },
+        "PRI": { "g_kg": 0.93, "g_die": 62 },
+        "SDT": null
+      },
+      "femmine_11_14_anni": {
+        "peso": 50.7,
+        "AR": { "g_kg": 0.77, "g_die": 39 },
+        "PRI": { "g_kg": 0.95, "g_die": 48 },
+        "SDT": null
+      },
+      "femmine_15_17_anni": {
+        "peso": 55.7,
+        "AR": { "g_kg": 0.72, "g_die": 40 },
+        "PRI": { "g_kg": 0.90, "g_die": 50 },
+        "SDT": null
+      }
+    },
+    "adulti": {
+      "maschi_18_29_anni": {
+        "peso": 70.0,
+        "AR": { "g_kg": 0.71, "g_die": 50 },
+        "PRI": { "g_kg": 0.90, "g_die": 63 },
+        "SDT": null
+      },
+      "maschi_30_59_anni": {
+        "peso": 70.0,
+        "AR": { "g_kg": 0.71, "g_die": 50 },
+        "PRI": { "g_kg": 0.90, "g_die": 63 },
+        "SDT": null
+      },
+      "maschi_60_74_anni": {
+        "peso": 70.0,
+        "AR": null,
+        "PRI": null,
+        "SDT": { "g_kg": 1.1, "g_die": 77 }
+      },
+      "maschi_75_plus": {
+        "peso": 70.0,
+        "AR": null,
+        "PRI": null,
+        "SDT": { "g_kg": 1.1, "g_die": 77 }
+      },
+      "femmine_18_29_anni": {
+        "peso": 60.0,
+        "AR": { "g_kg": 0.71, "g_die": 43 },
+        "PRI": { "g_kg": 0.90, "g_die": 54 },
+        "SDT": null
+      },
+      "femmine_30_59_anni": {
+        "peso": 60.0,
+        "AR": { "g_kg": 0.71, "g_die": 43 },
+        "PRI": { "g_kg": 0.90, "g_die": 54 },
+        "SDT": null
+      },
+      "femmine_60_74_anni": {
+        "peso": 60.0,
+        "AR": null,
+        "PRI": null,
+        "SDT": { "g_kg": 1.1, "g_die": 66 }
+      },
+      "femmine_75_plus": {
+        "peso": 60.0,
+        "AR": null,
+        "PRI": null,
+        "SDT": { "g_kg": 1.1, "g_die": 66 }
+      }
+    },
+    "gravidanza": {
+      "primo_trimestre": {
+        "AR_incremento": { "g_kg": 0.5, "g_die": 1 },
+        "PRI_incremento": null
+      },
+      "secondo_trimestre": {
+        "AR_incremento": { "g_kg": null, "g_die": 7 },
+        "PRI_incremento": { "g_kg": null, "g_die": 8 }
+      },
+      "terzo_trimestre": {
+        "AR_incremento": { "g_kg": null, "g_die": 21 },
+        "PRI_incremento": { "g_kg": null, "g_die": 26 }
+      }
+    },
+    "allattamento": {
+      "primo_semestre": {
+        "AR_incremento": { "g_kg": null, "g_die": 17 },
+        "PRI_incremento": { "g_kg": null, "g_die": 21 }
+      },
+      "secondo_semestre": {
+        "AR_incremento": { "g_kg": null, "g_die": 11 },
+        "PRI_incremento": { "g_kg": null, "g_die": 14 }
+      }
+    }
+  }
+}

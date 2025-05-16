@@ -1,0 +1,229 @@
+{
+  "latte_e_derivati": {
+    "latte": {
+      "quantità": 125,
+      "unità": "mL",
+      "esempi": [
+        "1 bicchiere piccolo",
+        "½ tazza media"
+      ]
+    },
+    "yogurt_e_latti_fermentati": {
+      "quantità": 125,
+      "unità": "g",
+      "esempi": [
+        "1 vasetto standard"
+      ]
+    },
+    "formaggi_freschi": {
+      "quantità": 100,
+      "unità": "g",
+      "esempi": [
+        "1 mozzarella piccola",
+        "4 ciliegine"
+      ]
+    },
+    "formaggi_grassi": {
+      "quantità": 50,
+      "unità": "g",
+      "esempi": [
+        "2 fettine formaggio fuso",
+        "2½ formaggini"
+      ]
+    }
+  },
+  "carne_pesce_uova": {
+    "carne_bianca": {
+      "quantità": 100,
+      "unità": "g",
+      "esempi": [
+        "1 fetta petto pollo",
+        "1 coscia piccola"
+      ]
+    },
+    "carne_rossa": {
+      "quantità": 100,
+      "unità": "g",
+      "esempi": [
+        "1 fettina",
+        "1 hamburger",
+        "4-5 pezzi spezzatino"
+      ]
+    },
+    "altre_carni_frattaglie": {
+      "quantità": 100,
+      "unità": "g",
+      "esempi": [
+        "1 fetta petto anatra",
+        "5-6 pezzi trippa"
+      ]
+    },
+    "salumi": {
+      "quantità": 50,
+      "unità": "g",
+      "esempi": [
+        "3-4 fette prosciutto",
+        "5-6 fette salame"
+      ]
+    },
+    "carne_in_gelatina": {
+      "quantità": 70,
+      "unità": "g",
+      "esempi": [
+        "1 scatola piccola"
+      ]
+    },
+    "pesce_fresco": {
+      "quantità": 150,
+      "unità": "g",
+      "esempi": [
+        "1 pesce piccolo",
+        "25 cozze"
+      ]
+    },
+    "pesce_conservato": {
+      "quantità": 50,
+      "unità": "g",
+      "esempi": [
+        "1 scatola tonno",
+        "4-5 fette salmone affumicato"
+      ]
+    },
+    "uova": {
+      "quantità": 50,
+      "unità": "g",
+      "esempi": [
+        "1 uovo"
+      ]
+    }
+  },
+  "legumi": {
+    "freschi_o_in_scatola": {
+      "quantità": 150,
+      "unità": "g",
+      "esempi": [
+        "½ piatto",
+        "7-8 cucchiai"
+      ]
+    },
+    "secchi": {
+      "quantità": 50,
+      "unità": "g",
+      "esempi": [
+        "3-4 cucchiai"
+      ]
+    }
+  },
+  "cereali_derivati_tuberi": {
+    "pasta_riso_farine": {
+      "quantità": 80,
+      "unità": "g",
+      "esempi": [
+        "50 penne",
+        "4 cucchiai riso"
+      ]
+    },
+    "pane": {
+      "quantità": 50,
+      "unità": "g",
+      "esempi": [
+        "1 panino piccolo",
+        "1 fetta media pagnotta"
+      ]
+    },
+    "sostituti_pane": {
+      "quantità": 30,
+      "unità": "g",
+      "esempi": [
+        "5 crackers",
+        "1 frisella"
+      ]
+    },
+    "prodotti_forno_dolci": {
+      "quantità": 30,
+      "unità": "g",
+      "esempi": [
+        "1 brioche piccola",
+        "2-3 biscotti"
+      ]
+    },
+    "cereali_colazione_fette_biscottate": {
+      "quantità": 30,
+      "unità": "g",
+      "esempi": [
+        "6-8 cucchiai fiocchi",
+        "3-4 fette biscottate"
+      ]
+    },
+    "patate": {
+      "quantità": 200,
+      "unità": "g",
+      "esempi": [
+        "2 patate piccole"
+      ]
+    }
+  },
+  "verdura_ortaggi": {
+    "insalate_foglia": {
+      "quantità": 80,
+      "unità": "g",
+      "esempi": [
+        "1 scodella grande"
+      ]
+    },
+    "altra_verdura": {
+      "quantità": 200,
+      "unità": "g",
+      "esempi": [
+        "2-3 pomodori",
+        "1 peperone",
+        "½ piatto cotto"
+      ]
+    }
+  },
+  "frutta": {
+    "fresca": {
+      "quantità": 150,
+      "unità": "g",
+      "esempi": [
+        "1 frutto medio",
+        "2-3 frutti piccoli"
+      ]
+    },
+    "disidratata": {
+      "quantità": 30,
+      "unità": "g",
+      "esempi": [
+        "3 albicocche secche",
+        "2 cucchiai uvetta"
+      ]
+    }
+  },
+  "frutta_secca": {
+    "noci_e_semi": {
+      "quantità": 30,
+      "unità": "g",
+      "esempi": [
+        "7-8 noci",
+        "3 cucchiai arachidi"
+      ]
+    }
+  },
+  "grassi_condimento": {
+    "olio": {
+      "quantità": 9,
+      "unità": "g",
+      "esempi": [
+        "1 cucchiaio (10 mL)"
+      ]
+    },
+    "burro_strutto": {
+      "quantità": 10,
+      "unità": "g",
+      "esempi": [
+        "½ noce",
+        "1 fetta sottile"
+      ]
+    }
+  }
+}
