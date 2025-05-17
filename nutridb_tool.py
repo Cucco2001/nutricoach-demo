@@ -17,7 +17,7 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
     """Valida i parametri per ogni funzione."""
     required_params = {
         "get_macros": ["alimento"],
-        "get_LARN_protein": ["sesso", "età", "peso"],
+        "get_LARN_protein": ["sesso", "età"],
         "get_LARN_energy": ["sesso", "età", "altezza", "LAF"],
         "get_standard_portion": ["categoria", "sottocategoria"],
         "get_weight_from_volume": ["alimento", "tipo_misura"],
@@ -80,10 +80,9 @@ def nutridb_tool(function_name: str, parameters: Dict[str, Any]) -> Dict[str, An
             return {"macronutrienti": result}
 
         elif function_name == "get_LARN_protein":
-            g_proteine = db.get_LARN_protein(
-                parameters["sesso"], parameters["età"], parameters["peso"])
-            logger.info(f"Risultato get_LARN_protein: {g_proteine}g")
-            return {"g_proteine": g_proteine}
+            g_kg = db.get_LARN_protein(parameters["sesso"], parameters["età"])
+            logger.info(f"Risultato get_LARN_protein: {g_kg}g/kg")
+            return {"g_kg": g_kg}
 
         elif function_name == "get_LARN_energy":
             kcal = db.get_LARN_energy(

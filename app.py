@@ -182,7 +182,7 @@ def main():
                 sesso = st.selectbox("Sesso", ["Maschio", "Femmina"])
                 peso = st.number_input("Peso (kg)", min_value=40, max_value=200, value=70, step=1)
                 altezza = st.number_input("Altezza (cm)", 140, 220, 170)
-                attività = st.selectbox("Livello di attività fisica",
+                attività = st.selectbox("Livello di attività fisica (a parte sport praticato)",
                                       ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"])
                 obiettivo = st.selectbox("Obiettivo",
                                        ["Perdita di peso", "Mantenimento", "Aumento di massa"])

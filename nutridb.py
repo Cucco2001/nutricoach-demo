@@ -49,7 +49,19 @@ class NutriDB:
         factor = quantità / 100
         return {k: round(v * factor, 2) for k, v in info.items()}
 
-    def get_LARN_protein(self, sesso, età, peso):
+    def get_LARN_protein(self, sesso, età):
+        """Calcola il fabbisogno proteico in g/kg usando i LARN.
+        
+        Args:
+            sesso: 'maschio' o 'femmina'
+            età: età in anni
+        
+        Returns:
+            grammi di proteine per kg di peso corporeo (g/kg)
+        
+        Raises:
+            NotImplementedError: se età <18 anni
+        """
         sesso = sesso.lower()
         if età < 18:
             raise NotImplementedError("Supporto per età <18 non implementato.")
@@ -59,7 +71,7 @@ class NutriDB:
             key = "femmine_18_29_anni" if età < 30 else "femmine_30_59_anni"
         entry = self.larn_proteine["adulti"][key]
         g_kg = entry["PRI"]["g_kg"]
-        return round(g_kg * peso, 2)
+        return g_kg
 
     def get_LARN_energy(self, sesso, età, altezza, LAF):
         """Calcola il fabbisogno energetico usando i LARN.
