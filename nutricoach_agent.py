@@ -220,7 +220,7 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
    - Grassi (get_LARN_lipidi_percentuali):
      * Calcola grammi da %
      * 9 kcal/g
-   - Carboidrati (get_LARN_carboidrati_percentuali):
+   - Carboidrati:
      * Calcola grammi rimanenti usando il range 45-60% En
      * 4 kcal/g
      * IMPORTANTE per la scelta dei carboidrati:
