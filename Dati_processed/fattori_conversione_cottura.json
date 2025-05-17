@@ -6,10 +6,20 @@
         "crudo_g": 100,
         "cotto_g": 64
       },
-      "carne_bianca": {
-        "fattore": 0.83,
+      "pollo_petto": {
+        "fattore": 0.85,
         "crudo_g": 100,
-        "cotto_g": 83
+        "cotto_g": 85
+      },
+      "pollo_coscia": {
+        "fattore": 0.80,
+        "crudo_g": 100,
+        "cotto_g": 80
+      },
+      "pollo_ali": {
+        "fattore": 0.75,
+        "crudo_g": 100,
+        "cotto_g": 75
       }
     },
     "vapore": {
@@ -18,10 +28,20 @@
         "crudo_g": 100,
         "cotto_g": 63
       },
-      "carne_bianca": {
-        "fattore": 0.62,
+      "pollo_petto": {
+        "fattore": 0.65,
         "crudo_g": 100,
-        "cotto_g": 62
+        "cotto_g": 65
+      },
+      "pollo_coscia": {
+        "fattore": 0.60,
+        "crudo_g": 100,
+        "cotto_g": 60
+      },
+      "pollo_ali": {
+        "fattore": 0.58,
+        "crudo_g": 100,
+        "cotto_g": 58
       }
     },
     "padella_con_olio": {
@@ -30,10 +50,20 @@
         "crudo_g": 100,
         "cotto_g": 79
       },
-      "carne_bianca": {
-        "fattore": 0.84,
+      "pollo_petto": {
+        "fattore": 0.88,
         "crudo_g": 100,
-        "cotto_g": 84
+        "cotto_g": 88
+      },
+      "pollo_coscia": {
+        "fattore": 0.82,
+        "crudo_g": 100,
+        "cotto_g": 82
+      },
+      "pollo_ali": {
+        "fattore": 0.78,
+        "crudo_g": 100,
+        "cotto_g": 78
       }
     },
     "arrostimento": {

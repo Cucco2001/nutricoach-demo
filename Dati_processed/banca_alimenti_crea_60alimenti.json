@@ -26,6 +26,33 @@
     "grassi_saturi_g": 0.3,
     "fibra_g": 0.0
   },
+  "pollo_petto": {
+    "energia_kcal": 105,
+    "proteine_g": 23.1,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 1.0,
+    "grassi_saturi_g": 0.2,
+    "fibra_g": 0.0
+  },
+  "pollo_coscia": {
+    "energia_kcal": 125,
+    "proteine_g": 20.0,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 4.5,
+    "grassi_saturi_g": 1.2,
+    "fibra_g": 0.0
+  },
+  "pollo_ali": {
+    "energia_kcal": 160,
+    "proteine_g": 18.5,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 9.8,
+    "grassi_saturi_g": 2.7,
+    "fibra_g": 0.0
+  },
   "zucchine": {
     "energia_kcal": 11,
     "proteine_g": 1.1,
@@ -63,6 +90,15 @@
     "fibra_g": 2.4
   },
   "uovo": {
+    "energia_kcal": 128,
+    "proteine_g": 12.6,
+    "carboidrati_g": 0.7,
+    "zuccheri_g": 0.7,
+    "grassi_g": 8.7,
+    "grassi_saturi_g": 2.5,
+    "fibra_g": 0.0
+  },
+  "uova": {
     "energia_kcal": 128,
     "proteine_g": 12.6,
     "carboidrati_g": 0.7,
@@ -494,7 +530,7 @@
     "grassi_saturi_g": 0.5,
     "fibra_g": 0.0
   },
-  "burro_ara_chidi": {
+  "burro_arachidi": {
     "energia_kcal": 588,
     "proteine_g": 25.0,
     "carboidrati_g": 20.0,

@@ -25,9 +25,19 @@ class NutriDB:
             clean = key.lower().replace("_", " ")
             mapping[clean] = key
         mapping.update({
-            "pollo": "pollo", "riso": "riso", "pasta": "pasta_secca",
-            "tonno": "tonno_naturale", "yogurt greco": "yogurt_greco_0percento",
-            "iso": "iso_fuji_yamamoto", "burro arachidi": "burro_ara_chidi"
+            "pollo": "pollo",
+            "petto di pollo": "pollo_petto",
+            "petto pollo": "pollo_petto",
+            "coscia di pollo": "pollo_coscia",
+            "coscia pollo": "pollo_coscia",
+            "ali di pollo": "pollo_ali",
+            "ali pollo": "pollo_ali",
+            "riso": "riso",
+            "pasta": "pasta_secca",
+            "tonno": "tonno_naturale",
+            "yogurt greco": "yogurt_greco_0percento",
+            "iso": "iso_fuji_yamamoto",
+            "burro arachidi": "burro_ara_chidi"
         })
         return mapping
 
@@ -52,14 +62,102 @@ class NutriDB:
         return round(g_kg * peso, 2)
 
     def get_LARN_energy(self, sesso, età, altezza, LAF):
-        sesso = sesso.lower()
+        """Calcola il fabbisogno energetico usando i LARN.
+        
+        Args:
+            sesso: 'maschio' o 'femmina'
+            età: età in anni
+            altezza: altezza in cm
+            LAF: livello di attività fisica (1.45, 1.60, 1.75, or 2.10)
+        
+        Returns:
+            fabbisogno energetico in kcal
+        
+        Raises:
+            ValueError: se i parametri non sono validi
+        """
+        # Validazione parametri
+        sesso = str(sesso).lower()
+        if sesso not in ["maschio", "femmina"]:
+            raise ValueError("Sesso deve essere 'maschio' o 'femmina'")
+            
+        try:
+            età = int(float(età))  # Gestisce sia stringhe che float
+            if età < 18 or età >= 60:
+                raise ValueError("L'età deve essere compresa tra 18 e 59 anni")
+        except (ValueError, TypeError):
+            raise ValueError("Età deve essere un numero intero tra 18 e 59")
+            
+        try:
+            altezza = float(altezza)
+            if altezza < 140 or altezza > 220:
+                raise ValueError("L'altezza deve essere compresa tra 140 e 220 cm")
+        except (ValueError, TypeError):
+            raise ValueError("Altezza deve essere un numero tra 140 e 220")
+
+        # Validazione e conversione LAF
+        valid_lafs = [1.45, 1.60, 1.75, 2.10]
+        try:
+            LAF = float(str(LAF).replace(",", "."))  # Gestisce anche valori con la virgola
+            if LAF not in valid_lafs:
+                closest_laf = min(valid_lafs, key=lambda x: abs(x - LAF))
+                print(f"ATTENZIONE: LAF {LAF} convertito al valore valido più vicino: {closest_laf}")
+                LAF = closest_laf
+        except (ValueError, TypeError):
+            raise ValueError("LAF deve essere uno dei seguenti valori: 1.45, 1.60, 1.75, 2.10")
+
+        # Determina il gruppo di età/sesso
         group = "maschi_18_29" if sesso == "maschio" and età < 30 else \
                 "maschi_30_59" if sesso == "maschio" else \
                 "femmine_18_29" if età < 30 else "femmine_30_59"
-        altezza = str(round(float(altezza), 2))[:4]
-        if altezza not in self.larn_energy_18_60[group]:
-            raise ValueError("Altezza non trovata nei dati LARN.")
-        return self.larn_energy_18_60[group][altezza][f"LAF_{LAF}"]
+        
+        # Converti altezza da cm a m e formatta con due decimali
+        altezza_m = f"{altezza/100:.2f}"  # Converte in stringa con 2 decimali
+        
+        try:
+            # Trova i valori di altezza disponibili
+            altezze = sorted([str(h) for h in self.larn_energy_18_60[group].keys()])
+            
+            # Se l'altezza corrisponde esattamente a un valore disponibile
+            if altezza_m in altezze:
+                energia = self.larn_energy_18_60[group][altezza_m][f"LAF_{LAF}"]
+                return round(float(energia))
+            
+            # Altrimenti, trova i valori più vicini per l'interpolazione
+            altezze_float = [float(h) for h in altezze]
+            altezza_m_float = float(altezza_m)
+            
+            # Gestione casi limite
+            if altezza_m_float <= altezze_float[0]:
+                energia = self.larn_energy_18_60[group][altezze[0]][f"LAF_{LAF}"]
+                return round(float(energia))
+            if altezza_m_float >= altezze_float[-1]:
+                energia = self.larn_energy_18_60[group][altezze[-1]][f"LAF_{LAF}"]
+                return round(float(energia))
+            
+            # Trova i valori di altezza per l'interpolazione
+            for i, h in enumerate(altezze_float):
+                if h >= altezza_m_float:
+                    h1, h2 = altezze[i-1], altezze[i]
+                    break
+            
+            # Recupera i valori energetici
+            try:
+                e1 = float(self.larn_energy_18_60[group][h1][f"LAF_{LAF}"])
+                e2 = float(self.larn_energy_18_60[group][h2][f"LAF_{LAF}"])
+            except (ValueError, TypeError) as e:
+                raise ValueError(f"Errore nei dati LARN per LAF_{LAF}: {str(e)}")
+            
+            # Interpolazione lineare
+            h1_float, h2_float = float(h1), float(h2)
+            energia = e1 + (altezza_m_float - h1_float) * (e2 - e1) / (h2_float - h1_float)
+            
+            return round(float(energia))
+            
+        except (KeyError, IndexError) as e:
+            raise ValueError(f"Errore nel recupero dei dati LARN: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Errore imprevisto nel calcolo: {str(e)}")
 
     def get_standard_portion(self, categoria, sottocategoria):
         if categoria in self.porzioni:
@@ -82,11 +180,67 @@ class NutriDB:
             raise ValueError(f"Nessun fattore di cottura trovato per {categoria} - {metodo_cottura} - {sotto_categoria}")
 
     def get_LARN_fibre(self, kcal):
-        """Restituisce il range consigliato di fibra in grammi, in base alle kcal"""
-        ai_str = self.larn_fibre_carboidrati["fibra_alimentare"]["AI"]["adulti"]
-        min_g_per_kcal = float(ai_str.split("–")[0])
-        max_g_per_kcal = float(ai_str.split("–")[1].split()[0])
-        return round(kcal * min_g_per_kcal / 1000), round(kcal * max_g_per_kcal / 1000)
+        """Restituisce il range consigliato di fibra in grammi, in base alle kcal
+        
+        Args:
+            kcal: fabbisogno energetico giornaliero in kcal
+            
+        Returns:
+            tuple: (min_g, max_g) range di grammi di fibra consigliati
+            
+        Raises:
+            ValueError: se i parametri non sono validi
+        """
+        try:
+            kcal = float(kcal)
+            if kcal <= 0:
+                raise ValueError("Il fabbisogno energetico deve essere positivo")
+            if kcal < 800 or kcal > 4000:
+                raise ValueError("Il fabbisogno energetico deve essere tra 800 e 4000 kcal")
+        except (ValueError, TypeError):
+            raise ValueError("kcal deve essere un numero positivo")
+
+        try:
+            # Recupera il valore AI per la fibra
+            ai_str = self.larn_fibre_carboidrati["fibra_alimentare"]["AI"]["adulti"]
+            
+            # Estrai la parte relativa a kcal (prima delle parentesi)
+            kcal_part = ai_str.split("(")[0].strip()
+            
+            # Estrai i valori numerici (prima di g/1000 kcal)
+            range_part = kcal_part.split("g/1000")[0].strip()
+            
+            # Gestisci diversi tipi di trattini
+            range_part = range_part.replace("–", "-").replace("—", "-")
+            
+            # Estrai i valori min e max
+            parts = range_part.split("-")
+            if len(parts) != 2:
+                raise ValueError(f"Formato AI non valido: {ai_str}")
+            
+            try:
+                min_g_per_kcal = float(parts[0])
+                max_g_per_kcal = float(parts[1])
+            except (ValueError, IndexError):
+                raise ValueError(f"Impossibile estrarre i valori numerici da: {range_part}")
+            
+            # Calcola il range di fibra
+            min_g = round(kcal * min_g_per_kcal / 1000, 1)
+            max_g = round(kcal * max_g_per_kcal / 1000, 1)
+            
+            # Applica il minimo assoluto di 25g come specificato nelle note
+            min_g = max(25.0, min_g) if kcal < 2000 else min_g
+            
+            # Verifica che i risultati siano sensati
+            if min_g <= 0 or max_g <= 0 or min_g > max_g:
+                raise ValueError(f"Valori calcolati non validi: min={min_g}, max={max_g}")
+            
+            return min_g, max_g
+            
+        except (KeyError, IndexError) as e:
+            raise ValueError(f"Errore nel recupero dei dati LARN per la fibra: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Errore nel calcolo della fibra: {str(e)}")
 
     def get_LARN_carboidrati_percentuali(self):
         """Restituisce il range % En dei carboidrati"""
