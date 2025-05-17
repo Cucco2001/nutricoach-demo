@@ -1,1 +1,7 @@
 .env
+requirements.txt
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
