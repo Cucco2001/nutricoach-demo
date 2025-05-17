@@ -170,7 +170,7 @@ Quando ricevi le informazioni iniziali in formato JSON:
 
 3. Analizza gli obiettivi di peso:
    Se obiettivo è perdita di peso:
-   - Calcola il deficit calorico necessario:
+   - Calcola SEMPRE il deficit calorico necessario e salvalo per calcoli successivi:
      * kg da perdere / mesi = kg al mese
      * 1 kg = 7700 kcal
      * Deficit giornaliero = (kg al mese * 7700) / 30
@@ -178,14 +178,14 @@ Quando ricevi le informazioni iniziali in formato JSON:
      * Se il deficit è eccessivo (>500 kcal/giorno), avvisa e usa deficit massimo di 500 kcal
    
    Se obiettivo è aumento massa:
-   - Calcola il surplus calorico necessario:
+   - Calcola SEMPRE il surplus calorico necessario e salvalo per calcoli successivi:
      * kg da aumentare / mesi = kg al mese
      * Surplus ottimale = 300-500 kcal/giorno per minimizzare aumento grasso
      * Se richiesta > 1kg/mese, avvisa che potrebbe aumentare anche il grasso
      * Aumenta anche l'apporto proteico a 1.8-2.2 g/kg
 
 4. Analizza l'attività sportiva:
-   - Calcola il dispendio energetico aggiuntivo
+   - Calcola SEMPRE il dispendio energetico aggiuntivo e salvalo per calcoli successivi:
    - Esempio:
      Se utente consuma 500 kcal 2 volte a settimana:
      * Dispendio settimanale = 500 * 2 = 1000 kcal
@@ -193,9 +193,7 @@ Quando ricevi le informazioni iniziali in formato JSON:
    - Aggiusta il fabbisogno totale di conseguenza
 
 FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
-1. Calcola peso ideale usando la formula di Lorentz e scrivi in output il risultato paragonandolo all'obiettivo dell'utente
-   
-2. Calcola fabbisogno energetico:
+1. Calcola fabbisogno energetico:
    - Usa formula di Harris-Benedict per il metabolismo basale con LAF appropriato:
      * Sedentario: 1.45
      * Leggermente attivo: 1.60
@@ -203,12 +201,12 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
      * Molto attivo: 2.10
    - Mostra il risultato in kcal
    - Aggiusta in base all'obiettivo:
-     * Dimagrimento: usa il deficit calcolato nella FASE 1
-     * Massa: usa il surplus calcolato nella FASE 1
+     * Dimagrimento: usa il deficit calcolato nella FASE 1. Se non è stato calcolato, rifai il calcolo della FASE 1.
+     * Massa: usa il surplus calcolato nella FASE 1. Se non è stato calcolato, rifai il calcolo della FASE 1
    - Aggiungi il dispendio da attività sportiva
    - IMPORTANTE: Salva il valore finale di kcal per i calcoli successivi
 
-3. Calcola distribuzione macronutrienti (fornisci sempre un valore finale dopo il ragionamento, non range alla fine):
+2. Calcola distribuzione macronutrienti (fornisci sempre un valore finale dopo il ragionamento, non range alla fine):
    - Proteine (get_LARN_protein):
      * Ottieni g/kg dai LARN (se utente necessita di una dieta iperproteica, usa valore piu alto)
      * Moltiplica per il peso corporeo
@@ -242,7 +240,7 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
      * Usa il fabbisogno energetico totale calcolato al punto 1
      * Mostra il range raccomandato in grammi
 
-4. Mostra riepilogo macronutrienti:
+3. Mostra riepilogo macronutrienti:
    Esempio:
    Kcal totali: 2000
    - Proteine: 150g (600 kcal, 30%)

@@ -345,17 +345,19 @@ def main():
                 show_question = current_q["show_if"](st.session_state.user_info)
             
             if show_question:
-                st.write("### Domanda " + str(st.session_state.current_question + 1))
+                st.write("## Domanda " + str(st.session_state.current_question + 1))
                 
                 # Gestisce la domanda in base al tipo
                 if current_q["type"] == "radio":
                     # Mostra la domanda principale
-                    answer = st.radio(current_q["question"], current_q["options"])
+                    st.markdown(f"### {current_q['question']}")
+                    answer = st.radio("", current_q["options"])
                     
                     # Gestisce eventuali follow-up
                     follow_up_answer = None
                     if "follow_up" in current_q and answer == current_q["show_follow_up_on"]:
-                        follow_up_answer = st.text_input(current_q["follow_up"])
+                        st.markdown(f"### {current_q['follow_up']}")
+                        follow_up_answer = st.text_input("")
                     
                     if st.button("Avanti"):
                         # Salva la risposta
@@ -369,13 +371,14 @@ def main():
                 elif current_q["type"] == "number_input":
                     # Per domande con campi numerici multipli
                     question_text = current_q["question"](st.session_state.user_info) if callable(current_q["question"]) else current_q["question"]
-                    st.write(question_text)
+                    st.markdown(f"### {question_text}")
                     
                     field_values = {}
                     for field in current_q["fields"]:
                         label = field["label"](st.session_state.user_info) if callable(field["label"]) else field["label"]
+                        st.markdown(f"### {label}")
                         field_values[field["id"]] = st.number_input(
-                            label,
+                            "",
                             min_value=field["min"],
                             max_value=field["max"],
                             value=field["default"]
