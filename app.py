@@ -2,10 +2,13 @@ import streamlit as st
 import os
 import time
 import json
+import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
 from nutricoach_agent import available_tools, system_prompt
 from nutridb_tool import nutridb_tool
+from user_data_manager import UserDataManager
+from user_data_tool import user_data_tool
 
 # Carica le variabili d'ambiente
 load_dotenv()
@@ -32,6 +35,8 @@ if "current_question" not in st.session_state:
     st.session_state.current_question = 0
 if "nutrition_answers" not in st.session_state:
     st.session_state.nutrition_answers = {}
+if "user_data_manager" not in st.session_state:
+    st.session_state.user_data_manager = UserDataManager()
 
 # Definizione delle domande nutrizionali iniziali
 NUTRITION_QUESTIONS = [
@@ -76,7 +81,39 @@ NUTRITION_QUESTIONS = [
         "question": "Pratichi sport?",
         "type": "radio",
         "options": ["No", "Sì"],
-        "follow_up": "Specifica quale sport e quante ore alla settimana:",
+        "follow_up": {
+            "fields": [
+                {
+                    "id": "sport_type",
+                    "label": "Che tipo di attività sportiva pratichi?",
+                    "type": "select",
+                    "options": [
+                        "Fitness - Allenamento medio (principianti e livello intermedio)",
+                        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)",
+                        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)",
+                        "Sport di forza (es: powerlifting, sollevamento pesi, strongman)",
+                        "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
+                        "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)",
+                        "Altro"
+                    ]
+                },
+                {
+                    "id": "sport_other",
+                    "label": "Specifica quale sport:",
+                    "type": "text",
+                    "show_if": "sport_type",
+                    "show_if_value": "Altro"
+                },
+                {
+                    "id": "hours_per_week",
+                    "label": "Quante ore alla settimana?",
+                    "type": "number",
+                    "min": 1,
+                    "max": 30,
+                    "default": 3
+                }
+            ]
+        },
         "show_follow_up_on": "Sì"
     }
 ]
@@ -114,6 +151,8 @@ def handle_tool_calls(run_status):
                 # Esegui la funzione appropriata
                 if function_name == "nutridb_tool":
                     result = nutridb_tool(**arguments)
+                elif function_name == "user_data_tool":
+                    result = user_data_tool(**arguments)
                 else:
                     result = {"error": f"Tool {function_name} non supportato"}
                 
@@ -285,11 +324,138 @@ def chat_with_assistant(user_input):
         st.error(f"Errore nella conversazione: {str(e)}")
         return "Mi dispiace, si è verificato un errore inaspettato. Riprova."
 
-# Interfaccia principale
-def main():
-    st.title("🥗 NutriCoach")
-    st.subheader("Il tuo assistente nutrizionale personale")
-    
+def handle_meal_feedback():
+    """Gestisce il feedback sui pasti"""
+    if st.session_state.diet_plan:
+        for meal_id, meal in st.session_state.diet_plan.items():
+            with st.expander(f"Feedback per {meal_id}"):
+                satisfaction = st.slider(
+                    "Livello di soddisfazione",
+                    1, 5, 3,
+                    key=f"satisfaction_{meal_id}"
+                )
+                notes = st.text_area(
+                    "Note (opzionale)",
+                    key=f"notes_{meal_id}"
+                )
+                if st.button("Salva feedback", key=f"save_{meal_id}"):
+                    st.session_state.user_data_manager.collect_meal_feedback(
+                        user_id=st.session_state.user_info["id"],
+                        meal_id=meal_id,
+                        satisfaction_level=satisfaction,
+                        notes=notes
+                    )
+                    st.success("Feedback salvato con successo!")
+
+def track_user_progress():
+    """Gestisce il tracking dei progressi dell'utente"""
+    with st.expander("Traccia i tuoi progressi"):
+        weight = st.number_input("Peso attuale (kg)", min_value=30.0, max_value=200.0)
+        date = st.date_input("Data misurazione")
+        measurements = {}
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            measurements["circonferenza_vita"] = st.number_input("Circonferenza vita (cm)", min_value=0.0)
+            measurements["circonferenza_fianchi"] = st.number_input("Circonferenza fianchi (cm)", min_value=0.0)
+        
+        with col2:
+            measurements["circonferenza_braccio"] = st.number_input("Circonferenza braccio (cm)", min_value=0.0)
+            measurements["circonferenza_coscia"] = st.number_input("Circonferenza coscia (cm)", min_value=0.0)
+        
+        if st.button("Salva progressi"):
+            st.session_state.user_data_manager.track_progress(
+                user_id=st.session_state.user_info["id"],
+                weight=weight,
+                date=date.strftime("%Y-%m-%d"),
+                measurements=measurements
+            )
+            st.success("Progressi salvati con successo!")
+
+def show_progress_history():
+    """Mostra la storia dei progressi dell'utente"""
+    if "user_info" in st.session_state and "id" in st.session_state.user_info:
+        history = st.session_state.user_data_manager.get_progress_history(
+            st.session_state.user_info["id"]
+        )
+        
+        if history:
+            progress_df = pd.DataFrame([
+                {
+                    "Data": entry.date,
+                    "Peso": entry.weight,
+                    **entry.measurements
+                }
+                for entry in history
+            ])
+            
+            st.line_chart(progress_df.set_index("Data")["Peso"])
+            
+            with st.expander("Dettaglio misurazioni"):
+                st.dataframe(progress_df)
+        else:
+            st.info("Nessun dato di progresso disponibile")
+
+def handle_preferences():
+    """Gestisce le preferenze dell'utente"""
+    with st.expander("Gestisci le tue preferenze alimentari"):
+        # Alimenti esclusi
+        excluded_foods = st.multiselect(
+            "Alimenti da escludere",
+            ["Latticini", "Glutine", "Frutta secca", "Crostacei", "Soia", "Uova"],
+            default=[]
+        )
+        
+        # Alimenti preferiti
+        preferred_foods = st.multiselect(
+            "Alimenti preferiti",
+            ["Riso", "Pasta", "Pollo", "Pesce", "Legumi", "Verdure", "Frutta"],
+            default=[]
+        )
+        
+        # Orari dei pasti
+        st.subheader("Orari preferiti per i pasti")
+        meal_times = {}
+        col1, col2 = st.columns(2)
+        with col1:
+            meal_times["colazione"] = st.time_input("Colazione", value=None)
+            meal_times["pranzo"] = st.time_input("Pranzo", value=None)
+        with col2:
+            meal_times["cena"] = st.time_input("Cena", value=None)
+            meal_times["spuntini"] = st.time_input("Spuntini", value=None)
+        
+        # Dimensioni delle porzioni
+        st.subheader("Preferenze porzioni")
+        portion_sizes = st.select_slider(
+            "Dimensione generale delle porzioni",
+            options=["Molto piccole", "Piccole", "Medie", "Grandi", "Molto grandi"],
+            value="Medie"
+        )
+        
+        # Metodi di cottura
+        cooking_methods = st.multiselect(
+            "Metodi di cottura preferiti",
+            ["Vapore", "Griglia", "Forno", "Bollitura", "Padella"],
+            default=[]
+        )
+        
+        if st.button("Salva preferenze"):
+            preferences = {
+                "excluded_foods": set(excluded_foods),
+                "preferred_foods": set(preferred_foods),
+                "meal_times": {k: v.strftime("%H:%M") if v else None for k, v in meal_times.items()},
+                "portion_sizes": {"default": portion_sizes},
+                "cooking_methods": set(cooking_methods)
+            }
+            
+            st.session_state.user_data_manager.update_user_preferences(
+                user_id=st.session_state.user_info["id"],
+                preferences=preferences
+            )
+            st.success("Preferenze salvate con successo!")
+
+def chat_interface():
+    """Interfaccia principale della chat"""
     # Crea l'assistente
     create_assistant()
     
@@ -304,12 +470,15 @@ def main():
                 peso = st.number_input("Peso (kg)", min_value=40, max_value=200, value=70, step=1)
                 altezza = st.number_input("Altezza (cm)", 140, 220, 170)
                 attività = st.selectbox("Livello di attività fisica (a parte sport praticato)",
-                                      ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"])
+                                    ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"])
                 obiettivo = st.selectbox("Obiettivo",
-                                       ["Perdita di peso", "Mantenimento", "Aumento di massa"])
+                                     ["Perdita di peso", "Mantenimento", "Aumento di massa"])
                 
                 if st.form_submit_button("Inizia"):
+                    # Genera un ID utente univoco
+                    user_id = f"user_{int(time.time())}"
                     st.session_state.user_info = {
+                        "id": user_id,
                         "età": età,
                         "sesso": sesso,
                         "peso": peso,
@@ -326,7 +495,7 @@ def main():
             for key, value in st.session_state.user_info.items():
                 if key == "peso":
                     st.write(f"Peso: {int(value)} kg")
-                else:
+                elif key != "id":  # Non mostrare l'ID utente
                     st.write(f"{key.capitalize()}: {value}")
             if st.button("Modifica dati"):
                 st.session_state.user_info = {}
@@ -356,8 +525,37 @@ def main():
                     # Gestisce eventuali follow-up
                     follow_up_answer = None
                     if "follow_up" in current_q and answer == current_q["show_follow_up_on"]:
-                        st.markdown(f"### {current_q['follow_up']}")
-                        follow_up_answer = st.text_input("")
+                        if isinstance(current_q["follow_up"], str):
+                            # Gestione vecchio formato stringa
+                            st.markdown(f"### {current_q['follow_up']}")
+                            follow_up_answer = st.text_input("")
+                        elif isinstance(current_q["follow_up"], dict) and "fields" in current_q["follow_up"]:
+                            # Gestione nuovo formato strutturato
+                            follow_up_answer = {}
+                            for field in current_q["follow_up"]["fields"]:
+                                # Verifica se il campo deve essere mostrato in base a una condizione
+                                show_field = True
+                                if "show_if" in field and "show_if_value" in field:
+                                    # Mostra il campo solo se il campo di riferimento ha il valore specificato
+                                    ref_value = follow_up_answer.get(field["show_if"])
+                                    show_field = ref_value == field["show_if_value"]
+                                
+                                if show_field:
+                                    st.markdown(f"### {field['label']}")
+                                    if field["type"] == "select":
+                                        follow_up_answer[field["id"]] = st.selectbox(
+                                            "",
+                                            options=field["options"]
+                                        )
+                                    elif field["type"] == "number":
+                                        follow_up_answer[field["id"]] = st.number_input(
+                                            "",
+                                            min_value=field["min"],
+                                            max_value=field["max"],
+                                            value=field["default"]
+                                        )
+                                    elif field["type"] == "text":
+                                        follow_up_answer[field["id"]] = st.text_input("")
                     
                     if st.button("Avanti"):
                         # Salva la risposta
@@ -388,6 +586,10 @@ def main():
                         st.session_state.nutrition_answers[current_q["id"]] = field_values
                         st.session_state.current_question += 1
                         st.rerun()
+            else:
+                # Salta la domanda se non deve essere mostrata
+                st.session_state.current_question += 1
+                st.rerun()
         else:
             # Se non ci sono ancora messaggi, invia il prompt iniziale
             if not st.session_state.messages:
@@ -438,6 +640,27 @@ def main():
                 st.rerun()
     else:
         st.info("👈 Per iniziare, inserisci le tue informazioni nella barra laterale")
+
+def main():
+    st.title("NutriCoach - Il tuo assistente nutrizionale personale 🥗")
+    
+    # Sidebar per le funzionalità utente
+    with st.sidebar:
+        st.header("Menu")
+        page = st.radio(
+            "Seleziona una sezione",
+            ["Piano Nutrizionale", "Progressi", "Feedback", "Preferenze"]
+        )
+    
+    if page == "Piano Nutrizionale":
+        chat_interface()
+    elif page == "Progressi":
+        track_user_progress()
+        show_progress_history()
+    elif page == "Feedback":
+        handle_meal_feedback()
+    elif page == "Preferenze":
+        handle_preferences()
 
 if __name__ == "__main__":
     main() 
