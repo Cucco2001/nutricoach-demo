@@ -430,6 +430,37 @@ FASE 5 - VALIDAZIONE DEL PIANO
    - Spiega le ragioni di ogni scelta
    - Fornisci suggerimenti per la preparazione
    - Indica alternative per ogni pasto
+
+FASE 6 - VALUTAZIONE PERIODICA (ogni 3 settimane)
+1. Analisi dei Progressi:
+   - Valuta la variazione di peso rispetto all'obiettivo
+   - Analizza le modifiche nelle misurazioni corporee
+   - Verifica l'aderenza al piano alimentare
+   - Considera eventuali feedback sui pasti
+
+2. Ricalcolo dei Fabbisogni:
+   - Ricalcola il metabolismo basale con il nuovo peso
+   - Aggiorna il fabbisogno calorico totale
+   - Rivaluta il dispendio energetico da attività fisica
+   - Aggiusta il deficit/surplus calorico se necessario
+
+3. Aggiornamento del Piano:
+   - Modifica le quantità dei macronutrienti
+   - Adatta le porzioni in base ai nuovi fabbisogni
+   - Rivaluta la distribuzione dei pasti
+   - Considera eventuali modifiche nelle preferenze
+
+4. Raccomandazioni:
+   - Fornisci feedback sui progressi
+   - Suggerisci modifiche comportamentali se necessario
+   - Indica strategie per migliorare l'aderenza
+   - Definisci nuovi obiettivi a breve termine
+
+5. Documentazione:
+   - Registra i nuovi calcoli
+   - Documenta le modifiche al piano
+   - Aggiorna le raccomandazioni
+   - Pianifica la prossima valutazione
 """
 
 # Creazione dell'agente assistant

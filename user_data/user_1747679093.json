@@ -1,0 +1,40 @@
+{
+  "meal_feedback": {},
+  "progress_data": [],
+  "user_preferences": null,
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - Analisi delle Risposte Fornite\n\n⚡ Sto elaborando le informazioni iniziali.\n\n1. **Valutazione delle intolleranze/allergie:**\n   - Nessuna allergia o intolleranza indicata, quindi non sono necessari alimenti da escludere dal piano alimentare.\n\n2. **Livello di partecipazione richiesto:**\n   - Dal momento che non desideri partecipare attivamente alla creazione del piano alimentare, procederò con un piano completo e strutturato senza ulteriori richieste di input specifici durante il processo.\n\n3. **Obiettivi di peso:**\n   - Il tuo obiettivo è il mantenimento, quindi non sarà necessario calcolare deficit o surplus calorici. L'obiettivo sarà mantenere il peso attuale attraverso un equilibrio calorico.\n\n4. **Valutazione delle attività sportive:**\n   - Pratichi sport di resistenza, come corsa, ciclismo, nuoto o triathlon, per un totale di 2 ore a settimana. Questo implica un certo dispendio energetico aggiuntivo che verrà considerato nel calcolo del tuo fabbisogno calorico. Per il calcolo del dispendio si considera un consumo medio di circa 500 kcal/ora di sport di resistenza.\n   - Dispendio settimanale: 500 * 2 = 1000 kcal\n   - Dispendio giornaliero: 1000 / 7 ≈ 142.86 kcal/giorno\n\n📊 Risultati intermedi:\n- Dispendio energetico extra dall'attività sportiva: 142.86 kcal/giorno\n- Funzioni allergie/intolleranze: non necessarie modifiche\n- Nessuna partecipazione attiva richiesta\n\n➡️ Procedo con la FASE 2 per il calcolo del fabbisogno energetico?",
+      "timestamp": 1747683094.317866
+    }
+  ],
+  "nutritional_info": {
+    "età": 24,
+    "sesso": "Maschio",
+    "peso": 70,
+    "altezza": 174,
+    "attività": "Sedentario",
+    "obiettivo": "Mantenimento",
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "participation": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
+            "hours_per_week": 2
+          }
+        ]
+      }
+    },
+    "agent_qa": []
+  }
+}
