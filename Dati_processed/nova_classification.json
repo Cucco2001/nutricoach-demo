@@ -1,0 +1,92 @@
+{
+  "nova_groups": {
+    "1": {
+      "name": "Unprocessed or minimally processed foods",
+      "definition": {
+        "unprocessed": "Edible parts of plants (fruit, seeds, leaves, stems, roots, tubers) or of or from animals (muscle, fat, offal, eggs, milk), and also fungi, algae, all after separation from nature. Spring and tap water.",
+        "minimally_processed": "Unprocessed foods altered by industrial processes such as removal of inedible or unwanted parts, drying, powdering, squeezing, crushing, grinding, fractioning, steaming, poaching, boiling, roasting, and pasteurization, chilling, freezing, placing in containers, vacuum packaging, non-alcoholic fermentation, and other methods that do not add salt, sugar, oils or fats or other food substances to the original food.",
+        "processing_purpose": "The main aim of these processes is to extend the life of unprocessed foods, enabling their storage for longer use, or to make them edible, and, often, to make their preparation easier or more diverse."
+      },
+      "examples": [
+        "Fresh, squeezed, chilled, frozen, or dried fruit",
+        "Leafy and root vegetables",
+        "Grains (brown, parboiled or white rice, corn, wheat)",
+        "Legumes (beans, lentils, chickpeas)",
+        "Starchy roots and tubers (potatoes, sweet potatoes, cassava)",
+        "Fresh or dried mushrooms",
+        "Meat, poultry, fish and seafood (whole or cuts)",
+        "Fresh, powdered, chilled or frozen eggs",
+        "Fresh, powdered or pasteurized milk",
+        "Fresh or pasteurized fruit or vegetable juices (no additives)",
+        "Grits, flakes or flour (corn, wheat, oats, cassava)",
+        "Tree and ground nuts (no added salt/sugar)",
+        "Herbs and spices",
+        "Fresh or pasteurized plain yoghurt",
+        "Tea, coffee, drinking water",
+        "Pasta, couscous and polenta (made with flour and water)"
+      ]
+    },
+    "2": {
+      "name": "Processed culinary ingredients",
+      "definition": "Substances obtained directly from group 1 foods or from nature by industrial processes such as pressing, centrifuging, refining, extracting or mining. Used to prepare, season and cook group 1 foods.",
+      "examples": [
+        "Vegetable oils from seeds, nuts or fruits",
+        "Butter and lard",
+        "Sugar and molasses",
+        "Honey and maple syrup",
+        "Starches from corn and other plants",
+        "Vegetable oils with anti-oxidants",
+        "Salt (mined or from seawater)",
+        "Iodised salt",
+        "Salted butter"
+      ]
+    },
+    "3": {
+      "name": "Processed foods",
+      "definition": "Products made by adding salt, oil, sugar or other group 2 ingredients to group 1 foods, using preservation methods such as canning and bottling, and, in the case of breads and cheeses, using non-alcoholic fermentation.",
+      "examples": [
+        "Canned vegetables and legumes in brine",
+        "Salted or sugared nuts and seeds",
+        "Salted, dried, cured, or smoked meats",
+        "Canned fish",
+        "Fruit in syrup",
+        "Fresh unpackaged breads",
+        "Fresh cheeses"
+      ]
+    },
+    "4": {
+      "name": "Ultra-processed foods",
+      "definition": "Formulations of ingredients, mostly of exclusive industrial use, made by a series of industrial processes, many requiring sophisticated equipment and technology. Processes include fractioning of whole foods into substances, chemical modifications, assembly using industrial techniques, and use of additives for palatability and preservation.",
+      "characteristics": [
+        "Uses sophisticated industrial processes",
+        "Contains industrial ingredients not used in culinary preparations",
+        "Designed for high profitability",
+        "Ready-to-consume",
+        "Hyper-palatable",
+        "Long shelf-life",
+        "Emphatic branding"
+      ],
+      "examples": [
+        "Carbonated soft drinks",
+        "Packaged snacks",
+        "Chocolate and candies",
+        "Ice-cream",
+        "Mass-produced packaged breads",
+        "Margarines and spreads",
+        "Cookies, pastries, cakes",
+        "Breakfast cereals",
+        "Energy bars",
+        "Energy drinks",
+        "Flavored milk drinks",
+        "Fruit yoghurts",
+        "Fruit drinks",
+        "Instant sauces",
+        "Pre-prepared ready-to-heat products",
+        "Reconstituted meat products",
+        "Instant soups and noodles",
+        "Infant formulas",
+        "Meal replacement products"
+      ]
+    }
+  }
+} 

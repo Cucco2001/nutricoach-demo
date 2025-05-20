@@ -248,6 +248,11 @@
         "fattore": 1.17,
         "crudo_g": 100,
         "cotto_g": 117
+      },
+      "riso_integrale": {
+        "fattore": 2.8,
+        "crudo_g": 80,
+        "cotto_g": 224
       }
     }
   },
@@ -257,6 +262,16 @@
         "fattore": 0.87,
         "crudo_g": 200,
         "cotto_g": 174
+      },
+      "broccoli": {
+        "fattore": 1.1,
+        "crudo_g": 100,
+        "cotto_g": 110
+      },
+      "spinaci": {
+        "fattore": 0.85,
+        "crudo_g": 200,
+        "cotto_g": 170
       }
     },
     "vapore_pressione": {
@@ -269,6 +284,16 @@
         "fattore": 0.86,
         "crudo_g": 200,
         "cotto_g": 172
+      },
+      "broccoli": {
+        "fattore": 1.05,
+        "crudo_g": 100,
+        "cotto_g": 105
+      },
+      "spinaci": {
+        "fattore": 0.90,
+        "crudo_g": 200,
+        "cotto_g": 180
       }
     },
     "padella_con_olio": {

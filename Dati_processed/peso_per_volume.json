@@ -51,6 +51,12 @@
     "cucchiaio_raso": 10,
     "cucchiaino_raso": 6
   },
+  "riso_integrale": {
+    "cucchiaio_colmo": 18,
+    "cucchiaino_colmo": 10,
+    "cucchiaio_raso": 11,
+    "cucchiaino_raso": 7
+  },
   "sale_fino": {
     "cucchiaio_raso": 14,
     "cucchiaino_raso": 7
@@ -64,5 +70,23 @@
     "cucchiaino_colmo": 10,
     "cucchiaio_raso": 9,
     "cucchiaino_raso": 5
+  },
+  "broccoli_cotti": {
+    "cucchiaio_colmo": 25,
+    "cucchiaino_colmo": 12,
+    "cucchiaio_raso": 15,
+    "cucchiaino_raso": 8
+  },
+  "riso_basmati": {
+    "cucchiaio_colmo": 17,
+    "cucchiaino_colmo": 9,
+    "cucchiaio_raso": 10,
+    "cucchiaino_raso": 6
+  },
+  "spinaci_cotti": {
+    "cucchiaio_colmo": 25,
+    "cucchiaino_colmo": 12,
+    "cucchiaio_raso": 15,
+    "cucchiaino_raso": 8
   }
 }
