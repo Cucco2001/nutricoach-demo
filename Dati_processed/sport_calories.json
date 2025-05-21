@@ -1,0 +1,194 @@
+{
+  "sports": {
+    "alpinismo": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 500,
+      "description": "Attività di arrampicata in montagna"
+    },
+    "ballo": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 350,
+      "description": "Attività di danza generica"
+    },
+    "bicicletta": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 210,
+      "description": "Ciclismo a velocità moderata (10km/h)"
+    },
+    "bowling": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 270,
+      "description": "Attività di bowling"
+    },
+    "calcio": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 400,
+      "description": "Calcio amatoriale"
+    },
+    "canottaggio": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 300,
+      "description": "Canottaggio ricreativo"
+    },
+    "canottaggio_agonistico": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 840,
+      "description": "Canottaggio competitivo ad alta intensità"
+    },
+    "corsa": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 900,
+      "description": "Corsa a ritmo sostenuto"
+    },
+    "equitazione": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 350,
+      "description": "Equitazione ricreativa"
+    },
+    "ginnastica": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 450,
+      "description": "Ginnastica generale"
+    },
+    "golf": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 250,
+      "description": "Golf senza utilizzo del cart"
+    },
+    "hockey": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 370,
+      "description": "Hockey su ghiaccio o prato amatoriale"
+    },
+    "judo": {
+      "category": "Sport di forza",
+      "kcal_per_hour": 850,
+      "description": "Judo e arti marziali simili"
+    },
+    "maratona": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 700,
+      "description": "Corsa di lunghe distanze"
+    },
+    "nuoto": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 300,
+      "description": "Nuoto a ritmo moderato (400 m/h)"
+    },
+    "pallacanestro": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 600,
+      "description": "Basket amatoriale"
+    },
+    "pallanuoto": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 600,
+      "description": "Pallanuoto"
+    },
+    "pallavolo": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 350,
+      "description": "Pallavolo amatoriale"
+    },
+    "pattinaggio": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 350,
+      "description": "Pattinaggio su ghiaccio o rotelle"
+    },
+    "ping_pong": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 350,
+      "description": "Tennis da tavolo"
+    },
+    "pugilato": {
+      "category": "Sport di forza",
+      "kcal_per_hour": 600,
+      "description": "Pugilato e boxe"
+    },
+    "rugby": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 500,
+      "description": "Rugby"
+    },
+    "scherma": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 300,
+      "description": "Scherma"
+    },
+    "sci": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 500,
+      "description": "Sci alpino o di fondo"
+    },
+    "sci_acqua": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 470,
+      "description": "Sci d'acqua"
+    },
+    "squash": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 500,
+      "description": "Squash"
+    },
+    "tennis": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 440,
+      "description": "Tennis"
+    },
+    "vela": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 300,
+      "description": "Vela ricreativa"
+    },
+    "fitness_easy": {
+      "category": "Fitness - Allenamento medio",
+      "kcal_per_hour": 250,
+      "description": "Allenamento leggero in palestra"
+    },
+    "fitness_medio_massa": {
+      "category": "Fitness - Bodybuilding Massa",
+      "kcal_per_hour": 400,
+      "description": "Allenamento moderato in palestra"
+    },
+    "fitness_hard_massa": {
+      "category": "Fitness - Bodybuilding Massa",
+      "kcal_per_hour": 500,
+      "description": "Allenamento intenso in palestra"
+    },
+    "fitness_medio_definizione": {
+      "category": "Fitness - Bodybuilding Definizione",
+      "kcal_per_hour": 400,
+      "description": "Allenamento moderato in palestra"
+    },
+    "fitness_hard_definizione": {
+      "category": "Fitness - Bodybuilding Definizione",
+      "kcal_per_hour": 500,
+      "description": "Allenamento intenso in palestra"
+    },
+    "body_building": {
+      "category": "Fitness - Bodybuilding Massa",
+      "kcal_per_hour": 400,
+      "description": "Allenamento di bodybuilding"
+    },
+    "spinning_easy": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 550,
+      "description": "Spinning a bassa intensità"
+    },
+    "spinning_strong": {
+      "category": "Sport di resistenza",
+      "kcal_per_hour": 800,
+      "description": "Spinning ad alta intensità"
+    },
+    "aerobica": {
+      "category": "Sport aciclici",
+      "kcal_per_hour": 400,
+      "description": "Aerobica"
+    },
+    "arti_marziali": {
+      "category": "Sport di forza",
+      "kcal_per_hour": 450,
+      "description": "Arti marziali generiche"
+    }
+  }
+} 
