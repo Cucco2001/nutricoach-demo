@@ -64,7 +64,8 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "get_LARN_lipidi_percentuali": [],
         "get_LARN_vitamine": ["sesso", "età"],
         "compute_Harris_Benedict_Equation": ["sesso", "peso", "altezza", "età", "livello_attività"],
-        "get_protein_multiplier": ["tipo_attivita", "is_vegan"]
+        "get_protein_multiplier": ["tipo_attivita", "is_vegan"],
+        "check_ultraprocessed_foods": ["foods_with_grams"]
     }
     
     if function_name not in required_params:
@@ -214,6 +215,19 @@ def nutridb_tool(function_name: str, parameters: Dict[str, Any]) -> Dict[str, An
 
         elif function_name == "get_protein_multiplier":
             return get_protein_multiplier(parameters["tipo_attivita"], parameters["is_vegan"])
+
+        elif function_name == "check_ultraprocessed_foods":
+            try:
+                foods_with_grams = parameters["foods_with_grams"]
+                if not isinstance(foods_with_grams, dict):
+                    raise ValueError("Il parametro foods_with_grams deve essere un dizionario")
+                
+                result = db.check_ultraprocessed_foods(foods_with_grams)
+                logger.info(f"Risultato check_ultraprocessed_foods: {result}")
+                return result
+            except Exception as e:
+                logger.error(f"Errore nel controllo degli alimenti ultra-processati: {str(e)}")
+                return {"error": f"Errore: {str(e)}"}
 
     except ValueError as e:
         logger.warning(f"Errore di validazione: {str(e)}")

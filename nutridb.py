@@ -270,3 +270,55 @@ class NutriDB:
             return self.larn_vitamine["maschi_18_29"] if età < 30 else self.larn_vitamine["maschi_30_59"]
         else:
             return self.larn_vitamine["femmine_18_29"] if età < 30 else self.larn_vitamine["femmine_30_59"]
+
+    def check_ultraprocessed_foods(self, foods_with_grams):
+        """Verifica se una dieta giornaliera contiene troppi alimenti ultra-processati (NOVA classe 4).
+        
+        Args:
+            foods_with_grams: Un dizionario dove le chiavi sono i nomi degli alimenti e i valori sono i grammi.
+            
+        Returns:
+            Un dizionario contenente:
+            - 'too_much_ultraprocessed': True se più del 20% della dieta è composta da alimenti ultraprocessati, False altrimenti
+            - 'ultraprocessed_ratio': Rapporto tra grammi di alimenti ultraprocessati e grammi totali
+            - 'ultraprocessed_grams': Grammi totali di alimenti ultraprocessati
+            - 'total_grams': Grammi totali di tutti gli alimenti
+        """
+        ultraprocessed_grams = 0
+        total_grams = 0
+        ultraprocessed_foods = []
+        unrecognized_foods = []
+        
+        for food, grams in foods_with_grams.items():
+            total_grams += grams
+            
+            try:
+                # Cerca l'alimento nella banca dati usando gli alias
+                key = self.alias.get(food.lower().replace("_", " "))
+                if not key:
+                    unrecognized_foods.append(food)
+                    continue
+                
+                # Controlla il gruppo NOVA dell'alimento
+                if self.alimenti[key].get("nova_group") == 4:
+                    ultraprocessed_grams += grams
+                    ultraprocessed_foods.append(food)
+            except Exception as e:
+                unrecognized_foods.append(food)
+        
+        ultraprocessed_ratio = 0
+        if total_grams > 0:
+            ultraprocessed_ratio = ultraprocessed_grams / total_grams
+        
+        result = {
+            "too_much_ultraprocessed": ultraprocessed_ratio > 0.2,  # True se supera il 20%
+            "ultraprocessed_ratio": round(ultraprocessed_ratio, 3),
+            "ultraprocessed_grams": ultraprocessed_grams,
+            "total_grams": total_grams,
+            "ultraprocessed_foods": ultraprocessed_foods
+        }
+        
+        if unrecognized_foods:
+            result["unrecognized_foods"] = unrecognized_foods
+            
+        return result
