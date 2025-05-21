@@ -2,7 +2,33 @@
   "meal_feedback": {},
   "progress_data": [],
   "user_preferences": null,
-  "chat_history": [],
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando i dati forniti:\n\n### Dati del cliente:\n- Sesso: Maschio\n- Età: 30 anni\n- Peso: 70 kg\n- Altezza: 170 cm\n- Livello attività quotidiana: Sedentario\n- Obiettivo principale: Mantenimento\n\n### Intolleranze/Allergie:\n- Nessuna allergia segnalata\n\n### Partecipazione:\n- Richiesta bassa partecipazione. Sarà fornito un piano completo.\n\n### Obiettivi di Peso:\n- Obiettivo principale è il mantenimento, quindi manterremo un piano calorico che bilanci il fabbisogno energetico con il dispendio.\n\n### Attività Sportive:\n- Sport praticato: Fitness Easy\n  - Intensità: Leggera\n  - Ore settimanali: 3\n  - Dispendio calorico stimato: 250 kcal/ora\n\nProcedo ora con il calcolo del dispendio energetico derivante dall'attività sportiva e passo poi alla Fase 2 per calcolare il fabbisogno energetico totale.\n\n➡️ Procedo con la FASE 2?",
+      "timestamp": 1747851546.3541803
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747851613.7668834
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 2 - CALCOLO FABBISOGNI ENERGETICI\n\n📊 Risultati intermedi:\n\n1. **Metabolismo Basale (BMR):** 1672 kcal\n   - Questo è il dispendio energetico a riposo, ovvero la quantità di calorie che il corpo brucia per mantenere le funzioni vitali.\n\n2. **Fabbisogno Energetico Totale (senza sport):** 2424 kcal\n   - Questo include il livello di attività giornaliera sedentarie (LAF: 1.45).\n\n3. **Dispendio Energetico da Attività Sportiva:** \n   - Calorie bruciate dall'allenamento settimanale: 600 kcal/settimana\n   - Dispendio quotidiano dall'attività sportiva: 86 kcal/giorno\n\n### Calcolo Fabbisogno Calorico Totale:\nFabbisogno giornaliero totale = 2424 kcal + 86 kcal = **2510 kcal**\n\n➡️ Procedo ora con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+      "timestamp": 1747851634.3794413
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747851667.5218341
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 3 - CALCOLO DISTRIBUZIONE MACRONUTRIENTI\n\n📊 Risultati intermedi:\n\n### Proteine:\n- **Moltiplicatore proteico:** 1.0 g/kg\n- **Calcolo:** 1.0 * 70 kg = 70g di proteine\n- **Calorie da proteine:** 70g * 4 kcal/g = 280 kcal\n- **Percentuale calorie totali:** (280 / 2510) * 100 ≈ 11.2%\n\n### Grassi:\n- **Percentuale consigliata:** 20-35% delle calorie\n- **Assumiamo una media del 30% per un equilibrio migliore**\n- **Calorie da grassi:** 30% di 2510 kcal = 753 kcal\n- **Grammi di grassi:** 753 kcal / 9 kcal/g ≈ 84g\n\n### Carboidrati:\n- **Calorie restanti:** 2510 kcal - (280 kcal proteine + 753 kcal grassi) = 1477 kcal\n- **Grammi di carboidrati:** 1477 kcal / 4 kcal/g ≈ 369g\n- **Percentuale calorie totali:** 1477 / 2510 ≈ 58.8%\n\n### Fibre:\n- **Range raccomandato:** 31.6g - 41.9g\n\n### Riepilogo Macronutrienti:\n- **Proteine:** 70g (280 kcal, 11.2%)\n- **Grassi:** 84g (753 kcal, 30%)\n- **Carboidrati:** 369g (1477 kcal, 58.8%)\n- **Fibre:** 31.6g - 41.9g\n\n➡️ Procedo ora con la FASE 4 per creare un piano pasti giornaliero?",
+      "timestamp": 1747851691.8507004
+    }
+  ],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -10,7 +36,32 @@
     "altezza": 170,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {},
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "participation": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Fitness - Allenamento medio (principianti e livello intermedio)",
+            "specific_sport": {
+              "name": "Fitness Easy",
+              "key": "fitness_easy",
+              "kcal_per_hour": 250,
+              "description": "Allenamento leggero in palestra"
+            },
+            "intensity": "easy",
+            "hours_per_week": 3
+          }
+        ]
+      }
+    },
     "agent_qa": [
       {
         "question": "si",
@@ -41,6 +92,21 @@
         "question": "si",
         "answer": "⚡ Procedimento: Creazione del primo spuntino\n\nDato che il primo spuntino è previsto essere di circa 255.149 kcal, ecco una possibile proposta:\n\n### Primo Spuntino (255.149 kcal):\n\n- **Banana media** (circa 120g):\n  - Proteine: 1.3g\n  - Carboidrati: 31g\n  - Grassi: 0.3g\n\n- **Frutta secca mista** (15g):\n  - Proteine: 2.5g\n  - Carboidrati: 8g\n  - Grassi: 8g\n\n- **Uno yogurt semplice** (100g):\n  - Proteine: 5.5g\n  - Carboidrati: 7.8g\n  - Grassi: 3.3g\n\n#### Totale pasto:\n- Proteine: 9.3g\n- Carboidrati: 46.8g\n- Grassi: 11.6g\n\n➡️ Procediamo con il pranzo?",
         "timestamp": 1747842272.890953
+      },
+      {
+        "question": "si",
+        "answer": "📊 Risultati intermedi: Dispendio energetico per le arti marziali\n\n- **Arti Marziali**:\n  - Kcal per ora: 360\n  - Ore settimanali: 3\n  - Kcal per sessione: 1080\n  - Kcal totali settimanali: 1080\n  - Kcal medie giornaliere: 154\n\nCon queste informazioni, abbiamo analizzato il dispendio energetico per l'attività sportiva praticata.\n\n✓ FASE 1 - Analisi completata\n\nOra possiamo procedere con la FASE 2, calcolando il fabbisogno energetico totale. Vuoi che proceda con questo calcolo?",
+        "timestamp": 1747851262.2287674
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 2 - CALCOLO FABBISOGNI ENERGETICI\n\n📊 Risultati intermedi:\n\n1. **Metabolismo Basale (BMR):** 1672 kcal\n   - Questo è il dispendio energetico a riposo, ovvero la quantità di calorie che il corpo brucia per mantenere le funzioni vitali.\n\n2. **Fabbisogno Energetico Totale (senza sport):** 2424 kcal\n   - Questo include il livello di attività giornaliera sedentarie (LAF: 1.45).\n\n3. **Dispendio Energetico da Attività Sportiva:** \n   - Calorie bruciate dall'allenamento settimanale: 600 kcal/settimana\n   - Dispendio quotidiano dall'attività sportiva: 86 kcal/giorno\n\n### Calcolo Fabbisogno Calorico Totale:\nFabbisogno giornaliero totale = 2424 kcal + 86 kcal = **2510 kcal**\n\n➡️ Procedo ora con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+        "timestamp": 1747851634.3863623
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 3 - CALCOLO DISTRIBUZIONE MACRONUTRIENTI\n\n📊 Risultati intermedi:\n\n### Proteine:\n- **Moltiplicatore proteico:** 1.0 g/kg\n- **Calcolo:** 1.0 * 70 kg = 70g di proteine\n- **Calorie da proteine:** 70g * 4 kcal/g = 280 kcal\n- **Percentuale calorie totali:** (280 / 2510) * 100 ≈ 11.2%\n\n### Grassi:\n- **Percentuale consigliata:** 20-35% delle calorie\n- **Assumiamo una media del 30% per un equilibrio migliore**\n- **Calorie da grassi:** 30% di 2510 kcal = 753 kcal\n- **Grammi di grassi:** 753 kcal / 9 kcal/g ≈ 84g\n\n### Carboidrati:\n- **Calorie restanti:** 2510 kcal - (280 kcal proteine + 753 kcal grassi) = 1477 kcal\n- **Grammi di carboidrati:** 1477 kcal / 4 kcal/g ≈ 369g\n- **Percentuale calorie totali:** 1477 / 2510 ≈ 58.8%\n\n### Fibre:\n- **Range raccomandato:** 31.6g - 41.9g\n\n### Riepilogo Macronutrienti:\n- **Proteine:** 70g (280 kcal, 11.2%)\n- **Grassi:** 84g (753 kcal, 30%)\n- **Carboidrati:** 369g (1477 kcal, 58.8%)\n- **Fibre:** 31.6g - 41.9g\n\n➡️ Procedo ora con la FASE 4 per creare un piano pasti giornaliero?",
+        "timestamp": 1747851691.8548958
       }
     ]
   }

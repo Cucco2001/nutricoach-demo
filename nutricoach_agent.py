@@ -27,7 +27,8 @@ available_tools = [
                             "get_LARN_lipidi_percentuali",
                             "get_LARN_vitamine",
                             "compute_Harris_Benedict_Equation",
-                            "get_protein_multiplier"
+                            "get_protein_multiplier",
+                            "calculate_sport_expenditure"
                         ],
                         "description": "Nome della funzione da chiamare nel database nutrizionale"
                     },
@@ -47,7 +48,21 @@ available_tools = [
                             "tipo_misura": {"type": "string"},
                             "metodo_cottura": {"type": "string"},
                             "sotto_categoria": {"type": "string"},
-                            "kcal": {"type": "number", "minimum": 800, "maximum": 4000}
+                            "kcal": {"type": "number", "minimum": 800, "maximum": 4000},
+                            "sports": {
+                                "type": "array",
+                                "description": "Lista degli sport praticati dall'utente",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "sport_name": {"type": "string", "description": "Nome dello sport"},
+                                        "hours": {"type": "number", "description": "Ore di attività settimanali"},
+                                        "intensity": {"type": "string", "enum": ["easy", "medium", "hard"], "description": "Intensità dell'attività"}
+                                    },
+                                    "required": ["sport_name", "hours"]
+                                }
+                            },
+                            "hours": {"type": "number", "description": "Ore di attività settimanali (usato solo se 'sports' è una stringa)"}
                         },
                         "description": "Parametri specifici per la funzione selezionata"
                     }
@@ -249,11 +264,38 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE (da salvare in un file json da riut
      * Aumenta anche l'apporto proteico a 1.8-2.2 g/kg
 
 5. Analizza l'attività sportiva:
-   - Calcola SEMPRE il dispendio energetico aggiuntivo e salvalo per calcoli successivi:
-   - Esempio:
-     Se utente consuma 500 kcal 2 volte a settimana:
-     * Dispendio settimanale = 500 * 2 = 1000 kcal
-     * Dispendio giornaliero = 1000 / 7 = 142.86 kcal/giorno
+   - Calcola SEMPRE il dispendio energetico aggiuntivo e salvalo per calcoli successivi
+   - Usa il tool calculate_sport_expenditure con l'array di sport fornito dall'utente
+   
+   Esempio di utilizzo:
+   ```
+   sports = [
+     {"sport_name": "nuoto", "hours": 3, "intensity": "medium"},
+     {"sport_name": "fitness_strong", "hours": 4, "intensity": "hard"}
+   ]
+   
+   Risultato:
+   {
+     "sports_details": [
+       {"sport_name": "nuoto", "hours_per_week": 3, "kcal_per_hour": 300, "kcal_per_session": 900, "kcal_per_week": 900, "kcal_per_day": 129},
+       {"sport_name": "fitness_strong", "hours_per_week": 4, "kcal_per_hour": 480, "kcal_per_session": 1920, "kcal_per_week": 1920, "kcal_per_day": 274}
+     ],
+     "total_kcal_per_week": 2820,
+     "total_kcal_per_day": 403
+   }
+   ```
+   
+   - Utilizza sempre total_kcal_per_day come valore da aggiungere al fabbisogno calorico
+   - L'intensità dell'attività (easy/medium/hard) modifica il dispendio energetico:
+     * easy: -20% rispetto al valore standard
+     * medium: valore standard
+     * hard: +20% rispetto al valore standard
+   
+   - Esempio di ragionamento:
+     Se l'utente pratica nuoto e fitness:
+     * Dispendio giornaliero dagli sport: 403 kcal
+     * Fabbisogno base (BMR × LAF): 2200 kcal
+     * Fabbisogno totale: 2200 + 403 = 2603 kcal
 
 FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
 1. Calcola fabbisogno energetico:

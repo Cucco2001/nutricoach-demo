@@ -145,6 +145,11 @@
       "kcal_per_hour": 250,
       "description": "Allenamento leggero in palestra"
     },
+    "fitness_medio": {
+      "category": "Fitness - Allenamento medio",
+      "kcal_per_hour": 350,
+      "description": "Allenamento moderato in palestra"
+    },
     "fitness_medio_massa": {
       "category": "Fitness - Bodybuilding Massa",
       "kcal_per_hour": 400,

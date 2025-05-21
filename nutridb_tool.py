@@ -1,6 +1,6 @@
 from nutridb import NutriDB
 import logging
-from typing import Dict, Any, Union, List
+from typing import Dict, Any, Union, List, Optional
 import json
 import os
 
@@ -28,7 +28,8 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "get_LARN_vitamine": ["sesso", "età"],
         "compute_Harris_Benedict_Equation": ["sesso", "peso", "altezza", "età", "livello_attività"],
         "get_protein_multiplier": ["tipo_attivita", "is_vegan"],
-        "check_ultraprocessed_foods": ["foods_with_grams"]
+        "check_ultraprocessed_foods": ["foods_with_grams"],
+        "calculate_sport_expenditure": ["sports"]
     }
     
     if function_name not in required_params:
@@ -88,6 +89,104 @@ def get_protein_multiplier(tipo_attivita: str, is_vegan: bool = False) -> Dict[s
         result["description"] += " (supplemento vegano incluso)"
     
     return result
+
+def calculate_sport_expenditure(sports: Union[List[Dict[str, Any]], Dict[str, Any], str], hours: Optional[float] = None) -> Dict[str, Any]:
+    """
+    Calcola il dispendio energetico per uno o più sport in base alle ore di attività.
+    
+    Args:
+        sports: Può essere:
+               - Una lista di dizionari, ognuno con sport_name, hours e opzionalmente intensity
+               - Un dizionario con sport_name e hours
+               - Una stringa con il nome dello sport (richiede anche il parametro hours)
+        hours: Ore di attività settimanali (usato solo se sports è una stringa)
+        
+    Returns:
+        Dict contenente:
+        - sports_details: Lista dei dettagli per ogni sport
+        - total_kcal_per_week: Calorie totali bruciate settimanalmente
+        - total_kcal_per_day: Media giornaliera totale di calorie bruciate
+    """
+    try:
+        sport_calories_path = os.path.join("Dati_processed", "sport_calories.json")
+        with open(sport_calories_path, 'r', encoding='utf-8') as file:
+            sports_data = json.load(file)
+        
+        # Normalizza l'input in una lista di sport
+        sports_list = []
+        if isinstance(sports, str):
+            if hours is None:
+                raise ValueError("Il parametro 'hours' è richiesto quando si specifica un singolo sport come stringa")
+            sports_list = [{"sport_name": sports, "hours": hours}]
+        elif isinstance(sports, dict):
+            sports_list = [sports]
+        elif isinstance(sports, list):
+            sports_list = sports
+        else:
+            raise ValueError("Formato sport non valido")
+        
+        total_results = {
+            "sports_details": [],
+            "total_kcal_per_week": 0,
+            "total_kcal_per_day": 0
+        }
+        
+        # Calcola il dispendio per ogni sport
+        for sport in sports_list:
+            sport_name = sport["sport_name"].lower().replace(" ", "_")
+            sport_hours = float(sport["hours"])
+            intensity_multiplier = 1.0
+            
+            # Applica il moltiplicatore di intensità se specificato
+            if "intensity" in sport:
+                intensity_map = {"easy": 0.8, "medium": 1.0, "hard": 1.2}
+                intensity_multiplier = intensity_map.get(sport["intensity"], 1.0)
+            
+            # Cerca il nome esatto dello sport
+            if sport_name in sports_data["sports"]:
+                sport_info = sports_data["sports"][sport_name]
+            else:
+                # Cerca per sottostringa/somiglianza
+                possible_sports = [s for s in sports_data["sports"] if sport_name in s]
+                if not possible_sports:
+                    raise ValueError(f"Sport '{sport_name}' non trovato nel database")
+                
+                # Usa il primo risultato trovato
+                sport_info = sports_data["sports"][possible_sports[0]]
+                sport_name = possible_sports[0]
+            
+            # Calcola il dispendio energetico per questo sport
+            kcal_per_hour = sport_info["kcal_per_hour"] * intensity_multiplier
+            kcal_per_session = kcal_per_hour * sport_hours
+            kcal_per_week = kcal_per_session
+            kcal_per_day = kcal_per_week / 7
+            
+            sport_result = {
+                "sport_name": sport_name,
+                "kcal_per_hour": round(kcal_per_hour),
+                "hours_per_week": sport_hours,
+                "kcal_per_session": round(kcal_per_session),
+                "kcal_per_week": round(kcal_per_week),
+                "kcal_per_day": round(kcal_per_day),
+                "sport_info": {
+                    "category": sport_info["category"],
+                    "description": sport_info["description"]
+                }
+            }
+            
+            total_results["sports_details"].append(sport_result)
+            total_results["total_kcal_per_week"] += kcal_per_week
+            total_results["total_kcal_per_day"] += kcal_per_day
+        
+        # Arrotonda i totali
+        total_results["total_kcal_per_week"] = round(total_results["total_kcal_per_week"])
+        total_results["total_kcal_per_day"] = round(total_results["total_kcal_per_day"])
+        
+        return total_results
+        
+    except Exception as e:
+        logger.error(f"Errore nel calcolo del dispendio energetico per lo sport: {str(e)}")
+        raise ValueError(f"Errore nel calcolo del dispendio sportivo: {str(e)}")
 
 def nutridb_tool(function_name: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
     """Tool principale per accedere alle funzioni del database nutrizionale."""
@@ -199,6 +298,28 @@ def nutridb_tool(function_name: str, parameters: Dict[str, Any]) -> Dict[str, An
                 return result
             except Exception as e:
                 logger.error(f"Errore nel controllo degli alimenti ultra-processati: {str(e)}")
+                return {"error": f"Errore: {str(e)}"}
+
+        elif function_name == "calculate_sport_expenditure":
+            try:
+                sports = parameters["sports"]
+                hours = parameters.get("hours", None)
+                
+                # Valida in base al tipo di input
+                if isinstance(sports, str) and hours is None:
+                    raise ValueError("Il parametro 'hours' è richiesto quando si specifica un singolo sport come stringa")
+                elif hours is not None and float(hours) <= 0:
+                    raise ValueError("Le ore di attività devono essere positive")
+                
+                # Converti hours a float se presente
+                if hours is not None:
+                    hours = float(hours)
+                
+                result = calculate_sport_expenditure(sports, hours)
+                logger.info(f"Risultato calculate_sport_expenditure: {result}")
+                return result
+            except Exception as e:
+                logger.error(f"Errore nel calcolo del dispendio sportivo: {str(e)}")
                 return {"error": f"Errore: {str(e)}"}
 
     except ValueError as e:

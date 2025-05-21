@@ -39,6 +39,106 @@ if "nutrition_answers" not in st.session_state:
 if "user_data_manager" not in st.session_state:
     st.session_state.user_data_manager = UserDataManager()
 
+# Carica i dati degli sport
+def load_sports_data():
+    """Carica i dati degli sport dal file JSON e li organizza per categoria."""
+    try:
+        with open(os.path.join("Dati_processed", "sport_calories.json"), 'r', encoding='utf-8') as file:
+            sports_data = json.load(file)
+        
+        # Organizza gli sport per categoria
+        sports_by_category = {}
+        for sport_name, sport_info in sports_data["sports"].items():
+            category = sport_info["category"]
+            if category not in sports_by_category:
+                sports_by_category[category] = []
+            
+            # Formatta il nome dello sport (sostituisci '_' con spazi e prima lettera di ogni parola maiuscola)
+            words = sport_name.split('_')
+            formatted_name = ' '.join(word.capitalize() for word in words)
+            
+            sports_by_category[category].append({
+                "name": formatted_name,
+                "key": sport_name,
+                "kcal_per_hour": sport_info["kcal_per_hour"],
+                "description": sport_info["description"]
+            })
+        
+        # Ordina alfabeticamente gli sport in ogni categoria
+        for category in sports_by_category:
+            sports_by_category[category] = sorted(sports_by_category[category], key=lambda x: x["name"])
+        
+        return sports_data["sports"], sports_by_category
+    except Exception as e:
+        st.error(f"Errore nel caricamento dei dati degli sport: {str(e)}")
+        return {}, {}
+
+# Funzione per ottenere gli sport di una categoria specifica
+def get_sports_by_category(category_name):
+    """Restituisce la lista degli sport per una categoria specifica."""
+    # Mappa i nomi delle categorie del menu a quelli del file JSON
+    category_map = {
+        "Fitness - Allenamento medio (principianti e livello intermedio)": "Fitness - Allenamento medio",
+        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)": "Fitness - Bodybuilding Massa",
+        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)": "Fitness - Bodybuilding Definizione",
+        "Sport di forza (es: powerlifting, sollevamento pesi, strongman)": "Sport di forza",
+        "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)": "Sport di resistenza",
+        "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)": "Sport aciclici",
+        "Altro": None
+    }
+    
+    # Carica i dati degli sport se non sono già in session_state
+    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
+        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
+    
+    mapped_category = category_map.get(category_name)
+    
+    # Debug: stampa le categorie disponibili
+    print(f"Categoria selezionata: {category_name}")
+    print(f"Categoria mappata: {mapped_category}")
+    print(f"Categorie disponibili: {list(st.session_state.sports_by_category.keys())}")
+    
+    if mapped_category and mapped_category in st.session_state.sports_by_category:
+        return st.session_state.sports_by_category[mapped_category]
+    else:
+        # Se la categoria non esiste o è "Altro", mostra tutti gli sport
+        all_sports = []
+        for category, sports in st.session_state.sports_by_category.items():
+            all_sports.extend(sports)
+        # Rimuovi duplicati e ordina
+        return sorted(all_sports, key=lambda x: x["name"])
+
+# Callback quando cambia la selezione della categoria sport
+def on_sport_category_change(i):
+    """
+    Callback per reagire al cambio di categoria sport.
+    Rimuove la selezione precedente dello sport specifico per forzare una nuova selezione.
+    
+    Args:
+        i: indice dello sport nella lista
+    """
+    print(f"Categoria sport cambiata per sport index {i}")
+    
+    # Rimuovi la selezione precedente dello sport specifico per forzare una nuova selezione
+    if f"specific_sport_{i}" in st.session_state:
+        del st.session_state[f"specific_sport_{i}"]
+    
+    # Assicurati che i dati degli sport siano caricati
+    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
+        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
+    
+    # Aggiorna la lista degli sport in session_state
+    if "sports_list" in st.session_state and i < len(st.session_state.sports_list):
+        selected_category = st.session_state[f"sport_type_{i}"]
+        print(f"Nuova categoria selezionata: {selected_category}")
+        
+        # Aggiorna la categoria nello sports_list
+        st.session_state.sports_list[i]["sport_type"] = selected_category
+        
+        # Rimuovi lo sport specifico selezionato precedentemente
+        if "specific_sport" in st.session_state.sports_list[i]:
+            del st.session_state.sports_list[i]["specific_sport"]
+
 # Definizione delle domande nutrizionali iniziali
 NUTRITION_QUESTIONS = [
     {
@@ -100,11 +200,22 @@ NUTRITION_QUESTIONS = [
                     ]
                 },
                 {
-                    "id": "sport_other",
-                    "label": "Specifica quale sport:",
-                    "type": "text",
-                    "show_if": "sport_type",
-                    "show_if_value": "Altro"
+                    "id": "specific_sport",
+                    "label": "Specifica lo sport",
+                    "type": "select",
+                    "dynamic_options": True,
+                    "options": []
+                },
+                {
+                    "id": "intensity",
+                    "label": "Intensità dell'attività",
+                    "type": "select",
+                    "options": ["easy", "medium", "hard"],
+                    "descriptions": {
+                        "easy": "Attività leggera (-20% calorie)",
+                        "medium": "Attività moderata (calorie standard)",
+                        "hard": "Attività intensa (+20% calorie)"
+                    }
                 },
                 {
                     "id": "hours_per_week",
@@ -633,6 +744,73 @@ def handle_preferences():
             )
             st.success("Preferenze salvate con successo!")
 
+# Funzione per convertire i dati degli sport nel formato richiesto dal tool
+def prepare_sports_data_for_tool(sports_data):
+    """
+    Converte i dati degli sport dal formato del form al formato richiesto dal tool calculate_sport_expenditure.
+    
+    Args:
+        sports_data: Lista di sport dal form
+        
+    Returns:
+        Lista di sport nel formato richiesto dal tool
+    """
+    result = []
+    
+    print(f"Dati sport ricevuti: {sports_data}")
+    
+    if not sports_data or not isinstance(sports_data, list):
+        print(f"Dati sport non validi: {sports_data}")
+        return result
+    
+    for i, sport in enumerate(sports_data):
+        print(f"Elaborazione sport {i+1}: {sport}")
+        
+        if "specific_sport" not in sport or not sport["specific_sport"]:
+            print(f"Sport {i+1} senza specific_sport, salto")
+            continue
+            
+        try:
+            # Verifica che ci siano tutte le chiavi necessarie
+            if isinstance(sport["specific_sport"], dict) and "key" in sport["specific_sport"]:
+                sport_name = sport["specific_sport"]["key"]
+            else:
+                print(f"Sport {i+1} ha un formato non valido: {sport['specific_sport']}")
+                continue
+                
+            # Assicurati che hours_per_week sia presente e sia un numero
+            if "hours_per_week" not in sport or not sport["hours_per_week"]:
+                print(f"Sport {i+1} senza ore settimanali, salto")
+                continue
+                
+            try:
+                hours = float(sport["hours_per_week"])
+                if hours <= 0:
+                    print(f"Sport {i+1} ha ore non positive: {hours}")
+                    continue
+            except (ValueError, TypeError):
+                print(f"Sport {i+1} ha ore non valide: {sport['hours_per_week']}")
+                continue
+            
+            sport_info = {
+                "sport_name": sport_name,
+                "hours": hours
+            }
+            
+            # Aggiungi l'intensità se specificata
+            if "intensity" in sport and sport["intensity"] and sport["intensity"] in ["easy", "medium", "hard"]:
+                sport_info["intensity"] = sport["intensity"]
+                
+            print(f"Sport {i+1} elaborato: {sport_info}")
+            result.append(sport_info)
+        except Exception as e:
+            # Gestisci eventuali errori di conversione
+            print(f"Errore nella preparazione del sport {i+1}: {str(e)}")
+            continue
+    
+    print(f"Risultato finale: {result}")
+    return result
+
 def chat_interface():
     """Interfaccia principale della chat"""
     # Crea l'assistente
@@ -763,6 +941,10 @@ def chat_interface():
                                     st.markdown(f"### Sport {i+1}")
                                     sport_data = {}
                                     
+                                    # Precarica i dati degli sport
+                                    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
+                                        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
+                                    
                                     for field in current_q["follow_up"]["fields"]:
                                         show_field = True
                                         if "show_if" in field and "show_if_value" in field:
@@ -772,24 +954,105 @@ def chat_interface():
                                         if show_field:
                                             st.markdown(f"### {field['label']}")
                                             if field["type"] == "select":
-                                                sport_data[field["id"]] = st.selectbox(
-                                                    "",
-                                                    options=field["options"],
-                                                    key=f"{field['id']}_{i}"
-                                                )
+                                                if field["id"] == "sport_type":
+                                                    # Quando cambia la categoria, usa il callback
+                                                    sport_data[field["id"]] = st.selectbox(
+                                                        "Seleziona",
+                                                        options=field["options"],
+                                                        key=f"{field['id']}_{i}",
+                                                        label_visibility="collapsed",
+                                                        on_change=on_sport_category_change,
+                                                        args=(i,)
+                                                    )
+                                                elif field["id"] == "specific_sport" and "dynamic_options" in field and field["dynamic_options"]:
+                                                    # Seleziona gli sport in base alla categoria scelta
+                                                    selected_category = sport.get("sport_type", "")
+                                                    if not selected_category and f"sport_type_{i}" in st.session_state:
+                                                        selected_category = st.session_state[f"sport_type_{i}"]
+                                                    
+                                                    # Debug
+                                                    print(f"Selected category for dropdown: {selected_category}")
+                                                    
+                                                    sports_options = get_sports_by_category(selected_category)
+                                                    
+                                                    # Mostra i nomi ma salva le chiavi
+                                                    sport_names = [s["name"] for s in sports_options]
+                                                    
+                                                    # Debug
+                                                    print(f"Available sports: {sport_names}")
+                                                    
+                                                    # Se non ci sono sport disponibili, mostra un messaggio
+                                                    if not sport_names:
+                                                        st.warning("Nessuno sport disponibile per questa categoria. Seleziona prima una categoria.")
+                                                        sport_data[field["id"]] = None
+                                                    else:
+                                                        # Crea un dizionario di riferimento sport_name -> sport_data
+                                                        sport_data_map = {s["name"]: s for s in sports_options}
+                                                        
+                                                        selected_sport_name = st.selectbox(
+                                                            "Seleziona",
+                                                            options=sport_names,
+                                                            key=f"{field['id']}_{i}",
+                                                            label_visibility="collapsed"
+                                                        )
+                                                        
+                                                        # Memorizza sia il nome che la chiave dello sport
+                                                        if selected_sport_name:
+                                                            sport_data[field["id"]] = {
+                                                                "name": selected_sport_name,
+                                                                "key": sport_data_map[selected_sport_name]["key"],
+                                                                "kcal_per_hour": sport_data_map[selected_sport_name]["kcal_per_hour"],
+                                                                "description": sport_data_map[selected_sport_name]["description"]
+                                                            }
+                                                        else:
+                                                            sport_data[field["id"]] = None
+                                                elif field["id"] == "intensity":
+                                                    # Mostra le descrizioni per l'intensità
+                                                    intensity_options = field["options"]
+                                                    intensity_descriptions = field.get("descriptions", {})
+                                                    
+                                                    # Crea opzioni formattate con descrizioni
+                                                    formatted_options = [f"{opt} - {intensity_descriptions.get(opt, '')}" 
+                                                                        for opt in intensity_options]
+                                                    
+                                                    # Mostra il selectbox con le descrizioni
+                                                    formatted_selection = st.selectbox(
+                                                        "Seleziona",
+                                                        options=formatted_options,
+                                                        key=f"{field['id']}_{i}",
+                                                        label_visibility="collapsed"
+                                                    )
+                                                    
+                                                    # Estrai solo il valore dell'intensità (prima del trattino)
+                                                    selected_intensity = formatted_selection.split(' - ')[0] if formatted_selection else None
+                                                    sport_data[field["id"]] = selected_intensity
+                                                else:
+                                                    sport_data[field["id"]] = st.selectbox(
+                                                        "Seleziona",
+                                                        options=field["options"],
+                                                        key=f"{field['id']}_{i}",
+                                                        label_visibility="collapsed"
+                                                    )
                                             elif field["type"] == "number":
                                                 sport_data[field["id"]] = st.number_input(
-                                                    "",
+                                                    "Numero",
                                                     min_value=field["min"],
                                                     max_value=field["max"],
                                                     value=field["default"],
-                                                    key=f"{field['id']}_{i}"
+                                                    key=f"{field['id']}_{i}",
+                                                    label_visibility="collapsed"
                                                 )
                                             elif field["type"] == "text":
                                                 sport_data[field["id"]] = st.text_input(
+                                                    "Testo",
                                                     "",
-                                                    key=f"{field['id']}_{i}"
+                                                    key=f"{field['id']}_{i}",
+                                                    label_visibility="collapsed"
                                                 )
+                                    
+                                    # Aggiorna lo sport con i dati attuali
+                                    for key, value in sport_data.items():
+                                        sport[key] = value
                                     
                                     follow_up_answer.append(sport_data)
                                 
