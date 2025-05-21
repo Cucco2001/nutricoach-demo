@@ -1,0 +1,37 @@
+{
+  "sedentario": {
+    "base": 0.66,
+    "description": "Sedentario (OMS)"
+  },
+  "adulto": {
+    "base": 0.70,
+    "description": "Adulto > 18 anni (LARN)"
+  },
+  "endurance": {
+    "base": 1.40,
+    "description": "Atleta di endurance"
+  },
+  "forza": {
+    "base": 1.90,
+    "range": [1.8, 2.0],
+    "description": "Atleta di sport di forza"
+  },
+  "aciclico": {
+    "base": 1.60,
+    "description": "Atleta di sport aciclici"
+  },
+  "fitness": {
+    "base": 1.00,
+    "description": "Utente medio fitness"
+  },
+  "bodybuilding_definizione": {
+    "base": 2.40,
+    "range": [2.2, 2.6],
+    "description": "Bodybuilder in fase di definizione"
+  },
+  "bodybuilding_massa": {
+    "base": 1.90,
+    "range": [1.6, 2.2],
+    "description": "Bodybuilder in fase di massa"
+  }
+} 

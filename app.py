@@ -176,14 +176,43 @@ def handle_tool_calls(run_status):
         return None
 
 def create_new_thread():
-    """Crea un nuovo thread per la conversazione."""
+    """Crea un nuovo thread per la conversazione, mantenendo la chat history dell'utente."""
     try:
         thread = st.session_state.openai_client.beta.threads.create()
         st.session_state.thread_id = thread.id
         st.session_state.current_run_id = None
-        st.session_state.messages = []
-        st.session_state.current_question = 0
-        st.session_state.nutrition_answers = {}
+        
+        # Mantieni la chat history presente nello user JSON invece di azzerarla
+        if hasattr(st.session_state, 'user_info') and st.session_state.user_info and "id" in st.session_state.user_info:
+            # Recupera la chat history dell'utente
+            chat_history = st.session_state.user_data_manager.get_chat_history(st.session_state.user_info["id"])
+            if chat_history:
+                # Carica i messaggi esistenti nella session state
+                st.session_state.messages = [
+                    {"role": msg.role, "content": msg.content}
+                    for msg in chat_history
+                ]
+                
+                # Inserisci i messaggi esistenti nel nuovo thread OpenAI
+                for msg in chat_history:
+                    try:
+                        st.session_state.openai_client.beta.threads.messages.create(
+                            thread_id=st.session_state.thread_id,
+                            role=msg.role,
+                            content=msg.content
+                        )
+                    except Exception as e:
+                        st.warning(f"Impossibile aggiungere messaggio al thread: {str(e)}")
+            else:
+                # Se non c'è history, inizializza array vuoto
+                st.session_state.messages = []
+        else:
+            # Se non c'è un utente loggato, inizializza array vuoto
+            st.session_state.messages = []
+        
+        # Mantieni le domande nutrizionali
+        st.session_state.current_question = st.session_state.get('current_question', 0)
+        st.session_state.nutrition_answers = st.session_state.get('nutrition_answers', {})
     except Exception as e:
         st.error(f"Errore nella creazione del thread: {str(e)}")
         return None
@@ -903,6 +932,7 @@ def chat_interface():
                     Basandoti su queste informazioni, procedi con le seguenti fasi:
 
                     FASE 1: Analisi delle risposte fornite
+                    - Valuta dati del cliente iniziali
                     - Valuta le intolleranze/allergie
                     - Analizza il livello di partecipazione richiesto
                     - Considera gli obiettivi di peso e il tempo
@@ -914,31 +944,17 @@ def chat_interface():
                     - Aggiungi il dispendio energetico degli sport
                     - Determina il fabbisogno calorico totale
 
-                    FASE 3: Creazione del piano alimentare
+                    FASE 3: Calcolo distribuzione macronutrienti
                     - Distribuisci le calorie tra i macronutrienti
+
+                    FASE 4: Creazione piano pasti
                     - Suddividi i pasti nella giornata
-                    - Seleziona gli alimenti appropriati
-                    - Calcola le porzioni precise
 
-                    FASE 4: Personalizzazione
+                    FASE 5: Creazione singoli pasti
                     - Adatta il piano alle preferenze alimentari
-                    - Considera gli orari dei pasti
-                    - Includi spuntini se necessario
-                    - Fornisci alternative quando possibile
-
-                    FASE 5: Monitoraggio e feedback
-                    - Spiega come tracciare i progressi
-                    - Fornisci linee guida per il feedback
-                    - Indica come registrare le misurazioni
-                    - Spiega quando e come comunicare eventuali problemi
-
-                    FASE 6: Valutazione periodica (ogni 3 settimane)
-                    - Analizza i progressi rispetto all'obiettivo
-                    - Ricalcola il metabolismo basale
-                    - Aggiorna il fabbisogno calorico
-                    - Modifica le quantità dei macronutrienti
-                    - Adatta il piano alimentare
-                    - Fornisci nuove raccomandazioni
+                    - Crea un pasto alla volta
+                    - Prenditi il tempo necessario per realizzare un pasto completo
+                    - Verifica il pasto 
 
                     Puoi procedere con la FASE 1?
                     """

@@ -56,6 +56,37 @@ def user_data_tool(function_name: str, parameters: Dict) -> Dict:
                     "timestamp": feedback.timestamp
                 }
             return {"error": "Nessun feedback trovato per questo pasto"}
+            
+        elif function_name == "get_agent_qa":
+            user_id = parameters["user_id"]
+            qa_history = _user_data_manager.get_agent_qa(user_id)
+            if qa_history:
+                return {
+                    "qa_history": [
+                        {
+                            "question": qa.question,
+                            "answer": qa.answer,
+                            "timestamp": qa.timestamp
+                        }
+                        for qa in qa_history
+                    ]
+                }
+            return {"error": "Nessuna interazione question/answer trovata per questo utente"}
+            
+        elif function_name == "get_nutritional_info":
+            user_id = parameters["user_id"]
+            nutritional_info = _user_data_manager.get_nutritional_info(user_id)
+            if nutritional_info:
+                return {
+                    "età": nutritional_info.età,
+                    "sesso": nutritional_info.sesso,
+                    "peso": nutritional_info.peso,
+                    "altezza": nutritional_info.altezza,
+                    "attività": nutritional_info.attività,
+                    "obiettivo": nutritional_info.obiettivo,
+                    "nutrition_answers": nutritional_info.nutrition_answers
+                }
+            return {"error": "Nessuna informazione nutrizionale trovata per questo utente"}
 
         else:
             return {"error": f"Funzione {function_name} non supportata"}

@@ -18,26 +18,45 @@ class NutriDB:
     def _load_json(self, filepath):
         with open(filepath, 'r', encoding='utf-8') as f:
             return json.load(f)
-
+        
     def _build_alias(self):
+        """Costruisce un dizionario di alias per i nomi degli alimenti.
+        
+        Questa è una funzione interna usata solo dalla classe NutriDB durante l'inizializzazione.
+        Crea un mapping tra nomi comuni/alternativi degli alimenti e le loro chiavi nel database.
+        
+        Non dovrebbe essere chiamata direttamente - viene invocata automaticamente dal costruttore
+        di NutriDB per popolare l'attributo self.alias.
+        
+        Returns:
+            Dict[str, str]: Mapping tra alias (chiave) e nome canonico (valore) dell'alimento
+        """
         mapping = {}
         for key in self.alimenti:
             clean = key.lower().replace("_", " ")
             mapping[clean] = key
         mapping.update({
             "pollo": "pollo",
-            "petto di pollo": "pollo_petto",
+            "petto di pollo": "pollo_petto", 
             "petto pollo": "pollo_petto",
             "coscia di pollo": "pollo_coscia",
-            "coscia pollo": "pollo_coscia",
+            "coscia pollo": "pollo_coscia", 
             "ali di pollo": "pollo_ali",
             "ali pollo": "pollo_ali",
             "riso": "riso",
+            "riso basmati": "riso_basmati",
+            "basmati riso": "riso_basmati",
+            "riso integrale": "riso_integrale",
+            "integrale riso": "riso_integrale",     
             "pasta": "pasta_secca",
+            "pasta secca": "pasta_secca",
             "tonno": "tonno_naturale",
+            "tonno naturale": "tonno_naturale",
             "yogurt greco": "yogurt_greco_0percento",
+            "yogurt greco 0%": "yogurt_greco_0percento",
+            "yogurt greco 0 percento": "yogurt_greco_0percento",
             "iso": "iso_fuji_yamamoto",
-            "burro arachidi": "burro_ara_chidi"
+            "burro arachidi": "burro_arachidi"
         })
         return mapping
 

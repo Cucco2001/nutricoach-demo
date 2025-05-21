@@ -1,49 +1,12 @@
 from nutridb import NutriDB
 import logging
 from typing import Dict, Any, Union, List
+import json
+import os
 
 # Configurazione logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Database dei moltiplicatori proteici
-PROTEIN_REQUIREMENTS = {
-    "sedentario": {
-        "base": 0.66,
-        "description": "Sedentario (OMS)"
-    },
-    "adulto": {
-        "base": 0.70,
-        "description": "Adulto > 18 anni (LARN)"
-    },
-    "endurance": {
-        "base": 1.40,
-        "description": "Atleta di endurance"
-    },
-    "forza": {
-        "base": 1.90,  # media del range 1.8-2.0
-        "range": [1.8, 2.0],
-        "description": "Atleta di sport di forza"
-    },
-    "aciclico": {
-        "base": 1.60,
-        "description": "Atleta di sport aciclici"
-    },
-    "fitness": {
-        "base": 1.00,
-        "description": "Utente medio fitness"
-    },
-    "bodybuilding_definizione": {
-        "base": 2.40,  # media del range 2.2-2.6
-        "range": [2.2, 2.6],
-        "description": "Bodybuilder in fase di definizione"
-    },
-    "bodybuilding_massa": {
-        "base": 1.90,  # media del range 1.6-2.2
-        "range": [1.6, 2.2],
-        "description": "Bodybuilder in fase di massa"
-    }
-}
 
 # Inizializza il database
 try:
@@ -101,12 +64,21 @@ def get_protein_multiplier(tipo_attivita: str, is_vegan: bool = False) -> Dict[s
     Returns:
         Dict con moltiplicatore base, range se disponibile, e descrizione
     """
+    # Legge i protein requirements dal file JSON
+    try:
+        protein_requirements_path = os.path.join("Dati_processed", "protein_requirements.json")
+        with open(protein_requirements_path, 'r', encoding='utf-8') as file:
+            protein_requirements = json.load(file)
+    except Exception as e:
+        logger.error(f"Errore nella lettura del file protein_requirements.json: {str(e)}")
+        raise ValueError(f"Impossibile leggere i requisiti proteici: {str(e)}")
+    
     tipo_attivita = tipo_attivita.lower()
-    if tipo_attivita not in PROTEIN_REQUIREMENTS:
-        valid_activities = ", ".join(PROTEIN_REQUIREMENTS.keys())
+    if tipo_attivita not in protein_requirements:
+        valid_activities = ", ".join(protein_requirements.keys())
         raise ValueError(f"Tipo attività non valido. Valori accettati: {valid_activities}")
     
-    result = PROTEIN_REQUIREMENTS[tipo_attivita].copy()
+    result = protein_requirements[tipo_attivita].copy()
     
     # Aggiunge il supplemento per vegani (usiamo 0.25 come media tra 0.2 e 0.3)
     if is_vegan:
