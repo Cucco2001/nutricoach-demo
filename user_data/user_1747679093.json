@@ -4,31 +4,44 @@
   "user_preferences": null,
   "chat_history": [],
   "nutritional_info": {
-    "età": 24,
+    "età": 30,
     "sesso": "Maschio",
     "peso": 70,
-    "altezza": 174,
+    "altezza": 170,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {
-      "allergies": {
-        "answer": "No",
-        "follow_up": null
+    "nutrition_answers": {},
+    "agent_qa": [
+      {
+        "question": "si",
+        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto elaborando: calcolo del metabolismo basale e determinazione del fabbisogno calorico totale.\n\n1. **Calcolo del metabolismo basale (MB):**\n\n   Utilizzo l'equazione di Harris-Benedict:\n   \\[\n   MB = 88.362 + (13.397 * \\text{peso in kg}) + (4.799 * \\text{altezza in cm}) - (5.677 * \\text{età in anni})\n   \\]\n\n   \\[\n   MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30)\n   \\]\n\n   \\[\n   MB = 88.362 + 937.79 + 815.83 - 170.31\n   \\]\n\n   \\[\n   MB = 1671.672 \\text{ kcal/giorno}\n   \\]\n\n2. **Considerazione del livello di attività fisica:**\n\n   Livello di attività fisica: Sedentario (LAF = 1.45)\n\n   Calcolo del fabbisogno energetico totale senza attività sportiva:\n   \\[\n   Fabbisogno \\, totale = MB * LAF\n   \\]\n\n   \\[\n   Fabbisogno \\, totale = 1671.672 * 1.45 = 2422.922 \\text{ kcal/giorno}\n   \\]\n\n3. **Aggiunta del dispendio energetico degli sport:**\n\n   Tipo di sport: Fitness - Allenamento medio (principianti e livello intermedio)\n   - Ore di allenamento a settimana: 3\n   - Stima dispendio energetico: 300 kcal/ora\n   - Dispendio settimanale = 300 * 3 = 900 kcal\n   - Dispendio giornaliero = 900 / 7 ≈ 128.57 kcal/giorno\n\n4. **Determinazione del fabbisogno calorico totale:**\n\n   Fabbisogno calorico totale considerando l'attività sportiva:\n   \\[\n   Fabbisogno \\, calorico \\, totale = 2422.922 + 128.57 = 2551.492 \\text{ kcal/giorno}\n   \\]\n\n📊 Risultati intermedi:\n   - Metabolismo basale (MB): 1671.672 kcal/giorno\n   - Fabbisogno energetico totale senza attività sportiva: 2422.922 kcal/giorno\n   - Dispendio energetico attività sportiva: 128.57 kcal/giorno\n   - Fabbisogno calorico totale: 2551.492 kcal/giorno\n\n➡️ Procedo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+        "timestamp": 1747841768.2024384
       },
-      "participation": {
-        "answer": "No",
-        "follow_up": null
+      {
+        "question": "procedi",
+        "answer": "✓ FASE 3 - Calcolo distribuzione macronutrienti\n\n⚡ Sto elaborando: distribuzione delle calorie tra i macronutrienti.\n\n1. **Calcolo delle proteine:**\n\n   - Tipo di attività: Fitness\n   - Moltiplicatore proteico: 1.0 g/kg (non vegano, dato tipo di attività e livello)\n\n   \\[\n   Proteine \\, totali = 1.0 * 70 = 70g\n   \\]\n   \\[\n   Kcal \\, da \\, proteine = 70 * 4 = 280 \\, kcal\n   \\]\n   \\[\n   % \\, sulle \\, kcal \\, totali = (280 / 2551.492) * 100 \\approx 11\\%\n   \\]\n\n2. **Calcolo dei grassi:**\n\n   Utilizzo la % LARN per i lipidi (utile per mantenimento): 25-35%\n\n   Per il calcolo, scelgo il 30% come riferimento:\n   \\[\n   Kcal \\, da \\, grassi = 2551.492 * 0.30 = 765.448 \\, kcal\n   \\]\n   \\[\n   Grammi \\, di \\, grassi = 765.448 / 9 \\approx 85g\n   \\]\n\n3. **Calcolo dei carboidrati:**\n\n   - Calorie rimanenti: \\( 2551.492 - (280 + 765.448) = 1506.044 \\, kcal \\)\n   - Grammi di carboidrati: \\( 1506.044 / 4 \\approx 376.5g \\)\n\n   Verifico che siano superiori a 2g/kg di peso corporeo:\n   \\[\n   Minimo \\, richiesto \\, per \\, 70kg = 2 * 70 = 140g\n   \\]\n   Il valore calcolato è soddisfacente.\n\n4. **Fibre:**\n\n   Utilizzo la funzione LARN per calcolare l'apporto di fibre:\n   - Restituisce un range: circa 25-30g o più, basato su kcal\n\n📊 Riepilogo macronutrienti:\n- **Kcal totali**: 2551.492\n- **Proteine**: 70g (280 kcal, 11%)\n- **Grassi**: 85g (765.448 kcal, 30%)\n- **Carboidrati**: 376.5g (1506.044 kcal, 59%)\n- **Fibre**: 25-30g\n\n➡️ Procedo con la FASE 4 per creare il piano dei pasti?",
+        "timestamp": 1747841806.4381595
       },
-      "sports": {
-        "answer": "Sì",
-        "follow_up": [
-          {
-            "sport_type": "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
-            "hours_per_week": 2
-          }
-        ]
+      {
+        "question": "si",
+        "answer": "✓ FASE 4 - Creazione piano pasti\n\n⚡ Sto elaborando: distribuzione delle calorie durante la giornata.\n\nDistribuisco le calorie totali (2551.492 kcal) tra i pasti principali e gli spuntini:\n\n1. **Colazione (25% delle calorie totali):**\n\n   \\[\n   Calorie \\, colazione = 2551.492 * 0.25 = 637.873 \\, kcal\n   \\]\n\n2. **Primo spuntino (10% delle calorie totali):**\n\n   \\[\n   Calorie \\, primo \\, spuntino = 2551.492 * 0.10 = 255.149 \\, kcal\n   \\]\n\n3. **Pranzo (30% delle calorie totali):**\n\n   \\[\n   Calorie \\, pranzo = 2551.492 * 0.30 = 765.448 \\, kcal\n   \\]\n\n4. **Secondo spuntino (10% delle calorie totali):**\n\n   \\[\n   Calorie \\, secondo \\, spuntino = 2551.492 * 0.10 = 255.149 \\, kcal\n   \\]\n\n5. **Cena (25% delle calorie totali):**\n\n   \\[\n   Calorie \\, cena = 2551.492 * 0.25 = 637.873 \\, kcal\n   \\]\n\n📊 Risultati intermedi:\n- **Colazione**: 637.873 kcal\n- **Primo spuntino**: 255.149 kcal\n- **Pranzo**: 765.448 kcal\n- **Secondo spuntino**: 255.149 kcal\n- **Cena**: 637.873 kcal\n\n➡️ Procedo con la FASE 5 per creare i singoli pasti, iniziando dalla colazione?",
+        "timestamp": 1747841836.4551284
+      },
+      {
+        "question": "si",
+        "answer": "⚠️ Problema persistente: Ancora problemi con il recupero dei dati da parte del tool.\n\nPiano d'azione per la colazione:\n\n1. Utilizzerò valori standard noti per la composizione nutrizionale della colazione proposta.\n2. Completerò comunque la colazione fornendo i dettagli nutrizionali tipici di ciascun alimento.\n\nEcco una colazione ipotetica con i valori calcolati manualmente:\n\n### Colazione (637.873 kcal):\n\n- **Avena** (80g):\n  - Proteine: 10g\n  - Carboidrati: 54g\n  - Grassi: 7g\n\n- **Yogurt greco** (200g):\n  - Proteine: 20g\n  - Carboidrati: 7g\n  - Grassi: 0.6g\n\n- **Noci** (30g):\n  - Proteine: 6g\n  - Carboidrati: 4g\n  - Grassi: 18g\n\n- **Mirtilli** (50g):\n  - Proteine: 0.5g\n  - Carboidrati: 12g\n  - Grassi: 0.2g\n\n#### Totale pasto:\n- Proteine: 36.5g\n- Carboidrati: 77g\n- Grassi: 25.8g\n\n❓ Fammi sapere se questa soluzione ti sembra adatta o se desideri ulteriori modifiche!",
+        "timestamp": 1747841898.8347049
+      },
+      {
+        "question": "procediamo",
+        "answer": "Se hai bisogno, posso darti alternative per i prossimi pasti. Vuoi che continuiamo con il primo spuntino?",
+        "timestamp": 1747842237.1560388
+      },
+      {
+        "question": "si",
+        "answer": "⚡ Procedimento: Creazione del primo spuntino\n\nDato che il primo spuntino è previsto essere di circa 255.149 kcal, ecco una possibile proposta:\n\n### Primo Spuntino (255.149 kcal):\n\n- **Banana media** (circa 120g):\n  - Proteine: 1.3g\n  - Carboidrati: 31g\n  - Grassi: 0.3g\n\n- **Frutta secca mista** (15g):\n  - Proteine: 2.5g\n  - Carboidrati: 8g\n  - Grassi: 8g\n\n- **Uno yogurt semplice** (100g):\n  - Proteine: 5.5g\n  - Carboidrati: 7.8g\n  - Grassi: 3.3g\n\n#### Totale pasto:\n- Proteine: 9.3g\n- Carboidrati: 46.8g\n- Grassi: 11.6g\n\n➡️ Procediamo con il pranzo?",
+        "timestamp": 1747842272.890953
       }
-    },
-    "agent_qa": []
+    ]
   }
 }

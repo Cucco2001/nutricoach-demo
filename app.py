@@ -695,7 +695,7 @@ def chat_interface():
             
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("Modifica dati"):
+                if st.button("Ricomincia"):
                     # Resetta tutte le informazioni
                     st.session_state.user_info = {"id": st.session_state.user_info["id"], 
                                                 "username": st.session_state.user_info["username"]}
@@ -720,28 +720,6 @@ def chat_interface():
                             "agent_qa": []
                         }
                     )
-                    
-                    # Crea un nuovo thread
-                    create_new_thread()
-                    st.rerun()
-            with col2:
-                if st.button("Cancella chat"):
-                    # Cancella la chat history
-                    st.session_state.user_data_manager.clear_chat_history(st.session_state.user_info["id"])
-                    st.session_state.messages = []
-                    
-                    # Resetta le domande/risposte dell'agente
-                    nutritional_info = st.session_state.user_data_manager.get_nutritional_info(st.session_state.user_info["id"])
-                    if nutritional_info:
-                        nutritional_info.agent_qa = []
-                        st.session_state.user_data_manager.save_nutritional_info(
-                            st.session_state.user_info["id"],
-                            {
-                                **{k: v for k, v in st.session_state.user_info.items() if k not in ["id", "username"]},
-                                "nutrition_answers": nutritional_info.nutrition_answers,
-                                "agent_qa": []
-                            }
-                        )
                     
                     # Crea un nuovo thread
                     create_new_thread()

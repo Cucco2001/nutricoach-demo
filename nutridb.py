@@ -43,7 +43,7 @@ class NutriDB:
             "coscia pollo": "pollo_coscia", 
             "ali di pollo": "pollo_ali",
             "ali pollo": "pollo_ali",
-            "riso": "riso",
+            "riso normale": "riso",
             "riso basmati": "riso_basmati",
             "basmati riso": "riso_basmati",
             "riso integrale": "riso_integrale",
@@ -55,7 +55,12 @@ class NutriDB:
             "yogurt greco": "yogurt_greco_0percento",
             "yogurt greco 0%": "yogurt_greco_0percento",
             "yogurt greco 0 percento": "yogurt_greco_0percento",
+            "yogurt greco 2%": "yogurt_greco_2percento",
+            "yogurt greco 2 percento": "yogurt_greco_2percento",
             "iso": "iso_fuji_yamamoto",
+            "pro milk 20g": "pro_milk_20g_proteine",
+            "pro milk": "pro_milk_20g_proteine",  
+            "iso fuji yamamoto": "iso_fuji_yamamoto",
             "burro arachidi": "burro_arachidi"
         })
         return mapping
