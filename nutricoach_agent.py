@@ -1,6 +1,25 @@
 from openai import OpenAI
-from nutridb_tool import nutridb_tool
-from user_data_tool import user_data_tool
+from nutridb_tool import (
+    get_macros, 
+    get_LARN_protein, 
+    get_standard_portion, 
+    get_weight_from_volume, 
+    get_fattore_cottura, 
+    get_LARN_fibre, 
+    get_LARN_lipidi_percentuali, 
+    get_LARN_vitamine, 
+    compute_Harris_Benedict_Equation, 
+    get_protein_multiplier, 
+    calculate_sport_expenditure, 
+    check_ultraprocessed_foods
+)
+from user_data_tool import (
+    get_user_preferences, 
+    get_progress_history, 
+    get_meal_feedback, 
+    get_agent_qa, 
+    get_nutritional_info
+)
 import time
 
 # Inizializza OpenAI client (assicurati di impostare OPENAI_API_KEY nell'ambiente)
@@ -11,95 +30,252 @@ available_tools = [
     {
         "type": "function",
         "function": {
-            "name": "nutridb_tool",
-            "description": "Tool per accedere al database nutrizionale e calcolare fabbisogni, porzioni e valori nutrizionali.",
+            "name": "get_macros",
+            "description": "Ottiene i valori nutrizionali per un dato alimento a parire dal nome e dalla quantità",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "function_name": {
-                        "type": "string",
-                        "enum": [
-                            "get_macros",
-                            "get_standard_portion",
-                            "get_weight_from_volume",
-                            "get_fattore_cottura",
-                            "get_LARN_fibre",
-                            "get_LARN_lipidi_percentuali",
-                            "get_LARN_vitamine",
-                            "compute_Harris_Benedict_Equation",
-                            "get_protein_multiplier",
-                            "calculate_sport_expenditure"
-                        ],
-                        "description": "Nome della funzione da chiamare nel database nutrizionale"
-                    },
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "alimento": {"type": "string", "description": "Nome dell'alimento"},
-                            "quantità": {"type": "number", "description": "Quantità in grammi"},
-                            "sesso": {"type": "string", "enum": ["maschio", "femmina"]},
-                            "età": {"type": "number", "minimum": 18, "maximum": 100},
-                            "peso": {"type": "number", "minimum": 30, "maximum": 200},
-                            "altezza": {"type": "number", "minimum": 140, "maximum": 220},
-                            "LAF": {"type": "number", "enum": [1.45, 1.60, 1.75, 2.10]},
-                            "livello_attività": {"type": "string", "enum": ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"]},
-                            "categoria": {"type": "string"},
-                            "sottocategoria": {"type": "string"},
-                            "tipo_misura": {"type": "string"},
-                            "metodo_cottura": {"type": "string"},
-                            "sotto_categoria": {"type": "string"},
-                            "kcal": {"type": "number", "minimum": 800, "maximum": 4000},
-                            "sports": {
-                                "type": "array",
-                                "description": "Lista degli sport praticati dall'utente",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "sport_name": {"type": "string", "description": "Nome dello sport"},
-                                        "hours": {"type": "number", "description": "Ore di attività settimanali"},
-                                        "intensity": {"type": "string", "enum": ["easy", "medium", "hard"], "description": "Intensità dell'attività"}
-                                    },
-                                    "required": ["sport_name", "hours"]
-                                }
-                            },
-                            "hours": {"type": "number", "description": "Ore di attività settimanali (usato solo se 'sports' è una stringa)"}
-                        },
-                        "description": "Parametri specifici per la funzione selezionata"
-                    }
+                    "alimento": {"type": "string", "description": "Nome dell'alimento"},
+                    "quantità": {"type": "number", "description": "Quantità in grammi (default 100g)"}
                 },
-                "required": ["function_name", "parameters"]
+                "required": ["alimento"]
             }
         }
     },
     {
         "type": "function",
         "function": {
-            "name": "user_data_tool",
-            "description": "Tool per accedere ai dati dell'utente (preferenze, progressi, feedback)",
+            "name": "get_standard_portion",
+            "description": "Ottiene le porzioni standard per una data categoria di alimenti.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "function_name": {
-                        "type": "string",
-                        "enum": [
-                            "get_user_preferences",
-                            "get_progress_history",
-                            "get_meal_feedback",
-                            "get_agent_qa",
-                            "get_nutritional_info"
-                        ],
-                        "description": "Nome della funzione da chiamare"
+                    "categoria": {"type": "string", "description": "Categoria dell'alimento"},
+                    "sottocategoria": {"type": "string", "description": "Sottocategoria dell'alimento"}
+                },
+                "required": ["categoria", "sottocategoria"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weight_from_volume",
+            "description": "Converte una misura di volume in peso per un dato alimento.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "alimento": {"type": "string", "description": "Nome dell'alimento"},
+                    "tipo_misura": {"type": "string", "description": "Tipo di misura (es. 'cucchiaio', 'tazza')"}
+                },
+                "required": ["alimento", "tipo_misura"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_fattore_cottura",
+            "description": "Ottiene il fattore di conversione per la cottura di un alimento.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "categoria": {"type": "string", "description": "Categoria dell'alimento"},
+                    "metodo_cottura": {"type": "string", "description": "Metodo di cottura"},
+                    "sotto_categoria": {"type": "string", "description": "Sottocategoria dell'alimento"}
+                },
+                "required": ["categoria", "metodo_cottura", "sotto_categoria"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_LARN_fibre",
+            "description": "Ottiene il fabbisogno di fibre in base alle calorie totali.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "kcal": {"type": "number", "minimum": 800, "maximum": 4000, "description": "Fabbisogno calorico giornaliero"}
+                },
+                "required": ["kcal"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_LARN_lipidi_percentuali",
+            "description": "Ottiene il range percentuale raccomandato per i lipidi.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_LARN_vitamine",
+            "description": "Ottiene i valori di riferimento per le vitamine.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sesso": {"type": "string", "enum": ["maschio", "femmina"], "description": "Sesso della persona"},
+                    "età": {"type": "number", "minimum": 18, "maximum": 100, "description": "Età della persona in anni"}
+                },
+                "required": ["sesso", "età"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "compute_Harris_Benedict_Equation",
+            "description": "Calcola il metabolismo basale e il fabbisogno energetico totale.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sesso": {"type": "string", "enum": ["maschio", "femmina"], "description": "Sesso della persona"},
+                    "peso": {"type": "number", "minimum": 30, "maximum": 200, "description": "Peso in kg"},
+                    "altezza": {"type": "number", "minimum": 140, "maximum": 220, "description": "Altezza in cm"},
+                    "età": {"type": "number", "minimum": 18, "maximum": 100, "description": "Età in anni"},
+                    "livello_attività": {"type": "string", "enum": ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"], "description": "Livello di attività fisica"}
+                },
+                "required": ["sesso", "peso", "altezza", "età", "livello_attività"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_protein_multiplier",
+            "description": "Calcola il moltiplicatore proteico in base al tipo di attività.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "tipo_attivita": {"type": "string", "description": "Tipo di attività fisica/sport (sedentario, adulto, endurance, forza, aciclico, fitness, bodybuilding_definizione, bodybuilding_massa)"},
+                    "is_vegan": {"type": "boolean", "description": "Se True, aggiunge il supplemento per dieta vegana"}
+                },
+                "required": ["tipo_attivita"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "calculate_sport_expenditure",
+            "description": "Calcola il dispendio energetico per uno o più sport in base alle ore di attività.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sports": {
+                        "type": "array",
+                        "description": "Lista degli sport praticati dall'utente",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "sport_name": {"type": "string", "description": "Nome dello sport"},
+                                "hours": {"type": "number", "description": "Ore di attività settimanali"},
+                                "intensity": {"type": "string", "enum": ["easy", "medium", "hard"], "description": "Intensità dell'attività"}
+                            },
+                            "required": ["sport_name", "hours"]
+                        }
                     },
-                    "parameters": {
+                    "hours": {"type": "number", "description": "Ore di attività settimanali (usato solo se 'sports' è una stringa)"}
+                },
+                "required": ["sports"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "check_ultraprocessed_foods",
+            "description": "Controlla quali alimenti sono ultra-processati e restituisce un dizionario con too_much_ultraprocessed = True se più del 20% della dieta è composta da troppi alimenti ultraprocessati",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "foods_with_grams": {
                         "type": "object",
-                        "properties": {
-                            "user_id": {"type": "string", "description": "ID dell'utente"},
-                            "meal_id": {"type": "string", "description": "ID del pasto (solo per get_meal_feedback)"}
-                        },
-                        "required": ["user_id"]
+                        "description": "Dizionario con alimenti e relative grammature",
+                        "additionalProperties": {
+                            "type": "number"
+                        }
                     }
                 },
-                "required": ["function_name", "parameters"]
+                "required": ["foods_with_grams"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_user_preferences",
+            "description": "Ottiene le preferenze dell'utente.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {"type": "string", "description": "ID dell'utente"}
+                },
+                "required": ["user_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_progress_history",
+            "description": "Ottiene la storia dei progressi dell'utente.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {"type": "string", "description": "ID dell'utente"}
+                },
+                "required": ["user_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_meal_feedback",
+            "description": "Ottiene il feedback dell'utente per un pasto specifico.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {"type": "string", "description": "ID dell'utente"},
+                    "meal_id": {"type": "string", "description": "ID del pasto"}
+                },
+                "required": ["user_id", "meal_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_agent_qa",
+            "description": "Ottiene la storia delle domande e risposte dell'agente.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {"type": "string", "description": "ID dell'utente"}
+                },
+                "required": ["user_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_nutritional_info",
+            "description": "Ottiene le informazioni base dell'utente.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {"type": "string", "description": "ID dell'utente"}
+                },
+                "required": ["user_id"]
             }
         }
     }
@@ -224,14 +400,14 @@ Esempio proteine:
 
 PROCESSO DI CREAZIONE DIETA:
 
-FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE (da salvare in un file json da riutilizzare)
+FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
 
 1. Prima di creare o modificare un piano alimentare:
-   - Controlla le preferenze dell'utente usando user_data_tool con get_user_preferences
-   - Verifica la storia dei progressi usando user_data_tool con get_progress_history
-   - Considera i feedback precedenti sui pasti usando user_data_tool con get_meal_feedback
-   - Considera le domande passate dell'utente usando user_data_tool con get_agent_qa
-   - Considera le informazioni nutrizionali dell'utente usando user_data_tool con get_nutritional_info
+   - Controlla le preferenze dell'utente usando get_user_preferences
+   - Verifica la storia dei progressi usando get_progress_history
+   - Considera i feedback precedenti sui pasti usando get_meal_feedback
+   - Considera le domande passate dell'utente usando get_agent_qa
+   - Considera le informazioni nutrizionali dell'utente usando get_nutritional_info
    Se presenti, usa queste informazioni per creare il piano alimentare, se non presenti o gia visualizzate, continua.
 
 2. Analizza le risposte sulle intolleranze/allergie:

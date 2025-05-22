@@ -261,11 +261,50 @@ def handle_tool_calls(run_status):
                 function_name = tool_call.function.name
                 arguments = json.loads(tool_call.function.arguments)
                 
+                # Importa le funzioni necessarie
+                from nutridb_tool import (
+                    get_macros, get_LARN_protein, get_standard_portion, 
+                    get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
+                    get_LARN_lipidi_percentuali, get_LARN_vitamine, 
+                    compute_Harris_Benedict_Equation, get_protein_multiplier, 
+                    calculate_sport_expenditure, check_ultraprocessed_foods
+                )
+                from user_data_tool import (
+                    get_user_preferences, get_progress_history, 
+                    get_meal_feedback, get_agent_qa, get_nutritional_info
+                )
+                
+                # Mappa dei nomi delle funzioni alle funzioni effettive
+                function_map = {
+                    # Funzioni per accedere al database nutrizionale
+                    "get_macros": get_macros,
+                    "get_LARN_protein": get_LARN_protein,
+                    "get_standard_portion": get_standard_portion,
+                    "get_weight_from_volume": get_weight_from_volume,
+                    "get_fattore_cottura": get_fattore_cottura,
+                    "get_LARN_fibre": get_LARN_fibre,
+                    "get_LARN_lipidi_percentuali": get_LARN_lipidi_percentuali,
+                    "get_LARN_vitamine": get_LARN_vitamine,
+                    "compute_Harris_Benedict_Equation": compute_Harris_Benedict_Equation,
+                    "get_protein_multiplier": get_protein_multiplier,
+                    "calculate_sport_expenditure": calculate_sport_expenditure,
+                    "check_ultraprocessed_foods": check_ultraprocessed_foods,
+                    
+                    # Funzioni per accedere ai dati dell'utente
+                    "get_user_preferences": get_user_preferences,
+                    "get_progress_history": get_progress_history,
+                    "get_meal_feedback": get_meal_feedback,
+                    "get_agent_qa": get_agent_qa,
+                    "get_nutritional_info": get_nutritional_info,
+                    
+                    # Per retrocompatibilità
+                    "nutridb_tool": lambda **args: nutridb_tool(**args),
+                    "user_data_tool": lambda **args: user_data_tool(**args)
+                }
+                
                 # Esegui la funzione appropriata
-                if function_name == "nutridb_tool":
-                    result = nutridb_tool(**arguments)
-                elif function_name == "user_data_tool":
-                    result = user_data_tool(**arguments)
+                if function_name in function_map:
+                    result = function_map[function_name](**arguments)
                 else:
                     result = {"error": f"Tool {function_name} non supportato"}
                 
