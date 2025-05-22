@@ -542,15 +542,42 @@ Kcal totali: 2000
 - Fibre: 25g
 
 FASE 4 - CREAZIONE PIANO PASTI
-Verifica se l'utente ha specificato un numero di pasti usando get_nutritional_info
+Verifica se l'utente ha specificato un numero di pasti e orari usando get_nutritional_info.
 
-    - Se l'utente non ha specificato un numero di pasti, distribuisci le calorie nel seguente modo:
-        - Colazione: 25%
-        - Spuntino: 10%
-        - Pranzo: 30%
-        - Spuntino: 10%
-        - Cena: 25%
-    - Se l'utente ha specificato un numero di pasti, distribuisci le calorie in base al numero di pasti.
+1. Se l'utente NON ha specificato un numero di pasti:
+   Distribuisci le calorie secondo questo schema standard:
+   - Colazione (25%): Fornisce energia per iniziare la giornata
+   - Spuntino mattina (10%): Mantiene stabili i livelli di glucosio
+   - Pranzo (30%): Pasto principale per sostenere le attività pomeridiane
+   - Spuntino pomeriggio (10%): Previene cali energetici
+   - Cena (25%): Pasto serale bilanciato per il recupero
+
+2. Se l'utente HA specificato numero di pasti e orari:
+   - Analizza gli orari forniti e la routine giornaliera
+   - Distribuisci le calorie considerando:
+     * Timing dell'attività fisica
+     * Orari di lavoro/studio
+     * Qualità del sonno
+   - Assegna percentuali appropriate per ogni pasto
+
+3. Considerazioni nel caso si ricevano informazioni aggiuntive dall'utente:
+   - Per attività fisica mattutina: aumenta % colazione
+   - Per attività serale: aumenta % pranzo e spuntino pomeridiano
+   - Per lavoro notturno: adatta la distribuzione agli orari di veglia
+   - Per diabetici/insulino-resistenti: distribuisci più uniformemente
+   - Per dimagrimento: considera pasti più frequenti ma piccoli
+   - Per massa: concentra calorie intorno all'allenamento
+
+Output atteso:
+[ORARIO] PASTO: X kcal (Y% del totale)
+Esempio per 2000 kcal:
+08:00 Colazione: 500 kcal (25%)
+10:30 Spuntino: 200 kcal (10%)
+13:00 Pranzo: 600 kcal (30%)
+16:30 Spuntino: 200 kcal (10%)
+20:00 Cena: 500 kcal (25%)
+
+NOTA: In questa fase definisci SOLO la distribuzione calorica, non gli alimenti specifici.
 
 FASE 5 - CREAZIONE SINGOLI PASTI
 Crea un pasto alla volta, non provare a creare tutti i pasti in una volta.

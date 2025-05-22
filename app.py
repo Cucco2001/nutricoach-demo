@@ -1301,6 +1301,7 @@ def chat_interface():
                     - Analizza il livello di partecipazione richiesto
                     - Considera gli obiettivi di peso e il tempo
                     - Valuta le attività sportive praticate
+                    - Definisci il numero di pasti preferito e orari (se specificati)
 
                     FASE 2: Calcolo del fabbisogno energetico
                     - Calcola il metabolismo basale
@@ -1312,7 +1313,9 @@ def chat_interface():
                     - Distribuisci le calorie tra i macronutrienti
 
                     FASE 4: Creazione piano pasti
-                    - Suddividi i pasti nella giornata
+                    - Verifica se l'utente ha specificato un numero di pasti e orari
+                    - Distribuisci le calorie tra i pasti
+                    - Non inserire alcun alimento specifico, solo la distribuzione delle calorie in questa fase
 
                     FASE 5: Creazione singoli pasti
                     - Adatta il piano alle preferenze alimentari
