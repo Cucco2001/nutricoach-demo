@@ -27,6 +27,21 @@
       "role": "assistant",
       "content": "✓ FASE 3 - CALCOLO DISTRIBUZIONE MACRONUTRIENTI\n\n📊 Risultati intermedi:\n\n### Proteine:\n- **Moltiplicatore proteico:** 1.0 g/kg\n- **Calcolo:** 1.0 * 70 kg = 70g di proteine\n- **Calorie da proteine:** 70g * 4 kcal/g = 280 kcal\n- **Percentuale calorie totali:** (280 / 2510) * 100 ≈ 11.2%\n\n### Grassi:\n- **Percentuale consigliata:** 20-35% delle calorie\n- **Assumiamo una media del 30% per un equilibrio migliore**\n- **Calorie da grassi:** 30% di 2510 kcal = 753 kcal\n- **Grammi di grassi:** 753 kcal / 9 kcal/g ≈ 84g\n\n### Carboidrati:\n- **Calorie restanti:** 2510 kcal - (280 kcal proteine + 753 kcal grassi) = 1477 kcal\n- **Grammi di carboidrati:** 1477 kcal / 4 kcal/g ≈ 369g\n- **Percentuale calorie totali:** 1477 / 2510 ≈ 58.8%\n\n### Fibre:\n- **Range raccomandato:** 31.6g - 41.9g\n\n### Riepilogo Macronutrienti:\n- **Proteine:** 70g (280 kcal, 11.2%)\n- **Grassi:** 84g (753 kcal, 30%)\n- **Carboidrati:** 369g (1477 kcal, 58.8%)\n- **Fibre:** 31.6g - 41.9g\n\n➡️ Procedo ora con la FASE 4 per creare un piano pasti giornaliero?",
       "timestamp": 1747851691.8507004
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747937625.1261106
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 4 - CREAZIONE PIANO PASTI\n\n⚡ Sto elaborando la distribuzione calorica dei pasti:\n\n### Distribuzione Calorica:\n- **Colazione:** 25% = 628 kcal\n- **Spuntino Mattina:** 10% = 251 kcal\n- **Pranzo:** 30% = 753 kcal\n- **Spuntino Pomeriggio:** 10% = 251 kcal\n- **Cena:** 25% = 628 kcal\n\n📊 Risultati intermedi mostrano la ripartizione calorica per ogni pasto.\n\n➡️ Procedo con la FASE 5 per preparare il primo pasto: la colazione?",
+      "timestamp": 1747937745.1179304
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747937760.517203
     }
   ],
   "nutritional_info": {
@@ -107,6 +122,11 @@
         "question": "si",
         "answer": "✓ FASE 3 - CALCOLO DISTRIBUZIONE MACRONUTRIENTI\n\n📊 Risultati intermedi:\n\n### Proteine:\n- **Moltiplicatore proteico:** 1.0 g/kg\n- **Calcolo:** 1.0 * 70 kg = 70g di proteine\n- **Calorie da proteine:** 70g * 4 kcal/g = 280 kcal\n- **Percentuale calorie totali:** (280 / 2510) * 100 ≈ 11.2%\n\n### Grassi:\n- **Percentuale consigliata:** 20-35% delle calorie\n- **Assumiamo una media del 30% per un equilibrio migliore**\n- **Calorie da grassi:** 30% di 2510 kcal = 753 kcal\n- **Grammi di grassi:** 753 kcal / 9 kcal/g ≈ 84g\n\n### Carboidrati:\n- **Calorie restanti:** 2510 kcal - (280 kcal proteine + 753 kcal grassi) = 1477 kcal\n- **Grammi di carboidrati:** 1477 kcal / 4 kcal/g ≈ 369g\n- **Percentuale calorie totali:** 1477 / 2510 ≈ 58.8%\n\n### Fibre:\n- **Range raccomandato:** 31.6g - 41.9g\n\n### Riepilogo Macronutrienti:\n- **Proteine:** 70g (280 kcal, 11.2%)\n- **Grassi:** 84g (753 kcal, 30%)\n- **Carboidrati:** 369g (1477 kcal, 58.8%)\n- **Fibre:** 31.6g - 41.9g\n\n➡️ Procedo ora con la FASE 4 per creare un piano pasti giornaliero?",
         "timestamp": 1747851691.8548958
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 4 - CREAZIONE PIANO PASTI\n\n⚡ Sto elaborando la distribuzione calorica dei pasti:\n\n### Distribuzione Calorica:\n- **Colazione:** 25% = 628 kcal\n- **Spuntino Mattina:** 10% = 251 kcal\n- **Pranzo:** 30% = 753 kcal\n- **Spuntino Pomeriggio:** 10% = 251 kcal\n- **Cena:** 25% = 628 kcal\n\n📊 Risultati intermedi mostrano la ripartizione calorica per ogni pasto.\n\n➡️ Procedo con la FASE 5 per preparare il primo pasto: la colazione?",
+        "timestamp": 1747937745.1199367
       }
     ]
   }

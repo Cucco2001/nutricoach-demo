@@ -6,9 +6,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
 from nutricoach_agent import available_tools, system_prompt
-from nutridb_tool import nutridb_tool
 from user_data_manager import UserDataManager
-from user_data_tool import user_data_tool
 from datetime import datetime
 
 # Carica le variabili d'ambiente
