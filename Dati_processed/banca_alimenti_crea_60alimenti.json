@@ -509,6 +509,46 @@
     "fibra_g": 2.4,
     "nova_group": 1
   },
+  "miele": {
+    "energia_kcal": 47,
+    "proteine_g": 0.9,
+    "carboidrati_g": 11.8,
+    "zuccheri_g": 9.2,
+    "grassi_g": 0.1,
+    "grassi_saturi_g": 0.01,
+    "fibra_g": 2.4,
+    "nova_group": 1
+  },
+  "kiwi": {
+    "energia_kcal": 47,
+    "proteine_g": 0.9,
+    "carboidrati_g": 11.8,
+    "zuccheri_g": 9.2,
+    "grassi_g": 0.1,
+    "grassi_saturi_g": 0.01,
+    "fibra_g": 2.4,
+    "nova_group": 1
+  },
+  "ciliegie": {
+    "energia_kcal": 47,
+    "proteine_g": 0.9,
+    "carboidrati_g": 11.8,
+    "zuccheri_g": 9.2,
+    "grassi_g": 0.1,
+    "grassi_saturi_g": 0.01,
+    "fibra_g": 2.4,
+    "nova_group": 1
+  },
+  "mirtilli": {
+    "energia_kcal": 47,
+    "proteine_g": 0.9,
+    "carboidrati_g": 11.8,
+    "zuccheri_g": 9.2,
+    "grassi_g": 0.1,
+    "grassi_saturi_g": 0.01,
+    "fibra_g": 2.4,
+    "nova_group": 1
+  },
   "crostata_di_marmellata": {
     "energia_kcal": 389,
     "proteine_g": 5.5,
@@ -650,6 +690,36 @@
     "nova_group": 2
   },
   "mandorle": {
+    "energia_kcal": 603,
+    "proteine_g": 22.0,
+    "carboidrati_g": 4.0,
+    "zuccheri_g": 4.0,
+    "grassi_g": 55.0,
+    "grassi_saturi_g": 4.0,
+    "fibra_g": 12.7,
+    "nova_group": 1
+  },
+  "anacardi": {
+    "energia_kcal": 603,
+    "proteine_g": 22.0,
+    "carboidrati_g": 4.0,
+    "zuccheri_g": 4.0,
+    "grassi_g": 55.0,
+    "grassi_saturi_g": 4.0,
+    "fibra_g": 12.7,
+    "nova_group": 1
+  },
+  "nocciole": {
+    "energia_kcal": 603,
+    "proteine_g": 22.0,
+    "carboidrati_g": 4.0,
+    "zuccheri_g": 4.0,
+    "grassi_g": 55.0,
+    "grassi_saturi_g": 4.0,
+    "fibra_g": 12.7,
+    "nova_group": 1
+  },
+  "noccioline": {
     "energia_kcal": 603,
     "proteine_g": 22.0,
     "carboidrati_g": 4.0,

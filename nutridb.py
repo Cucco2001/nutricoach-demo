@@ -65,7 +65,15 @@ class NutriDB:
             "latte scremato": "latte_scremato",
             "latte": "latte_intero",
             "latte parzialmente scremato": "latte_scremato",
-            "latte intero": "latte_intero"
+            "latte intero": "latte_intero",
+            "crostata di marmellata": "crostata_di_marmellata",
+            "crostata marmellata": "crostata_di_marmellata",
+            "crostata": "crostata_di_marmellata",
+            "marmellata": "crostata_di_marmellata",
+            "crostata alla marmellata": "crostata_di_marmellata",
+            "noci sgusciate": "noci_sgusciate",
+            "noci": "noci_sgusciate",
+            "mandorle tostate": "mandorle"
         })
         return mapping
 
