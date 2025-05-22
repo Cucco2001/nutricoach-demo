@@ -226,6 +226,42 @@ NUTRITION_QUESTIONS = [
             ]
         },
         "show_follow_up_on": "Sì"
+    },
+    {
+        "id": "meal_preferences",
+        "question": "Vuoi decidere tu il numero di pasti giornalieri?",
+        "type": "radio",
+        "options": ["No", "Sì"],
+        "follow_up": {
+            "type": "meal_schedule",
+            "fields": [
+                {
+                    "id": "num_meals",
+                    "label": "Quanti pasti vuoi fare al giorno?",
+                    "type": "number",
+                    "min": 1,
+                    "max": 7,
+                    "default": 3
+                },
+                {
+                    "id": "meal_times",
+                    "label": "A che ora vorresti fare i pasti? (opzionale)",
+                    "type": "dynamic_time",
+                    "optional": True,
+                    "dynamic_count": "num_meals",
+                    "meal_labels": [
+                        "Colazione",
+                        "Spuntino mattutino",
+                        "Pranzo",
+                        "Spuntino pomeridiano",
+                        "Cena",
+                        "Spuntino serale",
+                        "Altro pasto"
+                    ]
+                }
+            ]
+        },
+        "show_follow_up_on": "Sì"
     }
 ]
 
@@ -1127,6 +1163,55 @@ def chat_interface():
                                             )
                                         elif field["type"] == "text":
                                             follow_up_answer[field["id"]] = st.text_input("")
+                                        elif field["type"] == "dynamic_time":
+                                            # Get the number of meals from the previous field
+                                            num_meals = follow_up_answer.get("num_meals", 3)
+                                            meal_times = {}
+                                            
+                                            # Define meal order and labels based on number of meals
+                                            meal_order = {
+                                                1: ["Pranzo"],
+                                                2: ["Pranzo", "Cena"],
+                                                3: ["Colazione", "Pranzo", "Cena"],
+                                                4: ["Colazione", "Pranzo", "Cena", "Spuntino pomeridiano"],
+                                                5: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena"],
+                                                6: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Spuntino serale"],
+                                                7: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Spuntino serale", "Altro pasto"]
+                                            }
+                                            
+                                            # Get the appropriate meal labels for the selected number of meals
+                                            meal_labels = meal_order.get(num_meals, [])
+                                            
+                                            # Create time input for each meal
+                                            for i, label in enumerate(meal_labels):
+                                                st.markdown(f"### {label}")
+                                                # Create time input with full day range (00:00 - 23:59)
+                                                # Set default times based on meal type
+                                                default_times = {
+                                                    "Colazione": "07:30",
+                                                    "Spuntino mattutino": "10:30",
+                                                    "Pranzo": "13:00",
+                                                    "Spuntino pomeridiano": "16:30",
+                                                    "Cena": "20:00",
+                                                    "Spuntino serale": "22:00",
+                                                    "Altro pasto": "15:00"
+                                                }
+                                                
+                                                # Convert default time string to datetime.time object
+                                                default_time = datetime.strptime(default_times[label], "%H:%M").time()
+                                                
+                                                time_value = st.time_input(
+                                                    "",
+                                                    value=default_time,
+                                                    key=f"meal_time_{current_q['id']}_{label}_{i}",
+                                                    label_visibility="collapsed"
+                                                )
+                                                meal_times[label] = time_value
+                                            
+                                            follow_up_answer[field["id"]] = {
+                                                label: time_val.strftime("%H:%M") if time_val else None 
+                                                for label, time_val in meal_times.items()
+                                            }
                     
                     if st.button("Avanti"):
                         # Salva la risposta

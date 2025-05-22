@@ -493,7 +493,7 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
    - IMPORTANTE: Salva il valore finale di kcal per i calcoli successivi
 
 FASE 3 - CALCOLO DISTRIBUZIONE MACRONUTRIENTI (fornisci sempre un valore finale dopo il ragionamento, non range alla fine):
-- Proteine (get_protein_multiplier, HP mai vegano):
+- Proteine (get_protein_multiplier, ipotizza non vegano):
    * Moltiplica il fabbisogno per il peso corporeo
    * Converti in kcal (4 kcal/g) e calcola la percentuale sulle kcal totali
    * Esempio:
