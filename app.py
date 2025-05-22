@@ -956,6 +956,7 @@ def chat_interface():
                     
                     # Cancella la chat history e le domande/risposte dell'agente
                     st.session_state.user_data_manager.clear_chat_history(st.session_state.user_info["id"])
+                    st.session_state.user_data_manager.clear_agent_qa(st.session_state.user_info["id"])
                     
                     # Resetta le informazioni nutrizionali mantenendo solo i dati base
                     st.session_state.user_data_manager.save_nutritional_info(

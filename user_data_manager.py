@@ -313,6 +313,17 @@ class UserDataManager:
             self._chat_history[user_id] = []
             self._save_user_data(user_id)
 
+    def clear_agent_qa(self, user_id: str) -> None:
+        """
+        Cancella la storia delle domande e risposte dell'agente per un utente
+        
+        Args:
+            user_id: ID dell'utente
+        """
+        if user_id in self._nutritional_info:
+            self._nutritional_info[user_id].agent_qa = []
+            self._save_user_data(user_id)
+
     def save_agent_qa(self, user_id: str, question: str, answer: str) -> None:
         """
         Salva una domanda e risposta dell'agente
