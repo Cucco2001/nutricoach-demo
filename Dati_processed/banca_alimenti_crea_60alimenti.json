@@ -149,6 +149,16 @@
     "fibra_g": 0.0,
     "nova_group": 1
   },
+  "latte_scremato": {
+    "energia_kcal": 64,
+    "proteine_g": 3.3,
+    "carboidrati_g": 4.9,
+    "zuccheri_g": 4.9,
+    "grassi_g": 3.6,
+    "grassi_saturi_g": 2.3,
+    "fibra_g": 0.0,
+    "nova_group": 1
+  },
   "fagioli_borlotti_cotti": {
     "energia_kcal": 102,
     "proteine_g": 6.8,
@@ -590,6 +600,16 @@
     "nova_group": 1
   },
   "cornflakes": {
+    "energia_kcal": 378,
+    "proteine_g": 7.5,
+    "carboidrati_g": 84.0,
+    "zuccheri_g": 8.0,
+    "grassi_g": 0.4,
+    "grassi_saturi_g": 0.1,
+    "fibra_g": 3.0,
+    "nova_group": 4
+  },
+  "avena": {
     "energia_kcal": 378,
     "proteine_g": 7.5,
     "carboidrati_g": 84.0,
