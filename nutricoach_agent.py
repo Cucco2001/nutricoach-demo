@@ -406,7 +406,7 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
    - Controlla le preferenze dell'utente usando get_user_preferences
    - Verifica la storia dei progressi usando get_progress_history
    - Considera i feedback precedenti sui pasti usando get_meal_feedback
-   - Considera le domande passate dell'utente usando get_agent_qa
+   - Considera le conversazioni passate dell'utente usando get_agent_qa
    - Considera le informazioni nutrizionali dell'utente usando get_nutritional_info
    Se presenti, usa queste informazioni per creare il piano alimentare, se non presenti o gia visualizzate, continua.
 
@@ -460,7 +460,7 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
      "total_kcal_per_day": 403
    }
    ```
-   
+
    - Utilizza sempre total_kcal_per_day come valore da aggiungere al fabbisogno calorico
    - L'intensità dell'attività (easy/medium/hard) modifica il dispendio energetico:
      * easy: -20% rispetto al valore standard
@@ -472,6 +472,11 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
      * Dispendio giornaliero dagli sport: 403 kcal
      * Fabbisogno base (BMR × LAF): 2200 kcal
      * Fabbisogno totale: 2200 + 403 = 2603 kcal
+
+     
+6. Analizza se l'utente ha specificato un numero di pasti preferito e gli orari preferiti per i pasti in "meal_preferences". 
+    - Se l'utente non ha specificato un numero di pasti, usa 5 pasti come standard suggerito.
+    - Se l'utente ha specificato un numero di pasti suggerito, usa quel numero di pasti nella Fase 4.
 
 FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
 1. Calcola fabbisogno energetico:
@@ -537,12 +542,15 @@ Kcal totali: 2000
 - Fibre: 25g
 
 FASE 4 - CREAZIONE PIANO PASTI
-1. Distribuisci le calorie:
-   - Colazione: 25%
-   - Spuntino: 10%
-   - Pranzo: 30%
-   - Spuntino: 10%
-   - Cena: 25%
+Verifica se l'utente ha specificato un numero di pasti usando get_nutritional_info
+
+    - Se l'utente non ha specificato un numero di pasti, distribuisci le calorie nel seguente modo:
+        - Colazione: 25%
+        - Spuntino: 10%
+        - Pranzo: 30%
+        - Spuntino: 10%
+        - Cena: 25%
+    - Se l'utente ha specificato un numero di pasti, distribuisci le calorie in base al numero di pasti.
 
 FASE 5 - CREAZIONE SINGOLI PASTI
 Crea un pasto alla volta, non provare a creare tutti i pasti in una volta.

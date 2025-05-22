@@ -2,7 +2,53 @@
   "meal_feedback": {},
   "progress_data": [],
   "user_preferences": null,
-  "chat_history": [],
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando i dati del cliente forniti per impostare il piano nutrizionale.\n\n📊 Risultati intermedi:\n\n1. **Dati del cliente:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso: 70 kg\n   - Altezza: 170 cm\n   - Livello attività quotidiana: Sedentario\n\n2. **Allergie/Intolleranze:** Nessuna segnalata.\n\n3. **Partecipazione attiva:** Non richiesto (cliente non ha espresso un interesse per partecipazione attiva nel piano).\n\n4. **Obiettivo di peso:** Mantenimento (nessuna variazione di peso desiderata).\n\n5. **Attività sportive:** Non praticate al momento.\n\n6. **Preferenze sui pasti:** Il cliente preferisce 4 pasti al giorno con orari specifici indicati.\n\n❓Ho bisogno del tuo input su:\nHai altre preferenze alimentari particolari che dovremmo considerare? Se no, posso procedere con la FASE 2.",
+      "timestamp": 1747941939.833781
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747941953.5240517
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Risultati intermedi:\n\n- **Metabolismo Basale (BMR):** 1672 kcal\n- **Fabbisogno calorico giornaliero totale:** 2424 kcal (considerando lo stile di vita sedentario e il LAF di 1.45).\n\n➡️ Procedo ora con la FASE 3 - Calcolo distribuzione macronutrienti. Vuoi procedere?",
+      "timestamp": 1747941971.8978064
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747941978.225118
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Risultati intermedi per la distribuzione dei macronutrienti:\n\n1. **Proteine:**\n   - Moltiplicatore: 0.66 g/kg\n   - Calcolo: 0.66 * 70 kg = 46.2 g\n   - Kcal da proteine: 46.2 g * 4 kcal/g = 184.8 kcal\n   - % sulle kcal totali: (184.8 / 2424) * 100 = 7.6%\n\n2. **Grassi:**\n   - Range raccomandato: 20-35% delle kcal totali\n   - Calcoliamo un valore intermedio: 27.5%\n   - Kcal dai grassi: 2424 * 0.275 = 666.6 kcal\n   - Grammi di grassi: 666.6 / 9 = 74.1 g\n\n3. **Carboidrati:**\n   - Kcal rimanenti per i carboidrati: 2424 - (184.8 + 666.6) = 1572.6 kcal\n   - Grammi di carboidrati: 1572.6 / 4 = 393.15g\n\n4. **Fibre:**\n   - Range raccomandato: 30.5 g - 40.5 g\n\nRiepilogo macronutrienti:\n- **Proteine:** 46.2 g (184.8 kcal, 7.6%)\n- **Grassi:** 74.1 g (666.6 kcal, 27.5%)\n- **Carboidrati:** 393.15 g (1572.6 kcal, 65%)\n- **Fibre:** 30.5 g - 40.5 g\n\n➡️ Procedo ora con la FASE 4 - Creazione piano pasti, dove suddividerò i pasti sulla base delle preferenze del cliente.  Vuoi procedere?",
+      "timestamp": 1747941992.5702655
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1747941998.8497183
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 4 - Creazione piano pasti\n\n⚡ Distribuirò ora le calorie nei 4 pasti giornalieri alle ore preferite dal cliente:\n\n📊 Distribuzione pasti (totale 2424 kcal):\n- **Colazione (25%):** 606 kcal alle 07:30\n- **Pranzo (30%):** 727 kcal alle 13:00\n- **Spuntino pomeridiano (10%):** 242 kcal alle 16:30\n- **Cena (35%):** 848 kcal alle 20:00\n\n➡️ Procedo con la FASE 5 - Creazione singoli pasti, partendo dalla colazione. Vuoi che inizi con la colazione o preferisci un altro pasto?",
+      "timestamp": 1747942007.140461
+    },
+    {
+      "role": "user",
+      "content": "colazione",
+      "timestamp": 1747942020.3831034
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Non sono riuscito a ottenere informazioni su alcuni alimenti tramite il sistema. Utilizzerò dei dati standard per avena e latte scremato.\n\n**Avena (80g):**\n- Calorie: ~314 kcal\n- Proteine: ~13g\n- Carboidrati: ~54g\n- Grassi: ~6g\n\n**Latte scremato (200ml):**\n- Calorie: ~70 kcal\n- Proteine: ~7g\n- Carboidrati: ~10g\n- Grassi: ~0g\n\n📊 Composizione proposta per la colazione:\n- **Avena: 80g**\n  - Calorie: 314 kcal\n  - Proteine: 13g\n  - Carboidrati: 54g\n  - Grassi: 6g\n\n- **Latte scremato: 200ml**\n  - Calorie: 70 kcal\n  - Proteine: 7g\n  - Carboidrati: 10g\n  - Grassi: 0g\n\n- **Banana: 100g**\n  - Calorie: 89 kcal\n  - Proteine: 1.1g\n  - Carboidrati: 22.8g\n  - Grassi: 0.3g\n\n- **Mandorle: 20g**\n  - Calorie: 120.6 kcal\n  - Proteine: 4.4g\n  - Carboidrati: 0.8g\n  - Grassi: 11g\n\n**Totale pasto:**\n- Calorie: 593.6 kcal\n- Proteine: 25.5g\n- Carboidrati: 87.6g\n- Grassi: 17.3g\n\nQuesta colazione è bilanciata e rispetta gli obiettivi prefissati. Vuoi apportare modifiche o posso procedere con la creazione del pasto successivo?",
+      "timestamp": 1747942070.798437
+    }
+  ],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -10,7 +56,53 @@
     "altezza": 170,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {},
-    "agent_qa": []
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "participation": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "meal_preferences": {
+        "answer": "Sì",
+        "follow_up": {
+          "num_meals": 4,
+          "meal_times": {
+            "Colazione": "07:30",
+            "Pranzo": "13:00",
+            "Cena": "20:00",
+            "Spuntino pomeridiano": "16:30"
+          }
+        }
+      }
+    },
+    "agent_qa": [
+      {
+        "question": "si",
+        "answer": "📊 Risultati intermedi:\n\n- **Metabolismo Basale (BMR):** 1672 kcal\n- **Fabbisogno calorico giornaliero totale:** 2424 kcal (considerando lo stile di vita sedentario e il LAF di 1.45).\n\n➡️ Procedo ora con la FASE 3 - Calcolo distribuzione macronutrienti. Vuoi procedere?",
+        "timestamp": 1747941971.9130359
+      },
+      {
+        "question": "si",
+        "answer": "📊 Risultati intermedi per la distribuzione dei macronutrienti:\n\n1. **Proteine:**\n   - Moltiplicatore: 0.66 g/kg\n   - Calcolo: 0.66 * 70 kg = 46.2 g\n   - Kcal da proteine: 46.2 g * 4 kcal/g = 184.8 kcal\n   - % sulle kcal totali: (184.8 / 2424) * 100 = 7.6%\n\n2. **Grassi:**\n   - Range raccomandato: 20-35% delle kcal totali\n   - Calcoliamo un valore intermedio: 27.5%\n   - Kcal dai grassi: 2424 * 0.275 = 666.6 kcal\n   - Grammi di grassi: 666.6 / 9 = 74.1 g\n\n3. **Carboidrati:**\n   - Kcal rimanenti per i carboidrati: 2424 - (184.8 + 666.6) = 1572.6 kcal\n   - Grammi di carboidrati: 1572.6 / 4 = 393.15g\n\n4. **Fibre:**\n   - Range raccomandato: 30.5 g - 40.5 g\n\nRiepilogo macronutrienti:\n- **Proteine:** 46.2 g (184.8 kcal, 7.6%)\n- **Grassi:** 74.1 g (666.6 kcal, 27.5%)\n- **Carboidrati:** 393.15 g (1572.6 kcal, 65%)\n- **Fibre:** 30.5 g - 40.5 g\n\n➡️ Procedo ora con la FASE 4 - Creazione piano pasti, dove suddividerò i pasti sulla base delle preferenze del cliente.  Vuoi procedere?",
+        "timestamp": 1747941992.5796115
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 4 - Creazione piano pasti\n\n⚡ Distribuirò ora le calorie nei 4 pasti giornalieri alle ore preferite dal cliente:\n\n📊 Distribuzione pasti (totale 2424 kcal):\n- **Colazione (25%):** 606 kcal alle 07:30\n- **Pranzo (30%):** 727 kcal alle 13:00\n- **Spuntino pomeridiano (10%):** 242 kcal alle 16:30\n- **Cena (35%):** 848 kcal alle 20:00\n\n➡️ Procedo con la FASE 5 - Creazione singoli pasti, partendo dalla colazione. Vuoi che inizi con la colazione o preferisci un altro pasto?",
+        "timestamp": 1747942007.1453788
+      },
+      {
+        "question": "colazione",
+        "answer": "📊 Non sono riuscito a ottenere informazioni su alcuni alimenti tramite il sistema. Utilizzerò dei dati standard per avena e latte scremato.\n\n**Avena (80g):**\n- Calorie: ~314 kcal\n- Proteine: ~13g\n- Carboidrati: ~54g\n- Grassi: ~6g\n\n**Latte scremato (200ml):**\n- Calorie: ~70 kcal\n- Proteine: ~7g\n- Carboidrati: ~10g\n- Grassi: ~0g\n\n📊 Composizione proposta per la colazione:\n- **Avena: 80g**\n  - Calorie: 314 kcal\n  - Proteine: 13g\n  - Carboidrati: 54g\n  - Grassi: 6g\n\n- **Latte scremato: 200ml**\n  - Calorie: 70 kcal\n  - Proteine: 7g\n  - Carboidrati: 10g\n  - Grassi: 0g\n\n- **Banana: 100g**\n  - Calorie: 89 kcal\n  - Proteine: 1.1g\n  - Carboidrati: 22.8g\n  - Grassi: 0.3g\n\n- **Mandorle: 20g**\n  - Calorie: 120.6 kcal\n  - Proteine: 4.4g\n  - Carboidrati: 0.8g\n  - Grassi: 11g\n\n**Totale pasto:**\n- Calorie: 593.6 kcal\n- Proteine: 25.5g\n- Carboidrati: 87.6g\n- Grassi: 17.3g\n\nQuesta colazione è bilanciata e rispetta gli obiettivi prefissati. Vuoi apportare modifiche o posso procedere con la creazione del pasto successivo?",
+        "timestamp": 1747942070.8024795
+      }
+    ]
   }
 }

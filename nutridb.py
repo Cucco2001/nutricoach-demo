@@ -61,7 +61,11 @@ class NutriDB:
             "pro milk 20g": "pro_milk_20g_proteine",
             "pro milk": "pro_milk_20g_proteine",  
             "iso fuji yamamoto": "iso_fuji_yamamoto",
-            "burro arachidi": "burro_arachidi"
+            "burro arachidi": "burro_arachidi",
+            "latte scremato": "latte_scremato",
+            "latte": "latte_intero",
+            "latte parzialmente scremato": "latte_scremato",
+            "latte intero": "latte_intero"
         })
         return mapping
 
