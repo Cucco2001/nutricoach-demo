@@ -54,12 +54,14 @@ def convert_activity_to_laf(activity: str) -> float:
         return activity_map[closest]
     return activity_map[activity]
 
-def get_protein_multiplier(tipo_attivita: str, is_vegan: bool = False) -> Dict[str, Any]:
+def get_protein_multiplier(sports: Union[List[Dict[str, str]], Dict[str, str]], is_vegan: bool = False) -> Dict[str, Any]:
     """
-    Calcola il moltiplicatore proteico in base al tipo di attività e alla dieta.
+    Calcola il moltiplicatore proteico in base agli sport praticati e alla dieta.
     
     Args:
-        tipo_attivita: Tipo di attività fisica/sport
+        sports: Può essere:
+               - Una lista di dizionari, ognuno con sport_type e intensity (easy/medium/hard)
+               - Un singolo dizionario con sport_type e intensity
         is_vegan: Se True, aggiunge il supplemento per dieta vegana
     
     Returns:
@@ -74,14 +76,81 @@ def get_protein_multiplier(tipo_attivita: str, is_vegan: bool = False) -> Dict[s
         logger.error(f"Errore nella lettura del file protein_requirements.json: {str(e)}")
         raise ValueError(f"Impossibile leggere i requisiti proteici: {str(e)}")
     
-    tipo_attivita = tipo_attivita.lower()
-    if tipo_attivita not in protein_requirements:
-        valid_activities = ", ".join(protein_requirements.keys())
-        raise ValueError(f"Tipo attività non valido. Valori accettati: {valid_activities}")
+    # Normalizza l'input in una lista di sport
+    sports_list = []
+    if isinstance(sports, dict):
+        sports_list = [sports]
+    elif isinstance(sports, list):
+        sports_list = sports
+    else:
+        raise ValueError("Formato sport non valido")
     
-    result = protein_requirements[tipo_attivita].copy()
+    # Mappa per convertire i tipi di sport dal form ai tipi nel JSON
+    sport_type_map = {
+        "Fitness - Allenamento medio (principianti e livello intermedio)": "fitness",
+        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)": "bodybuilding_massa",
+        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)": "bodybuilding_definizione",
+        "Sport di forza (es: powerlifting, sollevamento pesi, strongman)": "forza",
+        "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)": "endurance",
+        "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)": "aciclico",
+        "Sedentario": "sedentario"
+    }
     
-    # Aggiunge il supplemento per vegani (usiamo 0.25 come media tra 0.2 e 0.3)
+    # Trova lo sport che richiede più proteine
+    max_protein_req = None
+    max_sport_type = None
+    max_intensity = None
+    other_sports_intense = False
+    
+    for sport in sports_list:
+        sport_type = sport["sport_type"]
+        intensity = sport.get("intensity", "medium")
+        
+        # Converti il tipo di sport
+        if sport_type in sport_type_map:
+            sport_type = sport_type_map[sport_type]
+        else:
+            raise ValueError(f"Tipo sport non valido: {sport_type}")
+        
+        # Ottieni i requisiti proteici per questo sport
+        if sport_type not in protein_requirements:
+            continue
+            
+        protein_req = protein_requirements[sport_type]
+        
+        # Se questo sport ha requisiti proteici più alti, diventa il principale
+        if max_protein_req is None or protein_req["base"] > max_protein_req["base"]:
+            max_protein_req = protein_req
+            max_sport_type = sport_type
+            max_intensity = intensity
+        # Se questo sport ha intensità alta, lo segnaliamo
+        elif intensity == "hard":
+            other_sports_intense = True
+    
+    if max_protein_req is None:
+        # Se nessuno sport valido è stato trovato, usa i valori per sedentari
+        result = protein_requirements["sedentario"].copy()
+    else:
+        result = max_protein_req.copy()
+        
+        # Gestisci il range in base all'intensità
+        if "range" in result:
+            base_value = result["base"]
+            range_values = result["range"]
+            
+            if max_intensity == "hard" or other_sports_intense:
+                # Se lo sport principale è intenso o ci sono altri sport intensi, usa il valore più alto
+                result["base"] = range_values[1]
+            elif max_intensity == "easy":
+                # Se l'intensità è bassa, usa il valore più basso
+                result["base"] = range_values[0]
+            else:
+                # Per intensità media, usa il valore base
+                result["base"] = base_value
+                
+            result["description"] += f" (intensità {max_intensity})"
+    
+    # Aggiunge il supplemento per vegani
     if is_vegan:
         result["base"] += 0.25
         if "range" in result:
