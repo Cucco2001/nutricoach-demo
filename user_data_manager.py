@@ -13,12 +13,6 @@ class User:
     created_at: float
 
 @dataclass
-class MealFeedback:
-    satisfaction_level: int
-    notes: Optional[str]
-    timestamp: float
-
-@dataclass
 class ProgressEntry:
     date: str
     weight: float
@@ -28,9 +22,17 @@ class ProgressEntry:
 class UserPreferences:
     excluded_foods: Set[str]
     preferred_foods: Set[str]
-    meal_times: Dict[str, str]
     portion_sizes: Dict[str, str]
     cooking_methods: Set[str]
+    
+    def __post_init__(self):
+        # Convert lists to sets if needed
+        if isinstance(self.excluded_foods, list):
+            self.excluded_foods = set(self.excluded_foods)
+        if isinstance(self.preferred_foods, list):
+            self.preferred_foods = set(self.preferred_foods)
+        if isinstance(self.cooking_methods, list):
+            self.cooking_methods = set(self.cooking_methods)
 
 @dataclass
 class ChatMessage:
@@ -64,7 +66,6 @@ class UserDataManager:
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(exist_ok=True)
         self._users: Dict[str, User] = {}  # username -> User
-        self._meal_feedback: Dict[str, Dict[str, MealFeedback]] = {}
         self._progress_data: Dict[str, List[ProgressEntry]] = {}
         self._user_preferences: Dict[str, UserPreferences] = {}
         self._chat_history: Dict[str, List[ChatMessage]] = {}
@@ -154,30 +155,6 @@ class UserDataManager:
                 return user
         return None
 
-    def collect_meal_feedback(self, user_id: str, meal_id: str, satisfaction_level: int, notes: Optional[str] = None) -> None:
-        """
-        Raccoglie feedback sui pasti per migliorare le raccomandazioni future
-        
-        Args:
-            user_id: ID dell'utente
-            meal_id: ID del pasto
-            satisfaction_level: Livello di soddisfazione (1-5)
-            notes: Note opzionali sul pasto
-        """
-        if not 1 <= satisfaction_level <= 5:
-            raise ValueError("Il livello di soddisfazione deve essere tra 1 e 5")
-
-        feedback = MealFeedback(
-            satisfaction_level=satisfaction_level,
-            notes=notes,
-            timestamp=time.time()
-        )
-        
-        if user_id not in self._meal_feedback:
-            self._meal_feedback[user_id] = {}
-        
-        self._meal_feedback[user_id][meal_id] = feedback
-        self._save_user_data(user_id)
 
     def track_progress(self, user_id: str, weight: float, date: str, measurements: Optional[Dict[str, float]] = None) -> None:
         """
@@ -216,7 +193,6 @@ class UserDataManager:
             self._user_preferences[user_id] = UserPreferences(
                 excluded_foods=set(),
                 preferred_foods=set(),
-                meal_times={},
                 portion_sizes={},
                 cooking_methods=set()
             )
@@ -234,9 +210,26 @@ class UserDataManager:
 
         self._save_user_data(user_id)
 
-    def get_user_preferences(self, user_id: str) -> Optional[UserPreferences]:
-        """Recupera le preferenze dell'utente"""
-        return self._user_preferences.get(user_id)
+    def get_user_preferences(self, user_id: str) -> Optional[Dict]:
+        """
+        Recupera le preferenze dell'utente dal file JSON
+        
+        Args:
+            user_id: ID dell'utente
+            
+        Returns:
+            Dict con le preferenze o None se non trovato
+        """
+        user_file = self.data_dir / f"{user_id}.json"
+        if not user_file.exists():
+            return None
+            
+        try:
+            with open(user_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return data.get("user_preferences")
+        except Exception:
+            return None
 
     def get_progress_history(self, user_id: str) -> List[ProgressEntry]:
         """Recupera la storia dei progressi dell'utente"""
@@ -265,9 +258,6 @@ class UserDataManager:
         
         return False
 
-    def get_meal_feedback(self, user_id: str, meal_id: str) -> Optional[MealFeedback]:
-        """Recupera il feedback per un pasto specifico"""
-        return self._meal_feedback.get(user_id, {}).get(meal_id)
 
     def save_chat_message(self, user_id: str, role: str, content: str) -> None:
         """
@@ -405,15 +395,22 @@ class UserDataManager:
         """Salva i dati dell'utente su file"""
         user_file = self.data_dir / f"{user_id}.json"
         
+        # Converti le preferenze utente per la serializzazione JSON
+        user_preferences = None
+        if user_id in self._user_preferences:
+            prefs = self._user_preferences[user_id]
+            user_preferences = {
+                "excluded_foods": list(prefs.excluded_foods),
+                "preferred_foods": list(prefs.preferred_foods),
+                "portion_sizes": prefs.portion_sizes,
+                "cooking_methods": list(prefs.cooking_methods)
+            }
+        
         data = {
-            "meal_feedback": {
-                meal_id: asdict(feedback)
-                for meal_id, feedback in self._meal_feedback.get(user_id, {}).items()
-            },
             "progress_data": [
                 asdict(entry) for entry in self._progress_data.get(user_id, [])
             ],
-            "user_preferences": asdict(self._user_preferences.get(user_id)) if user_id in self._user_preferences else None,
+            "user_preferences": user_preferences,
             "chat_history": [
                 asdict(message) for message in self._chat_history.get(user_id, [])
             ],
@@ -432,12 +429,6 @@ class UserDataManager:
 
         with open(user_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
-
-        # Carica feedback pasti
-        self._meal_feedback[user_id] = {
-            meal_id: MealFeedback(**feedback_data)
-            for meal_id, feedback_data in data.get("meal_feedback", {}).items()
-        }
 
         # Carica dati progresso
         self._progress_data[user_id] = [
@@ -469,4 +460,22 @@ class UserDataManager:
                     AgentQA(**qa_data)
                     for qa_data in nutritional_data["agent_qa"]
                 ]
-            self._nutritional_info[user_id] = UserNutritionalInfo(**nutritional_data) 
+            self._nutritional_info[user_id] = UserNutritionalInfo(**nutritional_data)
+
+    def clear_user_preferences(self, user_id: str) -> None:
+        """
+        Resetta completamente le preferenze dell'utente
+        
+        Args:
+            user_id: ID dell'utente
+        """
+        # Resetta le preferenze in memoria
+        self._user_preferences[user_id] = UserPreferences(
+            excluded_foods=set(),
+            preferred_foods=set(),
+            portion_sizes={"default": "Medie"},
+            cooking_methods=set()
+        )
+        
+        # Forza il salvataggio su file
+        self._save_user_data(user_id) 

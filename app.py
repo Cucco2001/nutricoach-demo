@@ -148,12 +148,6 @@ NUTRITION_QUESTIONS = [
         "show_follow_up_on": "Sì"
     },
     {
-        "id": "participation",
-        "question": "Vuoi partecipare attivamente alla creazione del piano alimentare?",
-        "type": "radio",
-        "options": ["No", "Sì"]
-    },
-    {
         "id": "weight_goal",
         "question": lambda user_info: f"Quanti kg vuoi {'perdere' if user_info['obiettivo'] == 'Perdita di peso' else 'aumentare'} e in quanto tempo (in mesi)?",
         "type": "number_input",
@@ -304,8 +298,7 @@ def handle_tool_calls(run_status):
                     calculate_sport_expenditure, check_ultraprocessed_foods
                 )
                 from user_data_tool import (
-                    get_user_preferences, get_progress_history, 
-                    get_meal_feedback, get_agent_qa, get_nutritional_info
+                    get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
                 )
                 
                 # Mappa dei nomi delle funzioni alle funzioni effettive
@@ -327,7 +320,6 @@ def handle_tool_calls(run_status):
                     # Funzioni per accedere ai dati dell'utente
                     "get_user_preferences": get_user_preferences,
                     "get_progress_history": get_progress_history,
-                    "get_meal_feedback": get_meal_feedback,
                     "get_agent_qa": get_agent_qa,
                     "get_nutritional_info": get_nutritional_info,
                     
@@ -539,28 +531,6 @@ def chat_with_assistant(user_input):
         st.error(f"Errore nella conversazione: {str(e)}")
         return "Mi dispiace, si è verificato un errore inaspettato. Riprova."
 
-def handle_meal_feedback():
-    """Gestisce il feedback sui pasti"""
-    if st.session_state.diet_plan:
-        for meal_id, meal in st.session_state.diet_plan.items():
-            with st.expander(f"Feedback per {meal_id}"):
-                satisfaction = st.slider(
-                    "Livello di soddisfazione",
-                    1, 5, 3,
-                    key=f"satisfaction_{meal_id}"
-                )
-                notes = st.text_area(
-                    "Note (opzionale)",
-                    key=f"notes_{meal_id}"
-                )
-                if st.button("Salva feedback", key=f"save_{meal_id}"):
-                    st.session_state.user_data_manager.collect_meal_feedback(
-                        user_id=st.session_state.user_info["id"],
-                        meal_id=meal_id,
-                        satisfaction_level=satisfaction,
-                        notes=notes
-                    )
-                    st.success("Feedback salvato con successo!")
 
 def track_user_progress():
     """Gestisce il tracking dei progressi dell'utente"""
@@ -762,30 +732,61 @@ def show_progress_history():
 def handle_preferences():
     """Gestisce le preferenze dell'utente"""
     with st.expander("Gestisci le tue preferenze alimentari"):
+        # Carica le preferenze esistenti
+        user_preferences = st.session_state.user_data_manager.get_user_preferences(st.session_state.user_info["id"])
+        
         # Alimenti esclusi
-        excluded_foods = st.multiselect(
-            "Alimenti da escludere",
-            ["Latticini", "Glutine", "Frutta secca", "Crostacei", "Soia", "Uova"],
-            default=[]
-        )
+        if 'excluded_foods_list' not in st.session_state:
+            st.session_state.excluded_foods_list = user_preferences.get("excluded_foods", []) if user_preferences else []
+        
+        st.write("Alimenti da escludere:")
+        
+        # Mostra gli alimenti esclusi esistenti
+        for i, food in enumerate(st.session_state.excluded_foods_list):
+            col1, col2 = st.columns([0.9, 0.1])
+            with col1:
+                st.text(food)
+            with col2:
+                if st.button("🗑️", key=f"del_excluded_{i}"):
+                    st.session_state.excluded_foods_list.pop(i)
+                    st.rerun()
+        
+        # Aggiungi nuovo alimento da escludere
+        col1, col2 = st.columns([0.8, 0.2])
+        with col1:
+            excluded_foods = st.text_input("Inserisci un alimento da escludere", key="excluded_foods")
+        with col2:
+            if st.button("Aggiungi", key="add_excluded"):
+                if excluded_foods and excluded_foods not in st.session_state.excluded_foods_list:
+                    st.session_state.excluded_foods_list.append(excluded_foods)
+                    st.rerun()
         
         # Alimenti preferiti
-        preferred_foods = st.multiselect(
-            "Alimenti preferiti",
-            ["Riso", "Pasta", "Pollo", "Pesce", "Legumi", "Verdure", "Frutta"],
-            default=[]
-        )
+        if 'preferred_foods_list' not in st.session_state:
+            st.session_state.preferred_foods_list = user_preferences.get("preferred_foods", []) if user_preferences else []
+            
+        st.write("Alimenti preferiti:")
         
-        # Orari dei pasti
-        st.subheader("Orari preferiti per i pasti")
-        meal_times = {}
-        col1, col2 = st.columns(2)
+        # Mostra gli alimenti preferiti esistenti
+        for i, food in enumerate(st.session_state.preferred_foods_list):
+            col1, col2 = st.columns([0.9, 0.1])
+            with col1:
+                st.text(food)
+            with col2:
+                if st.button("🗑️", key=f"del_preferred_{i}"):
+                    st.session_state.preferred_foods_list.pop(i)
+                    st.rerun()
+        
+        # Aggiungi nuovo alimento preferito
+        col1, col2 = st.columns([0.8, 0.2])
         with col1:
-            meal_times["colazione"] = st.time_input("Colazione", value=None)
-            meal_times["pranzo"] = st.time_input("Pranzo", value=None)
+            preferred_foods = st.text_input("Inserisci un alimento preferito", key="preferred_foods")
         with col2:
-            meal_times["cena"] = st.time_input("Cena", value=None)
-            meal_times["spuntini"] = st.time_input("Spuntini", value=None)
+            if st.button("Aggiungi", key="add_preferred"):
+                if preferred_foods and preferred_foods not in st.session_state.preferred_foods_list:
+                    st.session_state.preferred_foods_list.append(preferred_foods)
+                    st.rerun()
+        
         
         # Dimensioni delle porzioni
         st.subheader("Preferenze porzioni")
@@ -804,11 +805,10 @@ def handle_preferences():
         
         if st.button("Salva preferenze"):
             preferences = {
-                "excluded_foods": set(excluded_foods),
-                "preferred_foods": set(preferred_foods),
-                "meal_times": {k: v.strftime("%H:%M") if v else None for k, v in meal_times.items()},
+                "excluded_foods": st.session_state.excluded_foods_list,
+                "preferred_foods": st.session_state.preferred_foods_list,
                 "portion_sizes": {"default": portion_sizes},
-                "cooking_methods": set(cooking_methods)
+                "cooking_methods": list(cooking_methods)
             }
             
             st.session_state.user_data_manager.update_user_preferences(
@@ -895,6 +895,8 @@ def chat_interface():
         if not st.session_state.user_info.get("età"):
             # Carica le informazioni nutrizionali salvate
             nutritional_info = st.session_state.user_data_manager.get_nutritional_info(st.session_state.user_info["id"])
+            # Carica le preferenze utente
+            user_preferences = st.session_state.user_data_manager.get_user_preferences(st.session_state.user_info["id"])
             
             with st.form("user_info_form"):
                 st.write("Per iniziare, inserisci i tuoi dati:")
@@ -917,7 +919,8 @@ def chat_interface():
                         "peso": peso,
                         "altezza": altezza,
                         "attività": attività,
-                        "obiettivo": obiettivo
+                        "obiettivo": obiettivo,
+                        "preferences": user_preferences  # Aggiungi le preferenze
                     }
                     st.session_state.user_info.update(user_info)
                     
@@ -941,7 +944,7 @@ def chat_interface():
             for key, value in st.session_state.user_info.items():
                 if key == "peso":
                     st.write(f"Peso: {int(value)} kg")
-                elif key not in ["id", "username"]:  # Non mostrare ID e username
+                elif key not in ["id", "username", "preferences"]:  # Non mostrare ID, username e preferences
                     st.write(f"{key.capitalize()}: {value}")
             
             col1, col2 = st.columns(2)
@@ -958,7 +961,7 @@ def chat_interface():
                     st.session_state.user_data_manager.clear_chat_history(st.session_state.user_info["id"])
                     st.session_state.user_data_manager.clear_agent_qa(st.session_state.user_info["id"])
                     
-                    # Resetta le informazioni nutrizionali mantenendo solo i dati base
+                    # Resetta le informazioni nutrizionali
                     st.session_state.user_data_manager.save_nutritional_info(
                         st.session_state.user_info["id"],
                         {
@@ -972,6 +975,9 @@ def chat_interface():
                             "agent_qa": []
                         }
                     )
+                    
+                    # Resetta le preferenze utente
+                    st.session_state.user_data_manager.clear_user_preferences(st.session_state.user_info["id"])
                     
                     # Crea un nuovo thread
                     create_new_thread()
@@ -1293,12 +1299,14 @@ def chat_interface():
                     RISPOSTE ALLE DOMANDE INIZIALI:
                     {json.dumps(st.session_state.nutrition_answers, indent=2)}
 
+                    PREFERENZE ALIMENTARI:
+                    {json.dumps(st.session_state.user_info['preferences'], indent=2)}
                     Basandoti su queste informazioni, procedi con le seguenti fasi:
 
                     FASE 1: Analisi delle risposte fornite
-                    - Valuta dati del cliente iniziali
+                    - Valuta dati del cliente iniziali 
+                    - Valuta le preferenze alimentari
                     - Valuta le intolleranze/allergie
-                    - Analizza il livello di partecipazione richiesto
                     - Considera gli obiettivi di peso e il tempo
                     - Valuta le attività sportive praticate
                     - Definisci il numero di pasti preferito e orari (se specificati)
@@ -1412,7 +1420,8 @@ def main():
                                 "peso": nutritional_info.peso,
                                 "altezza": nutritional_info.altezza,
                                 "attività": nutritional_info.attività,
-                                "obiettivo": nutritional_info.obiettivo
+                                "obiettivo": nutritional_info.obiettivo,
+                                "preferences": st.session_state.user_data_manager.get_user_preferences(result)  # Aggiungi le preferenze
                             })
                             
                             # Carica le risposte nutrizionali
@@ -1448,7 +1457,7 @@ def main():
             st.header("Menu")
             page = st.radio(
                 "Seleziona una sezione",
-                ["Piano Nutrizionale", "Progressi", "Feedback", "Preferenze"]
+                ["Piano Nutrizionale", "Progressi", "Preferenze"]
             )
             
             # Aggiungi pulsante logout
@@ -1464,8 +1473,6 @@ def main():
         elif page == "Progressi":
             track_user_progress()
             show_progress_history()
-        elif page == "Feedback":
-            handle_meal_feedback()
         elif page == "Preferenze":
             handle_preferences()
 

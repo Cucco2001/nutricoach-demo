@@ -20,7 +20,6 @@ def get_user_preferences(user_id: str) -> Dict:
             return {
                 "excluded_foods": list(prefs.excluded_foods),
                 "preferred_foods": list(prefs.preferred_foods),
-                "meal_times": prefs.meal_times,
                 "portion_sizes": prefs.portion_sizes,
                 "cooking_methods": list(prefs.cooking_methods)
             }
@@ -55,28 +54,6 @@ def get_progress_history(user_id: str) -> Dict:
     except Exception as e:
         return {"error": str(e)}
 
-def get_meal_feedback(user_id: str, meal_id: str) -> Dict:
-    """
-    Ottiene il feedback dell'utente per un pasto specifico.
-    
-    Args:
-        user_id: ID dell'utente
-        meal_id: ID del pasto
-    
-    Returns:
-        Dict con il feedback dell'utente
-    """
-    try:
-        feedback = _user_data_manager.get_meal_feedback(user_id, meal_id)
-        if feedback:
-            return {
-                "satisfaction_level": feedback.satisfaction_level,
-                "notes": feedback.notes,
-                "timestamp": feedback.timestamp
-            }
-        return {"error": "Nessun feedback trovato per questo pasto"}
-    except Exception as e:
-        return {"error": str(e)}
 
 def get_agent_qa(user_id: str) -> Dict:
     """

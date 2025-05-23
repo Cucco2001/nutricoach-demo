@@ -16,7 +16,6 @@ from nutridb_tool import (
 from user_data_tool import (
     get_user_preferences, 
     get_progress_history, 
-    get_meal_feedback, 
     get_agent_qa, 
     get_nutritional_info
 )
@@ -239,21 +238,6 @@ available_tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_meal_feedback",
-            "description": "Ottiene il feedback dell'utente per un pasto specifico.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "user_id": {"type": "string", "description": "ID dell'utente"},
-                    "meal_id": {"type": "string", "description": "ID del pasto"}
-                },
-                "required": ["user_id", "meal_id"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_agent_qa",
             "description": "Ottiene la storia delle domande e risposte dell'agente.",
             "parameters": {
@@ -405,7 +389,6 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
 1. Prima di creare o modificare un piano alimentare:
    - Controlla le preferenze dell'utente usando get_user_preferences
    - Verifica la storia dei progressi usando get_progress_history
-   - Considera i feedback precedenti sui pasti usando get_meal_feedback
    - Considera le conversazioni passate dell'utente usando get_agent_qa
    - Considera le informazioni nutrizionali dell'utente usando get_nutritional_info
    Se presenti, usa queste informazioni per creare il piano alimentare, se non presenti o gia visualizzate, continua.
@@ -414,16 +397,7 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
    - Se presenti, crea una lista di alimenti da escludere
    - Considera anche i derivati degli alimenti da escludere
 
-3. Valuta il livello di partecipazione:
-   - Se l'utente vuole partecipare attivamente:
-     * Proponi opzioni per ogni pasto
-     * Chiedi feedback specifici
-     * Permetti modifiche durante il processo
-   - Se l'utente preferisce un piano completo:
-     * Crea il piano completo
-     * Mostra direttamente i risultati in modo chiaro e strutturato
-
-4. Analizza l'obiettivo di peso:
+3. Analizza l'obiettivo di peso:
    Se obiettivo è perdita di peso:
    - Calcola SEMPRE il deficit calorico necessario e salvalo per calcoli successivi:
      * kg da perdere / mesi = kg al mese
@@ -439,7 +413,7 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
      * Se richiesta > 1kg/mese, avvisa che potrebbe aumentare anche il grasso
      * Aumenta anche l'apporto proteico a 1.8-2.2 g/kg
 
-5. Analizza l'attività sportiva:
+4. Analizza l'attività sportiva:
    - Calcola SEMPRE il dispendio energetico aggiuntivo e salvalo per calcoli successivi
    - Usa il tool calculate_sport_expenditure con l'array di sport fornito dall'utente
    
@@ -474,7 +448,7 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
      * Fabbisogno totale: 2200 + 403 = 2603 kcal
 
      
-6. Analizza se l'utente ha specificato un numero di pasti preferito e gli orari preferiti per i pasti in "meal_preferences". 
+5. Analizza se l'utente ha specificato un numero di pasti preferito e gli orari preferiti per i pasti in "meal_preferences". 
     - Se l'utente non ha specificato un numero di pasti, usa 5 pasti come standard suggerito.
     - Se l'utente ha specificato un numero di pasti suggerito, usa quel numero di pasti nella Fase 4.
 
