@@ -89,6 +89,16 @@
     "fibra_g": 1.2,
     "nova_group": 1
   },
+  "verdure_miste": {
+    "energia_kcal": 11,
+    "proteine_g": 1.1,
+    "carboidrati_g": 1.4,
+    "zuccheri_g": 1.2,
+    "grassi_g": 0.1,
+    "grassi_saturi_g": 0.03,
+    "fibra_g": 1.2,
+    "nova_group": 1
+  },
   "olio_oliva": {
     "energia_kcal": 899,
     "proteine_g": 0.0,
