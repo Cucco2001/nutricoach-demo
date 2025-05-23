@@ -17,11 +17,12 @@ def get_user_preferences(user_id: str) -> Dict:
     try:
         prefs = _user_data_manager.get_user_preferences(user_id)
         if prefs:
+            # No need to convert to list since they are already lists
             return {
-                "excluded_foods": list(prefs.excluded_foods),
-                "preferred_foods": list(prefs.preferred_foods),
-                "portion_sizes": prefs.portion_sizes,
-                "cooking_methods": list(prefs.cooking_methods)
+                "excluded_foods": prefs.get("excluded_foods", []),
+                "preferred_foods": prefs.get("preferred_foods", []),
+                "portion_sizes": prefs.get("portion_sizes", {"default": "Medie"}),
+                "cooking_methods": prefs.get("cooking_methods", [])
             }
         return {"error": "Nessuna preferenza trovata per questo utente"}
     except Exception as e:
