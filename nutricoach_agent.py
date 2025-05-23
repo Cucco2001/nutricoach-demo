@@ -149,14 +149,43 @@ available_tools = [
         "type": "function",
         "function": {
             "name": "get_protein_multiplier",
-            "description": "Calcola il moltiplicatore proteico in base al tipo di attività.",
+            "description": "Calcola il moltiplicatore proteico in base agli sport praticati.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "tipo_attivita": {"type": "string", "description": "Tipo di attività fisica/sport (sedentario, adulto, endurance, forza, aciclico, fitness, bodybuilding_definizione, bodybuilding_massa)"},
-                    "is_vegan": {"type": "boolean", "description": "Se True, aggiunge il supplemento per dieta vegana"}
+                    "sports": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "sport_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Fitness - Allenamento medio (principianti e livello intermedio)",
+                                        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)",
+                                        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)",
+                                        "Sport di forza (es: powerlifting, sollevamento pesi, strongman)",
+                                        "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
+                                        "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)",
+                                        "Sedentario"
+                                    ],
+                                    "description": "Tipo di sport/attività fisica"
+                                },
+                                "intensity": {
+                                    "type": "string",
+                                    "enum": ["easy", "medium", "hard"],
+                                    "description": "Intensità dell'attività"
+                                }
+                            },
+                            "required": ["sport_type"]
+                        }
+                    },
+                    "is_vegan": {
+                        "type": "boolean",
+                        "description": "Se True, aggiunge il supplemento per dieta vegana"
+                    }
                 },
-                "required": ["tipo_attivita"]
+                "required": ["sports"]
             }
         }
     },

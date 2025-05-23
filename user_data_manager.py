@@ -20,19 +20,27 @@ class ProgressEntry:
 
 @dataclass
 class UserPreferences:
-    excluded_foods: Set[str]
-    preferred_foods: Set[str]
+    excluded_foods: List[str]
+    preferred_foods: List[str]
     portion_sizes: Dict[str, str]
-    cooking_methods: Set[str]
+    cooking_methods: List[str]
     
     def __post_init__(self):
-        # Convert lists to sets if needed
-        if isinstance(self.excluded_foods, list):
-            self.excluded_foods = set(self.excluded_foods)
-        if isinstance(self.preferred_foods, list):
-            self.preferred_foods = set(self.preferred_foods)
-        if isinstance(self.cooking_methods, list):
-            self.cooking_methods = set(self.cooking_methods)
+        # Ensure we always have lists, not sets
+        if isinstance(self.excluded_foods, set):
+            self.excluded_foods = list(self.excluded_foods)
+        if isinstance(self.preferred_foods, set):
+            self.preferred_foods = list(self.preferred_foods)
+        if isinstance(self.cooking_methods, set):
+            self.cooking_methods = list(self.cooking_methods)
+        
+        # Ensure we have lists even if strings are passed
+        if not isinstance(self.excluded_foods, list):
+            self.excluded_foods = [self.excluded_foods] if self.excluded_foods else []
+        if not isinstance(self.preferred_foods, list):
+            self.preferred_foods = [self.preferred_foods] if self.preferred_foods else []
+        if not isinstance(self.cooking_methods, list):
+            self.cooking_methods = [self.cooking_methods] if self.cooking_methods else []
 
 @dataclass
 class ChatMessage:
@@ -181,7 +189,7 @@ class UserDataManager:
         self._progress_data[user_id].append(entry)
         self._save_user_data(user_id)
 
-    def update_user_preferences(self, user_id: str, preferences: Dict[str, Union[Set[str], Dict[str, str]]]) -> None:
+    def update_user_preferences(self, user_id: str, preferences: Dict[str, Union[List[str], Dict[str, str]]]) -> None:
         """
         Aggiorna le preferenze alimentari dell'utente
         
@@ -191,22 +199,23 @@ class UserDataManager:
         """
         if user_id not in self._user_preferences:
             self._user_preferences[user_id] = UserPreferences(
-                excluded_foods=set(),
-                preferred_foods=set(),
+                excluded_foods=[],
+                preferred_foods=[],
                 portion_sizes={},
-                cooking_methods=set()
+                cooking_methods=[]
             )
 
         current_prefs = self._user_preferences[user_id]
         
+        # Convert any sets to lists before updating
         for category, items in preferences.items():
             if hasattr(current_prefs, category):
-                if isinstance(getattr(current_prefs, category), set):
+                if isinstance(items, (list, set)):
+                    setattr(current_prefs, category, list(items))
+                elif isinstance(items, dict):
                     getattr(current_prefs, category).update(items)
                 else:
-                    getattr(current_prefs, category).update(items)
-            else:
-                raise ValueError(f"Categoria preferenze non valida: {category}")
+                    setattr(current_prefs, category, [items] if items else [])
 
         self._save_user_data(user_id)
 
@@ -400,10 +409,10 @@ class UserDataManager:
         if user_id in self._user_preferences:
             prefs = self._user_preferences[user_id]
             user_preferences = {
-                "excluded_foods": list(prefs.excluded_foods),
-                "preferred_foods": list(prefs.preferred_foods),
+                "excluded_foods": prefs.excluded_foods,  # Already a list
+                "preferred_foods": prefs.preferred_foods,  # Already a list
                 "portion_sizes": prefs.portion_sizes,
-                "cooking_methods": list(prefs.cooking_methods)
+                "cooking_methods": prefs.cooking_methods  # Already a list
             }
         
         data = {
@@ -439,10 +448,7 @@ class UserDataManager:
         # Carica preferenze
         if data.get("user_preferences"):
             prefs_data = data["user_preferences"]
-            # Converti le liste in set dove necessario
-            prefs_data["excluded_foods"] = set(prefs_data["excluded_foods"])
-            prefs_data["preferred_foods"] = set(prefs_data["preferred_foods"])
-            prefs_data["cooking_methods"] = set(prefs_data["cooking_methods"])
+            # No need to convert to sets anymore
             self._user_preferences[user_id] = UserPreferences(**prefs_data)
 
         # Carica history chat
@@ -471,10 +477,10 @@ class UserDataManager:
         """
         # Resetta le preferenze in memoria
         self._user_preferences[user_id] = UserPreferences(
-            excluded_foods=set(),
-            preferred_foods=set(),
+            excluded_foods=[],
+            preferred_foods=[],
             portion_sizes={"default": "Medie"},
-            cooking_methods=set()
+            cooking_methods=[]
         )
         
         # Forza il salvataggio su file

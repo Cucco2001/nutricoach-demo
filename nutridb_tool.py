@@ -27,7 +27,7 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "get_LARN_lipidi_percentuali": [],
         "get_LARN_vitamine": ["sesso", "età"],
         "compute_Harris_Benedict_Equation": ["sesso", "peso", "altezza", "età", "livello_attività"],
-        "get_protein_multiplier": ["tipo_attivita", "is_vegan"],
+        "get_protein_multiplier": ["sports"],
         "check_ultraprocessed_foods": ["foods_with_grams"],
         "calculate_sport_expenditure": ["sports"]
     }
