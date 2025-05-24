@@ -61,7 +61,7 @@
       "description": "Hockey su ghiaccio o prato amatoriale"
     },
     "judo": {
-      "category": "Sport di forza",
+      "category": "Sport aciclici",
       "kcal_per_hour": 850,
       "description": "Judo e arti marziali simili"
     },
@@ -101,7 +101,7 @@
       "description": "Tennis da tavolo"
     },
     "pugilato": {
-      "category": "Sport di forza",
+      "category": "Sport aciclici",
       "kcal_per_hour": 600,
       "description": "Pugilato e boxe"
     },
@@ -140,40 +140,20 @@
       "kcal_per_hour": 300,
       "description": "Vela ricreativa"
     },
-    "fitness_easy": {
+    "Fitness - Allenamento medio": {
       "category": "Fitness - Allenamento medio",
       "kcal_per_hour": 250,
       "description": "Allenamento leggero in palestra"
     },
-    "fitness_medio": {
-      "category": "Fitness - Allenamento medio",
-      "kcal_per_hour": 350,
-      "description": "Allenamento moderato in palestra"
-    },
-    "fitness_medio_massa": {
+    "Fitness - Bodybuilding Massa": {
       "category": "Fitness - Bodybuilding Massa",
-      "kcal_per_hour": 400,
+      "kcal_per_hour": 450,
       "description": "Allenamento moderato in palestra"
     },
-    "fitness_hard_massa": {
-      "category": "Fitness - Bodybuilding Massa",
-      "kcal_per_hour": 500,
-      "description": "Allenamento intenso in palestra"
-    },
-    "fitness_medio_definizione": {
-      "category": "Fitness - Bodybuilding Definizione",
-      "kcal_per_hour": 400,
-      "description": "Allenamento moderato in palestra"
-    },
-    "fitness_hard_definizione": {
+    "Fitness - Bodybuilding Definizione": {
       "category": "Fitness - Bodybuilding Definizione",
       "kcal_per_hour": 500,
       "description": "Allenamento intenso in palestra"
-    },
-    "body_building": {
-      "category": "Fitness - Bodybuilding Massa",
-      "kcal_per_hour": 400,
-      "description": "Allenamento di bodybuilding"
     },
     "spinning_easy": {
       "category": "Sport di resistenza",
@@ -191,9 +171,24 @@
       "description": "Aerobica"
     },
     "arti_marziali": {
-      "category": "Sport di forza",
+      "category": "Sport aciclici",
       "kcal_per_hour": 450,
       "description": "Arti marziali generiche"
+    },
+    "powerlifting": {
+    "category": "Sport di forza",
+    "kcal_per_hour": 500,
+    "description": "Allenamento e competizione di sollevamento massimo nei tre esercizi fondamentali: squat, panca e stacco"
+    },
+    "sollevamento_pesi": {
+      "category": "Sport di forza",
+      "kcal_per_hour": 400,
+      "description": "Sollevamento olimpico con esercizi come strappo e slancio"
+    },
+    "strongman": {
+      "category": "Sport di forza",
+      "kcal_per_hour": 600,
+      "description": "Discipline multiple di forza estrema con carichi elevati e movimenti funzionali"
     }
   }
 } 

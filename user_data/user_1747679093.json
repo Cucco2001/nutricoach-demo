@@ -8,53 +8,7 @@
     },
     "cooking_methods": []
   },
-  "chat_history": [
-    {
-      "role": "assistant",
-      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando: Valutazione dei dati iniziali del cliente e delle loro preferenze\n\n1. **Dati del cliente**:\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n   - Obiettivo principale: Mantenimento\n\n2. **Preferenze alimentari**:\n   - Nessun alimento escluso\n   - Nessun alimento preferito specificato\n   - Porzione standard: Medie\n   - Nessun metodo di cottura preferito specificato\n\n3. **Allergie/Intolleranze**:\n   - Nessuna allergia o intolleranza segnalata\n\n4. **Obiettivi di peso**:\n   - L'obiettivo è il mantenimento, quindi non è previsto un cambiamento di peso significativo nel tempo.\n\n5. **Attività sportive praticate**:\n   - Sport: Fitness Easy (Allenamento leggero in palestra)\n   - Intensità: Easy\n   - Ore di attività settimanali: 3\n   - Kcal per ora: 250\n\n6. **Numero di pasti e orari preferiti**:\n   - Numero di pasti: 6\n   - Orari dei pasti:\n     - Colazione: 07:30\n     - Spuntino mattutino: 10:30\n     - Pranzo: 13:00\n     - Spuntino pomeridiano: 16:30\n     - Cena: 20:00\n     - Spuntino serale: 22:00\n\n➡️ Procedo con la FASE 2 - Calcolo del fabbisogno energetico?",
-      "timestamp": 1748086843.0310488
-    },
-    {
-      "role": "user",
-      "content": "si",
-      "timestamp": 1748086859.8810608
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n📊 Risultati intermedi:\n\n1. **Metabolismo basale (MB)**:\n   - Calcolato con l'equazione di Harris-Benedict\n   - MB = 1672 kcal\n\n2. **Fabbisogno energetico totale senza considerare sport**:\n   - Fabbisogno giornaliero = 2424 kcal\n   - Livello di attività fisica (LAF) utilizzato: 1.45 (Sedentario)\n\n3. **Dispendio energetico per l'attività sportiva (Fitness Easy)**:\n   - Kcal per ora: 200\n   - Ore settimanali: 3\n   - Kcal giornaliero aggiuntivo: 86\n\n4. **Fabbisogno energetico totale**:\n   - Fabbisogno giornaliero totale = 2424 kcal + 86 kcal = 2510 kcal\n\n⚠️ **Nota**: Questo fabbisogno è calcolato per mantenere l'attuale peso corporeo data l'attività e il livello di esercizio dichiarati.\n\n➡️ Procedo con la FASE 3 - Calcolo dei macronutrienti?",
-      "timestamp": 1748086872.1156018
-    },
-    {
-      "role": "user",
-      "content": "si",
-      "timestamp": 1748086891.1657283
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 3 - Calcolo dei macronutrienti\n\n📊 Risultati intermedi:\n\n1. **Proteine**:\n   - Moltiplicatore proteico per il tipo di attività: 1.0 g/kg\n   - Peso corporeo: 70 kg\n   - Grammi totali di proteine: 1.0 * 70 = 70 g\n   - Kcal da proteine: 70 g * 4 = 280 kcal\n   - Percentuale sulle kcal totali: (280 / 2510) * 100 = 11%\n\n2. **Grassi**:\n   - Range LARN: 20-35% delle kcal totali\n   - Scelgo un valore intermedio: 30% delle kcal totali\n   - Kcal da grassi: 2510 * 0.30 = 753 kcal\n   - Grammi di grassi: 753 / 9 = 84 g \n\n3. **Carboidrati**:\n   - Kcal dai carboidrati: 2510 - (280 + 753) = 1477 kcal\n   - Grammi di carboidrati: 1477 / 4 = 369 g\n\n4. **Fibre**:\n   - LARN per le fibre: 31.6 g - 41.9 g al giorno\n\n📊 Riepilogo macronutrienti:\n- Kcal totali: 2510\n  - Proteine: 70 g (280 kcal, 11%)\n  - Grassi: 84 g (753 kcal, 30%)\n  - Carboidrati: 369 g (1477 kcal, 59%)\n  - Fibre: 31.6 - 41.9 g \n\n➡️ Procedo con la FASE 4 - Distribuzione delle calorie tra i pasti?",
-      "timestamp": 1748086904.9673162
-    },
-    {
-      "role": "user",
-      "content": "si",
-      "timestamp": 1748086991.2680376
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 4 - Distribuzione delle calorie tra i pasti\n\n📊 Risultati intermedi:\n\nHai specificato di preferire 6 pasti al giorno con gli orari definiti. Ecco come distribuirò le 2510 kcal totali giornaliere:\n\n1. **Colazione (07:30)**:\n   - 20% delle kcal totali = 502 kcal\n\n2. **Spuntino mattutino (10:30)**:\n   - 10% delle kcal totali = 251 kcal\n\n3. **Pranzo (13:00)**:\n   - 25% delle kcal totali = 628 kcal\n\n4. **Spuntino pomeridiano (16:30)**:\n   - 10% delle kcal totali = 251 kcal\n\n5. **Cena (20:00)**:\n   - 25% delle kcal totali = 628 kcal\n\n6. **Spuntino serale (22:00)**:\n   - 10% delle kcal totali = 251 kcal\n\n📊 Distribuzione calorica per ogni pasto:\n- Colazione: 502 kcal\n- Spuntino mattutino: 251 kcal\n- Pranzo: 628 kcal\n- Spuntino pomeridiano: 251 kcal\n- Cena: 628 kcal\n- Spuntino serale: 251 kcal\n\n➡️ Procedo con la FASE 5 - Distribuzione dei macronutrienti tra i pasti?",
-      "timestamp": 1748086997.6648252
-    },
-    {
-      "role": "user",
-      "content": "si",
-      "timestamp": 1748087032.1202922
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 5 - Distribuzione dei macronutrienti tra i pasti\n\n📊 Risultati intermedi:\n\n1. **Colazione (07:30)**: 502 kcal\n   - Proteine: 11 g (16% di 70 g totali)\n   - Carboidrati: 86 g (23% di 369 g totali)\n   - Grassi: 17 g (20% di 84 g totali)\n\n2. **Spuntino mattutino (10:30)**: 251 kcal\n   - Proteine: 6 g (9% di 70 g totali)\n   - Carboidrati: 43 g (12% di 369 g totali)\n   - Grassi: 9 g (10% di 84 g totali)\n\n3. **Pranzo (13:00)**: 628 kcal\n   - Proteine: 18 g (26% di 70 g totali)\n   - Carboidrati: 130 g (35% di 369 g totali)\n   - Grassi: 22 g (26% di 84 g totali)\n\n4. **Spuntino pomeridiano (16:30)**: 251 kcal\n   - Proteine: 6 g (9% di 70 g totali)\n   - Carboidrati: 43 g (12% di 369 g totali)\n   - Grassi: 9 g (10% di 84 g totali)\n\n5. **Cena (20:00)**: 628 kcal\n   - Proteine: 18 g (26% di 70 g totali)\n   - Carboidrati: 130 g (35% di 369 g totali)\n   - Grassi: 22 g (26% di 84 g totali)\n\n6. **Spuntino serale (22:00)**: 251 kcal\n   - Proteine: 11 g (14% di 70 g totali)\n   - Carboidrati: 37 g (13% di 369 g totali)\n   - Grassi: 5 g (8% di 84 g totali)\n\n📊 Riepilogo della distribuzione:\n- La colazione è più ricca di carboidrati per avviare la giornata con energia.\n- I pranzi e le cene sono bilanciati con una quota significativa di proteine per sostenere l'attività fisica.\n- Gli spuntini sono leggeri, mantenendo un equilibrio tra carboidrati e grassi.\n- La distribuzione favorisce carboidrati al mattino e proteine la sera per supportare il recupero muscolare.\n\n➡️ Procedo con la FASE 6 - Creazione dei singoli pasti?",
-      "timestamp": 1748087043.4343052
-    }
-  ],
+  "chat_history": [],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -66,59 +20,8 @@
       "allergies": {
         "answer": "No",
         "follow_up": null
-      },
-      "sports": {
-        "answer": "Sì",
-        "follow_up": [
-          {
-            "sport_type": "Fitness - Allenamento medio (principianti e livello intermedio)",
-            "specific_sport": {
-              "name": "Fitness Easy",
-              "key": "fitness_easy",
-              "kcal_per_hour": 250,
-              "description": "Allenamento leggero in palestra"
-            },
-            "intensity": "easy",
-            "hours_per_week": 3
-          }
-        ]
-      },
-      "meal_preferences": {
-        "answer": "Sì",
-        "follow_up": {
-          "num_meals": 6,
-          "meal_times": {
-            "Colazione": "07:30",
-            "Spuntino mattutino": "10:30",
-            "Pranzo": "13:00",
-            "Spuntino pomeridiano": "16:30",
-            "Cena": "20:00",
-            "Spuntino serale": "22:00"
-          }
-        }
       }
     },
-    "agent_qa": [
-      {
-        "question": "si",
-        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n📊 Risultati intermedi:\n\n1. **Metabolismo basale (MB)**:\n   - Calcolato con l'equazione di Harris-Benedict\n   - MB = 1672 kcal\n\n2. **Fabbisogno energetico totale senza considerare sport**:\n   - Fabbisogno giornaliero = 2424 kcal\n   - Livello di attività fisica (LAF) utilizzato: 1.45 (Sedentario)\n\n3. **Dispendio energetico per l'attività sportiva (Fitness Easy)**:\n   - Kcal per ora: 200\n   - Ore settimanali: 3\n   - Kcal giornaliero aggiuntivo: 86\n\n4. **Fabbisogno energetico totale**:\n   - Fabbisogno giornaliero totale = 2424 kcal + 86 kcal = 2510 kcal\n\n⚠️ **Nota**: Questo fabbisogno è calcolato per mantenere l'attuale peso corporeo data l'attività e il livello di esercizio dichiarati.\n\n➡️ Procedo con la FASE 3 - Calcolo dei macronutrienti?",
-        "timestamp": 1748086872.1156018
-      },
-      {
-        "question": "si",
-        "answer": "✓ FASE 3 - Calcolo dei macronutrienti\n\n📊 Risultati intermedi:\n\n1. **Proteine**:\n   - Moltiplicatore proteico per il tipo di attività: 1.0 g/kg\n   - Peso corporeo: 70 kg\n   - Grammi totali di proteine: 1.0 * 70 = 70 g\n   - Kcal da proteine: 70 g * 4 = 280 kcal\n   - Percentuale sulle kcal totali: (280 / 2510) * 100 = 11%\n\n2. **Grassi**:\n   - Range LARN: 20-35% delle kcal totali\n   - Scelgo un valore intermedio: 30% delle kcal totali\n   - Kcal da grassi: 2510 * 0.30 = 753 kcal\n   - Grammi di grassi: 753 / 9 = 84 g \n\n3. **Carboidrati**:\n   - Kcal dai carboidrati: 2510 - (280 + 753) = 1477 kcal\n   - Grammi di carboidrati: 1477 / 4 = 369 g\n\n4. **Fibre**:\n   - LARN per le fibre: 31.6 g - 41.9 g al giorno\n\n📊 Riepilogo macronutrienti:\n- Kcal totali: 2510\n  - Proteine: 70 g (280 kcal, 11%)\n  - Grassi: 84 g (753 kcal, 30%)\n  - Carboidrati: 369 g (1477 kcal, 59%)\n  - Fibre: 31.6 - 41.9 g \n\n➡️ Procedo con la FASE 4 - Distribuzione delle calorie tra i pasti?",
-        "timestamp": 1748086904.975565
-      },
-      {
-        "question": "si",
-        "answer": "✓ FASE 4 - Distribuzione delle calorie tra i pasti\n\n📊 Risultati intermedi:\n\nHai specificato di preferire 6 pasti al giorno con gli orari definiti. Ecco come distribuirò le 2510 kcal totali giornaliere:\n\n1. **Colazione (07:30)**:\n   - 20% delle kcal totali = 502 kcal\n\n2. **Spuntino mattutino (10:30)**:\n   - 10% delle kcal totali = 251 kcal\n\n3. **Pranzo (13:00)**:\n   - 25% delle kcal totali = 628 kcal\n\n4. **Spuntino pomeridiano (16:30)**:\n   - 10% delle kcal totali = 251 kcal\n\n5. **Cena (20:00)**:\n   - 25% delle kcal totali = 628 kcal\n\n6. **Spuntino serale (22:00)**:\n   - 10% delle kcal totali = 251 kcal\n\n📊 Distribuzione calorica per ogni pasto:\n- Colazione: 502 kcal\n- Spuntino mattutino: 251 kcal\n- Pranzo: 628 kcal\n- Spuntino pomeridiano: 251 kcal\n- Cena: 628 kcal\n- Spuntino serale: 251 kcal\n\n➡️ Procedo con la FASE 5 - Distribuzione dei macronutrienti tra i pasti?",
-        "timestamp": 1748086997.666843
-      },
-      {
-        "question": "si",
-        "answer": "✓ FASE 5 - Distribuzione dei macronutrienti tra i pasti\n\n📊 Risultati intermedi:\n\n1. **Colazione (07:30)**: 502 kcal\n   - Proteine: 11 g (16% di 70 g totali)\n   - Carboidrati: 86 g (23% di 369 g totali)\n   - Grassi: 17 g (20% di 84 g totali)\n\n2. **Spuntino mattutino (10:30)**: 251 kcal\n   - Proteine: 6 g (9% di 70 g totali)\n   - Carboidrati: 43 g (12% di 369 g totali)\n   - Grassi: 9 g (10% di 84 g totali)\n\n3. **Pranzo (13:00)**: 628 kcal\n   - Proteine: 18 g (26% di 70 g totali)\n   - Carboidrati: 130 g (35% di 369 g totali)\n   - Grassi: 22 g (26% di 84 g totali)\n\n4. **Spuntino pomeridiano (16:30)**: 251 kcal\n   - Proteine: 6 g (9% di 70 g totali)\n   - Carboidrati: 43 g (12% di 369 g totali)\n   - Grassi: 9 g (10% di 84 g totali)\n\n5. **Cena (20:00)**: 628 kcal\n   - Proteine: 18 g (26% di 70 g totali)\n   - Carboidrati: 130 g (35% di 369 g totali)\n   - Grassi: 22 g (26% di 84 g totali)\n\n6. **Spuntino serale (22:00)**: 251 kcal\n   - Proteine: 11 g (14% di 70 g totali)\n   - Carboidrati: 37 g (13% di 369 g totali)\n   - Grassi: 5 g (8% di 84 g totali)\n\n📊 Riepilogo della distribuzione:\n- La colazione è più ricca di carboidrati per avviare la giornata con energia.\n- I pranzi e le cene sono bilanciati con una quota significativa di proteine per sostenere l'attività fisica.\n- Gli spuntini sono leggeri, mantenendo un equilibrio tra carboidrati e grassi.\n- La distribuzione favorisce carboidrati al mattino e proteine la sera per supportare il recupero muscolare.\n\n➡️ Procedo con la FASE 6 - Creazione dei singoli pasti?",
-        "timestamp": 1748087043.4411314
-      }
-    ]
+    "agent_qa": []
   }
 }
