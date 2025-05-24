@@ -546,19 +546,20 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
 FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
 1. Calcola fabbisogno energetico:
    - Usa compute_Harris_Benedict_Equation per calcolare il metabolismo basale e il fabbisogno energetico totale
-   - Parametri richiesti:
-     * sesso: "maschio" o "femmina"
-     * peso: in kg
-     * altezza: in cm
-     * età: in anni
-     * livello_attività: "Sedentario" (LAF 1.45), "Leggermente attivo" (LAF 1.60), "Attivo" (LAF 1.75), "Molto attivo" (LAF 2.10)
-   - La funzione restituirà:
-     * bmr: metabolismo basale in kcal
-     * fabbisogno_giornaliero: fabbisogno totale in kcal
-     * laf_utilizzato: il LAF effettivamente applicato
+        - Parametri richiesti:
+            * sesso: "maschio" o "femmina"
+            * peso: in kg
+            * altezza: in cm
+            * età: in anni
+            * livello_attività: "Sedentario" (LAF 1.45), "Leggermente attivo" (LAF 1.60), "Attivo" (LAF 1.75), "Molto attivo" (LAF 2.10)
+        - La funzione restituirà:
+            * bmr: metabolismo basale in kcal
+            * fabbisogno_giornaliero: fabbisogno totale in kcal
+            * laf_utilizzato: il LAF effettivamente applicato
    - Aggiusta il fabbisogno in base all'obiettivo:
-     * Dimagrimento: sottrai il deficit calcolato nella FASE 1
-     * Massa: aggiungi il surplus calcolato nella FASE 1
+        - Calcola il deficit/surplus calorico giornaliero usando calculate_weight_goal_calories, poi procedi con:
+            * Dimagrimento: sottrai il deficit calcolato
+            * Massa: aggiungi il surplus calcolato 
    - Aggiungi il dispendio da attività sportiva
    - IMPORTANTE: Salva il valore finale di kcal per i calcoli successivi
 

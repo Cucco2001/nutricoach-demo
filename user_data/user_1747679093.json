@@ -8,18 +8,18 @@
   "chat_history": [
     {
       "role": "assistant",
-      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando:\n\n1. **Dati del cliente iniziali:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n\n2. **Preferenze alimentari:**\n   - Alimenti esclusi: Nessuno\n   - Alimenti preferiti: Nessuno\n   - Note utente: Nessuna\n\n3. **Intolleranze/allergie:**\n   - Nessuna allergia o intolleranza segnalata\n\n4. **Obiettivi di peso:**\n   - Vuole perdere 20 kg in 3 mesi\n\n5. **Attività sportive:**\n   - Non pratica attività sportiva\n\n6. **Numero di pasti:**\n   - Nessuna preferenza specificata, suggerirò 5 pasti standard\n\n📊 Risultati intermedi:\n\n- Non ci sono intolleranze o allergie di cui preoccuparsi.\n- Richiederà un deficit calorico significativo per raggiungere l'obiettivo di perdita di peso.\n- Non ci sono sport o attività fisiche aggiuntive da considerare.\n\n❓ Ho bisogno del tuo input su: Conferma che non ci sono altre preferenze alimentari o abitudini da considerare prima di procedere. \n\n➡️ Posso procedere con la FASE 2?",
-      "timestamp": 1748095204.5872498
+      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando le informazioni dettagliate sul cliente:\n\n1. **Dati del cliente:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n   - Obiettivo principale: Perdita di peso (5 kg in 3 mesi)\n\n2. **Preferenze alimentari e restrizioni:**\n   - Nessuna allergia o intolleranza segnalata.\n   - Nessun alimento escluso o preferito specificato.\n   \n3. **Obiettivo di peso:**\n   - Perdita di 5 kg in un periodo di 3 mesi.\n\n4. **Attività sportiva:**\n   - L'utente ha specificato di non praticare sport attualmente.\n\n5. **Pasti e orari:**\n   - Nessuna preferenza specificata per il numero di pasti o gli orari.\n\n➡️ Procedo con la FASE 2 per calcolare il fabbisogno energetico?",
+      "timestamp": 1748095876.9338841
     },
     {
       "role": "user",
       "content": "si",
-      "timestamp": 1748095212.1966724
+      "timestamp": 1748095881.960051
     },
     {
       "role": "assistant",
-      "content": "⚠️ Attenzione:\n\nIl deficit calorico richiesto per perdere 20 kg in 3 mesi è estremamente elevato e non è consigliato per la salute. Ho calcolato che il deficit massimo sostenibile e sano sarebbe di 500 kcal al giorno. Con questo deficit, la perdita di peso sarà più sostenibile nel tempo.\n\n➡️ Procedo con il calcolo del fabbisogno energetico?",
-      "timestamp": 1748095223.4070048
+      "content": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n1. **Calcolo del Metabolismo Basale (BMR):**\n   - Formula di Harris-Benedict per uomo: \n     MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30) = 1672 kcal\n\n2. **Fabbisogno Energetico Totale:**\n   - LAF utilizzato: 1.45 (Sedentario)\n   - Fabbisogno giornaliero = BMR * LAF\n   - Fabbisogno giornaliero = 1672 * 1.45 ≈ 2424 kcal\n\n3. **Aggiustamento per l'obiettivo di perdita di peso:**\n   - Deficit calorico giornaliero necessario: -428 kcal\n\n4. **Fabbisogno calorico totale per obiettivo:**\n   - Fabbisogno dopo aggiustamento = Fabbisogno giornaliero - Deficit\n   - Fabbisogno totale = 2424 - 428 = 1996 kcal\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Energetico Totale: 2424 kcal\n- Deficit calorico giornaliero: -428 kcal\n- Fabbisogno calorico totale per obiettivo: 1996 kcal\n\n➡️ Procedo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+      "timestamp": 1748095899.9823787
     }
   ],
   "nutritional_info": {
@@ -35,7 +35,7 @@
         "follow_up": null
       },
       "weight_goal": {
-        "kg": 20,
+        "kg": 5,
         "months": 3
       },
       "sports": {
@@ -50,8 +50,8 @@
     "agent_qa": [
       {
         "question": "si",
-        "answer": "⚠️ Attenzione:\n\nIl deficit calorico richiesto per perdere 20 kg in 3 mesi è estremamente elevato e non è consigliato per la salute. Ho calcolato che il deficit massimo sostenibile e sano sarebbe di 500 kcal al giorno. Con questo deficit, la perdita di peso sarà più sostenibile nel tempo.\n\n➡️ Procedo con il calcolo del fabbisogno energetico?",
-        "timestamp": 1748095223.4105518
+        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n1. **Calcolo del Metabolismo Basale (BMR):**\n   - Formula di Harris-Benedict per uomo: \n     MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30) = 1672 kcal\n\n2. **Fabbisogno Energetico Totale:**\n   - LAF utilizzato: 1.45 (Sedentario)\n   - Fabbisogno giornaliero = BMR * LAF\n   - Fabbisogno giornaliero = 1672 * 1.45 ≈ 2424 kcal\n\n3. **Aggiustamento per l'obiettivo di perdita di peso:**\n   - Deficit calorico giornaliero necessario: -428 kcal\n\n4. **Fabbisogno calorico totale per obiettivo:**\n   - Fabbisogno dopo aggiustamento = Fabbisogno giornaliero - Deficit\n   - Fabbisogno totale = 2424 - 428 = 1996 kcal\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Energetico Totale: 2424 kcal\n- Deficit calorico giornaliero: -428 kcal\n- Fabbisogno calorico totale per obiettivo: 1996 kcal\n\n➡️ Procedo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+        "timestamp": 1748095899.9863744
       }
     ]
   }
