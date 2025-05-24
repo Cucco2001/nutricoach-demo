@@ -294,8 +294,8 @@ def handle_tool_calls(run_status):
                     get_macros, get_LARN_protein, get_standard_portion, 
                     get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
                     get_LARN_lipidi_percentuali, get_LARN_vitamine, 
-                    compute_Harris_Benedict_Equation, get_protein_multiplier, 
-                    calculate_sport_expenditure, check_ultraprocessed_foods
+                    compute_Harris_Benedict_Equation, get_protein_multiplier,
+                    calculate_sport_expenditure, calculate_weight_goal_calories, check_ultraprocessed_foods
                 )
                 from user_data_tool import (
                     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
@@ -315,6 +315,7 @@ def handle_tool_calls(run_status):
                     "compute_Harris_Benedict_Equation": compute_Harris_Benedict_Equation,
                     "get_protein_multiplier": get_protein_multiplier,
                     "calculate_sport_expenditure": calculate_sport_expenditure,
+                    "calculate_weight_goal_calories": calculate_weight_goal_calories,
                     "check_ultraprocessed_foods": check_ultraprocessed_foods,
                     
                     # Funzioni per accedere ai dati dell'utente

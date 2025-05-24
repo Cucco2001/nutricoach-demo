@@ -11,6 +11,7 @@ from nutridb_tool import (
     compute_Harris_Benedict_Equation, 
     get_protein_multiplier, 
     calculate_sport_expenditure, 
+    calculate_weight_goal_calories,
     check_ultraprocessed_foods
 )
 from user_data_tool import (
@@ -213,6 +214,42 @@ available_tools = [
                     "hours": {"type": "number", "description": "Ore di attività settimanali (usato solo se 'sports' è una stringa)"}
                 },
                 "required": ["sports"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "calculate_weight_goal_calories",
+            "description": "Calcola il deficit o surplus calorico giornaliero per raggiungere l'obiettivo di peso in un determinato tempo.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "kg_change": {
+                        "type": "number",
+                        "minimum": 0.5,
+                        "maximum": 50,
+                        "description": "Numero di kg da cambiare (sempre positivo)"
+                    },
+                    "time_months": {
+                        "type": "number",
+                        "minimum": 0.5,
+                        "maximum": 24,
+                        "description": "Tempo in mesi per raggiungere l'obiettivo"
+                    },
+                    "goal_type": {
+                        "type": "string",
+                        "enum": ["perdita_peso", "aumento_massa"],
+                        "description": "Tipo di obiettivo: perdita_peso o aumento_massa"
+                    },
+                    "bmr": {
+                        "type": "number",
+                        "minimum": 800,
+                        "maximum": 3000,
+                        "description": "Metabolismo basale in kcal (opzionale, per verifica deficit)"
+                    }
+                },
+                "required": ["kg_change", "time_months", "goal_type"]
             }
         }
     },
@@ -433,20 +470,39 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
    - Considera anche i derivati degli alimenti da escludere
 
 3. Analizza l'obiettivo di peso:
-   Se obiettivo è perdita di peso:
-   - Calcola SEMPRE il deficit calorico necessario e salvalo per calcoli successivi:
-     * kg da perdere / mesi = kg al mese
-     * 1 kg = 7700 kcal
-     * Deficit giornaliero = (kg al mese * 7700) / 30
-     * Verifica che il deficit non porti sotto il metabolismo basale
-     * Se il deficit è eccessivo (>500 kcal/giorno), avvisa e usa deficit massimo di 500 kcal
+   - Usa SEMPRE il tool calculate_weight_goal_calories per automatizzare questo calcolo
+   - Parametri richiesti:
+     * kg_change: numero di kg da cambiare (sempre positivo)
+     * time_months: tempo in mesi per raggiungere l'obiettivo
+     * goal_type: tipo di obiettivo ("perdita_peso" o "aumento_massa")
+     * bmr: metabolismo basale (opzionale, per verifica deficit)
    
-   Se obiettivo è aumento massa:
-   - Calcola SEMPRE il surplus calorico necessario e salvalo per calcoli successivi:
-     * kg da aumentare / mesi = kg al mese
-     * Surplus ottimale = 300-500 kcal/giorno per minimizzare aumento grasso
-     * Se richiesta > 1kg/mese, avvisa che potrebbe aumentare anche il grasso
-     * Aumenta anche l'apporto proteico a 1.8-2.2 g/kg
+   - La funzione restituirà automaticamente:
+     * daily_calorie_adjustment: deficit/surplus calorico giornaliero (negativo per deficit, positivo per surplus)
+     * warnings: eventuali avvertimenti su deficit eccessivi o tempi irrealistici
+     * goal_type: tipo di obiettivo confermato
+     * kg_per_month: velocità di cambiamento
+   
+   - Esempio di utilizzo:
+   ```
+   calculate_weight_goal_calories(
+     kg_change=5,
+     time_months=6,
+     goal_type="perdita_peso",
+     bmr=1800  # opzionale
+   )
+   
+   Risultato per perdita peso:
+   {
+     "daily_calorie_adjustment": -214,
+     "warnings": [],
+     "goal_type": "perdita_peso",
+     "kg_per_month": 0.83
+   }
+   ```
+   
+   - Salva SEMPRE il valore daily_calorie_adjustment per i calcoli successivi del fabbisogno calorico
+   - Se ci sono warnings, informane l'utente e spiega le raccomandazioni
 
 4. Analizza l'attività sportiva:
    - Calcola SEMPRE il dispendio energetico aggiuntivo e salvalo per calcoli successivi

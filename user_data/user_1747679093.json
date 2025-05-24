@@ -3,35 +3,23 @@
   "user_preferences": {
     "excluded_foods": [],
     "preferred_foods": [],
-    "user_notes": [
-      "vegano da 1 anno"
-    ]
+    "user_notes": []
   },
   "chat_history": [
     {
       "role": "assistant",
-      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando: i dati del cliente, preferenze, intolleranze/allergie, obiettivo di peso e attività sportive.\n\n1. **Dati del cliente iniziali:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello attività quotidiana: Sedentario\n   - Obiettivo: Mantenimento del peso\n\n2. **Preferenze alimentari:**\n   - Vegano da 1 anno\n   - Nessun alimento escluso specificato oltre a quelli animali\n\n3. **Intolleranze/Allergie:**\n   - Nessuna allergia riportata\n\n4. **Obiettivo di peso:**\n   - Mantenimento del peso attuale, quindi nessun deficit o surplus calorico da applicare\n\n5. **Attività sportive:**\n   - Nessuna attività sportiva praticata\n\n6. **Numero di pasti e orari preferiti:**\n   - Non specificati, quindi userò un approccio standard di 5 pasti al giorno (colazione, pranzo, cena, due spuntini)\n\n📊 Risultati intermedi: Analisi completata con tutte le informazioni necessarie raccolte.\n\n➡️ Procedo con la FASE 2 - Calcolo del fabbisogno energetico?",
-      "timestamp": 1748091954.1542425
+      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando:\n\n1. **Dati del cliente iniziali:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n\n2. **Preferenze alimentari:**\n   - Alimenti esclusi: Nessuno\n   - Alimenti preferiti: Nessuno\n   - Note utente: Nessuna\n\n3. **Intolleranze/allergie:**\n   - Nessuna allergia o intolleranza segnalata\n\n4. **Obiettivi di peso:**\n   - Vuole perdere 20 kg in 3 mesi\n\n5. **Attività sportive:**\n   - Non pratica attività sportiva\n\n6. **Numero di pasti:**\n   - Nessuna preferenza specificata, suggerirò 5 pasti standard\n\n📊 Risultati intermedi:\n\n- Non ci sono intolleranze o allergie di cui preoccuparsi.\n- Richiederà un deficit calorico significativo per raggiungere l'obiettivo di perdita di peso.\n- Non ci sono sport o attività fisiche aggiuntive da considerare.\n\n❓ Ho bisogno del tuo input su: Conferma che non ci sono altre preferenze alimentari o abitudini da considerare prima di procedere. \n\n➡️ Posso procedere con la FASE 2?",
+      "timestamp": 1748095204.5872498
     },
     {
       "role": "user",
       "content": "si",
-      "timestamp": 1748091967.5886266
+      "timestamp": 1748095212.1966724
     },
     {
       "role": "assistant",
-      "content": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto elaborando: il metabolismo basale e il fabbisogno energetico totale.\n\n1. **Calcolo Metabolismo Basale (MB):**\n   - Utilizzo dell'equazione di Harris-Benedict per maschi:\n   - MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30)\n   - MB = 1672 kcal\n\n2. **Fabbisogno energetico totale** (considerando il livello di attività fisica):\n   - Fabbisogno totale = MB * LAF\n   - LAF (Livello di Attività Fisica) per \"Sedentario\" = 1.45\n   - Fabbisogno totale = 1672 * 1.45 = 2424 kcal/giorno\n\n📊 Risultati intermedi: \n- Metabolismo basale (MB): 1672 kcal\n- Fabbisogno energetico totale: 2424 kcal/giorno\n\n➡️ Procedo con la FASE 3 - Calcolo dei macronutrienti?",
-      "timestamp": 1748091980.439602
-    },
-    {
-      "role": "user",
-      "content": "si",
-      "timestamp": 1748091987.9775138
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 3 - Calcolo macronutrienti\n\n⚡ Sto elaborando: la distribuzione delle calorie tra i macronutrienti.\n\n### Calcolo dei macronutrienti:\n\n1. **Proteine:**\n   - Moltiplicatore proteico per un individuo sedentario e vegano: 0.91 g/kg\n   - Peso corporeo: 70 kg\n   - Grammi di proteine: 0.91 * 70 = 64 g\n   - Kcal da proteine: 64 g * 4 = 256 kcal\n   - Percentuale sulle kcal totali: (256 / 2424) * 100 = 10%\n\n2. **Grassi:**\n   - Percentuale raccomandata per i grassi: 20-35% delle calorie totali\n   - Scelgo un valore al centro del range: 30%\n   - Kcal da grassi: 2424 * 0.30 = 727 kcal\n   - Grammi di grassi: 727 / 9 = 81 g\n\n3. **Carboidrati:**\n   - Kcal rimanenti per carboidrati: 2424 - (256 + 727) = 1441 kcal\n   - Grammi di carboidrati: 1441 / 4 = 360 g\n\n4. **Fibre:**\n   - Fabbisogno giornaliero di fibre: 30.5-40.5 g\n   - Assicurerò che la dieta includa una quantità di fibre all'interno di questo range.\n\n📊 Riepilogo macronutrienti:\n- Kcal totali: 2424\n- Proteine: 64 g (256 kcal, 10%)\n- Grassi: 81 g (727 kcal, 30%)\n- Carboidrati: 360 g (1441 kcal, 60%)\n- Fibre: 30.5-40.5 g\n\n➡️ Procedo con la FASE 4 - Distribuzione calorie tra i pasti?",
-      "timestamp": 1748092003.8900018
+      "content": "⚠️ Attenzione:\n\nIl deficit calorico richiesto per perdere 20 kg in 3 mesi è estremamente elevato e non è consigliato per la salute. Ho calcolato che il deficit massimo sostenibile e sano sarebbe di 500 kcal al giorno. Con questo deficit, la perdita di peso sarà più sostenibile nel tempo.\n\n➡️ Procedo con il calcolo del fabbisogno energetico?",
+      "timestamp": 1748095223.4070048
     }
   ],
   "nutritional_info": {
@@ -40,13 +28,21 @@
     "peso": 70,
     "altezza": 170,
     "attività": "Sedentario",
-    "obiettivo": "Mantenimento",
+    "obiettivo": "Perdita di peso",
     "nutrition_answers": {
       "allergies": {
         "answer": "No",
         "follow_up": null
       },
+      "weight_goal": {
+        "kg": 20,
+        "months": 3
+      },
       "sports": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "meal_preferences": {
         "answer": "No",
         "follow_up": null
       }
@@ -54,13 +50,8 @@
     "agent_qa": [
       {
         "question": "si",
-        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto elaborando: il metabolismo basale e il fabbisogno energetico totale.\n\n1. **Calcolo Metabolismo Basale (MB):**\n   - Utilizzo dell'equazione di Harris-Benedict per maschi:\n   - MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30)\n   - MB = 1672 kcal\n\n2. **Fabbisogno energetico totale** (considerando il livello di attività fisica):\n   - Fabbisogno totale = MB * LAF\n   - LAF (Livello di Attività Fisica) per \"Sedentario\" = 1.45\n   - Fabbisogno totale = 1672 * 1.45 = 2424 kcal/giorno\n\n📊 Risultati intermedi: \n- Metabolismo basale (MB): 1672 kcal\n- Fabbisogno energetico totale: 2424 kcal/giorno\n\n➡️ Procedo con la FASE 3 - Calcolo dei macronutrienti?",
-        "timestamp": 1748091980.439602
-      },
-      {
-        "question": "si",
-        "answer": "✓ FASE 3 - Calcolo macronutrienti\n\n⚡ Sto elaborando: la distribuzione delle calorie tra i macronutrienti.\n\n### Calcolo dei macronutrienti:\n\n1. **Proteine:**\n   - Moltiplicatore proteico per un individuo sedentario e vegano: 0.91 g/kg\n   - Peso corporeo: 70 kg\n   - Grammi di proteine: 0.91 * 70 = 64 g\n   - Kcal da proteine: 64 g * 4 = 256 kcal\n   - Percentuale sulle kcal totali: (256 / 2424) * 100 = 10%\n\n2. **Grassi:**\n   - Percentuale raccomandata per i grassi: 20-35% delle calorie totali\n   - Scelgo un valore al centro del range: 30%\n   - Kcal da grassi: 2424 * 0.30 = 727 kcal\n   - Grammi di grassi: 727 / 9 = 81 g\n\n3. **Carboidrati:**\n   - Kcal rimanenti per carboidrati: 2424 - (256 + 727) = 1441 kcal\n   - Grammi di carboidrati: 1441 / 4 = 360 g\n\n4. **Fibre:**\n   - Fabbisogno giornaliero di fibre: 30.5-40.5 g\n   - Assicurerò che la dieta includa una quantità di fibre all'interno di questo range.\n\n📊 Riepilogo macronutrienti:\n- Kcal totali: 2424\n- Proteine: 64 g (256 kcal, 10%)\n- Grassi: 81 g (727 kcal, 30%)\n- Carboidrati: 360 g (1441 kcal, 60%)\n- Fibre: 30.5-40.5 g\n\n➡️ Procedo con la FASE 4 - Distribuzione calorie tra i pasti?",
-        "timestamp": 1748092003.8900018
+        "answer": "⚠️ Attenzione:\n\nIl deficit calorico richiesto per perdere 20 kg in 3 mesi è estremamente elevato e non è consigliato per la salute. Ho calcolato che il deficit massimo sostenibile e sano sarebbe di 500 kcal al giorno. Con questo deficit, la perdita di peso sarà più sostenibile nel tempo.\n\n➡️ Procedo con il calcolo del fabbisogno energetico?",
+        "timestamp": 1748095223.4105518
       }
     ]
   }

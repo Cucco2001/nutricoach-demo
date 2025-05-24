@@ -29,7 +29,8 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "compute_Harris_Benedict_Equation": ["sesso", "peso", "altezza", "età", "livello_attività"],
         "get_protein_multiplier": ["sports"],
         "check_ultraprocessed_foods": ["foods_with_grams"],
-        "calculate_sport_expenditure": ["sports"]
+        "calculate_sport_expenditure": ["sports"],
+        "calculate_weight_goal_calories": ["kg_change", "time_months", "goal_type"]
     }
     
     if function_name not in required_params:
@@ -467,3 +468,28 @@ def check_ultraprocessed_foods(foods_with_grams: Dict[str, float]) -> Dict[str, 
     except Exception as e:
         logger.error(f"Errore nel controllo degli alimenti ultra-processati: {str(e)}")
         return {"error": f"Errore: {str(e)}"}
+
+def calculate_weight_goal_calories(kg_change: float, time_months: float, goal_type: str, bmr: Optional[float] = None) -> Dict[str, Any]:
+    """
+    Calcola il deficit o surplus calorico giornaliero per raggiungere l'obiettivo di peso.
+    
+    Args:
+        kg_change: Numero di kg da cambiare (sempre positivo)
+        time_months: Tempo in mesi per raggiungere l'obiettivo
+        goal_type: "perdita_peso" o "aumento_massa"
+        bmr: Metabolismo basale in kcal (opzionale, per verifica deficit)
+    
+    Returns:
+        Dict contenente:
+        - daily_calorie_adjustment: deficit/surplus calorico giornaliero (negativo per deficit, positivo per surplus)
+        - warnings: lista di avvertimenti se applicabile
+        - goal_type: tipo di obiettivo confermato
+        - kg_per_month: velocità di cambiamento
+    """
+    try:
+        result = db.calculate_weight_goal_calories(kg_change, time_months, goal_type, bmr)
+        logger.info(f"Risultato calculate_weight_goal_calories: {result}")
+        return result
+    except Exception as e:
+        logger.error(f"Errore in calculate_weight_goal_calories: {str(e)}")
+        return {"error": str(e)}

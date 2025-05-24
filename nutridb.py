@@ -374,3 +374,91 @@ class NutriDB:
             result["unrecognized_foods"] = unrecognized_foods
             
         return result
+
+    def calculate_weight_goal_calories(self, kg_change, time_months, goal_type, bmr=None):
+        """Calcola il deficit o surplus calorico giornaliero per raggiungere l'obiettivo di peso.
+        
+        Args:
+            kg_change: Numero di kg da cambiare (sempre positivo)
+            time_months: Tempo in mesi per raggiungere l'obiettivo
+            goal_type: "perdita_peso" o "aumento_massa"
+            bmr: Metabolismo basale in kcal (opzionale, per verifica deficit)
+        
+        Returns:
+            dict: Contiene:
+                - daily_calorie_adjustment: deficit/surplus calorico giornaliero (negativo per deficit, positivo per surplus)
+                - warnings: lista di avvertimenti se applicabile
+                - goal_type: tipo di obiettivo confermato
+                - kg_per_month: velocità di cambiamento
+        
+        Raises:
+            ValueError: se i parametri non sono validi
+        """
+        # Validazione parametri
+        try:
+            kg_change = float(kg_change)
+            time_months = float(time_months)
+            if bmr is not None:
+                bmr = float(bmr)
+        except (ValueError, TypeError):
+            raise ValueError("I parametri kg_change e time_months devono essere numerici")
+        
+        if kg_change <= 0:
+            raise ValueError("I kg da cambiare devono essere positivi")
+        
+        if time_months <= 0:
+            raise ValueError("Il tempo deve essere positivo")
+        
+        if goal_type not in ["perdita_peso", "aumento_massa"]:
+            raise ValueError("goal_type deve essere 'perdita_peso' o 'aumento_massa'")
+        
+        # Calcoli base
+        kg_per_month = kg_change / time_months
+        
+        # Costante: 1 kg = 7700 kcal
+        KCAL_PER_KG = 7700
+        
+        # Calcolo deficit/surplus giornaliero
+        daily_calorie_adjustment = (kg_per_month * KCAL_PER_KG) / 30
+        
+        warnings = []
+        
+        if goal_type == "perdita_peso":
+            # Per perdita peso, il valore deve essere negativo (deficit)
+            daily_calorie_adjustment = -daily_calorie_adjustment
+            
+            # Verifica deficit eccessivo
+            MAX_SAFE_DEFICIT = 500
+            if abs(daily_calorie_adjustment) > MAX_SAFE_DEFICIT:
+                warnings.append(f"Il deficit richiesto ({abs(daily_calorie_adjustment):.0f} kcal/giorno) è eccessivo. "
+                               f"Raccomando un deficit massimo di {MAX_SAFE_DEFICIT} kcal/giorno per la salute.")
+                daily_calorie_adjustment = -MAX_SAFE_DEFICIT
+            
+            # Verifica deficit vs BMR se fornito
+            if bmr is not None and abs(daily_calorie_adjustment) > (bmr * 0.3):
+                warnings.append(f"Il deficit potrebbe portare a un intake troppo basso rispetto al metabolismo basale "
+                               f"({bmr:.0f} kcal). Considera di allungare i tempi.")
+        
+        else:  # aumento_massa
+            # Per aumento massa, il valore deve essere positivo (surplus)
+            # Surplus ottimale per minimizzare aumento grasso
+            OPTIMAL_SURPLUS_MIN = 300
+            OPTIMAL_SURPLUS_MAX = 500
+            
+            if kg_per_month > 1:
+                warnings.append(f"L'aumento richiesto ({kg_per_month:.1f} kg/mese) è superiore a 1 kg/mese. "
+                               "Questo potrebbe comportare un aumento del grasso corporeo oltre alla massa muscolare.")
+            
+            # Limita il surplus all'intervallo ottimale se eccessivo
+            if daily_calorie_adjustment > OPTIMAL_SURPLUS_MAX:
+                warnings.append(f"Il surplus richiesto ({daily_calorie_adjustment:.0f} kcal/giorno) è molto alto. "
+                               f"Raccomando un surplus tra {OPTIMAL_SURPLUS_MIN}-{OPTIMAL_SURPLUS_MAX} kcal/giorno "
+                               "per minimizzare l'aumento di grasso.")
+                daily_calorie_adjustment = OPTIMAL_SURPLUS_MAX
+        
+        return {
+            "daily_calorie_adjustment": round(daily_calorie_adjustment),
+            "warnings": warnings,
+            "goal_type": goal_type,
+            "kg_per_month": round(kg_per_month, 2)
+        }
