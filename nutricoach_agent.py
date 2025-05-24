@@ -240,7 +240,7 @@ available_tools = [
         "type": "function",
         "function": {
             "name": "get_user_preferences",
-            "description": "Ottiene le preferenze dell'utente.",
+            "description": "Ottiene le preferenze di cibi e abitudinarie dell'utente.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -422,7 +422,7 @@ PROCESSO DI CREAZIONE DIETA:
 FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
 
 1. Prima di creare o modificare un piano alimentare:
-   - Controlla le preferenze dell'utente usando get_user_preferences
+   - Controlla le preferenze abitudinarie e di cibi dell'utente usando get_user_preferences
    - Verifica la storia dei progressi usando get_progress_history
    - Considera le conversazioni passate dell'utente usando get_agent_qa
    - Considera le informazioni nutrizionali dell'utente usando get_nutritional_info

@@ -22,8 +22,7 @@ class ProgressEntry:
 class UserPreferences:
     excluded_foods: List[str]
     preferred_foods: List[str]
-    portion_sizes: Dict[str, str]
-    cooking_methods: List[str]
+    user_notes: List[str]
     
     def __post_init__(self):
         # Ensure we always have lists, not sets
@@ -31,16 +30,16 @@ class UserPreferences:
             self.excluded_foods = list(self.excluded_foods)
         if isinstance(self.preferred_foods, set):
             self.preferred_foods = list(self.preferred_foods)
-        if isinstance(self.cooking_methods, set):
-            self.cooking_methods = list(self.cooking_methods)
+        if isinstance(self.user_notes, set):
+            self.user_notes = list(self.user_notes)
         
         # Ensure we have lists even if strings are passed
         if not isinstance(self.excluded_foods, list):
             self.excluded_foods = [self.excluded_foods] if self.excluded_foods else []
         if not isinstance(self.preferred_foods, list):
             self.preferred_foods = [self.preferred_foods] if self.preferred_foods else []
-        if not isinstance(self.cooking_methods, list):
-            self.cooking_methods = [self.cooking_methods] if self.cooking_methods else []
+        if not isinstance(self.user_notes, list):
+            self.user_notes = [self.user_notes] if self.user_notes else []
 
 @dataclass
 class ChatMessage:
@@ -201,8 +200,7 @@ class UserDataManager:
             self._user_preferences[user_id] = UserPreferences(
                 excluded_foods=[],
                 preferred_foods=[],
-                portion_sizes={},
-                cooking_methods=[]
+                user_notes=[]
             )
 
         current_prefs = self._user_preferences[user_id]
@@ -411,8 +409,7 @@ class UserDataManager:
             user_preferences = {
                 "excluded_foods": prefs.excluded_foods,  # Already a list
                 "preferred_foods": prefs.preferred_foods,  # Already a list
-                "portion_sizes": prefs.portion_sizes,
-                "cooking_methods": prefs.cooking_methods  # Already a list
+                "user_notes": prefs.user_notes  # Already a list
             }
         
         data = {
@@ -479,8 +476,7 @@ class UserDataManager:
         self._user_preferences[user_id] = UserPreferences(
             excluded_foods=[],
             preferred_foods=[],
-            portion_sizes={"default": "Medie"},
-            cooking_methods=[]
+            user_notes=[]
         )
         
         # Forza il salvataggio su file

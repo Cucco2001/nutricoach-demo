@@ -3,12 +3,37 @@
   "user_preferences": {
     "excluded_foods": [],
     "preferred_foods": [],
-    "portion_sizes": {
-      "default": "Medie"
-    },
-    "cooking_methods": []
+    "user_notes": [
+      "vegano da 1 anno"
+    ]
   },
-  "chat_history": [],
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando: i dati del cliente, preferenze, intolleranze/allergie, obiettivo di peso e attività sportive.\n\n1. **Dati del cliente iniziali:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello attività quotidiana: Sedentario\n   - Obiettivo: Mantenimento del peso\n\n2. **Preferenze alimentari:**\n   - Vegano da 1 anno\n   - Nessun alimento escluso specificato oltre a quelli animali\n\n3. **Intolleranze/Allergie:**\n   - Nessuna allergia riportata\n\n4. **Obiettivo di peso:**\n   - Mantenimento del peso attuale, quindi nessun deficit o surplus calorico da applicare\n\n5. **Attività sportive:**\n   - Nessuna attività sportiva praticata\n\n6. **Numero di pasti e orari preferiti:**\n   - Non specificati, quindi userò un approccio standard di 5 pasti al giorno (colazione, pranzo, cena, due spuntini)\n\n📊 Risultati intermedi: Analisi completata con tutte le informazioni necessarie raccolte.\n\n➡️ Procedo con la FASE 2 - Calcolo del fabbisogno energetico?",
+      "timestamp": 1748091954.1542425
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1748091967.5886266
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto elaborando: il metabolismo basale e il fabbisogno energetico totale.\n\n1. **Calcolo Metabolismo Basale (MB):**\n   - Utilizzo dell'equazione di Harris-Benedict per maschi:\n   - MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30)\n   - MB = 1672 kcal\n\n2. **Fabbisogno energetico totale** (considerando il livello di attività fisica):\n   - Fabbisogno totale = MB * LAF\n   - LAF (Livello di Attività Fisica) per \"Sedentario\" = 1.45\n   - Fabbisogno totale = 1672 * 1.45 = 2424 kcal/giorno\n\n📊 Risultati intermedi: \n- Metabolismo basale (MB): 1672 kcal\n- Fabbisogno energetico totale: 2424 kcal/giorno\n\n➡️ Procedo con la FASE 3 - Calcolo dei macronutrienti?",
+      "timestamp": 1748091980.439602
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1748091987.9775138
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 3 - Calcolo macronutrienti\n\n⚡ Sto elaborando: la distribuzione delle calorie tra i macronutrienti.\n\n### Calcolo dei macronutrienti:\n\n1. **Proteine:**\n   - Moltiplicatore proteico per un individuo sedentario e vegano: 0.91 g/kg\n   - Peso corporeo: 70 kg\n   - Grammi di proteine: 0.91 * 70 = 64 g\n   - Kcal da proteine: 64 g * 4 = 256 kcal\n   - Percentuale sulle kcal totali: (256 / 2424) * 100 = 10%\n\n2. **Grassi:**\n   - Percentuale raccomandata per i grassi: 20-35% delle calorie totali\n   - Scelgo un valore al centro del range: 30%\n   - Kcal da grassi: 2424 * 0.30 = 727 kcal\n   - Grammi di grassi: 727 / 9 = 81 g\n\n3. **Carboidrati:**\n   - Kcal rimanenti per carboidrati: 2424 - (256 + 727) = 1441 kcal\n   - Grammi di carboidrati: 1441 / 4 = 360 g\n\n4. **Fibre:**\n   - Fabbisogno giornaliero di fibre: 30.5-40.5 g\n   - Assicurerò che la dieta includa una quantità di fibre all'interno di questo range.\n\n📊 Riepilogo macronutrienti:\n- Kcal totali: 2424\n- Proteine: 64 g (256 kcal, 10%)\n- Grassi: 81 g (727 kcal, 30%)\n- Carboidrati: 360 g (1441 kcal, 60%)\n- Fibre: 30.5-40.5 g\n\n➡️ Procedo con la FASE 4 - Distribuzione calorie tra i pasti?",
+      "timestamp": 1748092003.8900018
+    }
+  ],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -20,8 +45,23 @@
       "allergies": {
         "answer": "No",
         "follow_up": null
+      },
+      "sports": {
+        "answer": "No",
+        "follow_up": null
       }
     },
-    "agent_qa": []
+    "agent_qa": [
+      {
+        "question": "si",
+        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto elaborando: il metabolismo basale e il fabbisogno energetico totale.\n\n1. **Calcolo Metabolismo Basale (MB):**\n   - Utilizzo dell'equazione di Harris-Benedict per maschi:\n   - MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30)\n   - MB = 1672 kcal\n\n2. **Fabbisogno energetico totale** (considerando il livello di attività fisica):\n   - Fabbisogno totale = MB * LAF\n   - LAF (Livello di Attività Fisica) per \"Sedentario\" = 1.45\n   - Fabbisogno totale = 1672 * 1.45 = 2424 kcal/giorno\n\n📊 Risultati intermedi: \n- Metabolismo basale (MB): 1672 kcal\n- Fabbisogno energetico totale: 2424 kcal/giorno\n\n➡️ Procedo con la FASE 3 - Calcolo dei macronutrienti?",
+        "timestamp": 1748091980.439602
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 3 - Calcolo macronutrienti\n\n⚡ Sto elaborando: la distribuzione delle calorie tra i macronutrienti.\n\n### Calcolo dei macronutrienti:\n\n1. **Proteine:**\n   - Moltiplicatore proteico per un individuo sedentario e vegano: 0.91 g/kg\n   - Peso corporeo: 70 kg\n   - Grammi di proteine: 0.91 * 70 = 64 g\n   - Kcal da proteine: 64 g * 4 = 256 kcal\n   - Percentuale sulle kcal totali: (256 / 2424) * 100 = 10%\n\n2. **Grassi:**\n   - Percentuale raccomandata per i grassi: 20-35% delle calorie totali\n   - Scelgo un valore al centro del range: 30%\n   - Kcal da grassi: 2424 * 0.30 = 727 kcal\n   - Grammi di grassi: 727 / 9 = 81 g\n\n3. **Carboidrati:**\n   - Kcal rimanenti per carboidrati: 2424 - (256 + 727) = 1441 kcal\n   - Grammi di carboidrati: 1441 / 4 = 360 g\n\n4. **Fibre:**\n   - Fabbisogno giornaliero di fibre: 30.5-40.5 g\n   - Assicurerò che la dieta includa una quantità di fibre all'interno di questo range.\n\n📊 Riepilogo macronutrienti:\n- Kcal totali: 2424\n- Proteine: 64 g (256 kcal, 10%)\n- Grassi: 81 g (727 kcal, 30%)\n- Carboidrati: 360 g (1441 kcal, 60%)\n- Fibre: 30.5-40.5 g\n\n➡️ Procedo con la FASE 4 - Distribuzione calorie tra i pasti?",
+        "timestamp": 1748092003.8900018
+      }
+    ]
   }
 }

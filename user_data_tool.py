@@ -21,8 +21,7 @@ def get_user_preferences(user_id: str) -> Dict:
             return {
                 "excluded_foods": prefs.get("excluded_foods", []),
                 "preferred_foods": prefs.get("preferred_foods", []),
-                "portion_sizes": prefs.get("portion_sizes", {"default": "Medie"}),
-                "cooking_methods": prefs.get("cooking_methods", [])
+                "user_notes": prefs.get("user_notes", [])
             }
         return {"error": "Nessuna preferenza trovata per questo utente"}
     except Exception as e:

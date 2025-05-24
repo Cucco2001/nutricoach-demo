@@ -734,7 +734,7 @@ def handle_preferences():
         if 'excluded_foods_list' not in st.session_state:
             st.session_state.excluded_foods_list = user_preferences.get("excluded_foods", []) if user_preferences else []
         
-        st.write("Alimenti da escludere:")
+        st.subheader("Alimenti da escludere")
         
         # Mostra gli alimenti esclusi esistenti
         for i, food in enumerate(st.session_state.excluded_foods_list):
@@ -760,7 +760,7 @@ def handle_preferences():
         if 'preferred_foods_list' not in st.session_state:
             st.session_state.preferred_foods_list = user_preferences.get("preferred_foods", []) if user_preferences else []
             
-        st.write("Alimenti preferiti:")
+        st.subheader("Alimenti preferiti")
         
         # Mostra gli alimenti preferiti esistenti
         for i, food in enumerate(st.session_state.preferred_foods_list):
@@ -783,27 +783,21 @@ def handle_preferences():
                     st.rerun()
         
         
-        # Dimensioni delle porzioni
-        st.subheader("Preferenze porzioni")
-        portion_sizes = st.select_slider(
-            "Dimensione generale delle porzioni",
-            options=["Molto piccole", "Piccole", "Medie", "Grandi", "Molto grandi"],
-            value="Medie"
-        )
         
-        # Metodi di cottura
-        cooking_methods = st.multiselect(
-            "Metodi di cottura preferiti",
-            ["Vapore", "Griglia", "Forno", "Bollitura", "Padella"],
-            default=[]
+        st.subheader("Necessità particolari o preferenze:")
+        note_default = user_preferences.get("notes", "") if user_preferences else ""
+        user_notes = st.text_area(
+            "Scrivi qualsiasi informazione aggiuntiva da tenere a mente (es. vegetariano, pranzi al lavoro, ecc.)",
+            value=note_default,
+            height=120
         )
+
         
         if st.button("Salva preferenze"):
             preferences = {
                 "excluded_foods": st.session_state.excluded_foods_list,
                 "preferred_foods": st.session_state.preferred_foods_list,
-                "portion_sizes": {"default": portion_sizes},
-                "cooking_methods": list(cooking_methods)
+                "user_notes": user_notes.strip(),
             }
             
             st.session_state.user_data_manager.update_user_preferences(
@@ -1177,8 +1171,7 @@ def chat_interface():
                                                 3: ["Colazione", "Pranzo", "Cena"],
                                                 4: ["Colazione", "Pranzo", "Cena", "Spuntino pomeridiano"],
                                                 5: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena"],
-                                                6: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Spuntino serale"],
-                                                7: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Spuntino serale", "Altro pasto"]
+                                                6: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Altro Spuntino"]
                                             }
                                             
                                             # Get the appropriate meal labels for the selected number of meals
@@ -1195,8 +1188,7 @@ def chat_interface():
                                                     "Pranzo": "13:00",
                                                     "Spuntino pomeridiano": "16:30",
                                                     "Cena": "20:00",
-                                                    "Spuntino serale": "22:00",
-                                                    "Altro pasto": "15:00"
+                                                    "Altro Spuntino": "22:00"
                                                 }
                                                 
                                                 # Convert default time string to datetime.time object
