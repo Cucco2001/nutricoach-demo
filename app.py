@@ -234,8 +234,8 @@ NUTRITION_QUESTIONS = [
                     "label": "Quanti pasti vuoi fare al giorno?",
                     "type": "number",
                     "min": 1,
-                    "max": 7,
-                    "default": 3
+                    "max": 6,
+                    "default": 5
                 },
                 {
                     "id": "meal_times",
@@ -452,7 +452,6 @@ def chat_with_assistant(user_input):
                 # Attendi il completamento con timeout più lungo
                 start_time = time.time()
                 timeout = 180  # aumentato a 180 secondi (3 minuti)
-                progress_text = "Elaborazione in corso..."
                 
                 with st.empty():
                     while True:
@@ -470,10 +469,6 @@ def chat_with_assistant(user_input):
                             check_and_cancel_run()
                             create_new_thread()
                             raise Exception("Errore nel recupero dello stato della run")
-                        
-                        # Aggiorna il messaggio di progresso
-                        elapsed = int(time.time() - start_time)
-                        st.write(f"{progress_text} ({elapsed}s)")
                         
                         if run_status.status == 'completed':
                             st.session_state.current_run_id = None
@@ -1287,6 +1282,17 @@ def chat_interface():
                     initial_prompt = f"""
                     Iniziamo una nuova consulenza nutrizionale.
 
+                    Mostra SEMPRE i calcoli in questo formato semplice:
+
+                    Uso simboli:
+                    - MAI: \times  → USA SEMPRE: *
+                    - MAI: \\text{{}} → USA SEMPRE: testo normale
+                    - MAI: [ ]     → USA SEMPRE: parentesi tonde ( )
+                    - MAI: \\      → USA SEMPRE: testo normale
+                    - MAI: \\frac{{}} → USA SEMPRE: divisione con /
+                    - MAI: \ g, \ kcal, \ ml, \ cm → NON USARE mai il backslash prima delle unità di misura
+                    → Scrivi SEMPRE "g", "kcal", "ml", "cm" senza alcun simbolo speciale
+
                     DATI DEL CLIENTE:
                     • Età: {st.session_state.user_info['età']} anni
                     • Sesso: {st.session_state.user_info['sesso']}
@@ -1317,15 +1323,21 @@ def chat_interface():
                     - Aggiungi il dispendio energetico degli sport
                     - Determina il fabbisogno calorico totale
 
-                    FASE 3: Calcolo distribuzione macronutrienti
+                    FASE 3: Calcolo macronutrienti
                     - Distribuisci le calorie tra i macronutrienti
 
-                    FASE 4: Creazione piano pasti
+                    FASE 4: Distribuzione calorie tra i pasti
                     - Verifica se l'utente ha specificato un numero di pasti e orari
-                    - Distribuisci le calorie tra i pasti
-                    - Non inserire alcun alimento specifico, solo la distribuzione delle calorie in questa fase
+                    - In base al numero di pasti e orari, distribuisci le calorie tra i pasti
+                    - Non inserire alcun alimento specifico o macronutrienti in questa fase, solo la distribuzione delle calorie
 
-                    FASE 5: Creazione singoli pasti
+                    FASE 5: Distribuzione macronutrienti tra i pasti
+                    - Controlla i macronutrienti totali giornalieri e la distribuzione calorica ottenuta nella fase 4
+                    - Distribuisci i macronutrienti tra i pasti in base ai principi base
+                    - Applica i principi di modifica in base ai tipi di pasti e sport praticati
+                    - Non inserire alcun alimento specifico, solo la distribuzione delle calorie e dei macronutrienti in questa fase
+
+                    FASE 6: Creazione singoli pasti
                     - Adatta il piano alle preferenze alimentari
                     - Crea un pasto alla volta
                     - Prenditi il tempo necessario per realizzare un pasto completo

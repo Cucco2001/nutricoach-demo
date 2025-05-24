@@ -189,6 +189,16 @@
     "fibra_g": 2.6,
     "nova_group": 1
   },
+  "frutti_di_bosco": {
+    "energia_kcal": 89,
+    "proteine_g": 1.1,
+    "carboidrati_g": 22.8,
+    "zuccheri_g": 12.2,
+    "grassi_g": 0.3,
+    "grassi_saturi_g": 0.1,
+    "fibra_g": 2.6,
+    "nova_group": 1
+  },
   "mozzarella": {
     "energia_kcal": 253,
     "proteine_g": 18.7,
@@ -680,6 +690,16 @@
     "nova_group": 4
   },
   "iso_fuji_yamamoto": {
+    "energia_kcal": 377,
+    "proteine_g": 89.0,
+    "carboidrati_g": 1.0,
+    "zuccheri_g": 1.0,
+    "grassi_g": 1.0,
+    "grassi_saturi_g": 0.5,
+    "fibra_g": 0.0,
+    "nova_group": 4
+  },
+  "albume_uova": {
     "energia_kcal": 377,
     "proteine_g": 89.0,
     "carboidrati_g": 1.0,

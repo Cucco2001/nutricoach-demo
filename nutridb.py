@@ -57,6 +57,11 @@ class NutriDB:
             "yogurt greco 0 percento": "yogurt_greco_0percento",
             "yogurt greco 2%": "yogurt_greco_2percento",
             "yogurt greco 2 percento": "yogurt_greco_2percento",
+            "proteine in polvere": "iso_fuji_yamamoto",
+            "proteine": "iso_fuji_yamamoto",
+            "proteine del siero del latte": "iso_fuji_yamamoto",
+            "proteine del latte": "iso_fuji_yamamoto",
+            "proteine del latte di mandorle": "iso_fuji_yamamoto",
             "iso": "iso_fuji_yamamoto",
             "pro milk 20g": "pro_milk_20g_proteine",
             "pro milk": "pro_milk_20g_proteine",  
@@ -77,8 +82,15 @@ class NutriDB:
             "crostata alla marmellata": "crostata_di_marmellata",
             "noci sgusciate": "noci_sgusciate",
             "noci": "noci_sgusciate",
-            "mandorle tostate": "mandorle"
-        })
+            "mandorle tostate": "mandorle",
+            "frutti di bosco": "frutti_di_bosco",
+            "albume uova": "albume_uova",
+            "albume": "albume_uova",
+            "albume d'uovo": "albume_uova",
+            "albume d'uova": "albume_uova",
+            "albume d'uova fresco": "albume_uova",
+            "albume d'uova fresco": "albume_uova",
+            })
         return mapping
 
     def get_macros(self, alimento, quantità=100):
