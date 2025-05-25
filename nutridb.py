@@ -462,3 +462,129 @@ class NutriDB:
             "goal_type": goal_type,
             "kg_per_month": round(kg_per_month, 2)
         }
+
+    def analyze_bmi_and_goals(self, peso, altezza, sesso, età, obiettivo):
+        """Analizza BMI, peso forma e coerenza degli obiettivi del cliente.
+        
+        Args:
+            peso: Peso attuale in kg
+            altezza: Altezza in cm
+            sesso: 'maschio' o 'femmina'
+            età: Età in anni
+            obiettivo: 'Perdita di peso', 'Mantenimento', 'Aumento di massa'
+        
+        Returns:
+            dict: Contiene:
+                - bmi_attuale: valore BMI
+                - categoria_bmi: classificazione BMI
+                - peso_ideale_min: peso minimo forma
+                - peso_ideale_max: peso massimo forma
+                - peso_ideale_medio: peso forma medio
+                - obiettivo_coerente: bool se l'obiettivo è appropriato
+                - raccomandazione: testo con raccomandazione se necessario
+                - warnings: lista di avvertimenti
+        
+        Raises:
+            ValueError: se i parametri non sono validi
+        """
+        # Validazione parametri
+        try:
+            peso = float(peso)
+            altezza = float(altezza)
+            età = int(età)
+        except (ValueError, TypeError):
+            raise ValueError("Peso, altezza ed età devono essere numerici")
+        
+        if peso <= 0 or peso > 300:
+            raise ValueError("Il peso deve essere tra 1 e 300 kg")
+        
+        if altezza <= 0 or altezza > 250:
+            raise ValueError("L'altezza deve essere tra 1 e 250 cm")
+        
+        if età < 18 or età > 100:
+            raise ValueError("L'età deve essere tra 18 e 100 anni")
+        
+        sesso = sesso.lower()
+        if sesso not in ["maschio", "femmina"]:
+            raise ValueError("Sesso deve essere 'maschio' o 'femmina'")
+        
+        obiettivi_validi = ["Perdita di peso", "Mantenimento", "Aumento di massa"]
+        if obiettivo not in obiettivi_validi:
+            raise ValueError(f"Obiettivo deve essere uno di: {', '.join(obiettivi_validi)}")
+        
+        # Calcolo BMI
+        altezza_m = altezza / 100
+        bmi = peso / (altezza_m ** 2)
+        
+        # Classificazione BMI
+        if bmi < 18.5:
+            categoria_bmi = "Sottopeso"
+        elif bmi < 25:
+            categoria_bmi = "Normopeso"
+        elif bmi < 30:
+            categoria_bmi = "Sovrappeso"
+        else:
+            categoria_bmi = "Obesità"
+        
+        # Calcolo peso forma (BMI normale: 18.5-24.9)
+        peso_ideale_min = 18.5 * (altezza_m ** 2)
+        peso_ideale_max = 24.9 * (altezza_m ** 2)
+        peso_ideale_medio = 22.0 * (altezza_m ** 2)
+        
+        # Valutazione coerenza obiettivo
+        obiettivo_coerente = True
+        raccomandazione = ""
+        warnings = []
+        
+        if categoria_bmi == "Sottopeso":
+            if obiettivo == "Perdita di peso":
+                obiettivo_coerente = False
+                raccomandazione = (
+                    f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f} (sottopeso). "
+                    f"Perdere ulteriore peso potrebbe essere dannoso per la salute. "
+                    f"Ti consiglio di puntare all'aumento di massa muscolare per raggiungere "
+                    f"un peso più salutare (ideale: {peso_ideale_min:.1f}-{peso_ideale_max:.1f} kg). "
+                    f"Vuoi comunque procedere con l'obiettivo di perdita di peso?"
+                )
+                warnings.append("BMI sotto la norma - perdita peso sconsigliata")
+        
+        elif categoria_bmi == "Sovrappeso" or categoria_bmi == "Obesità":
+            if obiettivo == "Aumento di massa":
+                obiettivo_coerente = False
+                if categoria_bmi == "Sovrappeso":
+                    raccomandazione = (
+                        f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f} (sovrappeso). "
+                        f"Ti consiglio di concentrarti prima sulla perdita di peso per raggiungere "
+                        f"un peso più salutare (ideale: {peso_ideale_min:.1f}-{peso_ideale_max:.1f} kg), "
+                        f"poi eventualmente lavorare sull'aumento di massa muscolare. "
+                        f"Vuoi comunque procedere con l'obiettivo di aumento massa?"
+                    )
+                else:  # Obesità
+                    raccomandazione = (
+                        f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f} (obesità). "
+                        f"È fortemente raccomandato concentrarsi sulla perdita di peso per motivi di salute. "
+                        f"Il peso ideale sarebbe {peso_ideale_min:.1f}-{peso_ideale_max:.1f} kg. "
+                        f"Procedere con aumento massa potrebbe peggiorare la situazione. "
+                        f"Sei sicuro di voler mantenere questo obiettivo?"
+                    )
+                warnings.append("BMI elevato - aumento massa sconsigliato")
+        
+        elif categoria_bmi == "Normopeso":
+            # Per normopeso, tutti gli obiettivi sono generalmente appropriati
+            if obiettivo == "Perdita di peso" and peso <= peso_ideale_min + 2:
+                # Se già nel range basso del normopeso
+                warnings.append("Sei già nel range di peso ideale - valuta se la perdita è necessaria")
+            elif obiettivo == "Aumento di massa" and peso >= peso_ideale_max - 2:
+                # Se già nel range alto del normopeso
+                warnings.append("Sei già nel range alto del peso ideale - monitora che l'aumento sia muscolare")
+        
+        return {
+            "bmi_attuale": round(bmi, 1),
+            "categoria_bmi": categoria_bmi,
+            "peso_ideale_min": round(peso_ideale_min, 1),
+            "peso_ideale_max": round(peso_ideale_max, 1),
+            "peso_ideale_medio": round(peso_ideale_medio, 1),
+            "obiettivo_coerente": obiettivo_coerente,
+            "raccomandazione": raccomandazione,
+            "warnings": warnings
+        }

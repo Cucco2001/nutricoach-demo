@@ -8,6 +8,17 @@ from openai import OpenAI
 from nutricoach_agent import available_tools, system_prompt
 from user_data_manager import UserDataManager
 from datetime import datetime
+from nutridb_tool import (
+    get_macros, get_LARN_protein, get_standard_portion, 
+    get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
+    get_LARN_lipidi_percentuali, get_LARN_vitamine, 
+    compute_Harris_Benedict_Equation, get_protein_multiplier,
+    calculate_sport_expenditure, calculate_weight_goal_calories, 
+    analyze_bmi_and_goals, check_ultraprocessed_foods
+)
+from user_data_tool import (
+    get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
+)
 
 # Carica le variabili d'ambiente
 load_dotenv()
@@ -151,7 +162,7 @@ NUTRITION_QUESTIONS = [
         "id": "weight_goal",
         "question": lambda user_info: f"Quanti kg vuoi {'perdere' if user_info['obiettivo'] == 'Perdita di peso' else 'aumentare'} e in quanto tempo (in mesi)?",
         "type": "number_input",
-        "show_if": lambda user_info: user_info["obiettivo"] in ["Perdita di peso", "Aumento di massa"],
+        "show_if": lambda user_info: user_info["obiettivo"] in ["Perdita di peso", "Aumento di peso"],
         "fields": [
             {
                 "id": "kg",
@@ -289,18 +300,6 @@ def handle_tool_calls(run_status):
                 function_name = tool_call.function.name
                 arguments = json.loads(tool_call.function.arguments)
                 
-                # Importa le funzioni necessarie
-                from nutridb_tool import (
-                    get_macros, get_LARN_protein, get_standard_portion, 
-                    get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
-                    get_LARN_lipidi_percentuali, get_LARN_vitamine, 
-                    compute_Harris_Benedict_Equation, get_protein_multiplier,
-                    calculate_sport_expenditure, calculate_weight_goal_calories, check_ultraprocessed_foods
-                )
-                from user_data_tool import (
-                    get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
-                )
-                
                 # Mappa dei nomi delle funzioni alle funzioni effettive
                 function_map = {
                     # Funzioni per accedere al database nutrizionale
@@ -316,6 +315,7 @@ def handle_tool_calls(run_status):
                     "get_protein_multiplier": get_protein_multiplier,
                     "calculate_sport_expenditure": calculate_sport_expenditure,
                     "calculate_weight_goal_calories": calculate_weight_goal_calories,
+                    "analyze_bmi_and_goals": analyze_bmi_and_goals,
                     "check_ultraprocessed_foods": check_ultraprocessed_foods,
                     
                     # Funzioni per accedere ai dati dell'utente
@@ -820,39 +820,41 @@ def prepare_sports_data_for_tool(sports_data):
     """
     result = []
     
-    print(f"Dati sport ricevuti: {sports_data}")
+    print(f"[DEBUG] Dati sport ricevuti: {sports_data}")
     
     if not sports_data or not isinstance(sports_data, list):
-        print(f"Dati sport non validi: {sports_data}")
+        print(f"[DEBUG] Dati sport non validi: {sports_data}")
         return result
     
     for i, sport in enumerate(sports_data):
-        print(f"Elaborazione sport {i+1}: {sport}")
+        print(f"[DEBUG] Elaborazione sport {i+1}: {sport}")
         
         if "specific_sport" not in sport or not sport["specific_sport"]:
-            print(f"Sport {i+1} senza specific_sport, salto")
+            print(f"[DEBUG] Sport {i+1} senza specific_sport, salto")
             continue
             
         try:
             # Verifica che ci siano tutte le chiavi necessarie
             if isinstance(sport["specific_sport"], dict) and "key" in sport["specific_sport"]:
                 sport_name = sport["specific_sport"]["key"]
+                print(f"[DEBUG] Sport {i+1} - sport_name estratto dalla key: '{sport_name}'")
+                print(f"[DEBUG] Sport {i+1} - specific_sport completo: {sport['specific_sport']}")
             else:
-                print(f"Sport {i+1} ha un formato non valido: {sport['specific_sport']}")
+                print(f"[DEBUG] Sport {i+1} ha un formato non valido: {sport['specific_sport']}")
                 continue
                 
             # Assicurati che hours_per_week sia presente e sia un numero
             if "hours_per_week" not in sport or not sport["hours_per_week"]:
-                print(f"Sport {i+1} senza ore settimanali, salto")
+                print(f"[DEBUG] Sport {i+1} senza ore settimanali, salto")
                 continue
                 
             try:
                 hours = float(sport["hours_per_week"])
                 if hours <= 0:
-                    print(f"Sport {i+1} ha ore non positive: {hours}")
+                    print(f"[DEBUG] Sport {i+1} ha ore non positive: {hours}")
                     continue
             except (ValueError, TypeError):
-                print(f"Sport {i+1} ha ore non valide: {sport['hours_per_week']}")
+                print(f"[DEBUG] Sport {i+1} ha ore non valide: {sport['hours_per_week']}")
                 continue
             
             sport_info = {
@@ -864,14 +866,14 @@ def prepare_sports_data_for_tool(sports_data):
             if "intensity" in sport and sport["intensity"] and sport["intensity"] in ["easy", "medium", "hard"]:
                 sport_info["intensity"] = sport["intensity"]
                 
-            print(f"Sport {i+1} elaborato: {sport_info}")
+            print(f"[DEBUG] Sport {i+1} elaborato: {sport_info}")
             result.append(sport_info)
         except Exception as e:
             # Gestisci eventuali errori di conversione
-            print(f"Errore nella preparazione del sport {i+1}: {str(e)}")
+            print(f"[DEBUG] Errore nella preparazione del sport {i+1}: {str(e)}")
             continue
     
-    print(f"Risultato finale: {result}")
+    print(f"[DEBUG] Risultato finale: {result}")
     return result
 
 def chat_interface():
@@ -898,8 +900,8 @@ def chat_interface():
                                     ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"],
                                     index=["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"].index(nutritional_info.attività) if nutritional_info else 0)
                 obiettivo = st.selectbox("Obiettivo",
-                                     ["Perdita di peso", "Mantenimento", "Aumento di massa"],
-                                     index=["Perdita di peso", "Mantenimento", "Aumento di massa"].index(nutritional_info.obiettivo) if nutritional_info else 0)
+                                     ["Perdita di peso", "Mantenimento", "Aumento di peso"],
+                                     index=["Perdita di peso", "Mantenimento", "Aumento di peso"].index(nutritional_info.obiettivo) if nutritional_info else 0)
                 
                 if st.form_submit_button("Inizia"):
                     # Aggiorna le informazioni dell'utente
@@ -1286,6 +1288,13 @@ def chat_interface():
                     - MAI: \ g, \ kcal, \ ml, \ cm → NON USARE mai il backslash prima delle unità di misura
                     → Scrivi SEMPRE "g", "kcal", "ml", "cm" senza alcun simbolo speciale
 
+                    COMUNICAZIONE E PROGRESSIONE:
+                    1. Segui SEMPRE il processo fase per fase, svolgendo una fase per volta, partendo dalla FASE 0
+                    2. Chiedi feedback quando necessario:
+                    3. Concludi sempre con un messaggio di chiusura con:
+                        - Un invito a chiedere se ha domande riguardo i calcoli o le scelte fatte
+                        - Una domanda per chiedere all'utente se vuole continuare o se ha altre domande
+
                     DATI DEL CLIENTE:
                     • Età: {st.session_state.user_info['età']} anni
                     • Sesso: {st.session_state.user_info['sesso']}
@@ -1301,6 +1310,12 @@ def chat_interface():
                     PREFERENZE ALIMENTARI:
                     {json.dumps(st.session_state.user_info['preferences'], indent=2)}
                     Basandoti su queste informazioni, procedi con le seguenti fasi:
+
+                    FASE 0: Analisi BMI e coerenza obiettivi:
+                    - Calcola il BMI e la categoria di appartenenza
+                    - Valuta la coerenza dell'obiettivo con il BMI
+                        - Se l'obiettivo non è coerente, chiedi all'utente se intende modificare l'obiettivo
+                        - Se l'obiettivo è coerente, avvisa l'utente e poi procedi con la FASE 1
 
                     FASE 1: Analisi delle risposte fornite
                     - Valuta dati del cliente iniziali 

@@ -8,18 +8,38 @@
   "chat_history": [
     {
       "role": "assistant",
-      "content": "✓ FASE 1 - Analisi delle informazioni ricevute\n\n⚡ Sto elaborando le informazioni dettagliate sul cliente:\n\n1. **Dati del cliente:**\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso attuale: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n   - Obiettivo principale: Perdita di peso (5 kg in 3 mesi)\n\n2. **Preferenze alimentari e restrizioni:**\n   - Nessuna allergia o intolleranza segnalata.\n   - Nessun alimento escluso o preferito specificato.\n   \n3. **Obiettivo di peso:**\n   - Perdita di 5 kg in un periodo di 3 mesi.\n\n4. **Attività sportiva:**\n   - L'utente ha specificato di non praticare sport attualmente.\n\n5. **Pasti e orari:**\n   - Nessuna preferenza specificata per il numero di pasti o gli orari.\n\n➡️ Procedo con la FASE 2 per calcolare il fabbisogno energetico?",
-      "timestamp": 1748095876.9338841
+      "content": "📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Perdita di peso\n\n➡️ Conclusione: Il tuo obiettivo di perdita di peso è coerente con la tua attuale situazione fisiologica e i parametri di BMI. Possiamo procedere con l'analisi delle informazioni fornite nella FASE 1. \n\nPuoi chiedermi se hai domande riguardo ai calcoli o alle scelte fatte finora. Sei pronto per proseguire con la prossima fase?",
+      "timestamp": 1748173504.4524555
+    },
+    {
+      "role": "user",
+      "content": "si ",
+      "timestamp": 1748173512.3708923
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Risultati analisi:\n- **Obiettivo di perdita di peso**:\n  - Deficit calorico giornaliero richiesto: 428 kcal\n  - Media di perdita peso prevista: 1.67 kg al mese\n\n- **Dispendio energetico attività sportiva**:\n  - Fitness (Allenamento medio, facile): \n    - 3 ore a settimana\n    - Calorie bruciate per sessione: 600 kcal\n    - Calorie giornaliere mediate: 86 kcal\n\n➡️ Conclusione: Ho analizzato le tue informazioni e stiamo procedendo bene. Andrò avanti con il calcolo del tuo fabbisogno energetico nella FASE 2.\n\nSe hai domande su quanto fatto finora, chiedi pure! Altrimenti, procedo con la prossima fase. Sei pronto?",
+      "timestamp": 1748173538.862759
+    },
+    {
+      "role": "user",
+      "content": "si ",
+      "timestamp": 1748173577.3019154
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Risultati dei calcoli:\n- **Metabolismo Basale (BMR)**: 1672 kcal\n- **Fabbisogno energetico giornaliero** (considerando il livello di attività sedentario): 2424 kcal\n\n2. **Aggiustamento per l'obiettivo di perdita di peso**:\n   - Deficit calorico richiesto: 428 kcal\n\n3. **Aggiunta del dispendio energetico dovuto allo sport**:\n   - Dispendio calorico giornaliero dall'attività sportiva: 86 kcal\n\n**Calcolo del fabbisogno calorico totale per il programma di perdita di peso**:\n- Fabbisogno giornaliero base: 2424 kcal\n- (-) Deficit per perdita peso: 428 kcal\n- (+) Calorie da attività sportiva: 86 kcal\n\nFabbisogno calorico totale = 2424 - 428 + 86 = 2082 kcal\n\n➡️ Conclusione: Il tuo fabbisogno energetico giornaliero, per supportare il tuo obiettivo di perdita di peso con il tuo attuale livello di attività, è 2082 kcal.\n\nSe hai domande sui calcoli o se vuoi procedere con il calcolo dei macronutrienti nella FASE 3, fammi sapere!",
+      "timestamp": 1748173600.4210885
     },
     {
       "role": "user",
       "content": "si",
-      "timestamp": 1748095881.960051
+      "timestamp": 1748173635.4047623
     },
     {
       "role": "assistant",
-      "content": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n1. **Calcolo del Metabolismo Basale (BMR):**\n   - Formula di Harris-Benedict per uomo: \n     MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30) = 1672 kcal\n\n2. **Fabbisogno Energetico Totale:**\n   - LAF utilizzato: 1.45 (Sedentario)\n   - Fabbisogno giornaliero = BMR * LAF\n   - Fabbisogno giornaliero = 1672 * 1.45 ≈ 2424 kcal\n\n3. **Aggiustamento per l'obiettivo di perdita di peso:**\n   - Deficit calorico giornaliero necessario: -428 kcal\n\n4. **Fabbisogno calorico totale per obiettivo:**\n   - Fabbisogno dopo aggiustamento = Fabbisogno giornaliero - Deficit\n   - Fabbisogno totale = 2424 - 428 = 1996 kcal\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Energetico Totale: 2424 kcal\n- Deficit calorico giornaliero: -428 kcal\n- Fabbisogno calorico totale per obiettivo: 1996 kcal\n\n➡️ Procedo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
-      "timestamp": 1748095899.9823787
+      "content": "📊 Risultati calcolo macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore: 1.0 g/kg di peso corporeo\n   - Peso: 68 kg (esempio ipotetico)\n   - Grammi totali: 1.0 * 68 = 68g\n   - Kcal da proteine: 68g * 4 = 272 kcal\n   - Percentuale sulle kcal totali: (272 / 2082) * 100 ≈ 13%\n\n2. **Grassi**:\n   - Percentuale consigliata: 20-35% delle kcal totali\n   - Kcal da grassi (usando il 30% come esempio): 2082 * 0.30 = 625 kcal\n   - Grammi di grassi: 625 / 9 ≈ 69g\n\n3. **Carboidrati**:\n   - Kcal restanti: 2082 - 272 - 625 = 1185 kcal\n   - Grammi di carboidrati: 1185 / 4 ≈ 296g\n   - Percentuale sulle kcal totali: (1185 / 2082) * 100 ≈ 57%\n\n4. **Fibre**:\n   - Fabbisogno di fibre: 26-35g al giorno\n\n✍️ Riepilogo macronutrienti:\n- Proteine: 68g (272 kcal, 13%)\n- Grassi: 69g (625 kcal, 30%)\n- Carboidrati: 296g (1185 kcal, 57%)\n- Fibre: 26-35g\n\n➡️ Conclusione: Ho distribuito la tua energia totale tra proteine, grassi e carboidrati. Se hai domande o vuoi procedere con la distribuzione calorica dei pasti (FASE 4), fammelo sapere!",
+      "timestamp": 1748173670.7593307
     }
   ],
   "nutritional_info": {
@@ -39,19 +59,50 @@
         "months": 3
       },
       "sports": {
-        "answer": "No",
-        "follow_up": null
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Fitness - Allenamento medio (principianti e livello intermedio)",
+            "specific_sport": {
+              "name": "Fitness - allenamento medio",
+              "key": "Fitness - Allenamento medio",
+              "kcal_per_hour": 250,
+              "description": "Allenamento leggero in palestra"
+            },
+            "intensity": "easy",
+            "hours_per_week": 3
+          }
+        ]
       },
       "meal_preferences": {
-        "answer": "No",
-        "follow_up": null
+        "answer": "Sì",
+        "follow_up": {
+          "num_meals": 5,
+          "meal_times": {
+            "Colazione": "07:30",
+            "Spuntino mattutino": "10:30",
+            "Pranzo": "13:00",
+            "Spuntino pomeridiano": "16:30",
+            "Cena": "20:00"
+          }
+        }
       }
     },
     "agent_qa": [
       {
+        "question": "si ",
+        "answer": "📊 Risultati analisi:\n- **Obiettivo di perdita di peso**:\n  - Deficit calorico giornaliero richiesto: 428 kcal\n  - Media di perdita peso prevista: 1.67 kg al mese\n\n- **Dispendio energetico attività sportiva**:\n  - Fitness (Allenamento medio, facile): \n    - 3 ore a settimana\n    - Calorie bruciate per sessione: 600 kcal\n    - Calorie giornaliere mediate: 86 kcal\n\n➡️ Conclusione: Ho analizzato le tue informazioni e stiamo procedendo bene. Andrò avanti con il calcolo del tuo fabbisogno energetico nella FASE 2.\n\nSe hai domande su quanto fatto finora, chiedi pure! Altrimenti, procedo con la prossima fase. Sei pronto?",
+        "timestamp": 1748173538.8657465
+      },
+      {
+        "question": "si ",
+        "answer": "📊 Risultati dei calcoli:\n- **Metabolismo Basale (BMR)**: 1672 kcal\n- **Fabbisogno energetico giornaliero** (considerando il livello di attività sedentario): 2424 kcal\n\n2. **Aggiustamento per l'obiettivo di perdita di peso**:\n   - Deficit calorico richiesto: 428 kcal\n\n3. **Aggiunta del dispendio energetico dovuto allo sport**:\n   - Dispendio calorico giornaliero dall'attività sportiva: 86 kcal\n\n**Calcolo del fabbisogno calorico totale per il programma di perdita di peso**:\n- Fabbisogno giornaliero base: 2424 kcal\n- (-) Deficit per perdita peso: 428 kcal\n- (+) Calorie da attività sportiva: 86 kcal\n\nFabbisogno calorico totale = 2424 - 428 + 86 = 2082 kcal\n\n➡️ Conclusione: Il tuo fabbisogno energetico giornaliero, per supportare il tuo obiettivo di perdita di peso con il tuo attuale livello di attività, è 2082 kcal.\n\nSe hai domande sui calcoli o se vuoi procedere con il calcolo dei macronutrienti nella FASE 3, fammi sapere!",
+        "timestamp": 1748173600.4210885
+      },
+      {
         "question": "si",
-        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n1. **Calcolo del Metabolismo Basale (BMR):**\n   - Formula di Harris-Benedict per uomo: \n     MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30) = 1672 kcal\n\n2. **Fabbisogno Energetico Totale:**\n   - LAF utilizzato: 1.45 (Sedentario)\n   - Fabbisogno giornaliero = BMR * LAF\n   - Fabbisogno giornaliero = 1672 * 1.45 ≈ 2424 kcal\n\n3. **Aggiustamento per l'obiettivo di perdita di peso:**\n   - Deficit calorico giornaliero necessario: -428 kcal\n\n4. **Fabbisogno calorico totale per obiettivo:**\n   - Fabbisogno dopo aggiustamento = Fabbisogno giornaliero - Deficit\n   - Fabbisogno totale = 2424 - 428 = 1996 kcal\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Energetico Totale: 2424 kcal\n- Deficit calorico giornaliero: -428 kcal\n- Fabbisogno calorico totale per obiettivo: 1996 kcal\n\n➡️ Procedo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
-        "timestamp": 1748095899.9863744
+        "answer": "📊 Risultati calcolo macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore: 1.0 g/kg di peso corporeo\n   - Peso: 68 kg (esempio ipotetico)\n   - Grammi totali: 1.0 * 68 = 68g\n   - Kcal da proteine: 68g * 4 = 272 kcal\n   - Percentuale sulle kcal totali: (272 / 2082) * 100 ≈ 13%\n\n2. **Grassi**:\n   - Percentuale consigliata: 20-35% delle kcal totali\n   - Kcal da grassi (usando il 30% come esempio): 2082 * 0.30 = 625 kcal\n   - Grammi di grassi: 625 / 9 ≈ 69g\n\n3. **Carboidrati**:\n   - Kcal restanti: 2082 - 272 - 625 = 1185 kcal\n   - Grammi di carboidrati: 1185 / 4 ≈ 296g\n   - Percentuale sulle kcal totali: (1185 / 2082) * 100 ≈ 57%\n\n4. **Fibre**:\n   - Fabbisogno di fibre: 26-35g al giorno\n\n✍️ Riepilogo macronutrienti:\n- Proteine: 68g (272 kcal, 13%)\n- Grassi: 69g (625 kcal, 30%)\n- Carboidrati: 296g (1185 kcal, 57%)\n- Fibre: 26-35g\n\n➡️ Conclusione: Ho distribuito la tua energia totale tra proteine, grassi e carboidrati. Se hai domande o vuoi procedere con la distribuzione calorica dei pasti (FASE 4), fammelo sapere!",
+        "timestamp": 1748173670.764995
       }
     ]
   }

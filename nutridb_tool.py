@@ -30,7 +30,8 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "get_protein_multiplier": ["sports"],
         "check_ultraprocessed_foods": ["foods_with_grams"],
         "calculate_sport_expenditure": ["sports"],
-        "calculate_weight_goal_calories": ["kg_change", "time_months", "goal_type"]
+        "calculate_weight_goal_calories": ["kg_change", "time_months", "goal_type"],
+        "analyze_bmi_and_goals": ["peso", "altezza", "sesso", "età", "obiettivo"]
     }
     
     if function_name not in required_params:
@@ -203,7 +204,8 @@ def calculate_sport_expenditure(sports: Union[List[Dict[str, Any]], Dict[str, An
         
         # Calcola il dispendio per ogni sport
         for sport in sports_list:
-            sport_name = sport["sport_name"].lower().replace(" ", "_")
+            original_sport_name = sport["sport_name"]
+            print(f"[DEBUG] Ricevuto sport_name: '{original_sport_name}' (tipo: {type(original_sport_name)})")
             sport_hours = float(sport["hours"])
             intensity_multiplier = 1.0
             
@@ -212,18 +214,45 @@ def calculate_sport_expenditure(sports: Union[List[Dict[str, Any]], Dict[str, An
                 intensity_map = {"easy": 0.8, "medium": 1.0, "hard": 1.2}
                 intensity_multiplier = intensity_map.get(sport["intensity"], 1.0)
             
-            # Cerca il nome esatto dello sport
-            if sport_name in sports_data["sports"]:
-                sport_info = sports_data["sports"][sport_name]
+            # Prova prima con il nome originale (esatto)
+            if original_sport_name in sports_data["sports"]:
+                sport_info = sports_data["sports"][original_sport_name]
+                final_sport_name = original_sport_name
             else:
-                # Cerca per sottostringa/somiglianza
-                possible_sports = [s for s in sports_data["sports"] if sport_name in s]
-                if not possible_sports:
-                    raise ValueError(f"Sport '{sport_name}' non trovato nel database")
-                
-                # Usa il primo risultato trovato
-                sport_info = sports_data["sports"][possible_sports[0]]
-                sport_name = possible_sports[0]
+                # Prova con il nome convertito (minuscolo + underscore)
+                converted_sport_name = original_sport_name.lower().replace(" ", "_")
+                if converted_sport_name in sports_data["sports"]:
+                    sport_info = sports_data["sports"][converted_sport_name]
+                    final_sport_name = converted_sport_name
+                else:
+                    # Cerca per corrispondenza parziale (case-insensitive)
+                    possible_sports = []
+                    
+                    # Cerca corrispondenze esatte (case-insensitive)
+                    for db_sport_name in sports_data["sports"]:
+                        if original_sport_name.lower() == db_sport_name.lower():
+                            possible_sports.append(db_sport_name)
+                            break
+                    
+                    # Se non trova corrispondenze esatte, cerca sottostringhe
+                    if not possible_sports:
+                        for db_sport_name in sports_data["sports"]:
+                            if (original_sport_name.lower() in db_sport_name.lower() or 
+                                db_sport_name.lower() in original_sport_name.lower()):
+                                possible_sports.append(db_sport_name)
+                    
+                    if not possible_sports:
+                        # Lista degli sport disponibili per debug
+                        available_sports = list(sports_data["sports"].keys())
+                        raise ValueError(
+                            f"Sport '{original_sport_name}' non trovato nel database. "
+                            f"Sport disponibili: {available_sports[:10]}..." if len(available_sports) > 10 
+                            else f"Sport disponibili: {available_sports}"
+                        )
+                    
+                    # Usa il primo risultato trovato
+                    final_sport_name = possible_sports[0]
+                    sport_info = sports_data["sports"][final_sport_name]
             
             # Calcola il dispendio energetico per questo sport
             kcal_per_hour = sport_info["kcal_per_hour"] * intensity_multiplier
@@ -232,7 +261,7 @@ def calculate_sport_expenditure(sports: Union[List[Dict[str, Any]], Dict[str, An
             kcal_per_day = kcal_per_week / 7
             
             sport_result = {
-                "sport_name": sport_name,
+                "sport_name": final_sport_name,
                 "kcal_per_hour": round(kcal_per_hour),
                 "hours_per_week": sport_hours,
                 "kcal_per_session": round(kcal_per_session),
@@ -492,4 +521,32 @@ def calculate_weight_goal_calories(kg_change: float, time_months: float, goal_ty
         return result
     except Exception as e:
         logger.error(f"Errore in calculate_weight_goal_calories: {str(e)}")
+        return {"error": str(e)}
+
+def analyze_bmi_and_goals(peso: float, altezza: float, sesso: str, età: int, obiettivo: str) -> Dict[str, Any]:
+    """
+    Analizza BMI, peso forma e coerenza degli obiettivi del cliente.
+    
+    Args:
+        peso: Peso attuale in kg
+        altezza: Altezza in cm
+        sesso: 'maschio' o 'femmina'
+        età: Età in anni
+        obiettivo: 'Perdita di peso', 'Mantenimento', 'Aumento di massa'
+    
+    Returns:
+        Dict contenente:
+        - bmi_attuale: valore BMI
+        - categoria_bmi: classificazione BMI
+        - peso_ideale_min/max/medio: range peso forma
+        - obiettivo_coerente: bool se l'obiettivo è appropriato
+        - raccomandazione: testo con raccomandazione se necessario
+        - warnings: lista di avvertimenti
+    """
+    try:
+        result = db.analyze_bmi_and_goals(peso, altezza, sesso, età, obiettivo)
+        logger.info(f"Risultato analyze_bmi_and_goals: {result}")
+        return result
+    except Exception as e:
+        logger.error(f"Errore in analyze_bmi_and_goals: {str(e)}")
         return {"error": str(e)}
