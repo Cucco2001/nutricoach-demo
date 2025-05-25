@@ -44,10 +44,10 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
 def convert_activity_to_laf(activity: str) -> float:
     """Converte il livello di attività testuale nel corrispondente valore LAF."""
     activity_map = {
-        "Sedentario": 1.45,
-        "Leggermente attivo": 1.60,
-        "Attivo": 1.75,
-        "Molto attivo": 2.10
+        "Sedentario": 1.30,
+        "Leggermente attivo": 1.45,
+        "Attivo": 1.60,
+        "Molto attivo": 1.75
     }
     activity = activity.strip()
     if activity not in activity_map:

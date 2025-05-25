@@ -132,7 +132,7 @@ class NutriDB:
             sesso: 'maschio' o 'femmina'
             età: età in anni
             altezza: altezza in cm
-            LAF: livello di attività fisica (1.45, 1.60, 1.75, or 2.10)
+            LAF: livello di attività fisica (1.30, 1.45, 1.60, or 1.75)
         
         Returns:
             fabbisogno energetico in kcal
@@ -160,7 +160,7 @@ class NutriDB:
             raise ValueError("Altezza deve essere un numero tra 140 e 220")
 
         # Validazione e conversione LAF
-        valid_lafs = [1.45, 1.60, 1.75, 2.10]
+        valid_lafs = [1.30, 1.45, 1.60, 1.75]
         try:
             LAF = float(str(LAF).replace(",", "."))  # Gestisce anche valori con la virgola
             if LAF not in valid_lafs:
@@ -168,7 +168,7 @@ class NutriDB:
                 print(f"ATTENZIONE: LAF {LAF} convertito al valore valido più vicino: {closest_laf}")
                 LAF = closest_laf
         except (ValueError, TypeError):
-            raise ValueError("LAF deve essere uno dei seguenti valori: 1.45, 1.60, 1.75, 2.10")
+            raise ValueError("LAF deve essere uno dei seguenti valori: 1.30, 1.45, 1.60, 1.75")
 
         # Determina il gruppo di età/sesso
         group = "maschi_18_29" if sesso == "maschio" and età < 30 else \

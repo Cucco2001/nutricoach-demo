@@ -650,7 +650,7 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
             * peso: in kg
             * altezza: in cm
             * età: in anni
-            * livello_attività: "Sedentario" (LAF 1.45), "Leggermente attivo" (LAF 1.60), "Attivo" (LAF 1.75), "Molto attivo" (LAF 2.10)
+            * livello_attività: "Sedentario" (LAF 1.30), "Leggermente attivo" (LAF 1.45), "Attivo" (LAF 1.60), "Molto attivo" (LAF 1.75)
         - La funzione restituirà:
             * bmr: metabolismo basale in kcal
             * fabbisogno_giornaliero: fabbisogno totale in kcal
@@ -684,7 +684,7 @@ FASE 3 - CALCOLO MACRONUTRIENTI (fornisci sempre un valore finale dopo il ragion
       - Preferire fonti a basso indice glicemico, specialmente quando l'apporto si avvicina al 60%
       - Mantenere gli zuccheri semplici <15% delle kcal totali (>25% può causare effetti avversi)
       - Garantire minimo 2g/kg peso corporeo per prevenire chetosi
-      - In caso di alto dispendio energetico (LAF ≥ 1.75 ), considerare fino a 65% En
+      - In caso di alto dispendio energetico (Molto attivo), considerare fino a 65% En
       - Limitare alimenti/bevande con sciroppi di mais ad alto contenuto di fruttosio
       - Preferire cereali integrali e legumi come fonti di carboidrati complessi (specifica le secchi o in scatola)
    * Esempio di calcolo per dieta da 2000 kcal:
