@@ -1292,8 +1292,9 @@ def chat_interface():
 
                     COMUNICAZIONE E PROGRESSIONE:
                     1. Segui SEMPRE il processo fase per fase, svolgendo una fase per volta, partendo dalla FASE 0
-                    2. Chiedi feedback quando necessario:
-                    3. Concludi sempre con un messaggio di chiusura con:
+                    2. Elenca le fonti utilizzate in ciascuna fase
+                    3. Chiedi feedback quando necessario
+                    4. Concludi sempre con un messaggio di chiusura con:
                         - Un invito a chiedere se ha domande riguardo i calcoli o le scelte fatte
                         - Una domanda per chiedere all'utente se vuole continuare o se ha altre domande
 
