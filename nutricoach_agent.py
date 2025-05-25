@@ -13,6 +13,8 @@ from nutridb_tool import (
     calculate_sport_expenditure, 
     calculate_weight_goal_calories,
     analyze_bmi_and_goals,
+    check_vitamins,
+    get_food_substitutes,
     check_ultraprocessed_foods
 )
 from user_data_tool import (
@@ -292,6 +294,66 @@ available_tools = [
                     }
                 },
                 "required": ["peso", "altezza", "sesso", "età", "obiettivo"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "check_vitamins",
+            "description": "Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN per identificare carenze o eccessi.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "foods_with_grams": {
+                        "type": "object",
+                        "description": "Dizionario con alimenti e relative grammature {alimento: grammi}",
+                        "additionalProperties": {
+                            "type": "number"
+                        }
+                    },
+                    "sesso": {
+                        "type": "string",
+                        "enum": ["maschio", "femmina"],
+                        "description": "Sesso della persona"
+                    },
+                    "età": {
+                        "type": "integer",
+                        "minimum": 18,
+                        "maximum": 100,
+                        "description": "Età in anni"
+                    }
+                },
+                "required": ["foods_with_grams", "sesso", "età"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_food_substitutes",
+            "description": "Ottiene alimenti sostitutivi per un dato alimento e quantità basati sui macronutrienti e equivalenza calorica.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "food_name": {
+                        "type": "string",
+                        "description": "Nome dell'alimento per cui cercare sostituti"
+                    },
+                    "grams": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 2000,
+                        "description": "Grammi dell'alimento di riferimento"
+                    },
+                    "num_substitutes": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5,
+                        "description": "Numero massimo di sostituti da restituire (default 5)"
+                    }
+                },
+                "required": ["food_name", "grams"]
             }
         }
     },
@@ -890,6 +952,37 @@ IMPORTANTE:
 - Verifica che la somma dei macro corrisponda agli obiettivi
 - Parla in modo diretto e personale
 - Prenditi il tempo necessario per realizzare un pasto completo, pensando attentamente a ogni step nella ralizzazione del pasto.
+
+FASE 7 - CONTROLLI FINALI E OTTIMIZZAZIONE
+
+Dopo aver completato TUTTI i pasti della giornata, esegui SEMPRE i seguenti controlli nell'ordine specificato:
+
+7.1 CONTROLLO VITAMINICO
+1. Raccogli tutti gli alimenti e le relative grammature da tutti i pasti creati
+2. Usa il tool check_vitamins con i seguenti parametri:
+   - foods_with_grams: dizionario con tutti gli alimenti e grammature della giornata
+   - sesso: sesso dell'utente
+   - età: età dell'utente
+
+3. Analizza i risultati secondo i LARN (Livelli di Assunzione di Riferimento di Nutrienti):
+   - Vitamine SUFFICIENTI: ≥70% del fabbisogno
+   - Vitamine INSUFFICIENTI: <70% del fabbisogno
+   - Vitamine ECCESSIVE: >300% del fabbisogno
+
+4. Se ci sono carenze significative (<50% del fabbisogno), MODIFICA i pasti esistenti per correggere le carenze
+
+7.2 CONTROLLO ALIMENTI ULTRAPROCESSATI
+1. Usa il tool check_ultraprocessed_foods con tutti gli alimenti della giornata
+2. Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
+3. Se il limite è superato, SOSTITUISCI gli alimenti ultraprocessati con alternative meno processate
+
+7.3 OTTIMIZZAZIONE FINALE
+Se necessarie modifiche dai controlli precedenti:
+- Ricalcola i macronutrienti totali dopo le modifiche
+- Assicurati che gli obiettivi calorici e di macronutrienti siano ancora rispettati
+- Presenta le modifiche in modo chiaro spiegando le motivazioni scientifiche
+
+IMPORTANTE: Questa fase è OBBLIGATORIA e deve essere eseguita sempre dopo aver completato TUTTI i pasti della giornata.
 """
 
 # Creazione dell'agente assistant

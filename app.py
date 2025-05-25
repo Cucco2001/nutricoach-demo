@@ -14,7 +14,7 @@ from nutridb_tool import (
     get_LARN_lipidi_percentuali, get_LARN_vitamine, 
     compute_Harris_Benedict_Equation, get_protein_multiplier,
     calculate_sport_expenditure, calculate_weight_goal_calories, 
-    analyze_bmi_and_goals, check_ultraprocessed_foods
+    analyze_bmi_and_goals, check_vitamins, get_food_substitutes, check_ultraprocessed_foods
 )
 from user_data_tool import (
     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
@@ -316,6 +316,8 @@ def handle_tool_calls(run_status):
                     "calculate_sport_expenditure": calculate_sport_expenditure,
                     "calculate_weight_goal_calories": calculate_weight_goal_calories,
                     "analyze_bmi_and_goals": analyze_bmi_and_goals,
+                    "check_vitamins": check_vitamins,
+                    "get_food_substitutes": get_food_substitutes,
                     "check_ultraprocessed_foods": check_ultraprocessed_foods,
                     
                     # Funzioni per accedere ai dati dell'utente
@@ -1350,6 +1352,11 @@ def chat_interface():
                     - Crea un pasto alla volta
                     - Prenditi il tempo necessario per realizzare un pasto completo
                     - Verifica il pasto 
+
+                    FASE 7: Controllo vitaminico e ultraprocessati
+                    - Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN per identificare carenze o eccessi
+                    - Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
+                    - Aggiorna i pasti in base alle carenze o eccessi identificati
 
                     Puoi procedere con la FASE 1?
                     """

@@ -31,7 +31,9 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "check_ultraprocessed_foods": ["foods_with_grams"],
         "calculate_sport_expenditure": ["sports"],
         "calculate_weight_goal_calories": ["kg_change", "time_months", "goal_type"],
-        "analyze_bmi_and_goals": ["peso", "altezza", "sesso", "età", "obiettivo"]
+        "analyze_bmi_and_goals": ["peso", "altezza", "sesso", "età", "obiettivo"],
+        "check_vitamins": ["foods_with_grams", "sesso", "età"],
+        "get_food_substitutes": ["food_name", "grams"]
     }
     
     if function_name not in required_params:
@@ -550,3 +552,69 @@ def analyze_bmi_and_goals(peso: float, altezza: float, sesso: str, età: int, ob
     except Exception as e:
         logger.error(f"Errore in analyze_bmi_and_goals: {str(e)}")
         return {"error": str(e)}
+
+def check_vitamins(foods_with_grams: Dict[str, float], sesso: str, età: int) -> Dict[str, Any]:
+    """
+    Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN.
+    
+    Args:
+        foods_with_grams: Dizionario con alimenti e relative grammature {alimento: grammi}
+        sesso: 'maschio' o 'femmina'
+        età: Età in anni
+    
+    Returns:
+        Dict contenente:
+        - total_vitamins: totali vitaminici calcolati
+        - larn_requirements: fabbisogni LARN per l'utente
+        - vitamin_status: stato per ogni vitamina (sufficiente/insufficiente/eccessivo)
+        - warnings: lista di avvertimenti
+        - recommendations: raccomandazioni specifiche
+        - foods_not_found: alimenti non trovati nel database
+    """
+    try:
+        if not isinstance(foods_with_grams, dict):
+            raise ValueError("Il parametro foods_with_grams deve essere un dizionario")
+        
+        result = db.check_vitamins(foods_with_grams, sesso, età)
+        logger.info(f"Risultato check_vitamins: {result}")
+        return result
+    except Exception as e:
+        logger.error(f"Errore in check_vitamins: {str(e)}")
+        return {"error": str(e)}
+
+def get_food_substitutes(food_name: str, grams: float, num_substitutes: int = 5) -> Dict[str, Any]:
+    """
+    Ottiene gli alimenti sostitutivi per un dato alimento e quantità basati sui macronutrienti.
+    
+    Args:
+        food_name: Nome dell'alimento per cui cercare sostituti
+        grams: Grammi dell'alimento di riferimento
+        num_substitutes: Numero massimo di sostituti da restituire (default 5)
+    
+    Returns:
+        Dict contenente:
+        - available: bool se il sistema di sostituti è disponibile
+        - substitutes: lista di sostituti con grammature equivalenti e dati nutrizionali
+        - reference_food: dati dell'alimento di riferimento con quantità specificata
+        - metadata: informazioni sul metodo di calcolo
+    """
+    try:
+        if not isinstance(food_name, str) or not food_name.strip():
+            raise ValueError("Il nome dell'alimento deve essere una stringa non vuota")
+        
+        try:
+            grams = float(grams)
+            if grams <= 0:
+                raise ValueError("I grammi devono essere positivi")
+        except (ValueError, TypeError):
+            raise ValueError("I grammi devono essere un numero positivo")
+        
+        if not isinstance(num_substitutes, int) or num_substitutes < 1:
+            num_substitutes = 5
+        
+        result = db.get_food_substitutes(food_name.strip(), grams, num_substitutes)
+        logger.info(f"Risultato get_food_substitutes per {grams}g di {food_name}: {len(result.get('substitutes', []))} sostituti trovati")
+        return result
+    except Exception as e:
+        logger.error(f"Errore in get_food_substitutes: {str(e)}")
+        return {"error": str(e), "available": False}

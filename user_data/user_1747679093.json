@@ -8,38 +8,48 @@
   "chat_history": [
     {
       "role": "assistant",
-      "content": "📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Perdita di peso\n\n➡️ Conclusione: Il tuo obiettivo di perdita di peso è coerente con la tua attuale situazione fisiologica e i parametri di BMI. Possiamo procedere con l'analisi delle informazioni fornite nella FASE 1. \n\nPuoi chiedermi se hai domande riguardo ai calcoli o alle scelte fatte finora. Sei pronto per proseguire con la prossima fase?",
-      "timestamp": 1748173504.4524555
-    },
-    {
-      "role": "user",
-      "content": "si ",
-      "timestamp": 1748173512.3708923
-    },
-    {
-      "role": "assistant",
-      "content": "📊 Risultati analisi:\n- **Obiettivo di perdita di peso**:\n  - Deficit calorico giornaliero richiesto: 428 kcal\n  - Media di perdita peso prevista: 1.67 kg al mese\n\n- **Dispendio energetico attività sportiva**:\n  - Fitness (Allenamento medio, facile): \n    - 3 ore a settimana\n    - Calorie bruciate per sessione: 600 kcal\n    - Calorie giornaliere mediate: 86 kcal\n\n➡️ Conclusione: Ho analizzato le tue informazioni e stiamo procedendo bene. Andrò avanti con il calcolo del tuo fabbisogno energetico nella FASE 2.\n\nSe hai domande su quanto fatto finora, chiedi pure! Altrimenti, procedo con la prossima fase. Sei pronto?",
-      "timestamp": 1748173538.862759
-    },
-    {
-      "role": "user",
-      "content": "si ",
-      "timestamp": 1748173577.3019154
-    },
-    {
-      "role": "assistant",
-      "content": "📊 Risultati dei calcoli:\n- **Metabolismo Basale (BMR)**: 1672 kcal\n- **Fabbisogno energetico giornaliero** (considerando il livello di attività sedentario): 2424 kcal\n\n2. **Aggiustamento per l'obiettivo di perdita di peso**:\n   - Deficit calorico richiesto: 428 kcal\n\n3. **Aggiunta del dispendio energetico dovuto allo sport**:\n   - Dispendio calorico giornaliero dall'attività sportiva: 86 kcal\n\n**Calcolo del fabbisogno calorico totale per il programma di perdita di peso**:\n- Fabbisogno giornaliero base: 2424 kcal\n- (-) Deficit per perdita peso: 428 kcal\n- (+) Calorie da attività sportiva: 86 kcal\n\nFabbisogno calorico totale = 2424 - 428 + 86 = 2082 kcal\n\n➡️ Conclusione: Il tuo fabbisogno energetico giornaliero, per supportare il tuo obiettivo di perdita di peso con il tuo attuale livello di attività, è 2082 kcal.\n\nSe hai domande sui calcoli o se vuoi procedere con il calcolo dei macronutrienti nella FASE 3, fammi sapere!",
-      "timestamp": 1748173600.4210885
+      "content": "📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Perdita di peso\n\nL'obiettivo di perdita di peso è coerente con il tuo profilo attuale.\n\n➡️ Conclusione: Possiamo procedere con la Fase 1, l'analisi delle informazioni ricevute. Se hai domande sui calcoli o sulla valutazione fatta, sentiti libero di chiedere. Altrimenti, vuoi procedere con la Fase 1?",
+      "timestamp": 1748189524.9402583
     },
     {
       "role": "user",
       "content": "si",
-      "timestamp": 1748173635.4047623
+      "timestamp": 1748189541.1486223
     },
     {
       "role": "assistant",
-      "content": "📊 Risultati calcolo macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore: 1.0 g/kg di peso corporeo\n   - Peso: 68 kg (esempio ipotetico)\n   - Grammi totali: 1.0 * 68 = 68g\n   - Kcal da proteine: 68g * 4 = 272 kcal\n   - Percentuale sulle kcal totali: (272 / 2082) * 100 ≈ 13%\n\n2. **Grassi**:\n   - Percentuale consigliata: 20-35% delle kcal totali\n   - Kcal da grassi (usando il 30% come esempio): 2082 * 0.30 = 625 kcal\n   - Grammi di grassi: 625 / 9 ≈ 69g\n\n3. **Carboidrati**:\n   - Kcal restanti: 2082 - 272 - 625 = 1185 kcal\n   - Grammi di carboidrati: 1185 / 4 ≈ 296g\n   - Percentuale sulle kcal totali: (1185 / 2082) * 100 ≈ 57%\n\n4. **Fibre**:\n   - Fabbisogno di fibre: 26-35g al giorno\n\n✍️ Riepilogo macronutrienti:\n- Proteine: 68g (272 kcal, 13%)\n- Grassi: 69g (625 kcal, 30%)\n- Carboidrati: 296g (1185 kcal, 57%)\n- Fibre: 26-35g\n\n➡️ Conclusione: Ho distribuito la tua energia totale tra proteine, grassi e carboidrati. Se hai domande o vuoi procedere con la distribuzione calorica dei pasti (FASE 4), fammelo sapere!",
-      "timestamp": 1748173670.7593307
+      "content": "📊 Risultati analisi:\n\n1. **Obiettivo di peso**: \n   - Deficit calorico giornaliero necessario: 428 kcal\n   - Velocità di perdita di peso: 1.67 kg al mese\n\n2. **Attività sportive**: \n   - Fitness - Allenamento medio: 86 kcal al giorno\n   - Fitness - Bodybuilding Massa: 154 kcal al giorno\n   - Totale dispendio calorico sportivo giornaliero: 240 kcal\n\n➡️ Conclusione: Ora che abbiamo chiarito il deficit calorico giornaliero necessario per la perdita di peso e il contributo calorico delle attività sportive, possiamo procedere con la Fase 2, il calcolo del fabbisogno energetico. Hai domande su questi calcoli o vuoi continuare?",
+      "timestamp": 1748189568.0512028
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1748189591.595584
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Risultati calcolo del fabbisogno energetico:\n\n1. **Metabolismo Basale (MB)**: 1672 kcal al giorno\n2. **Fabbisogno energetico totale senza sport**: 2173 kcal al giorno (sedentario)\n3. **Dispendio calorico sportivo**: 240 kcal al giorno\n\n🔍 Calcolo del fabbisogno calorico per l'obiettivo di perdita di peso:\n- Fabbisogno base + sport = 2173 + 240 = 2413 kcal\n- Considerando il deficit necessario: 2413 - 428 = 1985 kcal\n\n➡️ Conclusione: Il fabbisogno calorico giornaliero per raggiungere il tuo obiettivo di perdita di peso è di circa 1985 kcal. Posso procedere con la Fase 3 per distribuire le calorie tra i macronutrienti o hai altre domande?",
+      "timestamp": 1748189606.5107627
+    },
+    {
+      "role": "user",
+      "content": "procediamo",
+      "timestamp": 1748189634.2017627
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Risultati calcolo dei macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore: 1.9 g/kg\n   - Peso corporeo: 70 kg\n   - Calcolo: 1.9 * 70 = 133 g di proteine\n   - Calorie da proteine: 133 * 4 = 532 kcal\n   - Percentuale sulle calorie totali: (532 / 1985) * 100 ≈ 27%\n\n2. **Grassi**:\n   - Percentuale raccomandata: 20-35% delle calorie totali\n   - Scelta intermedia per equilibrio: 30%\n   - Calorie da grassi: 1985 * 0.30 = 596 kcal\n   - Grammi di grassi: 596 / 9 ≈ 66 g\n\n3. **Carboidrati**:\n   - Calorie rimanenti: 1985 - (532 + 596) = 857 kcal\n   - Grammi di carboidrati: 857 / 4 ≈ 214 g \n\n4. **Fibre**:\n   - Fabbisogno giornaliero: 25-33.1 g\n\n📊 Riepilogo macronutrienti:\n- Proteine: 133 g (27%)\n- Grassi: 66 g (30%)\n- Carboidrati: 214 g (43%)\n- Fibre: 25-33 g\n\n➡️ Conclusione: Le calorie e i macronutrienti sono ora calcolati. Pronto per procedere con la distribuzione calorica per i pasti nella Fase 4 oppure hai altre domande?",
+      "timestamp": 1748189698.3508813
+    },
+    {
+      "role": "user",
+      "content": "procediamo",
+      "timestamp": 1748189759.0286026
+    },
+    {
+      "role": "assistant",
+      "content": "📊 Distribuzione calorica dei pasti:\n\nDal momento che non è stato specificato un numero di pasti preferiti, utilizzerò una distribuzione standard su 5 pasti:\n\n1. **Colazione**:\n   - 25% delle calorie totali\n   - Calorie: 1985 * 0.25 ≈ 496 kcal\n\n2. **Spuntino mattina**:\n   - 10% delle calorie totali\n   - Calorie: 1985 * 0.10 ≈ 199 kcal\n\n3. **Pranzo**:\n   - 30% delle calorie totali\n   - Calorie: 1985 * 0.30 ≈ 596 kcal\n\n4. **Spuntino pomeriggio**:\n   - 10% delle calorie totali\n   - Calorie: 1985 * 0.10 ≈ 199 kcal\n\n5. **Cena**:\n   - 25% delle calorie totali\n   - Calorie: 1985 * 0.25 ≈ 496 kcal\n\n➡️ Conclusione: La distribuzione calorica dei pasti è pronta e possiamo ora procedere con la distribuzione dei macronutrienti per ciascun pasto nella Fase 5. Vuoi procedere o hai altre domande?",
+      "timestamp": 1748189770.5718126
     }
   ],
   "nutritional_info": {
@@ -71,38 +81,55 @@
             },
             "intensity": "easy",
             "hours_per_week": 3
+          },
+          {
+            "sport_type": "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)",
+            "specific_sport": {
+              "name": "Fitness - bodybuilding massa",
+              "key": "Fitness - Bodybuilding Massa",
+              "kcal_per_hour": 450,
+              "description": "Allenamento moderato in palestra"
+            },
+            "intensity": "easy",
+            "hours_per_week": 3
           }
         ]
       },
       "meal_preferences": {
         "answer": "Sì",
         "follow_up": {
-          "num_meals": 5,
+          "num_meals": 6,
           "meal_times": {
             "Colazione": "07:30",
             "Spuntino mattutino": "10:30",
             "Pranzo": "13:00",
             "Spuntino pomeridiano": "16:30",
-            "Cena": "20:00"
+            "Cena": "20:00",
+            "Altro Spuntino": "22:00"
           }
         }
       }
     },
     "agent_qa": [
       {
-        "question": "si ",
-        "answer": "📊 Risultati analisi:\n- **Obiettivo di perdita di peso**:\n  - Deficit calorico giornaliero richiesto: 428 kcal\n  - Media di perdita peso prevista: 1.67 kg al mese\n\n- **Dispendio energetico attività sportiva**:\n  - Fitness (Allenamento medio, facile): \n    - 3 ore a settimana\n    - Calorie bruciate per sessione: 600 kcal\n    - Calorie giornaliere mediate: 86 kcal\n\n➡️ Conclusione: Ho analizzato le tue informazioni e stiamo procedendo bene. Andrò avanti con il calcolo del tuo fabbisogno energetico nella FASE 2.\n\nSe hai domande su quanto fatto finora, chiedi pure! Altrimenti, procedo con la prossima fase. Sei pronto?",
-        "timestamp": 1748173538.8657465
-      },
-      {
-        "question": "si ",
-        "answer": "📊 Risultati dei calcoli:\n- **Metabolismo Basale (BMR)**: 1672 kcal\n- **Fabbisogno energetico giornaliero** (considerando il livello di attività sedentario): 2424 kcal\n\n2. **Aggiustamento per l'obiettivo di perdita di peso**:\n   - Deficit calorico richiesto: 428 kcal\n\n3. **Aggiunta del dispendio energetico dovuto allo sport**:\n   - Dispendio calorico giornaliero dall'attività sportiva: 86 kcal\n\n**Calcolo del fabbisogno calorico totale per il programma di perdita di peso**:\n- Fabbisogno giornaliero base: 2424 kcal\n- (-) Deficit per perdita peso: 428 kcal\n- (+) Calorie da attività sportiva: 86 kcal\n\nFabbisogno calorico totale = 2424 - 428 + 86 = 2082 kcal\n\n➡️ Conclusione: Il tuo fabbisogno energetico giornaliero, per supportare il tuo obiettivo di perdita di peso con il tuo attuale livello di attività, è 2082 kcal.\n\nSe hai domande sui calcoli o se vuoi procedere con il calcolo dei macronutrienti nella FASE 3, fammi sapere!",
-        "timestamp": 1748173600.4210885
+        "question": "si",
+        "answer": "📊 Risultati analisi:\n\n1. **Obiettivo di peso**: \n   - Deficit calorico giornaliero necessario: 428 kcal\n   - Velocità di perdita di peso: 1.67 kg al mese\n\n2. **Attività sportive**: \n   - Fitness - Allenamento medio: 86 kcal al giorno\n   - Fitness - Bodybuilding Massa: 154 kcal al giorno\n   - Totale dispendio calorico sportivo giornaliero: 240 kcal\n\n➡️ Conclusione: Ora che abbiamo chiarito il deficit calorico giornaliero necessario per la perdita di peso e il contributo calorico delle attività sportive, possiamo procedere con la Fase 2, il calcolo del fabbisogno energetico. Hai domande su questi calcoli o vuoi continuare?",
+        "timestamp": 1748189568.0561957
       },
       {
         "question": "si",
-        "answer": "📊 Risultati calcolo macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore: 1.0 g/kg di peso corporeo\n   - Peso: 68 kg (esempio ipotetico)\n   - Grammi totali: 1.0 * 68 = 68g\n   - Kcal da proteine: 68g * 4 = 272 kcal\n   - Percentuale sulle kcal totali: (272 / 2082) * 100 ≈ 13%\n\n2. **Grassi**:\n   - Percentuale consigliata: 20-35% delle kcal totali\n   - Kcal da grassi (usando il 30% come esempio): 2082 * 0.30 = 625 kcal\n   - Grammi di grassi: 625 / 9 ≈ 69g\n\n3. **Carboidrati**:\n   - Kcal restanti: 2082 - 272 - 625 = 1185 kcal\n   - Grammi di carboidrati: 1185 / 4 ≈ 296g\n   - Percentuale sulle kcal totali: (1185 / 2082) * 100 ≈ 57%\n\n4. **Fibre**:\n   - Fabbisogno di fibre: 26-35g al giorno\n\n✍️ Riepilogo macronutrienti:\n- Proteine: 68g (272 kcal, 13%)\n- Grassi: 69g (625 kcal, 30%)\n- Carboidrati: 296g (1185 kcal, 57%)\n- Fibre: 26-35g\n\n➡️ Conclusione: Ho distribuito la tua energia totale tra proteine, grassi e carboidrati. Se hai domande o vuoi procedere con la distribuzione calorica dei pasti (FASE 4), fammelo sapere!",
-        "timestamp": 1748173670.764995
+        "answer": "📊 Risultati calcolo del fabbisogno energetico:\n\n1. **Metabolismo Basale (MB)**: 1672 kcal al giorno\n2. **Fabbisogno energetico totale senza sport**: 2173 kcal al giorno (sedentario)\n3. **Dispendio calorico sportivo**: 240 kcal al giorno\n\n🔍 Calcolo del fabbisogno calorico per l'obiettivo di perdita di peso:\n- Fabbisogno base + sport = 2173 + 240 = 2413 kcal\n- Considerando il deficit necessario: 2413 - 428 = 1985 kcal\n\n➡️ Conclusione: Il fabbisogno calorico giornaliero per raggiungere il tuo obiettivo di perdita di peso è di circa 1985 kcal. Posso procedere con la Fase 3 per distribuire le calorie tra i macronutrienti o hai altre domande?",
+        "timestamp": 1748189606.5148096
+      },
+      {
+        "question": "procediamo",
+        "answer": "📊 Risultati calcolo dei macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore: 1.9 g/kg\n   - Peso corporeo: 70 kg\n   - Calcolo: 1.9 * 70 = 133 g di proteine\n   - Calorie da proteine: 133 * 4 = 532 kcal\n   - Percentuale sulle calorie totali: (532 / 1985) * 100 ≈ 27%\n\n2. **Grassi**:\n   - Percentuale raccomandata: 20-35% delle calorie totali\n   - Scelta intermedia per equilibrio: 30%\n   - Calorie da grassi: 1985 * 0.30 = 596 kcal\n   - Grammi di grassi: 596 / 9 ≈ 66 g\n\n3. **Carboidrati**:\n   - Calorie rimanenti: 1985 - (532 + 596) = 857 kcal\n   - Grammi di carboidrati: 857 / 4 ≈ 214 g \n\n4. **Fibre**:\n   - Fabbisogno giornaliero: 25-33.1 g\n\n📊 Riepilogo macronutrienti:\n- Proteine: 133 g (27%)\n- Grassi: 66 g (30%)\n- Carboidrati: 214 g (43%)\n- Fibre: 25-33 g\n\n➡️ Conclusione: Le calorie e i macronutrienti sono ora calcolati. Pronto per procedere con la distribuzione calorica per i pasti nella Fase 4 oppure hai altre domande?",
+        "timestamp": 1748189698.3547995
+      },
+      {
+        "question": "procediamo",
+        "answer": "📊 Distribuzione calorica dei pasti:\n\nDal momento che non è stato specificato un numero di pasti preferiti, utilizzerò una distribuzione standard su 5 pasti:\n\n1. **Colazione**:\n   - 25% delle calorie totali\n   - Calorie: 1985 * 0.25 ≈ 496 kcal\n\n2. **Spuntino mattina**:\n   - 10% delle calorie totali\n   - Calorie: 1985 * 0.10 ≈ 199 kcal\n\n3. **Pranzo**:\n   - 30% delle calorie totali\n   - Calorie: 1985 * 0.30 ≈ 596 kcal\n\n4. **Spuntino pomeriggio**:\n   - 10% delle calorie totali\n   - Calorie: 1985 * 0.10 ≈ 199 kcal\n\n5. **Cena**:\n   - 25% delle calorie totali\n   - Calorie: 1985 * 0.25 ≈ 496 kcal\n\n➡️ Conclusione: La distribuzione calorica dei pasti è pronta e possiamo ora procedere con la distribuzione dei macronutrienti per ciascun pasto nella Fase 5. Vuoi procedere o hai altre domande?",
+        "timestamp": 1748189770.5772738
       }
     ]
   }

@@ -14,6 +14,13 @@ class NutriDB:
         self.porzioni = self._load_json(os.path.join(path, "porzioni_standard.json"))
         self.peso_volume = self._load_json(os.path.join(path, "peso_per_volume.json"))
         self.alias = self._build_alias()
+        self.data_dir = path
+        
+        # Carica il database dei sostituti se disponibile
+        try:
+            self.substitutes = self._load_json(os.path.join(path, "alimenti_sostitutivi.json"))
+        except FileNotFoundError:
+            self.substitutes = None
 
     def _load_json(self, filepath):
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -587,4 +594,295 @@ class NutriDB:
             "obiettivo_coerente": obiettivo_coerente,
             "raccomandazione": raccomandazione,
             "warnings": warnings
+        }
+
+    def check_vitamins(self, foods_with_grams, sesso, età):
+        """Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN.
+        
+        Args:
+            foods_with_grams: Dizionario con alimenti e relative grammature {alimento: grammi}
+            sesso: 'maschio' o 'femmina'
+            età: Età in anni
+        
+        Returns:
+            dict: Contiene:
+                - total_vitamins: totali vitaminici calcolati
+                - larn_requirements: fabbisogni LARN per l'utente
+                - vitamin_status: stato per ogni vitamina (sufficiente/insufficiente/eccessivo)
+                - warnings: lista di avvertimenti
+                - recommendations: raccomandazioni specifiche
+        """
+        try:
+            # Carica i dati degli alimenti
+            foods_data = self.alimenti
+            
+            # Carica i LARN delle vitamine
+            larn_vitamine_path = os.path.join(self.data_dir, "larn_vitamine.json")
+            with open(larn_vitamine_path, 'r', encoding='utf-8') as f:
+                larn_data = json.load(f)
+            
+            # Determina la categoria LARN appropriata
+            larn_category = self._get_larn_vitamin_category(sesso, età)
+            
+            # Naviga nella struttura JSON per trovare i requisiti
+            category_parts = larn_category.split('/')
+            larn_requirements = larn_data["vitamine"]
+            for part in category_parts:
+                if part in larn_requirements:
+                    larn_requirements = larn_requirements[part]
+                else:
+                    raise ValueError(f"Categoria LARN non trovata: {larn_category}")
+            
+            if not isinstance(larn_requirements, dict) or "vitamina_C_mg" not in larn_requirements:
+                raise ValueError(f"Dati LARN non validi per categoria: {larn_category}")
+            
+            # Inizializza i totali vitaminici
+            total_vitamins = {
+                "vitamina_C_mg": 0.0, "tiamina_mg": 0.0, "riboflavina_mg": 0.0, "niacina_mg": 0.0,
+                "acido_pantotenico_mg": 0.0, "vitamina_B6_mg": 0.0, "biotina_ug": 0.0, "folati_ug": 0.0,
+                "vitamina_B12_ug": 0.0, "vitamina_A_ug": 0.0, "vitamina_D_ug": 0.0, "vitamina_E_mg": 0.0, "vitamina_K_ug": 0.0
+            }
+            
+            # Calcola i totali per ogni alimento
+            foods_not_found = []
+            for food_name, grams in foods_with_grams.items():
+                if food_name in foods_data:
+                    food_data = foods_data[food_name]
+                    # Calcola l'apporto vitaminico per la quantità specificata
+                    for vitamin in total_vitamins.keys():
+                        if vitamin in food_data:
+                            total_vitamins[vitamin] += (food_data[vitamin] * grams) / 100.0
+                else:
+                    foods_not_found.append(food_name)
+            
+            # Arrotonda i valori
+            for vitamin in total_vitamins:
+                total_vitamins[vitamin] = round(total_vitamins[vitamin], 2)
+            
+            # Confronta con i LARN e determina lo stato
+            vitamin_status = {}
+            warnings = []
+            recommendations = []
+            
+            for vitamin, total_amount in total_vitamins.items():
+                if vitamin in larn_requirements:
+                    required_amount = larn_requirements[vitamin]
+                    percentage = (total_amount / required_amount) * 100 if required_amount > 0 else 0
+                    
+                    if percentage < 70:
+                        status = "insufficiente"
+                        warnings.append(f"{vitamin}: {total_amount:.2f} (solo {percentage:.1f}% del fabbisogno)")
+                        recommendations.append(self._get_vitamin_recommendation(vitamin))
+                    elif percentage > 300:  # Soglia per eccesso (3x il fabbisogno)
+                        status = "eccessivo"
+                        warnings.append(f"{vitamin}: {total_amount:.2f} (eccesso: {percentage:.1f}% del fabbisogno)")
+                    else:
+                        status = "sufficiente"
+                    
+                    vitamin_status[vitamin] = {
+                        "amount": total_amount,
+                        "required": required_amount,
+                        "percentage": round(percentage, 1),
+                        "status": status
+                    }
+            
+            # Aggiungi avvertimenti per alimenti non trovati
+            if foods_not_found:
+                warnings.append(f"Alimenti non trovati nel database: {', '.join(foods_not_found)}")
+            
+            # Rimuovi duplicati dalle raccomandazioni
+            recommendations = list(set(recommendations))
+            
+            return {
+                "total_vitamins": total_vitamins,
+                "larn_requirements": larn_requirements,
+                "vitamin_status": vitamin_status,
+                "warnings": warnings,
+                "recommendations": recommendations,
+                "foods_not_found": foods_not_found
+            }
+            
+        except Exception as e:
+            raise ValueError(f"Errore nel controllo vitaminico: {str(e)}")
+    
+    def _get_larn_vitamin_category(self, sesso, età):
+        """Determina la categoria LARN appropriata per le vitamine."""
+        sesso = sesso.lower()
+        
+        if età < 1:
+            return "lattanti/6_12_mesi"
+        elif età <= 3:
+            return "bambini_adolescenti/1_3_anni"
+        elif età <= 6:
+            return "bambini_adolescenti/4_6_anni"
+        elif età <= 10:
+            return "bambini_adolescenti/7_10_anni"
+        elif età <= 14:
+            if sesso in ["maschio", "m"]:
+                return "bambini_adolescenti/maschi_11_14_anni"
+            else:
+                return "bambini_adolescenti/femmine_11_14_anni"
+        elif età <= 17:
+            if sesso in ["maschio", "m"]:
+                return "bambini_adolescenti/maschi_15_17_anni"
+            else:
+                return "bambini_adolescenti/femmine_15_17_anni"
+        elif età <= 29:
+            if sesso in ["maschio", "m"]:
+                return "adulti/maschi_18_29"
+            else:
+                return "adulti/femmine_18_29"
+        elif età <= 59:
+            if sesso in ["maschio", "m"]:
+                return "adulti/maschi_30_59"
+            else:
+                return "adulti/femmine_30_59"
+        elif età <= 74:
+            if sesso in ["maschio", "m"]:
+                return "adulti/maschi_60_74"
+            else:
+                return "adulti/femmine_60_74"
+        else:
+            if sesso in ["maschio", "m"]:
+                return "adulti/maschi_75_plus"
+            else:
+                return "adulti/femmine_75_plus"
+    
+    def _get_vitamin_recommendation(self, vitamin):
+        """Restituisce raccomandazioni specifiche per ogni vitamina."""
+        recommendations = {
+            "vitamina_C_mg": "Aumenta il consumo di agrumi, kiwi, fragole, peperoni, broccoli",
+            "tiamina_mg": "Aumenta il consumo di cereali integrali, legumi, carne di maiale",
+            "riboflavina_mg": "Aumenta il consumo di latte, uova, verdure a foglia verde",
+            "niacina_mg": "Aumenta il consumo di carne, pesce, cereali integrali, arachidi",
+            "acido_pantotenico_mg": "Aumenta il consumo di carne, uova, legumi, cereali integrali",
+            "vitamina_B6_mg": "Aumenta il consumo di carne, pesce, patate, banane",
+            "biotina_ug": "Aumenta il consumo di uova, noci, semi, fegato",
+            "folati_ug": "Aumenta il consumo di verdure a foglia verde, legumi, agrumi",
+            "vitamina_B12_ug": "Aumenta il consumo di carne, pesce, uova, latticini",
+            "vitamina_A_ug": "Aumenta il consumo di carote, spinaci, fegato, uova",
+            "vitamina_D_ug": "Aumenta l'esposizione al sole e il consumo di pesce grasso, uova",
+            "vitamina_E_mg": "Aumenta il consumo di oli vegetali, noci, semi, verdure a foglia verde",
+            "vitamina_K_ug": "Aumenta il consumo di verdure a foglia verde, broccoli, cavoli"
+        }
+        return recommendations.get(vitamin, "Consulta un nutrizionista per consigli specifici")
+
+    def get_food_substitutes(self, food_name, grams, num_substitutes=5):
+        """Ottiene gli alimenti sostitutivi per un dato alimento e quantità.
+        
+        Args:
+            food_name: Nome dell'alimento per cui cercare sostituti
+            grams: Grammi dell'alimento di riferimento
+            num_substitutes: Numero massimo di sostituti da restituire (default 5)
+        
+        Returns:
+            dict: Contiene:
+                - substitutes: lista di sostituti con grammature equivalenti
+                - reference_food: dati dell'alimento di riferimento
+                - available: bool se il sistema di sostituti è disponibile
+        
+        Raises:
+            ValueError: se l'alimento non è trovato o i grammi non sono validi
+        """
+        if self.substitutes is None:
+            return {
+                "available": False,
+                "error": "Database dei sostituti non disponibile",
+                "substitutes": [],
+                "reference_food": None
+            }
+        
+        # Validazione grammi
+        try:
+            grams = float(grams)
+            if grams <= 0:
+                raise ValueError("I grammi devono essere positivi")
+        except (ValueError, TypeError):
+            raise ValueError("I grammi devono essere un numero positivo")
+        
+        # Normalizza il nome dell'alimento usando gli alias
+        normalized_name = self.alias.get(food_name.lower().replace("_", " "))
+        if not normalized_name:
+            normalized_name = food_name
+        
+        # Verifica che l'alimento esista nel database principale
+        if normalized_name not in self.alimenti:
+            raise ValueError(f"Alimento '{food_name}' non trovato nel database")
+        
+        # Verifica che l'alimento abbia sostituti
+        if normalized_name not in self.substitutes.get("substitutes", {}):
+            return {
+                "available": True,
+                "substitutes": [],
+                "reference_food": {
+                    "name": normalized_name,
+                    "grams": grams,
+                    "data": self.alimenti[normalized_name]
+                },
+                "message": f"Nessun sostituto disponibile per {normalized_name}"
+            }
+        
+        # Ottieni i sostituti
+        food_substitutes = self.substitutes["substitutes"][normalized_name]
+        reference_food_data = self.alimenti[normalized_name]
+        
+        # Calcola i valori nutrizionali dell'alimento di riferimento per la quantità specificata
+        reference_nutrition = {
+            "energia_kcal": round((reference_food_data.get("energia_kcal", 0) * grams) / 100, 1),
+            "proteine_g": round((reference_food_data.get("proteine_g", 0) * grams) / 100, 1),
+            "carboidrati_g": round((reference_food_data.get("carboidrati_g", 0) * grams) / 100, 1),
+            "grassi_g": round((reference_food_data.get("grassi_g", 0) * grams) / 100, 1)
+        }
+        
+        # Prepara la lista dei sostituti con i loro dati nutrizionali
+        substitutes_list = []
+        count = 0
+        
+        for substitute_name, substitute_info in food_substitutes.items():
+            if count >= num_substitutes:
+                break
+                
+            if substitute_name in self.alimenti:
+                substitute_data = self.alimenti[substitute_name]
+                
+                # Calcola i grammi equivalenti per la quantità specificata
+                # I grammi nel database sono per 100g di alimento di riferimento
+                # Quindi per X grammi: (X / 100) * grammi_sostituto_per_100g
+                equivalent_grams_for_quantity = round((grams / 100) * substitute_info["grams"], 1)
+                
+                # Calcola i valori nutrizionali del sostituto per la quantità equivalente
+                substitute_nutrition = {
+                    "energia_kcal": round((substitute_data.get("energia_kcal", 0) * equivalent_grams_for_quantity) / 100, 1),
+                    "proteine_g": round((substitute_data.get("proteine_g", 0) * equivalent_grams_for_quantity) / 100, 1),
+                    "carboidrati_g": round((substitute_data.get("carboidrati_g", 0) * equivalent_grams_for_quantity) / 100, 1),
+                    "grassi_g": round((substitute_data.get("grassi_g", 0) * equivalent_grams_for_quantity) / 100, 1)
+                }
+                
+                substitutes_list.append({
+                    "name": substitute_name,
+                    "equivalent_grams": equivalent_grams_for_quantity,
+                    "similarity_score": substitute_info["similarity_score"],
+                    "nutritional_data_per_100g": {
+                        "energia_kcal": substitute_data.get("energia_kcal", 0),
+                        "proteine_g": substitute_data.get("proteine_g", 0),
+                        "carboidrati_g": substitute_data.get("carboidrati_g", 0),
+                        "grassi_g": substitute_data.get("grassi_g", 0)
+                    },
+                    "equivalent_nutrition": substitute_nutrition
+                })
+                count += 1
+        
+        return {
+            "available": True,
+            "substitutes": substitutes_list,
+            "reference_food": {
+                "name": normalized_name,
+                "grams": grams,
+                "data": reference_food_data,
+                "nutrition": reference_nutrition
+            },
+            "metadata": {
+                "reference_amount": f"{grams}g",
+                "calculation_method": "Equivalenza calorica con priorità per similarità macronutrienti"
+            }
         }
