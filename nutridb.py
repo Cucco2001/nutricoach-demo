@@ -97,6 +97,13 @@ class NutriDB:
             "albume d'uova": "albume_uova",
             "albume d'uova fresco": "albume_uova",
             "albume d'uova fresco": "albume_uova",
+            "biscotti secchi": "biscotti_secchi",
+            "biscotti": "biscotti_secchi",
+            "frollini": "biscotti_secchi",
+            "biscotti integrali": "biscotti_integrali",
+            "patata": "patate",
+            "salmone": "salmone_affumicato",
+            "tonno": "tonno_naturale"
             })
         return mapping
 
