@@ -92,8 +92,8 @@ def get_protein_multiplier(sports: Union[List[Dict[str, str]], Dict[str, str]], 
     # Mappa per convertire i tipi di sport dal form ai tipi nel JSON
     sport_type_map = {
         "Fitness - Allenamento medio (principianti e livello intermedio)": "fitness",
-        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)": "bodybuilding_massa",
-        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)": "bodybuilding_definizione",
+        "Fitness - Bodybuilding Massa": "bodybuilding_massa",
+        "Fitness - Bodybuilding Definizione": "bodybuilding_definizione",
         "Sport di forza (es: powerlifting, sollevamento pesi, strongman)": "forza",
         "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)": "endurance",
         "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)": "aciclico",

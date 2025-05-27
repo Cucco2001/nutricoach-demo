@@ -166,8 +166,8 @@ available_tools = [
                                     "type": "string",
                                     "enum": [
                                         "Fitness - Allenamento medio (principianti e livello intermedio)",
-                                        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)",
-                                        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)",
+                                        "Fitness - Bodybuilding Massa",
+                                        "Fitness - Bodybuilding Definizione",
                                         "Sport di forza (es: powerlifting, sollevamento pesi, strongman)",
                                         "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
                                         "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)",

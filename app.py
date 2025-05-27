@@ -88,8 +88,8 @@ def get_sports_by_category(category_name):
     # Mappa i nomi delle categorie del menu a quelli del file JSON
     category_map = {
         "Fitness - Allenamento medio (principianti e livello intermedio)": "Fitness - Allenamento medio",
-        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)": "Fitness - Bodybuilding Massa",
-        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)": "Fitness - Bodybuilding Definizione",
+        "Fitness - Bodybuilding Massa": "Fitness - Bodybuilding Massa",
+        "Fitness - Bodybuilding Definizione": "Fitness - Bodybuilding Definizione",
         "Sport di forza (es: powerlifting, sollevamento pesi, strongman)": "Sport di forza",
         "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)": "Sport di resistenza",
         "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)": "Sport aciclici",
@@ -194,8 +194,8 @@ NUTRITION_QUESTIONS = [
                     "type": "select",
                     "options": [
                         "Fitness - Allenamento medio (principianti e livello intermedio)",
-                        "Fitness - Bodybuilding Massa (solo esperti >2 anni di allenamento)",
-                        "Fitness - Bodybuilding Definizione (solo esperti >2 anni di allenamento)",
+                        "Fitness - Bodybuilding Massa",
+                        "Fitness - Bodybuilding Definizione",
                         "Sport di forza (es: powerlifting, sollevamento pesi, strongman)",
                         "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
                         "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)",
