@@ -1359,7 +1359,7 @@ def chat_interface():
                     - Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
                     - Aggiorna i pasti in base alle carenze o eccessi identificati
 
-                    Puoi procedere con la FASE 1?
+                    Puoi procedere con la FASE 0?
                     """
                     
                     # Crea un nuovo thread solo se non esiste già
