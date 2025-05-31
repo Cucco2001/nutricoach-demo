@@ -1,6 +1,11 @@
+import sys
+import os
+# Aggiungi la cartella parent al path per permettere gli import
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from openai import OpenAI
 import time
-from agent_tools.nutridb_tool import nutridb_tool
+from agent.tool_handler import ToolHandler
 import json
 import logging
 from typing import Dict, Any
@@ -15,6 +20,9 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Inizializza il tool handler
+tool_handler = ToolHandler()
 
 def validate_tool_result(fn_name: str, result: Dict[str, Any]) -> bool:
     """Valida il risultato di una chiamata al tool."""
@@ -94,7 +102,7 @@ def run_nutricoach_conversation(user_message: str, assistant_id: str) -> str:
                     args = json.loads(call.function.arguments)
                     logger.info(f"Esecuzione {fn_name} con args: {args}")
                     
-                    result = nutridb_tool(**args)
+                    result = tool_handler.execute_single_tool(fn_name, **args)
                     
                     # Valida il risultato
                     if not validate_tool_result(fn_name, result):

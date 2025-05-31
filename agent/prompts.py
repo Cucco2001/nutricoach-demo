@@ -1,34 +1,14 @@
-from openai import OpenAI
-from agent_tools.nutridb_tool import (
-    get_macros, 
-    get_LARN_protein, 
-    get_standard_portion, 
-    get_weight_from_volume, 
-    get_fattore_cottura, 
-    get_LARN_fibre, 
-    get_LARN_lipidi_percentuali, 
-    get_LARN_vitamine, 
-    compute_Harris_Benedict_Equation, 
-    get_protein_multiplier, 
-    calculate_sport_expenditure, 
-    calculate_weight_goal_calories,
-    analyze_bmi_and_goals,
-    check_vitamins,
-    get_food_substitutes,
-    check_ultraprocessed_foods
-)
-from agent_tools.user_data_tool import (
-    get_user_preferences, 
-    get_progress_history, 
-    get_agent_qa, 
-    get_nutritional_info
-)
-import time
+"""
+Modulo per i prompt e template dell'agente nutrizionale.
 
-# Inizializza OpenAI client (assicurati di impostare OPENAI_API_KEY nell'ambiente)
-client = OpenAI()
+Contiene tutti i prompt utilizzati dall'agente AI per generare
+risposte appropriate e guidare la conversazione nutrizionale.
+"""
 
-# Definizione dei tool disponibili
+import json
+
+
+# Definizione dei tool disponibili per l'agente
 available_tools = [
     {
         "type": "function",
@@ -435,6 +415,7 @@ available_tools = [
     }
 ]
 
+
 # System prompt dell'agente nutrizionale
 system_prompt = """
 Sei Nutricoach, un assistente nutrizionale esperto e amichevole. Comunica in modo diretto usando "tu".
@@ -547,18 +528,18 @@ FORMATO DEI CALCOLI:
 Mostra SEMPRE i calcoli in questo formato semplice:
 
 Uso simboli:
-- MAI: \times  → USA SEMPRE: *
-- MAI: \text{} → USA SEMPRE: testo normale
+- MAI: \\times  → USA SEMPRE: *
+- MAI: \\text{} → USA SEMPRE: testo normale
 - MAI: [ ]     → USA SEMPRE: parentesi tonde ( )
 - MAI: \\      → USA SEMPRE: testo normale
-- MAI: \frac{} → USA SEMPRE: divisione con /
-- MAI: \ g, \ kcal, \ ml, \ cm → NON USARE mai il backslash prima delle unità di misura
+- MAI: \\frac{} → USA SEMPRE: divisione con /
+- MAI: \\ g, \\ kcal, \\ ml, \\ cm → NON USARE mai il backslash prima delle unità di misura
   → Scrivi SEMPRE "g", "kcal", "ml", "cm" senza alcun simbolo speciale
 
 Scrivi SEMPRE unità di misura nel testo normale:
 - Corretto: 33.6 g
 - Corretto: 2595 kcal
-- Sbagliato: 33.6 \ g o 2595 \ kcal
+- Sbagliato: 33.6 \\ g o 2595 \\ kcal
 
 Esempio: Per l'equazione di Harris-Benedict scrivi così:
 MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)
@@ -996,14 +977,174 @@ Se necessarie modifiche dai controlli precedenti:
 IMPORTANTE: Questa fase è OBBLIGATORIA e deve essere eseguita sempre dopo aver completato TUTTI i pasti della giornata.
 """
 
-# Creazione dell'agente assistant
-assistant = client.beta.assistants.create(
-    name="Nutricoach Agent",
-    instructions=system_prompt,
-    tools=available_tools,
-    model="gpt-4o"  # Modello specificato dal cliente
-)
 
-# Stampa l'ID per usarlo nelle run
-print("Agent ID:", assistant.id)
+def get_initial_prompt(user_info, nutrition_answers, user_preferences):
+    """
+    Genera il prompt iniziale per l'agente nutrizionale.
+    
+    Args:
+        user_info: Informazioni dell'utente (età, sesso, peso, etc.)
+        nutrition_answers: Risposte alle domande nutrizionali
+        user_preferences: Preferenze alimentari dell'utente
+        
+    Returns:
+        str: Prompt iniziale formattato
+    """
+    return f"""
+Iniziamo una nuova consulenza nutrizionale.
 
+Mostra SEMPRE i calcoli in questo formato semplice:
+
+Uso simboli:
+- MAI: \\times  → USA SEMPRE: *
+- MAI: \\text{{}} → USA SEMPRE: testo normale
+- MAI: [ ]     → USA SEMPRE: parentesi tonde ( )
+- MAI: \\      → USA SEMPRE: testo normale
+- MAI: \\frac{{}} → USA SEMPRE: divisione con /
+- MAI: \\ g, \\ kcal, \\ ml, \\ cm → NON USARE mai il backslash prima delle unità di misura
+→ Scrivi SEMPRE "g", "kcal", "ml", "cm" senza alcun simbolo speciale
+
+COMUNICAZIONE E PROGRESSIONE:
+1. Segui SEMPRE il processo fase per fase, svolgendo una fase per volta, partendo dalla FASE 0
+2. Elenca le fonti utilizzate in ciascuna fase
+3. Chiedi feedback quando necessario
+4. Concludi sempre con un messaggio di chiusura con:
+    - Un invito a chiedere se ha domande riguardo i calcoli o le scelte fatte
+    - Una domanda per chiedere all'utente se vuole continuare o se ha altre domande
+
+DATI DEL CLIENTE:
+• Età: {user_info['età']} anni
+• Sesso: {user_info['sesso']}
+• Peso attuale: {user_info['peso']} kg
+• Altezza: {user_info['altezza']} cm
+• Livello attività quotidiana: {user_info['attività']}
+  (esclusa attività sportiva che verrà valutata separatamente)
+• Obiettivo principale: {user_info['obiettivo']}
+
+RISPOSTE ALLE DOMANDE INIZIALI:
+{json.dumps(nutrition_answers, indent=2)}
+
+PREFERENZE ALIMENTARI:
+{json.dumps(user_preferences, indent=2)}
+Basandoti su queste informazioni, procedi con le seguenti fasi:
+
+FASE 0: Analisi BMI e coerenza obiettivi:
+- Calcola il BMI e la categoria di appartenenza
+- Valuta la coerenza dell'obiettivo con il BMI
+    - Se l'obiettivo non è coerente, chiedi all'utente se intende modificare l'obiettivo
+    - Se l'obiettivo è coerente, avvisa l'utente e poi procedi con la FASE 1
+
+FASE 1: Analisi delle risposte fornite
+- Valuta dati del cliente iniziali 
+- Valuta le preferenze alimentari
+- Valuta le intolleranze/allergie
+- Considera gli obiettivi di peso e il tempo
+- Valuta le attività sportive praticate
+- Definisci il numero di pasti preferito e orari (se specificati)
+
+FASE 2: Calcolo del fabbisogno energetico
+- Calcola il metabolismo basale
+- Considera il livello di attività fisica
+- Aggiungi il dispendio energetico degli sport
+- Determina il fabbisogno calorico totale
+
+FASE 3: Calcolo macronutrienti
+- Distribuisci le calorie tra i macronutrienti
+
+FASE 4: Distribuzione calorie tra i pasti
+- Verifica se l'utente ha specificato un numero di pasti e orari
+- In base al numero di pasti e orari, distribuisci le calorie tra i pasti
+- Non inserire alcun alimento specifico o macronutrienti in questa fase, solo la distribuzione delle calorie
+
+FASE 5: Distribuzione macronutrienti tra i pasti
+- Controlla i macronutrienti totali giornalieri e la distribuzione calorica ottenuta nella fase 4
+- Distribuisci i macronutrienti tra i pasti in base ai principi base
+- Applica i principi di modifica in base ai tipi di pasti e sport praticati
+- Non inserire alcun alimento specifico, solo la distribuzione delle calorie e dei macronutrienti in questa fase
+
+FASE 6: Creazione singoli pasti
+- Adatta il piano alle preferenze alimentari
+- Crea un pasto alla volta
+- Prenditi il tempo necessario per realizzare un pasto completo
+- Verifica il pasto 
+
+FASE 7: Controllo vitaminico e ultraprocessati
+- Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN per identificare carenze o eccessi
+- Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
+- Aggiorna i pasti in base alle carenze o eccessi identificati
+
+Puoi procedere con la FASE 0?
+"""
+
+
+def get_follow_up_prompt(phase: str, context: str = ""):
+    """
+    Genera un prompt di follow-up per fasi specifiche.
+    
+    Args:
+        phase: Fase corrente (es. "FASE_1", "FASE_2", etc.)
+        context: Contesto aggiuntivo per il prompt
+        
+    Returns:
+        str: Prompt di follow-up
+    """
+    base_prompts = {
+        "FASE_0": "Procedi con l'analisi BMI e la valutazione della coerenza degli obiettivi.",
+        "FASE_1": "Continua con l'analisi delle risposte fornite dall'utente.",
+        "FASE_2": "Procedi con il calcolo del fabbisogno energetico.",
+        "FASE_3": "Continua con il calcolo dei macronutrienti.",
+        "FASE_4": "Procedi con la distribuzione delle calorie tra i pasti.",
+        "FASE_5": "Continua con la distribuzione dei macronutrienti tra i pasti.",
+        "FASE_6": "Procedi con la creazione dei singoli pasti.",
+        "FASE_7": "Concludi con il controllo vitaminico e degli ultraprocessati."
+    }
+    
+    prompt = base_prompts.get(phase, "Continua con la fase successiva del piano nutrizionale.")
+    
+    if context:
+        prompt += f"\n\nContesto aggiuntivo: {context}"
+    
+    return prompt
+
+
+def get_error_prompt(error_type: str, details: str = ""):
+    """
+    Genera un prompt per gestire errori specifici.
+    
+    Args:
+        error_type: Tipo di errore
+        details: Dettagli dell'errore
+        
+    Returns:
+        str: Prompt per gestire l'errore
+    """
+    error_prompts = {
+        "tool_error": "Si è verificato un errore nell'utilizzo degli strumenti. Riprova con una strategia diversa.",
+        "data_missing": "Alcuni dati necessari non sono disponibili. Richiedi le informazioni mancanti all'utente.",
+        "calculation_error": "Errore nei calcoli. Verifica i dati e riprova.",
+        "validation_error": "I dati forniti non sono validi. Richiedi una correzione all'utente."
+    }
+    
+    prompt = error_prompts.get(error_type, "Si è verificato un errore imprevisto. Continua con cautela.")
+    
+    if details:
+        prompt += f"\n\nDettagli: {details}"
+    
+    return prompt
+
+
+def get_calculation_format_rules():
+    """
+    Ottiene le regole per la formattazione dei calcoli.
+    
+    Returns:
+        str: Regole di formattazione
+    """
+    return """
+REGOLE FORMATTAZIONE CALCOLI:
+- USA SEMPRE: * (mai \\times)
+- USA SEMPRE: / (mai \\frac{}{})
+- USA SEMPRE: () (mai [ ])
+- NON usare mai \\ davanti alle unità (g, kcal, ml, cm)
+- Scrivi sempre in testo normale, mai LaTeX
+""" 

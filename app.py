@@ -5,7 +5,7 @@ import json
 import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
-from nutricoach_agent import available_tools, system_prompt
+from agent import available_tools, system_prompt
 from agent_tools.user_data_manager import UserDataManager
 from datetime import datetime
 from agent_tools.nutridb_tool import (
@@ -32,6 +32,10 @@ from services.progress_service import ProgressManager
 
 # Import del nuovo servizio Preferences modulare
 from services.preferences_service import PreferencesManager
+
+# Import dei moduli agent
+from agent.tool_handler import handle_tool_calls
+from agent.prompts import get_initial_prompt
 
 import threading
 import queue
@@ -147,71 +151,7 @@ def create_assistant():
             return None
     return st.session_state.assistant
 
-def handle_tool_calls(run_status):
-    """Gestisce le chiamate ai tool dell'assistente."""
-    try:
-        tool_calls = run_status.required_action.submit_tool_outputs.tool_calls
-        tool_outputs = []
-        
-        for tool_call in tool_calls:
-            try:
-                # Estrai i parametri della chiamata
-                function_name = tool_call.function.name
-                arguments = json.loads(tool_call.function.arguments)
-                
-                # Mappa dei nomi delle funzioni alle funzioni effettive
-                function_map = {
-                    # Funzioni per accedere al database nutrizionale
-                    "get_macros": get_macros,
-                    "get_LARN_protein": get_LARN_protein,
-                    "get_standard_portion": get_standard_portion,
-                    "get_weight_from_volume": get_weight_from_volume,
-                    "get_fattore_cottura": get_fattore_cottura,
-                    "get_LARN_fibre": get_LARN_fibre,
-                    "get_LARN_lipidi_percentuali": get_LARN_lipidi_percentuali,
-                    "get_LARN_vitamine": get_LARN_vitamine,
-                    "compute_Harris_Benedict_Equation": compute_Harris_Benedict_Equation,
-                    "get_protein_multiplier": get_protein_multiplier,
-                    "calculate_sport_expenditure": calculate_sport_expenditure,
-                    "calculate_weight_goal_calories": calculate_weight_goal_calories,
-                    "analyze_bmi_and_goals": analyze_bmi_and_goals,
-                    "check_vitamins": check_vitamins,
-                    "get_food_substitutes": get_food_substitutes,
-                    "check_ultraprocessed_foods": check_ultraprocessed_foods,
-                    
-                    # Funzioni per accedere ai dati dell'utente
-                    "get_user_preferences": get_user_preferences,
-                    "get_progress_history": get_progress_history,
-                    "get_agent_qa": get_agent_qa,
-                    "get_nutritional_info": get_nutritional_info,
-                    
-                    # Per retrocompatibilità
-                    "nutridb_tool": lambda **args: nutridb_tool(**args),
-                    "user_data_tool": lambda **args: user_data_tool(**args)
-                }
-                
-                # Esegui la funzione appropriata
-                if function_name in function_map:
-                    result = function_map[function_name](**arguments)
-                else:
-                    result = {"error": f"Tool {function_name} non supportato"}
-                
-                tool_outputs.append({
-                    "tool_call_id": tool_call.id,
-                    "output": json.dumps(result)
-                })
-                
-            except Exception as e:
-                st.error(f"Errore nell'esecuzione del tool {function_name}: {str(e)}")
-                tool_outputs.append({
-                    "tool_call_id": tool_call.id,
-                    "output": json.dumps({"error": str(e)})
-                })
-        
-        return tool_outputs
-    except Exception as e:
-        st.error(f"Errore nella gestione dei tool: {str(e)}")
-        return None
+# NOTA: La funzione handle_tool_calls() è stata spostata nel modulo agent/tool_handler.py
 
 def create_new_thread():
     """Crea un nuovo thread per la conversazione, mantenendo la chat history dell'utente."""
@@ -795,91 +735,11 @@ def chat_interface():
                     ]
                 else:
                     # Se non c'è history, invia il prompt iniziale
-                    initial_prompt = f"""
-                    Iniziamo una nuova consulenza nutrizionale.
-
-                    Mostra SEMPRE i calcoli in questo formato semplice:
-
-                    Uso simboli:
-                    - MAI: \times  → USA SEMPRE: *
-                    - MAI: \\text{{}} → USA SEMPRE: testo normale
-                    - MAI: [ ]     → USA SEMPRE: parentesi tonde ( )
-                    - MAI: \\      → USA SEMPRE: testo normale
-                    - MAI: \\frac{{}} → USA SEMPRE: divisione con /
-                    - MAI: \ g, \ kcal, \ ml, \ cm → NON USARE mai il backslash prima delle unità di misura
-                    → Scrivi SEMPRE "g", "kcal", "ml", "cm" senza alcun simbolo speciale
-
-                    COMUNICAZIONE E PROGRESSIONE:
-                    1. Segui SEMPRE il processo fase per fase, svolgendo una fase per volta, partendo dalla FASE 0
-                    2. Elenca le fonti utilizzate in ciascuna fase
-                    3. Chiedi feedback quando necessario
-                    4. Concludi sempre con un messaggio di chiusura con:
-                        - Un invito a chiedere se ha domande riguardo i calcoli o le scelte fatte
-                        - Una domanda per chiedere all'utente se vuole continuare o se ha altre domande
-
-                    DATI DEL CLIENTE:
-                    • Età: {st.session_state.user_info['età']} anni
-                    • Sesso: {st.session_state.user_info['sesso']}
-                    • Peso attuale: {st.session_state.user_info['peso']} kg
-                    • Altezza: {st.session_state.user_info['altezza']} cm
-                    • Livello attività quotidiana: {st.session_state.user_info['attività']}
-                      (esclusa attività sportiva che verrà valutata separatamente)
-                    • Obiettivo principale: {st.session_state.user_info['obiettivo']}
-
-                    RISPOSTE ALLE DOMANDE INIZIALI:
-                    {json.dumps(st.session_state.nutrition_answers, indent=2)}
-
-                    PREFERENZE ALIMENTARI:
-                    {json.dumps(st.session_state.user_info['preferences'], indent=2)}
-                    Basandoti su queste informazioni, procedi con le seguenti fasi:
-
-                    FASE 0: Analisi BMI e coerenza obiettivi:
-                    - Calcola il BMI e la categoria di appartenenza
-                    - Valuta la coerenza dell'obiettivo con il BMI
-                        - Se l'obiettivo non è coerente, chiedi all'utente se intende modificare l'obiettivo
-                        - Se l'obiettivo è coerente, avvisa l'utente e poi procedi con la FASE 1
-
-                    FASE 1: Analisi delle risposte fornite
-                    - Valuta dati del cliente iniziali 
-                    - Valuta le preferenze alimentari
-                    - Valuta le intolleranze/allergie
-                    - Considera gli obiettivi di peso e il tempo
-                    - Valuta le attività sportive praticate
-                    - Definisci il numero di pasti preferito e orari (se specificati)
-
-                    FASE 2: Calcolo del fabbisogno energetico
-                    - Calcola il metabolismo basale
-                    - Considera il livello di attività fisica
-                    - Aggiungi il dispendio energetico degli sport
-                    - Determina il fabbisogno calorico totale
-
-                    FASE 3: Calcolo macronutrienti
-                    - Distribuisci le calorie tra i macronutrienti
-
-                    FASE 4: Distribuzione calorie tra i pasti
-                    - Verifica se l'utente ha specificato un numero di pasti e orari
-                    - In base al numero di pasti e orari, distribuisci le calorie tra i pasti
-                    - Non inserire alcun alimento specifico o macronutrienti in questa fase, solo la distribuzione delle calorie
-
-                    FASE 5: Distribuzione macronutrienti tra i pasti
-                    - Controlla i macronutrienti totali giornalieri e la distribuzione calorica ottenuta nella fase 4
-                    - Distribuisci i macronutrienti tra i pasti in base ai principi base
-                    - Applica i principi di modifica in base ai tipi di pasti e sport praticati
-                    - Non inserire alcun alimento specifico, solo la distribuzione delle calorie e dei macronutrienti in questa fase
-
-                    FASE 6: Creazione singoli pasti
-                    - Adatta il piano alle preferenze alimentari
-                    - Crea un pasto alla volta
-                    - Prenditi il tempo necessario per realizzare un pasto completo
-                    - Verifica il pasto 
-
-                    FASE 7: Controllo vitaminico e ultraprocessati
-                    - Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN per identificare carenze o eccessi
-                    - Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
-                    - Aggiorna i pasti in base alle carenze o eccessi identificati
-
-                    Puoi procedere con la FASE 0?
-                    """
+                    initial_prompt = get_initial_prompt(
+                        user_info=st.session_state.user_info,
+                        nutrition_answers=st.session_state.nutrition_answers,
+                        user_preferences=st.session_state.user_info['preferences']
+                    )
                     
                     # Crea un nuovo thread solo se non esiste già
                     if not hasattr(st.session_state, 'thread_id'):
