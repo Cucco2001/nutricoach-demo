@@ -16,7 +16,43 @@
     "preferred_foods": [],
     "user_notes": []
   },
-  "chat_history": [],
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Mantenimento\n\n➡️ Conclusione:\nL'obiettivo di mantenimento è coerente con il tuo attuale BMI di 24.2, che rientra nella categoria Normopeso.\n\nSe hai domande riguardo i calcoli o le scelte fatte, non esitare a chiedere. Vuoi procedere con la FASE 1 o hai altre domande?",
+      "timestamp": 1748722716.057225
+    },
+    {
+      "role": "user",
+      "content": "procediamo",
+      "timestamp": 1748723632.1397378
+    },
+    {
+      "role": "assistant",
+      "content": "Purtroppo non ho trovato informazioni preesistenti sulle tue preferenze alimentari o informazioni nutrizionali. Passiamo quindi alla pianificazione del tuo fabbisogno energetico e dei macronutrienti. \n\nHo bisogno di sapere se hai delle intolleranze o allergie alimentari, e se preferisci un certo numero di pasti al giorno. Potresti anche indicarmi il tuo livello di attività fisica e se pratichi sport, così da poter calcolare accuratamente il tuo fabbisogno energetico.\n\n❓ Puoi fornirmi queste informazioni?",
+      "timestamp": 1748723665.0031843
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1748723928.314757
+    },
+    {
+      "role": "assistant",
+      "content": "Per procedere con la creazione del piano alimentare, ho bisogno delle informazioni sulle tue preferenze alimentari, eventuali allergie o intolleranze e il tuo livello di attività fisica, compresi eventuali sport che pratichi.\n\nSe preferisci che io proceda con delle assunzioni standard, considera che potrei utilizzare una distribuzione comune di 5 pasti al giorno. Se sei d'accordo e non hai particolari restrizioni o preferenze, fammi sapere e procederò con il calcolo dei fabbisogni energetici e macronutrienti. \n\n❓ Confermi di voler proseguire con queste assunzioni?",
+      "timestamp": 1748723938.677169
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1748724395.2830799
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del metabolismo basale e fabbisogno totale\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Giornaliero: 2173 kcal (considerando un livello di attività Sedentario)\n\n📚 Fonti utilizzate: Harris-Benedict Equation\n\n➡️ Conclusione:\nIl tuo fabbisogno calorico giornaliero per mantenere il peso attuale, considerando un'attività fisica sedentaria, è di 2173 kcal.\n\nSe hai domande sui calcoli o sulle scelte fatte, sono qui per aiutarti. Vuoi procedere con la FASE 3 per il calcolo dei macronutrienti?",
+      "timestamp": 1748724412.1516473
+    }
+  ],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -24,7 +60,36 @@
     "altezza": 170,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {},
-    "agent_qa": []
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "meal_preferences": {
+        "answer": "No",
+        "follow_up": null
+      }
+    },
+    "agent_qa": [
+      {
+        "question": "procediamo",
+        "answer": "Purtroppo non ho trovato informazioni preesistenti sulle tue preferenze alimentari o informazioni nutrizionali. Passiamo quindi alla pianificazione del tuo fabbisogno energetico e dei macronutrienti. \n\nHo bisogno di sapere se hai delle intolleranze o allergie alimentari, e se preferisci un certo numero di pasti al giorno. Potresti anche indicarmi il tuo livello di attività fisica e se pratichi sport, così da poter calcolare accuratamente il tuo fabbisogno energetico.\n\n❓ Puoi fornirmi queste informazioni?",
+        "timestamp": 1748723665.030302
+      },
+      {
+        "question": "procedi",
+        "answer": "Per procedere con la creazione del piano alimentare, ho bisogno delle informazioni sulle tue preferenze alimentari, eventuali allergie o intolleranze e il tuo livello di attività fisica, compresi eventuali sport che pratichi.\n\nSe preferisci che io proceda con delle assunzioni standard, considera che potrei utilizzare una distribuzione comune di 5 pasti al giorno. Se sei d'accordo e non hai particolari restrizioni o preferenze, fammi sapere e procederò con il calcolo dei fabbisogni energetici e macronutrienti. \n\n❓ Confermi di voler proseguire con queste assunzioni?",
+        "timestamp": 1748723938.7093194
+      },
+      {
+        "question": "procedi",
+        "answer": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del metabolismo basale e fabbisogno totale\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Giornaliero: 2173 kcal (considerando un livello di attività Sedentario)\n\n📚 Fonti utilizzate: Harris-Benedict Equation\n\n➡️ Conclusione:\nIl tuo fabbisogno calorico giornaliero per mantenere il peso attuale, considerando un'attività fisica sedentaria, è di 2173 kcal.\n\nSe hai domande sui calcoli o sulle scelte fatte, sono qui per aiutarti. Vuoi procedere con la FASE 3 per il calcolo dei macronutrienti?",
+        "timestamp": 1748724412.1553519
+      }
+    ]
   }
 }

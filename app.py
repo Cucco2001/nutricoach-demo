@@ -39,6 +39,9 @@ from services.preferences_service import PreferencesManager
 from agent.tool_handler import handle_tool_calls
 from agent.prompts import get_initial_prompt
 
+# Import dei nuovi moduli chat
+from chat import ChatManager, AssistantManager
+
 import threading
 import queue
 
@@ -70,6 +73,15 @@ if "nutrition_answers" not in st.session_state:
 if "user_data_manager" not in st.session_state:
     st.session_state.user_data_manager = UserDataManager()
 
+# Inizializzazione dei manager chat modulari
+if "assistant_manager" not in st.session_state:
+    st.session_state.assistant_manager = AssistantManager(st.session_state.openai_client)
+if "chat_manager" not in st.session_state:
+    st.session_state.chat_manager = ChatManager(
+        st.session_state.openai_client,
+        st.session_state.user_data_manager
+    )
+
 # Inizializzazione del servizio DeepSeek modulare
 if "deepseek_manager" not in st.session_state:
     st.session_state.deepseek_manager = DeepSeekManager()
@@ -80,7 +92,7 @@ if "deepseek_manager" not in st.session_state:
 if "progress_manager" not in st.session_state:
     st.session_state.progress_manager = ProgressManager(
         user_data_manager=st.session_state.user_data_manager,
-        chat_handler=lambda x: chat_with_assistant(x)
+        chat_handler=lambda x: st.session_state.chat_manager.chat_with_assistant(x)
     )
 
 # Inizializzazione del servizio Preferences modulare
@@ -135,204 +147,8 @@ deepseek_results_queue = queue.Queue()
 deepseek_lock = threading.Lock()
 file_access_lock = threading.Lock()  # Lock per accesso ai file utente
 
-# Funzione per creare l'assistente
-def create_assistant():
-    """Crea o recupera l'assistente dalla sessione."""
-    if "assistant" not in st.session_state:
-        try:
-            st.session_state.assistant = st.session_state.openai_client.beta.assistants.create(
-                name="Nutricoach Assistant",
-                instructions=system_prompt,
-                tools=available_tools,
-                model="gpt-4o"  # Usa lo stesso modello di nutricoach_agent.py
-            )
-            st.session_state.assistant_created = True
-        except Exception as e:
-            st.error(f"Errore nella creazione dell'assistente: {str(e)}")
-            st.session_state.assistant_created = False
-            return None
-    return st.session_state.assistant
-
-# NOTA: La funzione handle_tool_calls() è stata spostata nel modulo agent/tool_handler.py
-
-def create_new_thread():
-    """Crea un nuovo thread per la conversazione, mantenendo la chat history dell'utente."""
-    try:
-        thread = st.session_state.openai_client.beta.threads.create()
-        st.session_state.thread_id = thread.id
-        st.session_state.current_run_id = None
-        
-        # Mantieni la chat history presente nello user JSON invece di azzerarla
-        if hasattr(st.session_state, 'user_info') and st.session_state.user_info and "id" in st.session_state.user_info:
-            # Recupera la chat history dell'utente
-            chat_history = st.session_state.user_data_manager.get_chat_history(st.session_state.user_info["id"])
-            if chat_history:
-                # Carica i messaggi esistenti nella session state
-                st.session_state.messages = [
-                    {"role": msg.role, "content": msg.content}
-                    for msg in chat_history
-                ]
-                
-                # Inserisci i messaggi esistenti nel nuovo thread OpenAI
-                for msg in chat_history:
-                    try:
-                        st.session_state.openai_client.beta.threads.messages.create(
-                            thread_id=st.session_state.thread_id,
-                            role=msg.role,
-                            content=msg.content
-                        )
-                    except Exception as e:
-                        st.warning(f"Impossibile aggiungere messaggio al thread: {str(e)}")
-            else:
-                # Se non c'è history, inizializza array vuoto
-                st.session_state.messages = []
-        else:
-            # Se non c'è un utente loggato, inizializza array vuoto
-            st.session_state.messages = []
-        
-        # Mantieni le domande nutrizionali
-        st.session_state.current_question = st.session_state.get('current_question', 0)
-        st.session_state.nutrition_answers = st.session_state.get('nutrition_answers', {})
-    except Exception as e:
-        st.error(f"Errore nella creazione del thread: {str(e)}")
-        return None
-
-def check_and_cancel_run():
-    """Verifica se c'è una run attiva e la cancella se necessario."""
-    if hasattr(st.session_state, 'current_run_id') and st.session_state.current_run_id:
-        try:
-            run = st.session_state.openai_client.beta.threads.runs.retrieve(
-                thread_id=st.session_state.thread_id,
-                run_id=st.session_state.current_run_id
-            )
-            if run.status in ['active', 'requires_action', 'failed', 'expired']:
-                st.session_state.openai_client.beta.threads.runs.cancel(
-                    thread_id=st.session_state.thread_id,
-                    run_id=st.session_state.current_run_id
-                )
-        except Exception:
-            pass
-        finally:
-            st.session_state.current_run_id = None
-
-def chat_with_assistant(user_input):
-    """Gestisce la conversazione con l'assistente."""
-    try:
-        # Se non esiste un thread, crene uno nuovo
-        if not hasattr(st.session_state, 'thread_id'):
-            create_new_thread()
-        
-        # Verifica e cancella eventuali run bloccate
-        check_and_cancel_run()
-        
-        # Aggiungi il messaggio dell'utente al thread
-        try:
-            st.session_state.openai_client.beta.threads.messages.create(
-                thread_id=st.session_state.thread_id,
-                role="user",
-                content=user_input
-            )
-        except Exception as e:
-            # Se c'è un errore nel thread, crene uno nuovo e riprova
-            create_new_thread()
-            st.session_state.openai_client.beta.threads.messages.create(
-                thread_id=st.session_state.thread_id,
-                role="user",
-                content=user_input
-            )
-        
-        max_retries = 3
-        retry_count = 0
-        
-        while retry_count < max_retries:
-            try:
-                # Crea una run
-                run = st.session_state.openai_client.beta.threads.runs.create(
-                    thread_id=st.session_state.thread_id,
-                    assistant_id=st.session_state.assistant.id
-                )
-                st.session_state.current_run_id = run.id
-                
-                # Attendi il completamento con timeout più lungo
-                start_time = time.time()
-                timeout = 180  # aumentato a 180 secondi (3 minuti)
-                
-                with st.empty():
-                    while True:
-                        if time.time() - start_time > timeout:
-                            check_and_cancel_run()
-                            create_new_thread()  # Crea un nuovo thread dopo il timeout
-                            return "Mi dispiace, l'operazione è durata troppo a lungo. Per favore, riprova."
-                        
-                        try:
-                            run_status = st.session_state.openai_client.beta.threads.runs.retrieve(
-                                thread_id=st.session_state.thread_id,
-                                run_id=run.id
-                            )
-                        except Exception:
-                            check_and_cancel_run()
-                            create_new_thread()
-                            raise Exception("Errore nel recupero dello stato della run")
-                        
-                        if run_status.status == 'completed':
-                            st.session_state.current_run_id = None
-                            break
-                        elif run_status.status in ['failed', 'expired', 'cancelled']:
-                            check_and_cancel_run()
-                            create_new_thread()
-                            raise Exception(f"Run {run_status.status}")
-                        elif run_status.status == 'requires_action':
-                            # Gestisci le chiamate ai tool
-                            tool_outputs = handle_tool_calls(run_status)
-                            if tool_outputs:
-                                try:
-                                    # Invia i risultati e continua
-                                    st.session_state.openai_client.beta.threads.runs.submit_tool_outputs(
-                                        thread_id=st.session_state.thread_id,
-                                        run_id=run.id,
-                                        tool_outputs=tool_outputs
-                                    )
-                                except Exception:
-                                    check_and_cancel_run()
-                                    create_new_thread()
-                                    raise Exception("Errore nell'invio dei risultati dei tool")
-                            else:
-                                check_and_cancel_run()
-                                create_new_thread()
-                                raise Exception("Errore nella gestione dei tool")
-                        
-                        # Breve pausa prima del prossimo controllo
-                        time.sleep(1)
-                
-                # Ottieni la risposta
-                try:
-                    messages = st.session_state.openai_client.beta.threads.messages.list(
-                        thread_id=st.session_state.thread_id
-                    )
-                    return messages.data[0].content[0].text.value
-                except Exception:
-                    check_and_cancel_run()
-                    create_new_thread()
-                    raise Exception("Errore nel recupero dei messaggi")
-                
-            except Exception as e:
-                retry_count += 1
-                check_and_cancel_run()
-                if retry_count >= max_retries:
-                    create_new_thread()  # Crea un nuovo thread dopo troppi tentativi falliti
-                    st.error(f"Errore dopo {max_retries} tentativi: {str(e)}")
-                    return "Mi dispiace, si è verificato un errore. Riprova."
-                time.sleep(2 ** retry_count)  # Exponential backoff
-        
-    except Exception as e:
-        check_and_cancel_run()
-        create_new_thread()  # Crea un nuovo thread dopo un errore generale
-        st.error(f"Errore nella conversazione: {str(e)}")
-        return "Mi dispiace, si è verificato un errore inaspettato. Riprova."
-
-# NOTA: La funzione handle_preferences() è stata spostata nel servizio modulare services/preferences_service/
-
-# NOTA: La funzione handle_user_data() è stata spostata nel modulo modulare frontend/Piano_nutrizionale.py
+# NOTA: Le funzioni create_assistant, create_new_thread, check_and_cancel_run, chat_with_assistant 
+# sono state spostate nei moduli chat/assistant_manager.py e chat/chat_manager.py
 
 def chat_interface():
     """Interfaccia principale della chat"""
@@ -340,8 +156,8 @@ def chat_interface():
     st.session_state.deepseek_manager.check_and_process_results()
     st.session_state.deepseek_manager.show_notifications()
     
-    # Crea l'assistente
-    create_assistant()
+    # Crea l'assistente usando il nuovo manager
+    st.session_state.assistant_manager.create_assistant()
     
     # Sidebar per le informazioni dell'utente
     with st.sidebar:
@@ -351,7 +167,7 @@ def chat_interface():
             handle_user_info_form(
                 user_id=st.session_state.user_info["id"],
                 user_data_manager=st.session_state.user_data_manager,
-                create_new_thread_func=create_new_thread
+                create_new_thread_func=st.session_state.chat_manager.create_new_thread
             )
         else:
             # Usa il nuovo modulo per mostrare le informazioni utente
@@ -361,7 +177,7 @@ def chat_interface():
             handle_restart_button(
                 user_data_manager=st.session_state.user_data_manager,
                 deepseek_manager=st.session_state.deepseek_manager,
-                create_new_thread_func=create_new_thread
+                create_new_thread_func=st.session_state.chat_manager.create_new_thread
             )
     
     # Area principale della chat
@@ -396,10 +212,10 @@ def chat_interface():
                     
                     # Crea un nuovo thread solo se non esiste già
                     if not hasattr(st.session_state, 'thread_id'):
-                        create_new_thread()
+                        st.session_state.chat_manager.create_new_thread()
                     
-                    # Invia il prompt iniziale
-                    response = chat_with_assistant(initial_prompt)
+                    # Invia il prompt iniziale usando il nuovo manager
+                    response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
                     st.session_state.messages.append({"role": "assistant", "content": response})
                     # Salva il messaggio nella history
                     st.session_state.user_data_manager.save_chat_message(
@@ -428,7 +244,8 @@ def chat_interface():
                     user_input
                 )
                 with st.spinner("L'assistente sta elaborando la risposta..."):
-                    response = chat_with_assistant(user_input)
+                    # Usa il nuovo chat manager per la conversazione
+                    response = st.session_state.chat_manager.chat_with_assistant(user_input)
                     st.session_state.messages.append({"role": "assistant", "content": response})
                     # Salva la risposta dell'assistente nella history
                     st.session_state.user_data_manager.save_chat_message(
