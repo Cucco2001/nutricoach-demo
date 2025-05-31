@@ -12,9 +12,14 @@
     }
   ],
   "user_preferences": {
-    "excluded_foods": [],
+    "excluded_foods": [
+      "Patate",
+      "Sedano"
+    ],
     "preferred_foods": [],
-    "user_notes": []
+    "user_notes": [
+      "[]"
+    ]
   },
   "chat_history": [
     {

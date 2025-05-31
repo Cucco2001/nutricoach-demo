@@ -30,6 +30,9 @@ from services.deep_seek_service import DeepSeekManager
 # Import del nuovo servizio Progress modulare
 from services.progress_service import ProgressManager
 
+# Import del nuovo servizio Preferences modulare
+from services.preferences_service import PreferencesManager
+
 import threading
 import queue
 
@@ -72,6 +75,12 @@ if "progress_manager" not in st.session_state:
     st.session_state.progress_manager = ProgressManager(
         user_data_manager=st.session_state.user_data_manager,
         chat_handler=lambda x: chat_with_assistant(x)
+    )
+
+# Inizializzazione del servizio Preferences modulare
+if "preferences_manager" not in st.session_state:
+    st.session_state.preferences_manager = PreferencesManager(
+        user_data_manager=st.session_state.user_data_manager
     )
 
 # Variabili per gestione generazione agente in background
@@ -379,87 +388,7 @@ def chat_with_assistant(user_input):
         st.error(f"Errore nella conversazione: {str(e)}")
         return "Mi dispiace, si è verificato un errore inaspettato. Riprova."
 
-def handle_preferences():
-    """Gestisce le preferenze dell'utente"""
-    with st.expander("Gestisci le tue preferenze alimentari"):
-        # Carica le preferenze esistenti
-        user_preferences = st.session_state.user_data_manager.get_user_preferences(st.session_state.user_info["id"])
-        
-        # Alimenti esclusi
-        if 'excluded_foods_list' not in st.session_state:
-            st.session_state.excluded_foods_list = user_preferences.get("excluded_foods", []) if user_preferences else []
-        
-        st.subheader("Alimenti da escludere")
-        
-        # Mostra gli alimenti esclusi esistenti
-        for i, food in enumerate(st.session_state.excluded_foods_list):
-            col1, col2 = st.columns([0.9, 0.1])
-            with col1:
-                st.text(food)
-            with col2:
-                if st.button("🗑️", key=f"del_excluded_{i}"):
-                    st.session_state.excluded_foods_list.pop(i)
-                    st.rerun()
-        
-        # Aggiungi nuovo alimento da escludere
-        col1, col2 = st.columns([0.8, 0.2])
-        with col1:
-            excluded_foods = st.text_input("Inserisci un alimento da escludere", key="excluded_foods")
-        with col2:
-            if st.button("Aggiungi", key="add_excluded"):
-                if excluded_foods and excluded_foods not in st.session_state.excluded_foods_list:
-                    st.session_state.excluded_foods_list.append(excluded_foods)
-                    st.rerun()
-        
-        # Alimenti preferiti
-        if 'preferred_foods_list' not in st.session_state:
-            st.session_state.preferred_foods_list = user_preferences.get("preferred_foods", []) if user_preferences else []
-            
-        st.subheader("Alimenti preferiti")
-        
-        # Mostra gli alimenti preferiti esistenti
-        for i, food in enumerate(st.session_state.preferred_foods_list):
-            col1, col2 = st.columns([0.9, 0.1])
-            with col1:
-                st.text(food)
-            with col2:
-                if st.button("🗑️", key=f"del_preferred_{i}"):
-                    st.session_state.preferred_foods_list.pop(i)
-                    st.rerun()
-        
-        # Aggiungi nuovo alimento preferito
-        col1, col2 = st.columns([0.8, 0.2])
-        with col1:
-            preferred_foods = st.text_input("Inserisci un alimento preferito", key="preferred_foods")
-        with col2:
-            if st.button("Aggiungi", key="add_preferred"):
-                if preferred_foods and preferred_foods not in st.session_state.preferred_foods_list:
-                    st.session_state.preferred_foods_list.append(preferred_foods)
-                    st.rerun()
-        
-        
-        
-        st.subheader("Necessità particolari o preferenze:")
-        note_default = user_preferences.get("notes", "") if user_preferences else ""
-        user_notes = st.text_area(
-            "Scrivi qualsiasi informazione aggiuntiva da tenere a mente (es. vegetariano, pranzi al lavoro, ecc.)",
-            value=note_default,
-            height=120
-        )
-
-        
-        if st.button("Salva preferenze"):
-            preferences = {
-                "excluded_foods": st.session_state.excluded_foods_list,
-                "preferred_foods": st.session_state.preferred_foods_list,
-                "user_notes": user_notes.strip(),
-            }
-            
-            st.session_state.user_data_manager.update_user_preferences(
-                user_id=st.session_state.user_info["id"],
-                preferences=preferences
-            )
-            st.success("Preferenze salvate con successo!")
+# NOTA: La funzione handle_preferences() è stata spostata nel servizio modulare services/preferences_service/
 
 # NOTA: La funzione handle_user_data() è stata spostata nel modulo modulare frontend/Piano_nutrizionale.py
 
@@ -1103,7 +1032,7 @@ def main():
             st.session_state.progress_manager.track_user_progress()
             st.session_state.progress_manager.show_progress_history()
         elif page == "Preferenze":
-            handle_preferences()
+            st.session_state.preferences_manager.handle_user_preferences(st.session_state.user_info["id"])
         elif page == "Piano Nutrizionale":
             handle_user_data()
 
