@@ -1,5 +1,5 @@
 from openai import OpenAI
-from nutridb_tool import (
+from agent_tools.nutridb_tool import (
     get_macros, 
     get_LARN_protein, 
     get_standard_portion, 
@@ -17,7 +17,7 @@ from nutridb_tool import (
     get_food_substitutes,
     check_ultraprocessed_foods
 )
-from user_data_tool import (
+from agent_tools.user_data_tool import (
     get_user_preferences, 
     get_progress_history, 
     get_agent_qa, 

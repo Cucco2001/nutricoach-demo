@@ -1,5 +1,5 @@
 from typing import Dict, List, Optional, Union
-from user_data_manager import UserDataManager
+from .user_data_manager import UserDataManager
 
 # Singleton instance of UserDataManager
 _user_data_manager = UserDataManager()

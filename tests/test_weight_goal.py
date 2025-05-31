@@ -3,7 +3,7 @@
 Test script per la funzione calculate_weight_goal_calories
 """
 
-from nutridb_tool import calculate_weight_goal_calories
+from agent_tools.nutridb_tool import calculate_weight_goal_calories
 
 def test_weight_loss():
     """Test per perdita di peso"""

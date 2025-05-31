@@ -1,6 +1,6 @@
 from openai import OpenAI
 import time
-from nutridb_tool import nutridb_tool
+from agent_tools.nutridb_tool import nutridb_tool
 import json
 import logging
 from typing import Dict, Any

@@ -3,7 +3,7 @@
 Test per la funzione check_vitamins
 """
 
-from nutridb_tool import check_vitamins
+from agent_tools.nutridb_tool import check_vitamins
 
 def test_check_vitamins():
     """Test della funzione check_vitamins"""

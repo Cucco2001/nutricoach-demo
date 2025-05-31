@@ -1,4 +1,4 @@
-from nutridb import NutriDB
+from .nutridb import NutriDB
 import logging
 from typing import Dict, Any, Union, List, Optional
 import json

@@ -6,9 +6,9 @@ import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
 from nutricoach_agent import available_tools, system_prompt
-from user_data_manager import UserDataManager
+from agent_tools.user_data_manager import UserDataManager
 from datetime import datetime
-from nutridb_tool import (
+from agent_tools.nutridb_tool import (
     get_macros, get_LARN_protein, get_standard_portion, 
     get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
     get_LARN_lipidi_percentuali, get_LARN_vitamine, 
@@ -16,9 +16,12 @@ from nutridb_tool import (
     calculate_sport_expenditure, calculate_weight_goal_calories, 
     analyze_bmi_and_goals, check_vitamins, get_food_substitutes, check_ultraprocessed_foods
 )
-from user_data_tool import (
+from agent_tools.user_data_tool import (
     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
 )
+# Import dai nuovi moduli frontend
+from frontend.nutrition_questions import NUTRITION_QUESTIONS
+from frontend.sports_frontend import load_sports_data, get_sports_by_category, on_sport_category_change
 import threading
 import queue
 
@@ -90,228 +93,6 @@ if "deepseek_results" not in st.session_state:
 deepseek_results_queue = queue.Queue()
 deepseek_lock = threading.Lock()
 file_access_lock = threading.Lock()  # Lock per accesso ai file utente
-
-# Carica i dati degli sport
-def load_sports_data():
-    """Carica i dati degli sport dal file JSON e li organizza per categoria."""
-    try:
-        with open(os.path.join("Dati_processed", "sport_calories.json"), 'r', encoding='utf-8') as file:
-            sports_data = json.load(file)
-        
-        # Organizza gli sport per categoria
-        sports_by_category = {}
-        for sport_name, sport_info in sports_data["sports"].items():
-            category = sport_info["category"]
-            if category not in sports_by_category:
-                sports_by_category[category] = []
-            
-            # Formatta il nome dello sport (sostituisci '_' con spazi e prima lettera di ogni parola maiuscola)
-            words = sport_name.split('_')
-            formatted_name = ' '.join(word.capitalize() for word in words)
-            
-            sports_by_category[category].append({
-                "name": formatted_name,
-                "key": sport_name,
-                "kcal_per_hour": sport_info["kcal_per_hour"],
-                "description": sport_info["description"]
-            })
-        
-        # Ordina alfabeticamente gli sport in ogni categoria
-        for category in sports_by_category:
-            sports_by_category[category] = sorted(sports_by_category[category], key=lambda x: x["name"])
-        
-        return sports_data["sports"], sports_by_category
-    except Exception as e:
-        st.error(f"Errore nel caricamento dei dati degli sport: {str(e)}")
-        return {}, {}
-
-# Funzione per ottenere gli sport di una categoria specifica
-def get_sports_by_category(category_name):
-    """Restituisce la lista degli sport per una categoria specifica."""
-    # Mappa i nomi delle categorie del menu a quelli del file JSON
-    category_map = {
-        "Fitness - Allenamento medio (principianti e livello intermedio)": "Fitness - Allenamento medio",
-        "Fitness - Bodybuilding Massa": "Fitness - Bodybuilding Massa",
-        "Fitness - Bodybuilding Definizione": "Fitness - Bodybuilding Definizione",
-        "Sport di forza (es: powerlifting, sollevamento pesi, strongman)": "Sport di forza",
-        "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)": "Sport di resistenza",
-        "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)": "Sport aciclici",
-        "Altro": None
-    }
-    
-    # Carica i dati degli sport se non sono già in session_state
-    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
-        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
-    
-    mapped_category = category_map.get(category_name)
-    
-    # Debug: stampa le categorie disponibili
-    print(f"Categoria selezionata: {category_name}")
-    print(f"Categoria mappata: {mapped_category}")
-    print(f"Categorie disponibili: {list(st.session_state.sports_by_category.keys())}")
-    
-    if mapped_category and mapped_category in st.session_state.sports_by_category:
-        return st.session_state.sports_by_category[mapped_category]
-    else:
-        # Se la categoria non esiste o è "Altro", mostra tutti gli sport
-        all_sports = []
-        for category, sports in st.session_state.sports_by_category.items():
-            all_sports.extend(sports)
-        # Rimuovi duplicati e ordina
-        return sorted(all_sports, key=lambda x: x["name"])
-
-# Callback quando cambia la selezione della categoria sport
-def on_sport_category_change(i):
-    """
-    Callback per reagire al cambio di categoria sport.
-    Rimuove la selezione precedente dello sport specifico per forzare una nuova selezione.
-    
-    Args:
-        i: indice dello sport nella lista
-    """
-    print(f"Categoria sport cambiata per sport index {i}")
-    
-    # Rimuovi la selezione precedente dello sport specifico per forzare una nuova selezione
-    if f"specific_sport_{i}" in st.session_state:
-        del st.session_state[f"specific_sport_{i}"]
-    
-    # Assicurati che i dati degli sport siano caricati
-    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
-        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
-    
-    # Aggiorna la lista degli sport in session_state
-    if "sports_list" in st.session_state and i < len(st.session_state.sports_list):
-        selected_category = st.session_state[f"sport_type_{i}"]
-        print(f"Nuova categoria selezionata: {selected_category}")
-        
-        # Aggiorna la categoria nello sports_list
-        st.session_state.sports_list[i]["sport_type"] = selected_category
-        
-        # Rimuovi lo sport specifico selezionato precedentemente
-        if "specific_sport" in st.session_state.sports_list[i]:
-            del st.session_state.sports_list[i]["specific_sport"]
-
-# Definizione delle domande nutrizionali iniziali
-NUTRITION_QUESTIONS = [
-    {
-        "id": "allergies",
-        "question": "Hai qualche intolleranza o allergia alimentare?",
-        "type": "radio",
-        "options": ["No", "Sì"],
-        "follow_up": "Specifica quali:",
-        "show_follow_up_on": "Sì"
-    },
-    {
-        "id": "weight_goal",
-        "question": lambda user_info: f"Quanti kg vuoi {'perdere' if user_info['obiettivo'] == 'Perdita di peso' else 'aumentare'} e in quanto tempo (in mesi)?",
-        "type": "number_input",
-        "show_if": lambda user_info: user_info["obiettivo"] in ["Perdita di peso", "Aumento di peso"],
-        "fields": [
-            {
-                "id": "kg",
-                "label": lambda user_info: f"Kg da {'perdere' if user_info['obiettivo'] == 'Perdita di peso' else 'aumentare'}",
-                "min": 1,
-                "max": 30,
-                "default": 5
-            },
-            {
-                "id": "months",
-                "label": "In quanti mesi",
-                "min": 1,
-                "max": 24,
-                "default": 3
-            }
-        ]
-    },
-    {
-        "id": "sports",
-        "question": "Pratichi sport?",
-        "type": "radio",
-        "options": ["No", "Sì"],
-        "follow_up": {
-            "type": "multiple_sports",
-            "fields": [
-                {
-                    "id": "sport_type",
-                    "label": "Che tipo di attività sportiva pratichi?",
-                    "type": "select",
-                    "options": [
-                        "Fitness - Allenamento medio (principianti e livello intermedio)",
-                        "Fitness - Bodybuilding Massa",
-                        "Fitness - Bodybuilding Definizione",
-                        "Sport di forza (es: powerlifting, sollevamento pesi, strongman)",
-                        "Sport di resistenza (es: corsa, ciclismo, nuoto, triathlon)",
-                        "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)",
-                        "Altro"
-                    ]
-                },
-                {
-                    "id": "specific_sport",
-                    "label": "Specifica lo sport",
-                    "type": "select",
-                    "dynamic_options": True,
-                    "options": []
-                },
-                {
-                    "id": "intensity",
-                    "label": "Intensità dell'attività",
-                    "type": "select",
-                    "options": ["easy", "medium", "hard"],
-                    "descriptions": {
-                        "easy": "Attività leggera (-20% calorie)",
-                        "medium": "Attività moderata (calorie standard)",
-                        "hard": "Attività intensa (+20% calorie)"
-                    }
-                },
-                {
-                    "id": "hours_per_week",
-                    "label": "Quante ore alla settimana?",
-                    "type": "number",
-                    "min": 1,
-                    "max": 30,
-                    "default": 3
-                }
-            ]
-        },
-        "show_follow_up_on": "Sì"
-    },
-    {
-        "id": "meal_preferences",
-        "question": "Vuoi decidere tu il numero di pasti giornalieri?",
-        "type": "radio",
-        "options": ["No", "Sì"],
-        "follow_up": {
-            "type": "meal_schedule",
-            "fields": [
-                {
-                    "id": "num_meals",
-                    "label": "Quanti pasti vuoi fare al giorno?",
-                    "type": "number",
-                    "min": 1,
-                    "max": 6,
-                    "default": 5
-                },
-                {
-                    "id": "meal_times",
-                    "label": "A che ora vorresti fare i pasti? (opzionale)",
-                    "type": "dynamic_time",
-                    "optional": True,
-                    "dynamic_count": "num_meals",
-                    "meal_labels": [
-                        "Colazione",
-                        "Spuntino mattutino",
-                        "Pranzo",
-                        "Spuntino pomeridiano",
-                        "Cena",
-                        "Spuntino serale",
-                        "Altro pasto"
-                    ]
-                }
-            ]
-        },
-        "show_follow_up_on": "Sì"
-    }
-]
 
 def extract_nutritional_data_with_deepseek(conversation_history, user_info):
     """

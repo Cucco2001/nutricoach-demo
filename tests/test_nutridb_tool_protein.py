@@ -1,5 +1,5 @@
 import unittest
-from nutridb_tool import get_protein_multiplier
+from agent_tools.nutridb_tool import get_protein_multiplier
 
 class TestNutriDBTool(unittest.TestCase):
     def test_single_sport_basic(self):

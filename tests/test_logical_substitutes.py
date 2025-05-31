@@ -3,7 +3,7 @@
 Test per verificare i sostituti logici
 """
 
-from nutridb_tool import get_food_substitutes
+from agent_tools.nutridb_tool import get_food_substitutes
 
 def test_logical_substitutes():
     """Test dei sostituti logici"""
