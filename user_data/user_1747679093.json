@@ -5,7 +5,43 @@
     "preferred_foods": [],
     "user_notes": []
   },
-  "chat_history": [],
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 0 - Analisi BMI e coerenza obiettivi\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Mantenimento\n\nL'obiettivo di mantenimento è coerente con il tuo BMI attuale, che rientra nella categoria normopeso.\n\n📚 Fonti utilizzate:\n- Calcolo BMI: Messuri et al., 2023\n\n➡️ Conclusione: Se hai domande sui calcoli o le scelte fatte, non esitare a chiedere. Vuoi continuare con la FASE 1?",
+      "timestamp": 1748683290.1865888
+    },
+    {
+      "role": "user",
+      "content": "si ",
+      "timestamp": 1748683317.8155234
+    },
+    {
+      "role": "assistant",
+      "content": "✔️ FASE 1 - Analisi delle risposte fornite\n\n⚡ Sto analizzando i dati ricevuti e le preferenze:\n- Dati del cliente: 30 anni, maschio, 70 kg, 170 cm, livello attività quotidiana sedentario, obiettivo mantenimento\n- Allergie: Nessuna\n- Attività sportive: Nessuna praticata\n- Preferenze alimentari: Nessuna esclusione o preferenza specifica dichiarata\n- Numero di pasti preferito e orari: Non specificato\n\n📚 Fonti utilizzate: Nessuna fonte specifica necessaria per questa fase poiché utilizza i dati dichiarati dall'utente.\n\n➡️ Conclusione: Con i dati attuali, non ci sono restrizioni o esigenze particolari relative a preferenze alimentari o intolleranze. Procederò con una distribuzione standard del piano alimentare. Vuoi passare alla FASE 2 per il calcolo del fabbisogno energetico?",
+      "timestamp": 1748683326.2232957
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1748683357.0509162
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto calcolando il fabbisogno energetico:\n\n1. **Metabolismo basale (BMR)**:\n   - Formula Harris-Benedict per un maschio:  \n     MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - Calcolo: \n     MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30) = 1672 kcal\n\n2. **Fabbisogno energetico totale (considerando il livello di attività fisica Sedentario)**:\n   - Fabbisogno totale = MB * LAF\n   - LAF = 1.3\n   - Calcolo: \n     Fabbisogno totale = 1672 * 1.3 = 2173 kcal/giorno\n\n📊 Risultati intermedi:\n- BMR: 1672 kcal/giorno\n- Fabbisogno giornaliero totale: 2173 kcal/giorno\n\n📚 Fonti utilizzate:\n- Equazione di Harris-Benedict\n\n➡️ Conclusione: Se hai domande sui calcoli o vuoi ulteriori dettagli, fammi sapere. Procediamo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+      "timestamp": 1748683368.4065132
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1748683380.1938179
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 3 - Calcolo macronutrienti\n\n⚡ Calcoliamo la distribuzione dei macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore proteico per sedentari: 0.66 g/kg\n   - Peso: 70 kg\n   - Calcolo delle proteine: 0.66 * 70 = 46 g di proteine totali\n   - Calorie da proteine: 46 g * 4 = 184 kcal\n   - Percentuale sulle kcal totali: (184 / 2173) * 100 ≈ 8%\n\n2. **Grassi**:\n   - Range raccomandato: 20-35% delle calorie totali\n   - Calorie dai grassi (scelgo mediamente il 30%): \n     Grassi totali: (2173 * 0.30) / 9 ≈ 72 g\n   - Calorie da grassi: 72 g * 9 = 648 kcal\n   - Percentuale sulle kcal totali: (648 / 2173) * 100 ≈ 30%\n\n3. **Carboidrati**:\n   - Calorie rimanenti dopo proteine e grassi: 2173 - 184 - 648 = 1341 kcal\n   - Grammi di carboidrati: 1341 / 4 ≈ 335 g\n   - Percentuale sulle kcal totali: (1341 / 2173) * 100 ≈ 62%\n\n4. **Fibre**:\n   - Fabbisogno giornaliero di fibre: 27.4 - 36.3 g\n\n📊 Risultati Intermedi:\n- Kcal totali: 2173\n- Proteine: 46 g (184 kcal, ~8%)\n- Grassi: 72 g (648 kcal, ~30%)\n- Carboidrati: 335 g (1341 kcal, ~62%)\n- Fibre: 27.4 - 36.3 g\n\n📚 Fonti utilizzate:\n- ICSS per proteine\n- LARN per grassi e fibre\n\n➡️ Conclusione: Questo calcolo assicura che tu soddisfi il fabbisogno giornaliero, tenendo conto della tua situazione sedentaria. Vuoi continuare con la FASE 4 per distribuire le calorie tra i pasti?",
+      "timestamp": 1748683406.8384256
+    }
+  ],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -17,8 +53,54 @@
       "allergies": {
         "answer": "No",
         "follow_up": null
+      },
+      "sports": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "meal_preferences": {
+        "answer": "No",
+        "follow_up": null
       }
     },
-    "agent_qa": []
+    "agent_qa": [
+      {
+        "question": "si ",
+        "answer": "✔️ FASE 1 - Analisi delle risposte fornite\n\n⚡ Sto analizzando i dati ricevuti e le preferenze:\n- Dati del cliente: 30 anni, maschio, 70 kg, 170 cm, livello attività quotidiana sedentario, obiettivo mantenimento\n- Allergie: Nessuna\n- Attività sportive: Nessuna praticata\n- Preferenze alimentari: Nessuna esclusione o preferenza specifica dichiarata\n- Numero di pasti preferito e orari: Non specificato\n\n📚 Fonti utilizzate: Nessuna fonte specifica necessaria per questa fase poiché utilizza i dati dichiarati dall'utente.\n\n➡️ Conclusione: Con i dati attuali, non ci sono restrizioni o esigenze particolari relative a preferenze alimentari o intolleranze. Procederò con una distribuzione standard del piano alimentare. Vuoi passare alla FASE 2 per il calcolo del fabbisogno energetico?",
+        "timestamp": 1748683326.2232957
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 2 - Calcolo del fabbisogno energetico\n\n⚡ Sto calcolando il fabbisogno energetico:\n\n1. **Metabolismo basale (BMR)**:\n   - Formula Harris-Benedict per un maschio:  \n     MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)\n   - Calcolo: \n     MB = 88.362 + (13.397 * 70) + (4.799 * 170) - (5.677 * 30) = 1672 kcal\n\n2. **Fabbisogno energetico totale (considerando il livello di attività fisica Sedentario)**:\n   - Fabbisogno totale = MB * LAF\n   - LAF = 1.3\n   - Calcolo: \n     Fabbisogno totale = 1672 * 1.3 = 2173 kcal/giorno\n\n📊 Risultati intermedi:\n- BMR: 1672 kcal/giorno\n- Fabbisogno giornaliero totale: 2173 kcal/giorno\n\n📚 Fonti utilizzate:\n- Equazione di Harris-Benedict\n\n➡️ Conclusione: Se hai domande sui calcoli o vuoi ulteriori dettagli, fammi sapere. Procediamo con la FASE 3 per calcolare la distribuzione dei macronutrienti?",
+        "timestamp": 1748683368.4065132
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 3 - Calcolo macronutrienti\n\n⚡ Calcoliamo la distribuzione dei macronutrienti:\n\n1. **Proteine**:\n   - Moltiplicatore proteico per sedentari: 0.66 g/kg\n   - Peso: 70 kg\n   - Calcolo delle proteine: 0.66 * 70 = 46 g di proteine totali\n   - Calorie da proteine: 46 g * 4 = 184 kcal\n   - Percentuale sulle kcal totali: (184 / 2173) * 100 ≈ 8%\n\n2. **Grassi**:\n   - Range raccomandato: 20-35% delle calorie totali\n   - Calorie dai grassi (scelgo mediamente il 30%): \n     Grassi totali: (2173 * 0.30) / 9 ≈ 72 g\n   - Calorie da grassi: 72 g * 9 = 648 kcal\n   - Percentuale sulle kcal totali: (648 / 2173) * 100 ≈ 30%\n\n3. **Carboidrati**:\n   - Calorie rimanenti dopo proteine e grassi: 2173 - 184 - 648 = 1341 kcal\n   - Grammi di carboidrati: 1341 / 4 ≈ 335 g\n   - Percentuale sulle kcal totali: (1341 / 2173) * 100 ≈ 62%\n\n4. **Fibre**:\n   - Fabbisogno giornaliero di fibre: 27.4 - 36.3 g\n\n📊 Risultati Intermedi:\n- Kcal totali: 2173\n- Proteine: 46 g (184 kcal, ~8%)\n- Grassi: 72 g (648 kcal, ~30%)\n- Carboidrati: 335 g (1341 kcal, ~62%)\n- Fibre: 27.4 - 36.3 g\n\n📚 Fonti utilizzate:\n- ICSS per proteine\n- LARN per grassi e fibre\n\n➡️ Conclusione: Questo calcolo assicura che tu soddisfi il fabbisogno giornaliero, tenendo conto della tua situazione sedentaria. Vuoi continuare con la FASE 4 per distribuire le calorie tra i pasti?",
+        "timestamp": 1748683406.840449
+      }
+    ]
+  },
+  "nutritional_info_extracted": {
+    "caloric_needs": {
+      "bmr": 1672,
+      "fabbisogno_base": 2173,
+      "fabbisogno_totale": 2173,
+      "laf_utilizzato": 1.3
+    },
+    "last_updated": "2025-05-31T11:23:38.376930",
+    "macros_total": {
+      "kcal_totali": 2173,
+      "proteine_g": 46,
+      "proteine_kcal": 184,
+      "proteine_percentuale": 8,
+      "grassi_g": 72,
+      "grassi_kcal": 648,
+      "grassi_percentuale": 30,
+      "carboidrati_g": 335,
+      "carboidrati_kcal": 1341,
+      "carboidrati_percentuale": 62,
+      "fibre_g": 27.4
+    }
   }
 }

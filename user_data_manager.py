@@ -399,8 +399,20 @@ class UserDataManager:
         return self._nutritional_info.get(user_id)
 
     def _save_user_data(self, user_id: str) -> None:
-        """Salva i dati dell'utente su file"""
+        """Salva i dati dell'utente su file preservando sempre i dati DeepSeek"""
         user_file = self.data_dir / f"{user_id}.json"
+        
+        # PRESERVA i dati DeepSeek esistenti se presenti
+        existing_deepseek_data = None
+        if user_file.exists():
+            try:
+                with open(user_file, 'r', encoding='utf-8') as f:
+                    existing_data = json.load(f)
+                    existing_deepseek_data = existing_data.get("nutritional_info_extracted")
+                    if existing_deepseek_data:
+                        print(f"[USER_DATA_MANAGER] Preservando dati DeepSeek per user {user_id}: {list(existing_deepseek_data.keys())}")
+            except Exception as e:
+                print(f"[USER_DATA_MANAGER] Errore nel leggere dati esistenti: {str(e)}")
         
         # Converti le preferenze utente per la serializzazione JSON
         user_preferences = None
@@ -422,6 +434,11 @@ class UserDataManager:
             ],
             "nutritional_info": asdict(self._nutritional_info.get(user_id)) if user_id in self._nutritional_info else None
         }
+        
+        # RESTAURA i dati DeepSeek se esistevano
+        if existing_deepseek_data:
+            data["nutritional_info_extracted"] = existing_deepseek_data
+            print(f"[USER_DATA_MANAGER] Dati DeepSeek restaurati per user {user_id}")
         
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
