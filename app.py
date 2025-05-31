@@ -19,9 +19,11 @@ from agent_tools.nutridb_tool import (
 from agent_tools.user_data_tool import (
     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
 )
-# Import dai nuovi moduli frontend
+# Import dal nuovi moduli frontend
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
-from frontend.sports_frontend import load_sports_data, get_sports_by_category, on_sport_category_change
+from frontend.handle_nutrition_questions import handle_nutrition_questions
+from frontend.handle_initial_info import handle_user_info_form, handle_user_info_display
+from frontend.buttons import handle_restart_button
 from frontend.Piano_nutrizionale import handle_user_data
 
 # Import del nuovo servizio DeepSeek modulare
@@ -345,384 +347,35 @@ def chat_interface():
     with st.sidebar:
         st.subheader("Le tue informazioni")
         if not st.session_state.user_info.get("età"):
-            # Carica le informazioni nutrizionali salvate
-            nutritional_info = st.session_state.user_data_manager.get_nutritional_info(st.session_state.user_info["id"])
-            # Carica le preferenze utente
-            user_preferences = st.session_state.user_data_manager.get_user_preferences(st.session_state.user_info["id"])
-            
-            with st.form("user_info_form"):
-                st.write("Per iniziare, inserisci i tuoi dati:")
-                età = st.number_input("Età", 18, 100, nutritional_info.età if nutritional_info else 30)
-                sesso = st.selectbox("Sesso", ["Maschio", "Femmina"], index=0 if not nutritional_info else (0 if nutritional_info.sesso == "Maschio" else 1))
-                peso = st.number_input("Peso (kg)", min_value=40, max_value=200, value=nutritional_info.peso if nutritional_info else 70, step=1)
-                altezza = st.number_input("Altezza (cm)", 140, 220, nutritional_info.altezza if nutritional_info else 170)
-                attività = st.selectbox("Livello di attività fisica (a parte sport praticato)",
-                                    ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"],
-                                    index=["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"].index(nutritional_info.attività) if nutritional_info else 0)
-                obiettivo = st.selectbox("Obiettivo",
-                                     ["Perdita di peso", "Mantenimento", "Aumento di peso"],
-                                     index=["Perdita di peso", "Mantenimento", "Aumento di peso"].index(nutritional_info.obiettivo) if nutritional_info else 0)
-                
-                if st.form_submit_button("Inizia"):
-                    # Aggiorna le informazioni dell'utente
-                    user_info = {
-                        "età": età,
-                        "sesso": sesso,
-                        "peso": peso,
-                        "altezza": altezza,
-                        "attività": attività,
-                        "obiettivo": obiettivo,
-                        "preferences": user_preferences  # Aggiungi le preferenze
-                    }
-                    st.session_state.user_info.update(user_info)
-                    
-                    # Salva le informazioni nutrizionali
-                    st.session_state.user_data_manager.save_nutritional_info(
-                        st.session_state.user_info["id"],
-                        user_info
-                    )
-                    
-                    # Se ci sono risposte nutrizionali salvate, caricale
-                    if nutritional_info and nutritional_info.nutrition_answers:
-                        st.session_state.nutrition_answers = nutritional_info.nutrition_answers
-                        st.session_state.current_question = len(NUTRITION_QUESTIONS)
-                    
-                    # Crea un nuovo thread quando si inizia una nuova consulenza
-                    create_new_thread()
-                    st.rerun()
+            # Usa il nuovo modulo per gestire il form delle informazioni utente
+            handle_user_info_form(
+                user_id=st.session_state.user_info["id"],
+                user_data_manager=st.session_state.user_data_manager,
+                create_new_thread_func=create_new_thread
+            )
         else:
-            # Mostra le informazioni dell'utente
-            st.write("Dati inseriti:")
-            for key, value in st.session_state.user_info.items():
-                if key == "peso":
-                    st.write(f"Peso: {int(value)} kg")
-                elif key not in ["id", "username", "preferences"]:  # Non mostrare ID, username e preferences
-                    st.write(f"{key.capitalize()}: {value}")
+            # Usa il nuovo modulo per mostrare le informazioni utente
+            handle_user_info_display(st.session_state.user_info)
             
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("Ricomincia"):
-                    # Resetta tutte le informazioni
-                    st.session_state.user_info = {"id": st.session_state.user_info["id"], 
-                                                "username": st.session_state.user_info["username"]}
-                    st.session_state.current_question = 0
-                    st.session_state.nutrition_answers = {}
-                    st.session_state.messages = []
-                    
-                    # Reset completo DeepSeek usando il nuovo servizio
-                    st.session_state.deepseek_manager.clear_user_data(st.session_state.user_info["id"])
-                    
-                    # Cancella la chat history e le domande/risposte dell'agente
-                    st.session_state.user_data_manager.clear_chat_history(st.session_state.user_info["id"])
-                    st.session_state.user_data_manager.clear_agent_qa(st.session_state.user_info["id"])
-                    
-                    # Resetta le informazioni nutrizionali
-                    st.session_state.user_data_manager.save_nutritional_info(
-                        st.session_state.user_info["id"],
-                        {
-                            "età": 30,  # Valori di default
-                            "sesso": "Maschio",
-                            "peso": 70,
-                            "altezza": 170,
-                            "attività": "Sedentario",
-                            "obiettivo": "Mantenimento",
-                            "nutrition_answers": {},
-                            "agent_qa": []
-                        }
-                    )
-                    
-                    # Resetta le preferenze utente
-                    st.session_state.user_data_manager.clear_user_preferences(st.session_state.user_info["id"])
-                    
-                    # Crea un nuovo thread
-                    create_new_thread()
-                    st.rerun()
+            # Usa il nuovo modulo per gestire il bottone "Ricomincia"
+            handle_restart_button(
+                user_data_manager=st.session_state.user_data_manager,
+                deepseek_manager=st.session_state.deepseek_manager,
+                create_new_thread_func=create_new_thread
+            )
     
     # Area principale della chat
     if st.session_state.user_info.get("età"):
         if st.session_state.current_question < len(NUTRITION_QUESTIONS):
-            current_q = NUTRITION_QUESTIONS[st.session_state.current_question]
+            # Usa il nuovo modulo per gestire le domande nutrizionali
+            has_more_questions = handle_nutrition_questions(
+                user_info=st.session_state.user_info,
+                user_id=st.session_state.user_info["id"],
+                user_data_manager=st.session_state.user_data_manager
+            )
             
-            # Verifica se la domanda deve essere mostrata in base alle condizioni
-            show_question = True
-            if "show_if" in current_q:
-                show_question = current_q["show_if"](st.session_state.user_info)
-            
-            if show_question:
-                # Gestisce la domanda in base al tipo
-                if current_q["type"] == "radio":
-                    # Mostra la domanda principale
-                    st.markdown(f"### {current_q['question']}")
-                    answer = st.radio("", current_q["options"])
-                    
-                    # Gestisce eventuali follow-up
-                    follow_up_answer = None
-                    if "follow_up" in current_q and answer == current_q["show_follow_up_on"]:
-                        if isinstance(current_q["follow_up"], str):
-                            # Gestione vecchio formato stringa
-                            st.markdown(f"### {current_q['follow_up']}")
-                            follow_up_answer = st.text_input("")
-                        elif isinstance(current_q["follow_up"], dict):
-                            if current_q["follow_up"].get("type") == "multiple_sports":
-                                # Gestione sport multipli
-                                if "sports_list" not in st.session_state:
-                                    st.session_state.sports_list = [{}]
-                                
-                                follow_up_answer = []
-                                
-                                for i, sport in enumerate(st.session_state.sports_list):
-                                    st.markdown(f"### Sport {i+1}")
-                                    sport_data = {}
-                                    
-                                    # Precarica i dati degli sport
-                                    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
-                                        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
-                                    
-                                    for field in current_q["follow_up"]["fields"]:
-                                        show_field = True
-                                        if "show_if" in field and "show_if_value" in field:
-                                            ref_value = sport.get(field["show_if"])
-                                            show_field = ref_value == field["show_if_value"]
-                                        
-                                        if show_field:
-                                            st.markdown(f"### {field['label']}")
-                                            if field["type"] == "select":
-                                                if field["id"] == "sport_type":
-                                                    # Quando cambia la categoria, usa il callback
-                                                    sport_data[field["id"]] = st.selectbox(
-                                                        "Seleziona",
-                                                        options=field["options"],
-                                                        key=f"{field['id']}_{i}",
-                                                        label_visibility="collapsed",
-                                                        on_change=on_sport_category_change,
-                                                        args=(i,)
-                                                    )
-                                                elif field["id"] == "specific_sport" and "dynamic_options" in field and field["dynamic_options"]:
-                                                    # Seleziona gli sport in base alla categoria scelta
-                                                    selected_category = sport.get("sport_type", "")
-                                                    if not selected_category and f"sport_type_{i}" in st.session_state:
-                                                        selected_category = st.session_state[f"sport_type_{i}"]
-                                                    
-                                                    # Debug
-                                                    print(f"Selected category for dropdown: {selected_category}")
-                                                    
-                                                    sports_options = get_sports_by_category(selected_category)
-                                                    
-                                                    # Mostra i nomi ma salva le chiavi
-                                                    sport_names = [s["name"] for s in sports_options]
-                                                    
-                                                    # Debug
-                                                    print(f"Available sports: {sport_names}")
-                                                    
-                                                    # Se non ci sono sport disponibili, mostra un messaggio
-                                                    if not sport_names:
-                                                        st.warning("Nessuno sport disponibile per questa categoria. Seleziona prima una categoria.")
-                                                        sport_data[field["id"]] = None
-                                                    else:
-                                                        # Crea un dizionario di riferimento sport_name -> sport_data
-                                                        sport_data_map = {s["name"]: s for s in sports_options}
-                                                        
-                                                        selected_sport_name = st.selectbox(
-                                                            "Seleziona",
-                                                            options=sport_names,
-                                                            key=f"{field['id']}_{i}",
-                                                            label_visibility="collapsed"
-                                                        )
-                                                        
-                                                        # Memorizza sia il nome che la chiave dello sport
-                                                        if selected_sport_name:
-                                                            sport_data[field["id"]] = {
-                                                                "name": selected_sport_name,
-                                                                "key": sport_data_map[selected_sport_name]["key"],
-                                                                "kcal_per_hour": sport_data_map[selected_sport_name]["kcal_per_hour"],
-                                                                "description": sport_data_map[selected_sport_name]["description"]
-                                                            }
-                                                        else:
-                                                            sport_data[field["id"]] = None
-                                                elif field["id"] == "intensity":
-                                                    # Mostra le descrizioni per l'intensità
-                                                    intensity_options = field["options"]
-                                                    intensity_descriptions = field.get("descriptions", {})
-                                                    
-                                                    # Crea opzioni formattate con descrizioni
-                                                    formatted_options = [f"{opt} - {intensity_descriptions.get(opt, '')}" 
-                                                                        for opt in intensity_options]
-                                                    
-                                                    # Mostra il selectbox con le descrizioni
-                                                    formatted_selection = st.selectbox(
-                                                        "Seleziona",
-                                                        options=formatted_options,
-                                                        key=f"{field['id']}_{i}",
-                                                        label_visibility="collapsed"
-                                                    )
-                                                    
-                                                    # Estrai solo il valore dell'intensità (prima del trattino)
-                                                    selected_intensity = formatted_selection.split(' - ')[0] if formatted_selection else None
-                                                    sport_data[field["id"]] = selected_intensity
-                                                else:
-                                                    sport_data[field["id"]] = st.selectbox(
-                                                        "Seleziona",
-                                                        options=field["options"],
-                                                        key=f"{field['id']}_{i}",
-                                                        label_visibility="collapsed"
-                                                    )
-                                            elif field["type"] == "number":
-                                                sport_data[field["id"]] = st.number_input(
-                                                    "Numero",
-                                                    min_value=field["min"],
-                                                    max_value=field["max"],
-                                                    value=field["default"],
-                                                    key=f"{field['id']}_{i}",
-                                                    label_visibility="collapsed"
-                                                )
-                                            elif field["type"] == "text":
-                                                sport_data[field["id"]] = st.text_input(
-                                                    "Testo",
-                                                    "",
-                                                    key=f"{field['id']}_{i}",
-                                                    label_visibility="collapsed"
-                                                )
-                                    
-                                    # Aggiorna lo sport con i dati attuali
-                                    for key, value in sport_data.items():
-                                        sport[key] = value
-                                    
-                                    follow_up_answer.append(sport_data)
-                                
-                                col1, col2 = st.columns(2)
-                                with col1:
-                                    if st.button("Aggiungi altro sport"):
-                                        st.session_state.sports_list.append({})
-                                        st.rerun()
-                                with col2:
-                                    if len(st.session_state.sports_list) > 1 and st.button("Rimuovi ultimo sport"):
-                                        st.session_state.sports_list.pop()
-                                        st.rerun()
-                            else:
-                                # Gestione vecchio formato strutturato
-                                follow_up_answer = {}
-                                for field in current_q["follow_up"]["fields"]:
-                                    show_field = True
-                                    if "show_if" in field and "show_if_value" in field:
-                                        ref_value = follow_up_answer.get(field["show_if"])
-                                        show_field = ref_value == field["show_if_value"]
-                                    
-                                    if show_field:
-                                        st.markdown(f"### {field['label']}")
-                                        if field["type"] == "select":
-                                            follow_up_answer[field["id"]] = st.selectbox(
-                                                "",
-                                                options=field["options"]
-                                            )
-                                        elif field["type"] == "number":
-                                            follow_up_answer[field["id"]] = st.number_input(
-                                                "",
-                                                min_value=field["min"],
-                                                max_value=field["max"],
-                                                value=field["default"]
-                                            )
-                                        elif field["type"] == "text":
-                                            follow_up_answer[field["id"]] = st.text_input("")
-                                        elif field["type"] == "dynamic_time":
-                                            # Get the number of meals from the previous field
-                                            num_meals = follow_up_answer.get("num_meals", 3)
-                                            meal_times = {}
-                                            
-                                            # Define meal order and labels based on number of meals
-                                            meal_order = {
-                                                1: ["Pranzo"],
-                                                2: ["Pranzo", "Cena"],
-                                                3: ["Colazione", "Pranzo", "Cena"],
-                                                4: ["Colazione", "Pranzo", "Cena", "Spuntino pomeridiano"],
-                                                5: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena"],
-                                                6: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Altro Spuntino"]
-                                            }
-                                            
-                                            # Get the appropriate meal labels for the selected number of meals
-                                            meal_labels = meal_order.get(num_meals, [])
-                                            
-                                            # Create time input for each meal
-                                            for i, label in enumerate(meal_labels):
-                                                st.markdown(f"### {label}")
-                                                # Create time input with full day range (00:00 - 23:59)
-                                                # Set default times based on meal type
-                                                default_times = {
-                                                    "Colazione": "07:30",
-                                                    "Spuntino mattutino": "10:30",
-                                                    "Pranzo": "13:00",
-                                                    "Spuntino pomeridiano": "16:30",
-                                                    "Cena": "20:00",
-                                                    "Altro Spuntino": "22:00"
-                                                }
-                                                
-                                                # Convert default time string to datetime.time object
-                                                default_time = datetime.strptime(default_times[label], "%H:%M").time()
-                                                
-                                                time_value = st.time_input(
-                                                    "",
-                                                    value=default_time,
-                                                    key=f"meal_time_{current_q['id']}_{label}_{i}",
-                                                    label_visibility="collapsed"
-                                                )
-                                                meal_times[label] = time_value
-                                            
-                                            follow_up_answer[field["id"]] = {
-                                                label: time_val.strftime("%H:%M") if time_val else None 
-                                                for label, time_val in meal_times.items()
-                                            }
-                    
-                    if st.button("Avanti"):
-                        # Salva la risposta
-                        st.session_state.nutrition_answers[current_q["id"]] = {
-                            "answer": answer,
-                            "follow_up": follow_up_answer
-                        }
-                        
-                        # Salva le risposte nutrizionali
-                        st.session_state.user_data_manager.save_nutritional_info(
-                            st.session_state.user_info["id"],
-                            {
-                                **{k: v for k, v in st.session_state.user_info.items() if k not in ["id", "username"]},
-                                "nutrition_answers": st.session_state.nutrition_answers
-                            }
-                        )
-                        
-                        st.session_state.current_question += 1
-                        st.rerun()
-                        
-                elif current_q["type"] == "number_input":
-                    # Per domande con campi numerici multipli
-                    question_text = current_q["question"](st.session_state.user_info) if callable(current_q["question"]) else current_q["question"]
-                    st.markdown(f"### {question_text}")
-                    
-                    field_values = {}
-                    for field in current_q["fields"]:
-                        label = field["label"](st.session_state.user_info) if callable(field["label"]) else field["label"]
-                        st.markdown(f"### {label}")
-                        field_values[field["id"]] = st.number_input(
-                            "",
-                            min_value=field["min"],
-                            max_value=field["max"],
-                            value=field["default"]
-                        )
-                    
-                    if st.button("Avanti"):
-                        st.session_state.nutrition_answers[current_q["id"]] = field_values
-                        
-                        # Salva le risposte nutrizionali
-                        st.session_state.user_data_manager.save_nutritional_info(
-                            st.session_state.user_info["id"],
-                            {
-                                **{k: v for k, v in st.session_state.user_info.items() if k not in ["id", "username"]},
-                                "nutrition_answers": st.session_state.nutrition_answers
-                            }
-                        )
-                        
-                        st.session_state.current_question += 1
-                        st.rerun()
-            else:
-                # Salta la domanda se non deve essere mostrata
-                st.session_state.current_question += 1
+            # Se non ci sono più domande, passa alla chat
+            if not has_more_questions:
                 st.rerun()
         else:
             # Se non ci sono ancora messaggi, carica la history esistente
