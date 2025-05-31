@@ -1,5 +1,16 @@
 {
-  "progress_data": [],
+  "progress_data": [
+    {
+      "date": "2025-05-31",
+      "weight": 30.0,
+      "measurements": {
+        "circonferenza_vita": 0.0,
+        "circonferenza_fianchi": 0.0,
+        "circonferenza_braccio": 0.0,
+        "circonferenza_coscia": 0.0
+      }
+    }
+  ],
   "user_preferences": {
     "excluded_foods": [],
     "preferred_foods": [],

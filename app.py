@@ -26,6 +26,9 @@ from frontend.sports_frontend import load_sports_data, get_sports_by_category, o
 # Import del nuovo servizio DeepSeek modulare
 from services.deep_seek_service import DeepSeekManager
 
+# Import del nuovo servizio Progress modulare
+from services.progress_service import ProgressManager
+
 import threading
 import queue
 
@@ -62,6 +65,13 @@ if "deepseek_manager" not in st.session_state:
     st.session_state.deepseek_manager = DeepSeekManager()
     if not st.session_state.deepseek_manager.is_available():
         st.warning("⚠️ DEEPSEEK_API_KEY non trovata nel file .env. Il sistema di estrazione automatica dei dati nutrizionali sarà disabilitato.")
+
+# Inizializzazione del servizio Progress modulare
+if "progress_manager" not in st.session_state:
+    st.session_state.progress_manager = ProgressManager(
+        user_data_manager=st.session_state.user_data_manager,
+        chat_handler=lambda x: chat_with_assistant(x)
+    )
 
 # Variabili per gestione generazione agente in background
 if "agent_generating" not in st.session_state:
@@ -367,204 +377,6 @@ def chat_with_assistant(user_input):
         create_new_thread()  # Crea un nuovo thread dopo un errore generale
         st.error(f"Errore nella conversazione: {str(e)}")
         return "Mi dispiace, si è verificato un errore inaspettato. Riprova."
-
-
-def track_user_progress():
-    """Gestisce il tracking dei progressi dell'utente"""
-    with st.expander("Traccia i tuoi progressi"):
-        weight = st.number_input("Peso attuale (kg)", min_value=30.0, max_value=200.0, step=0.1, format="%.1f")
-        date = st.date_input("Data misurazione")
-        measurements = {}
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            measurements["circonferenza_vita"] = st.number_input("Circonferenza vita (cm)", min_value=0.0, step=0.1, format="%.1f")
-            measurements["circonferenza_fianchi"] = st.number_input("Circonferenza fianchi (cm)", min_value=0.0, step=0.1, format="%.1f")
-        
-        with col2:
-            measurements["circonferenza_braccio"] = st.number_input("Circonferenza braccio (cm)", min_value=0.0, step=0.1, format="%.1f")
-            measurements["circonferenza_coscia"] = st.number_input("Circonferenza coscia (cm)", min_value=0.0, step=0.1, format="%.1f")
-        
-        if st.button("Salva progressi"):
-            # Arrotonda tutti i valori a una cifra decimale
-            weight = round(weight, 1)
-            measurements = {k: round(v, 1) for k, v in measurements.items()}
-            
-            # Salva i progressi
-            st.session_state.user_data_manager.track_progress(
-                user_id=st.session_state.user_info["id"],
-                weight=weight,
-                date=date.strftime("%Y-%m-%d"),
-                measurements=measurements
-            )
-            
-            # Verifica se è passato abbastanza tempo per una valutazione
-            progress_history = st.session_state.user_data_manager.get_progress_history(st.session_state.user_info["id"])
-            if len(progress_history) >= 2:
-                last_entry = progress_history[-1]
-                first_entry = progress_history[0]
-                
-                # Calcola le settimane passate
-                last_date = datetime.strptime(last_entry.date, "%Y-%m-%d")
-                first_date = datetime.strptime(first_entry.date, "%Y-%m-%d")
-                weeks_passed = (last_date - first_date).days / 7
-                
-                if weeks_passed >= 3:
-                    # Calcola la variazione di peso
-                    weight_change = last_entry.weight - first_entry.weight
-                    
-                    # Prepara il prompt per l'agente
-                    evaluation_prompt = f"""
-                    È passato un periodo di {weeks_passed:.1f} settimane dall'inizio del piano alimentare.
-                    È necessario valutare i progressi e adattare il piano.
-
-                    DATI INIZIALI:
-                    • Peso iniziale: {first_entry.weight} kg
-                    • Data iniziale: {first_entry.date}
-
-                    DATI ATTUALI:
-                    • Peso attuale: {last_entry.weight} kg
-                    • Data attuale: {last_entry.date}
-                    • Variazione peso: {weight_change:+.1f} kg
-
-                    MISURAZIONI INIZIALI:
-                    {json.dumps(first_entry.measurements, indent=2)}
-
-                    MISURAZIONI ATTUALI:
-                    {json.dumps(last_entry.measurements, indent=2)}
-
-                    OBIETTIVO ORIGINALE:
-                    • {st.session_state.user_info['obiettivo']}
-
-                    Per favore:
-                    1. Valuta i progressi rispetto all'obiettivo
-                    2. Ricalcola il metabolismo basale e il fabbisogno calorico
-                    3. Aggiorna le quantità dei macronutrienti
-                    4. Modifica il piano alimentare in base ai nuovi calcoli
-                    5. Fornisci raccomandazioni specifiche per il prossimo periodo
-
-                    IMPORTANTE: Inizia la tua risposta con "📊 VALUTAZIONE PERIODICA" e poi procedi con l'analisi.
-                    Assicurati di includere:
-                    - Un riepilogo dei progressi
-                    - I nuovi calcoli del metabolismo e delle calorie
-                    - Le modifiche al piano alimentare
-                    - Le raccomandazioni per il prossimo periodo
-
-                    Procedi con la valutazione e l'aggiornamento del piano.
-                    """
-                    
-                    # Invia il prompt all'agente
-                    response = chat_with_assistant(evaluation_prompt)
-                    
-                    # Aggiungi un messaggio di notifica
-                    notification = "🔄 Il piano alimentare è stato aggiornato in base ai tuoi progressi. Controlla la chat per i dettagli."
-                    st.session_state.messages.append({"role": "assistant", "content": notification})
-                    st.session_state.user_data_manager.save_chat_message(
-                        st.session_state.user_info["id"],
-                        "assistant",
-                        notification
-                    )
-                    
-                    # Aggiungi la valutazione completa
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-                    st.session_state.user_data_manager.save_chat_message(
-                        st.session_state.user_info["id"],
-                        "assistant",
-                        response
-                    )
-                    
-                    # Salva la domanda e risposta dell'agente
-                    st.session_state.user_data_manager.save_agent_qa(
-                        st.session_state.user_info["id"],
-                        evaluation_prompt,
-                        response
-                    )
-                    
-                    # Mostra un messaggio di successo con avviso dell'aggiornamento
-                    st.success("Progressi salvati con successo! Il piano alimentare è stato aggiornato in base ai tuoi progressi.")
-                else:
-                    st.success("Progressi salvati con successo!")
-            else:
-                st.success("Progressi salvati con successo!")
-            
-            st.rerun()
-
-def show_progress_history():
-    """Mostra la storia dei progressi dell'utente"""
-    if "user_info" in st.session_state and "id" in st.session_state.user_info:
-        history = st.session_state.user_data_manager.get_progress_history(
-            st.session_state.user_info["id"]
-        )
-        
-        if history:
-            progress_df = pd.DataFrame([
-                {
-                    "Data": entry.date,
-                    "Peso": entry.weight,
-                    **entry.measurements
-                }
-                for entry in history
-            ])
-            
-            # Formatta i numeri con una cifra decimale
-            numeric_columns = progress_df.select_dtypes(include=['float64']).columns
-            progress_df[numeric_columns] = progress_df[numeric_columns].round(1)
-            
-            st.line_chart(progress_df.set_index("Data")["Peso"])
-            
-            with st.expander("Dettaglio misurazioni"):
-                # Aggiungi selettore per il tipo di visualizzazione
-                view_type = st.radio(
-                    "Formato visualizzazione:",
-                    ["Tabella", "Dettagliato"],
-                    horizontal=True,
-                    key="view_type"
-                )
-                
-                if view_type == "Tabella":
-                    # Visualizzazione tabella con pulsante elimina
-                    col1, col2 = st.columns([0.9, 0.1])
-                    with col1:
-                        st.dataframe(progress_df, hide_index=True)
-                    with col2:
-                        # Aggiungi pulsanti di eliminazione allineati con la tabella
-                        for idx in range(len(progress_df)):
-                            if st.button("🗑️", key=f"delete_table_{idx}", help=f"Elimina voce del {progress_df.iloc[idx]['Data']}"):
-                                if st.session_state.user_data_manager.delete_progress_entry(
-                                    st.session_state.user_info["id"],
-                                    progress_df.iloc[idx]['Data']
-                                ):
-                                    st.success(f"Voce del {progress_df.iloc[idx]['Data']} eliminata con successo!")
-                                    st.rerun()
-                                else:
-                                    st.error("Errore durante l'eliminazione della voce.")
-                else:
-                    # Visualizzazione dettagliata
-                    for idx, (index, row) in enumerate(progress_df.iterrows()):
-                        col1, col2 = st.columns([0.9, 0.1])
-                        with col1:
-                            # Mostra i dati della riga
-                            st.write(f"Data: {row['Data']}")
-                            st.write(f"Peso: {row['Peso']} kg")
-                            measurements = {k: v for k, v in row.items() if k not in ['Data', 'Peso']}
-                            if measurements:
-                                st.write("Misurazioni:")
-                                for k, v in measurements.items():
-                                    st.write(f"- {k}: {v} cm")
-                        with col2:
-                            # Aggiungi il pulsante di eliminazione con chiave univoca
-                            if st.button("🗑️", key=f"delete_detailed_{row['Data']}_{idx}", help=f"Elimina voce del {row['Data']}"):
-                                if st.session_state.user_data_manager.delete_progress_entry(
-                                    st.session_state.user_info["id"],
-                                    row['Data']
-                                ):
-                                    st.success(f"Voce del {row['Data']} eliminata con successo!")
-                                    st.rerun()
-                                else:
-                                    st.error("Errore durante l'eliminazione della voce.")
-                        st.divider()  # Aggiunge una linea di separazione tra le voci
-        else:
-            st.info("Nessun dato di progresso disponibile")
 
 def handle_preferences():
     """Gestisce le preferenze dell'utente"""
@@ -1626,8 +1438,8 @@ def main():
         if page == "Chat":
             chat_interface()
         elif page == "Progressi":
-            track_user_progress()
-            show_progress_history()
+            st.session_state.progress_manager.track_user_progress()
+            st.session_state.progress_manager.show_progress_history()
         elif page == "Preferenze":
             handle_preferences()
         elif page == "Piano Nutrizionale":
