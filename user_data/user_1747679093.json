@@ -51,6 +51,16 @@
       "role": "assistant",
       "content": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del metabolismo basale e fabbisogno totale\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Giornaliero: 2173 kcal (considerando un livello di attività Sedentario)\n\n📚 Fonti utilizzate: Harris-Benedict Equation\n\n➡️ Conclusione:\nIl tuo fabbisogno calorico giornaliero per mantenere il peso attuale, considerando un'attività fisica sedentaria, è di 2173 kcal.\n\nSe hai domande sui calcoli o sulle scelte fatte, sono qui per aiutarti. Vuoi procedere con la FASE 3 per il calcolo dei macronutrienti?",
       "timestamp": 1748724412.1516473
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1748771635.0511305
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Distribuzione delle calorie tra i macronutrienti\n\n1. **Proteine**:\n   - Assumerò che tu non segua una dieta vegana e non pratichi sport particolarmente impegnativi. Userò un moltiplicatore standard.\n   - Moltiplicatore proteico standard: 0.8 g/kg \n   - Proteine totali: 0.8 * 70 = 56 g\n   - Calorie da proteine: 56 * 4 = 224 kcal\n   - % Proteine sulle kcal totali: (224 / 2173) * 100 ≈ 10%\n\n2. **Grassi**:\n   - Percentuale di grassi dalle linee guida LARN: 25-35%\n   - Scelgo un valore intermedio: 30%\n   - Calorie dai grassi: 0.30 * 2173 = 652 kcal\n   - Grassi totali in grammi: 652 / 9 ≈ 72 g\n\n3. **Carboidrati**:\n   - Calorie rimanenti: 2173 - (224 + 652) = 1297 kcal\n   - Grammi di carboidrati: 1297 / 4 ≈ 324 g\n   - % Carboidrati sulle kcal totali: (1297 / 2173) * 100 ≈ 60%\n\n📊 Riepilogo macronutrienti:\n- Proteine: 56 g (224 kcal, 10%)\n- Grassi: 72 g (652 kcal, 30%)\n- Carboidrati: 324 g (1297 kcal, 60%)\n- Fibre: ca. 28-30 g in base al fabbisogno energetico totale\n\n📚 Fonti utilizzate: ICSS, LARN, CREA\n\n➡️ Conclusione:\nAbbiamo calcolato la distribuzione dei macronutrienti in base al tuo fabbisogno giornaliero di 2173 kcal. Se tutto ti sembra in ordine e hai altre domande, fammi sapere. Vuoi procedere con la FASE 4 per la distribuzione delle calorie tra i pasti?",
+      "timestamp": 1748771652.2640975
     }
   ],
   "nutritional_info": {
@@ -89,6 +99,11 @@
         "question": "procedi",
         "answer": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del metabolismo basale e fabbisogno totale\n\n📊 Risultati intermedi:\n- Metabolismo Basale (BMR): 1672 kcal\n- Fabbisogno Giornaliero: 2173 kcal (considerando un livello di attività Sedentario)\n\n📚 Fonti utilizzate: Harris-Benedict Equation\n\n➡️ Conclusione:\nIl tuo fabbisogno calorico giornaliero per mantenere il peso attuale, considerando un'attività fisica sedentaria, è di 2173 kcal.\n\nSe hai domande sui calcoli o sulle scelte fatte, sono qui per aiutarti. Vuoi procedere con la FASE 3 per il calcolo dei macronutrienti?",
         "timestamp": 1748724412.1553519
+      },
+      {
+        "question": "si",
+        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Distribuzione delle calorie tra i macronutrienti\n\n1. **Proteine**:\n   - Assumerò che tu non segua una dieta vegana e non pratichi sport particolarmente impegnativi. Userò un moltiplicatore standard.\n   - Moltiplicatore proteico standard: 0.8 g/kg \n   - Proteine totali: 0.8 * 70 = 56 g\n   - Calorie da proteine: 56 * 4 = 224 kcal\n   - % Proteine sulle kcal totali: (224 / 2173) * 100 ≈ 10%\n\n2. **Grassi**:\n   - Percentuale di grassi dalle linee guida LARN: 25-35%\n   - Scelgo un valore intermedio: 30%\n   - Calorie dai grassi: 0.30 * 2173 = 652 kcal\n   - Grassi totali in grammi: 652 / 9 ≈ 72 g\n\n3. **Carboidrati**:\n   - Calorie rimanenti: 2173 - (224 + 652) = 1297 kcal\n   - Grammi di carboidrati: 1297 / 4 ≈ 324 g\n   - % Carboidrati sulle kcal totali: (1297 / 2173) * 100 ≈ 60%\n\n📊 Riepilogo macronutrienti:\n- Proteine: 56 g (224 kcal, 10%)\n- Grassi: 72 g (652 kcal, 30%)\n- Carboidrati: 324 g (1297 kcal, 60%)\n- Fibre: ca. 28-30 g in base al fabbisogno energetico totale\n\n📚 Fonti utilizzate: ICSS, LARN, CREA\n\n➡️ Conclusione:\nAbbiamo calcolato la distribuzione dei macronutrienti in base al tuo fabbisogno giornaliero di 2173 kcal. Se tutto ti sembra in ordine e hai altre domande, fammi sapere. Vuoi procedere con la FASE 4 per la distribuzione delle calorie tra i pasti?",
+        "timestamp": 1748771652.2938993
       }
     ]
   }
