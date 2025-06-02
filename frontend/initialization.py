@@ -89,6 +89,10 @@ def initialize_app():
         st.session_state.agent_user_input = None
     if "agent_thread_id" not in st.session_state:
         st.session_state.agent_thread_id = None
+    if "current_page" not in st.session_state:
+        st.session_state.current_page = "Chat"
+    if "pending_user_input" not in st.session_state:
+        st.session_state.pending_user_input = None
 
     # === INIZIALIZZAZIONE CLIENT DEEPSEEK LEGACY ===
     # NOTA: Questo è mantenuto per compatibilità con codice esistente

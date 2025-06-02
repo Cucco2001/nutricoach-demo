@@ -89,15 +89,29 @@ def initialize_chat_history():
             if not hasattr(st.session_state, 'thread_id'):
                 st.session_state.chat_manager.create_new_thread()
             
-            # Invia il prompt iniziale usando il manager
-            response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            # Salva il messaggio nella history
-            st.session_state.user_data_manager.save_chat_message(
-                st.session_state.user_info["id"],
-                "assistant",
-                response
-            )
+            # Imposta lo stato di generazione prima di chiamare l'agente
+            st.session_state.agent_generating = True
+            
+            try:
+                # Invia il prompt iniziale usando il manager
+                response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # Salva il messaggio nella history
+                st.session_state.user_data_manager.save_chat_message(
+                    st.session_state.user_info["id"],
+                    "assistant",
+                    response
+                )
+                
+                # Rimuovi lo stato di generazione dopo aver completato tutto
+                st.session_state.agent_generating = False
+                
+            except Exception as e:
+                # In caso di errore, assicurati di resettare lo stato
+                st.session_state.agent_generating = False
+                raise e
+            
             st.rerun()
 
 
@@ -116,42 +130,69 @@ def handle_user_input():
     """
     user_input = st.chat_input("Scrivi un messaggio...")
     if user_input:
-        # Aggiungi il messaggio dell'utente
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        
-        # Salva il messaggio dell'utente nella history
-        st.session_state.user_data_manager.save_chat_message(
-            st.session_state.user_info["id"],
-            "user",
-            user_input
-        )
-        
-        with st.spinner("L'assistente sta elaborando la risposta..."):
-            # Usa il chat manager per la conversazione
-            response = st.session_state.chat_manager.chat_with_assistant(user_input)
-            st.session_state.messages.append({"role": "assistant", "content": response})
+        # Se l'agente non sta già generando, inizia il processo
+        if not st.session_state.agent_generating:
+            # Aggiungi il messaggio dell'utente
+            st.session_state.messages.append({"role": "user", "content": user_input})
             
-            # Salva la risposta dell'assistente nella history
+            # Salva il messaggio dell'utente nella history
             st.session_state.user_data_manager.save_chat_message(
                 st.session_state.user_info["id"],
-                "assistant",
-                response
+                "user",
+                user_input
             )
             
-            # Salva la domanda e risposta dell'agente
-            st.session_state.user_data_manager.save_agent_qa(
-                st.session_state.user_info["id"],
-                user_input,
-                response
-            )
+            # Imposta lo stato di generazione e salva l'input per il processing
+            st.session_state.agent_generating = True
+            st.session_state.pending_user_input = user_input
             
-            # Controlla se è necessario estrarre dati nutrizionali con DeepSeek
-            st.session_state.deepseek_manager.check_and_extract_if_needed(
-                user_id=st.session_state.user_info["id"],
-                user_data_manager=st.session_state.user_data_manager,
-                user_info=st.session_state.user_info
-            )
+            # Fai immediatamente un rerun per aggiornare l'interfaccia
+            st.rerun()
+    
+    # Se c'è un input pendente e l'agente sta generando, processalo ora
+    if (st.session_state.agent_generating and 
+        hasattr(st.session_state, 'pending_user_input') and 
+        st.session_state.pending_user_input):
         
+        user_input = st.session_state.pending_user_input
+        st.session_state.pending_user_input = None  # Clear the pending input
+        
+        with st.spinner("L'assistente sta elaborando la risposta..."):
+            try:
+                # Usa il chat manager per la conversazione
+                response = st.session_state.chat_manager.chat_with_assistant(user_input)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # Salva la risposta dell'assistente nella history
+                st.session_state.user_data_manager.save_chat_message(
+                    st.session_state.user_info["id"],
+                    "assistant",
+                    response
+                )
+                
+                # Salva la domanda e risposta dell'agente
+                st.session_state.user_data_manager.save_agent_qa(
+                    st.session_state.user_info["id"],
+                    user_input,
+                    response
+                )
+                
+                # Controlla se è necessario estrarre dati nutrizionali con DeepSeek
+                st.session_state.deepseek_manager.check_and_extract_if_needed(
+                    user_id=st.session_state.user_info["id"],
+                    user_data_manager=st.session_state.user_data_manager,
+                    user_info=st.session_state.user_info
+                )
+                
+                # Rimuovi lo stato di generazione dopo aver completato tutto
+                st.session_state.agent_generating = False
+                
+            except Exception as e:
+                # In caso di errore, assicurati di resettare lo stato
+                st.session_state.agent_generating = False
+                raise e
+        
+        # Fai un rerun finale per aggiornare l'interfaccia
         st.rerun()
 
 

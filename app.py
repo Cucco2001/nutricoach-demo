@@ -84,10 +84,26 @@ def main():
         # Sidebar per le funzionalità utente
         with st.sidebar:
             st.header("Menu")
-            page = st.radio(
-                "Seleziona una sezione",
-                ["Chat", "Progressi", "Preferenze", "Piano Nutrizionale"]
-            )
+            
+            # Controlla se l'agente sta generando
+            is_agent_generating = getattr(st.session_state, 'agent_generating', False)
+            
+            if is_agent_generating:
+                # Mostra un messaggio informativo e blocca la navigazione
+                st.info("🤖 L'assistente sta elaborando la risposta, attendi completamento per accedere ad altri tab")
+                # Mantieni la selezione corrente senza permettere cambiamenti
+                if 'current_page' not in st.session_state:
+                    st.session_state.current_page = "Chat"
+                page = st.session_state.current_page
+                st.write(f"**Sezione corrente:** {page}")
+            else:
+                # Navigazione normale quando l'agente non sta generando
+                page = st.radio(
+                    "Seleziona una sezione",
+                    ["Chat", "Progressi", "Preferenze", "Piano Nutrizionale"]
+                )
+                # Salva la selezione corrente
+                st.session_state.current_page = page
             
             # Usa il nuovo modulo per gestire il logout
             show_logout_button()
