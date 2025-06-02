@@ -37,7 +37,7 @@ class DeepSeekManager:
         user_id: str, 
         user_data_manager: Any,
         user_info: Optional[Dict[str, Any]] = None,
-        extraction_interval: int = 2
+        extraction_interval: int = 1
     ) -> None:
         """
         Controlla se è necessario avviare un'estrazione e la avvia se appropriato.

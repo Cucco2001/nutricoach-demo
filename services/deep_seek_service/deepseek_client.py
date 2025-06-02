@@ -168,7 +168,6 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
         "numero_pasti": numero,
         "distribuzione_pasti": {{
             "nome_pasto": {{
-                "orario": "HH:MM",
                 "kcal": numero,
                 "percentuale_kcal": numero,
                 "proteine_g": numero,
@@ -180,14 +179,13 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
     "registered_meals": [
         {{
             "nome_pasto": "colazione/pranzo/cena/spuntino",
-            "orario": "HH:MM",
             "alimenti": [
                 {{
                     "nome_alimento": "nome",
-                    "quantita_g": numero,
+                    "quantita_g": numero_grammi_quando_possibile,
                     "stato": "crudo/cotto",
                     "metodo_cottura": "se_applicabile",
-                    "misura_casalinga": "equivalenza",
+                    "misura_casalinga": "equivalenza_descrittiva_es_2_uova_1_tazza",
                     "macronutrienti": {{
                         "proteine": numero,
                         "carboidrati": numero, 
@@ -206,7 +204,19 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
     ]
 }}
 
-IMPORTANTE:
+IMPORTANTE PER LE QUANTITÀ:
+- "quantita_g": Inserisci il peso in grammi SOLO se menzionato esplicitamente in grammi
+- Se sono menzionate unità diverse (es: "2 uova", "1 tazza", "3 fette"), NON convertire a grammi arbitrariamente
+- Per unità non in grammi, metti 0 in "quantita_g" e spiega nella "misura_casalinga"
+- "misura_casalinga": Descrivi sempre l'unità originale (es: "2 uova grandi", "1 tazza", "1 fetta di pane")
+
+ESEMPI:
+- "2 uova grandi" → quantita_g: 0, misura_casalinga: "2 uova grandi"
+- "100g di pasta" → quantita_g: 100, misura_casalinga: "100g"
+- "1 tazza di latte" → quantita_g: 0, misura_casalinga: "1 tazza"
+- "3 fette di pane" → quantita_g: 0, misura_casalinga: "3 fette"
+
+ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo
 - Se un dato non è presente, ometti quella sezione
 - I numeri devono essere numerici, non stringhe

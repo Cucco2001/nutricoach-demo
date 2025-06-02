@@ -11,6 +11,9 @@ import json
 import pandas as pd
 from datetime import datetime
 
+# Import del servizio PDF
+from services.pdf_service import PDFGenerator
+
 
 class PianoNutrizionale:
     """Gestisce la visualizzazione del piano nutrizionale e dei dati estratti"""
@@ -18,6 +21,7 @@ class PianoNutrizionale:
     def __init__(self):
         """Inizializza il gestore del piano nutrizionale"""
         self._setup_css_styles()
+        self.pdf_generator = PDFGenerator()
     
     def _setup_css_styles(self):
         """Configura gli stili CSS personalizzati per l'interfaccia"""
@@ -75,6 +79,15 @@ class PianoNutrizionale:
         .stExpander > div > div > div > div {
             font-size: 14px;
         }
+        .download-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
         </style>
         """, unsafe_allow_html=True)
     
@@ -85,17 +98,17 @@ class PianoNutrizionale:
         Args:
             user_id: ID dell'utente di cui mostrare i dati
         """
-        st.markdown('<h1 class="main-title">📊 Dati Nutrizionali Estratti</h1>', unsafe_allow_html=True)
-        st.markdown('<div class="section-content">Questi dati vengono estratti automaticamente dalla conversazione ogni 2 interazioni usando DeepSeek.</div>', unsafe_allow_html=True)
+        st.markdown('<h1 class="main-title">📊 Piano Nutrizionale Personalizzato</h1>', unsafe_allow_html=True)
         
         try:
             extracted_data = self._load_user_nutritional_data(user_id)
             
             if not extracted_data:
-                st.info("🤖 Nessun dato nutrizionale estratto ancora. Continua la conversazione con l'agente per raccogliere dati.")
+                st.info("🤖 Nessun dato nutrizionale disponibile ancora. Continua la conversazione con l'agente per raccogliere dati.")
                 return
             
-            self._display_header_info(extracted_data)
+            # Header con pulsante download
+            self._display_header_with_download(extracted_data, user_id)
             st.divider()
             
             # Sezioni principali del piano nutrizionale
@@ -107,6 +120,64 @@ class PianoNutrizionale:
         except Exception as e:
             st.error(f"❌ Errore nel caricamento dei dati: {str(e)}")
     
+    def _display_header_with_download(self, extracted_data, user_id):
+        """
+        Mostra l'header con informazioni e pulsante di download PDF.
+        
+        Args:
+            extracted_data: Dati nutrizionali estratti
+            user_id: ID dell'utente
+        """
+        last_updated = extracted_data.get("last_updated", "Sconosciuto")
+        
+        # Layout a due colonne per header + bottone download
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            if last_updated != "Sconosciuto":
+                try:
+                    dt = datetime.fromisoformat(last_updated.replace('Z', '+00:00'))
+                    formatted_date = dt.strftime("%d/%m/%Y alle %H:%M")
+                    st.caption(f"📅 Ultimo aggiornamento dati: {formatted_date}")
+                except:
+                    st.caption(f"📅 Ultimo aggiornamento dati: {last_updated}")
+        
+        with col2:
+            # Genera PDF e crea download button diretto
+            try:
+                # Ottieni le informazioni dell'utente da session_state
+                user_info = st.session_state.get('user_info', {})
+                
+                # Genera il PDF usando il servizio
+                pdf_bytes = self.pdf_generator.generate_nutritional_plan_pdf(user_id, user_info)
+                
+                # Crea nome file con timestamp
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                username = user_info.get('username', 'utente')
+                filename = f"piano_nutrizionale_{username}_{timestamp}.pdf"
+                
+                # Download diretto del PDF
+                st.download_button(
+                    label="📄 Scarica PDF",
+                    data=pdf_bytes,
+                    file_name=filename,
+                    mime="application/pdf",
+                    type="primary",
+                    use_container_width=True
+                )
+                
+            except Exception as e:
+                # Se c'è un errore nella generazione, mostra un pulsante disabilitato
+                st.button("❌ Errore PDF", disabled=True, use_container_width=True)
+                print(f"[PDF_ERROR] {str(e)}")
+
+    def _handle_pdf_download(self, user_id):
+        """
+        DEPRECATA: Funzione non più utilizzata.
+        Il download è ora gestito direttamente in _display_header_with_download.
+        """
+        pass
+
     def _load_user_nutritional_data(self, user_id):
         """
         Carica i dati nutrizionali dell'utente dal file JSON.
@@ -127,27 +198,6 @@ class PianoNutrizionale:
             user_data = json.load(f)
         
         return user_data.get("nutritional_info_extracted", {})
-    
-    def _display_header_info(self, extracted_data):
-        """
-        Mostra le informazioni di header con ultimo aggiornamento.
-        
-        Args:
-            extracted_data: Dati nutrizionali estratti
-        """
-        last_updated = extracted_data.get("last_updated", "Sconosciuto")
-        col1, col2 = st.columns([3, 1])
-        
-        with col1:
-            st.success("✅ Dati aggiornati automaticamente")
-        with col2:
-            if last_updated != "Sconosciuto":
-                try:
-                    dt = datetime.fromisoformat(last_updated.replace('Z', '+00:00'))
-                    formatted_date = dt.strftime("%d/%m/%Y %H:%M")
-                    st.caption(f"🕒 {formatted_date}")
-                except:
-                    st.caption(f"🕒 {last_updated}")
     
     def _display_caloric_needs_section(self, extracted_data):
         """
@@ -336,14 +386,13 @@ class PianoNutrizionale:
         
         for i, (pasto_nome, pasto_data) in enumerate(distribuzione_pasti.items()):
             color = meal_colors[i % len(meal_colors)]
-            orario = pasto_data.get('orario', 'N/A')
             kcal = pasto_data.get('kcal', 0)
             percentuale = pasto_data.get('percentuale_kcal', 0)
             
             st.markdown(f'''
             <div style="background: linear-gradient(135deg, {color} 0%, {color}88 100%); 
                         padding: 15px; border-radius: 12px; margin: 10px 0; color: white;">
-                <h3>🕐 {pasto_nome.title()} - {orario}</h3>
+                <h3>🍽️ {pasto_nome.title()}</h3>
                 <p style="font-size: 16px;"><strong>{kcal} kcal</strong> ({percentuale}% del totale)</p>
             </div>
             ''', unsafe_allow_html=True)
@@ -397,13 +446,12 @@ class PianoNutrizionale:
             total_meals: Numero totale di pasti
         """
         nome_pasto = meal.get('nome_pasto', 'Pasto').title()
-        orario = meal.get('orario', 'N/A')
         
         # Header del pasto
         st.markdown(f'''
         <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
                     padding: 15px; border-radius: 12px; margin: 15px 0; color: white;">
-            <h3>🍽️ {nome_pasto} - {orario}</h3>
+            <h3>🍽️ {nome_pasto}</h3>
         </div>
         ''', unsafe_allow_html=True)
         
