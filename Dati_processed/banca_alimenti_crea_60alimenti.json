@@ -20,7 +20,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.5,
-    "vitamina_K_ug": 0.1
+    "vitamina_K_ug": 0.1,
+    "categoria": "cereali"
   },
   "patate": {
     "energia_kcal": 353,
@@ -43,7 +44,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.5,
-    "vitamina_K_ug": 0.1
+    "vitamina_K_ug": 0.1,
+    "categoria": "tuberi"
   },
   "riso": {
     "energia_kcal": 360,
@@ -66,7 +68,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.1,
-    "vitamina_K_ug": 0.1
+    "vitamina_K_ug": 0.1,
+    "categoria": "cereali"
   },
   "riso_integrale": {
     "energia_kcal": 350,
@@ -89,7 +92,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 1.2,
-    "vitamina_K_ug": 1.9
+    "vitamina_K_ug": 1.9,
+    "categoria": "cereali"
   },
   "riso_basmati": {
     "energia_kcal": 350,
@@ -112,7 +116,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.1,
-    "vitamina_K_ug": 0.1
+    "vitamina_K_ug": 0.1,
+    "categoria": "cereali"
   },
   "pollo": {
     "energia_kcal": 110,
@@ -135,7 +140,8 @@
     "vitamina_A_ug": 16.0,
     "vitamina_D_ug": 0.1,
     "vitamina_E_mg": 0.3,
-    "vitamina_K_ug": 2.6
+    "vitamina_K_ug": 2.6,
+    "categoria": "proteine_animali"
   },
   "pollo_petto": {
     "energia_kcal": 105,
@@ -158,7 +164,8 @@
     "vitamina_A_ug": 6.0,
     "vitamina_D_ug": 0.1,
     "vitamina_E_mg": 0.3,
-    "vitamina_K_ug": 2.6
+    "vitamina_K_ug": 2.6,
+    "categoria": "proteine_animali"
   },
   "pollo_coscia": {
     "energia_kcal": 125,
@@ -181,7 +188,8 @@
     "vitamina_A_ug": 18.0,
     "vitamina_D_ug": 0.1,
     "vitamina_E_mg": 0.3,
-    "vitamina_K_ug": 2.6
+    "vitamina_K_ug": 2.6,
+    "categoria": "proteine_animali"
   },
   "pollo_ali": {
     "energia_kcal": 160,
@@ -204,7 +212,8 @@
     "vitamina_A_ug": 16.0,
     "vitamina_D_ug": 0.1,
     "vitamina_E_mg": 0.3,
-    "vitamina_K_ug": 2.6
+    "vitamina_K_ug": 2.6,
+    "categoria": "proteine_animali"
   },
   "zucchine": {
     "energia_kcal": 11,
@@ -227,7 +236,8 @@
     "vitamina_A_ug": 10.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.1,
-    "vitamina_K_ug": 4.3
+    "vitamina_K_ug": 4.3,
+    "categoria": "verdure"
   },
   "verdure_miste": {
     "energia_kcal": 11,
@@ -250,7 +260,8 @@
     "vitamina_A_ug": 200.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 1.0,
-    "vitamina_K_ug": 50.0
+    "vitamina_K_ug": 50.0,
+    "categoria": "verdure"
   },
   "olio_oliva": {
     "energia_kcal": 899,
@@ -273,7 +284,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 14.4,
-    "vitamina_K_ug": 60.2
+    "vitamina_K_ug": 60.2,
+    "categoria": "grassi_aggiunti"
   },
   "pane_bianco": {
     "energia_kcal": 270,
@@ -296,7 +308,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.3,
-    "vitamina_K_ug": 0.3
+    "vitamina_K_ug": 0.3,
+    "categoria": "cereali"
   },
   "mela": {
     "energia_kcal": 52,
@@ -319,7 +332,8 @@
     "vitamina_A_ug": 3.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.2,
-    "vitamina_K_ug": 2.2
+    "vitamina_K_ug": 2.2,
+    "categoria": "frutta"
   },
   "uovo": {
     "energia_kcal": 128,
@@ -342,7 +356,8 @@
     "vitamina_A_ug": 140.0,
     "vitamina_D_ug": 2.0,
     "vitamina_E_mg": 1.1,
-    "vitamina_K_ug": 0.3
+    "vitamina_K_ug": 0.3,
+    "categoria": "uova"
   },
   "uova": {
     "energia_kcal": 128,
@@ -365,7 +380,8 @@
     "vitamina_A_ug": 140.0,
     "vitamina_D_ug": 2.0,
     "vitamina_E_mg": 1.1,
-    "vitamina_K_ug": 0.3
+    "vitamina_K_ug": 0.3,
+    "categoria": "uova"
   },
   "latte_intero": {
     "energia_kcal": 64,
@@ -388,7 +404,8 @@
     "vitamina_A_ug": 28.0,
     "vitamina_D_ug": 0.03,
     "vitamina_E_mg": 0.09,
-    "vitamina_K_ug": 0.4
+    "vitamina_K_ug": 0.4,
+    "categoria": "latticini"
   },
   "latte_scremato": {
     "energia_kcal": 64,
@@ -411,7 +428,8 @@
     "vitamina_A_ug": 1.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.01,
-    "vitamina_K_ug": 0.1
+    "vitamina_K_ug": 0.1,
+    "categoria": "latticini"
   },
   "fagioli_borlotti_cotti": {
     "energia_kcal": 102,
@@ -434,7 +452,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.2,
-    "vitamina_K_ug": 8.4
+    "vitamina_K_ug": 8.4,
+    "categoria": "legumi"
   },
   "banana": {
     "energia_kcal": 89,
@@ -457,7 +476,8 @@
     "vitamina_A_ug": 3.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.1,
-    "vitamina_K_ug": 0.5
+    "vitamina_K_ug": 0.5,
+    "categoria": "frutta"
   },
   "frutti_di_bosco": {
     "energia_kcal": 89,
@@ -480,7 +500,8 @@
     "vitamina_A_ug": 11.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.6,
-    "vitamina_K_ug": 19.3
+    "vitamina_K_ug": 19.3,
+    "categoria": "frutta"
   },
   "mozzarella": {
     "energia_kcal": 253,
@@ -503,7 +524,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "zucchero": {
     "energia_kcal": 392,
@@ -526,7 +548,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "dolci"
   },
   "cioccolato_fondente": {
     "energia_kcal": 546,
@@ -549,7 +572,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "dolci"
   },
   "lenticchie_cotte": {
     "energia_kcal": 114,
@@ -572,7 +596,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "legumi"
   },
   "carote_crude": {
     "energia_kcal": 41,
@@ -595,7 +620,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "tonno_sottolio_sgocciolato": {
     "energia_kcal": 190,
@@ -618,7 +644,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "biscotti_secchi": {
     "energia_kcal": 440,
@@ -641,7 +668,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "spinaci_cotti": {
     "energia_kcal": 23,
@@ -664,7 +692,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "spinaci": {
     "energia_kcal": 23,
@@ -687,7 +716,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "bresaola": {
     "energia_kcal": 151,
@@ -710,7 +740,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "pomodoro": {
     "energia_kcal": 18,
@@ -733,7 +764,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "melanzane": {
     "energia_kcal": 25,
@@ -756,7 +788,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "ricotta": {
     "energia_kcal": 174,
@@ -779,7 +812,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "feta": {
     "energia_kcal": 264,
@@ -802,7 +836,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "prosciutto_crudo": {
     "energia_kcal": 215,
@@ -825,7 +860,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "wurstel": {
     "energia_kcal": 270,
@@ -848,7 +884,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "tonno_naturale": {
     "energia_kcal": 101,
@@ -871,7 +908,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "ceci_cotti": {
     "energia_kcal": 120,
@@ -894,7 +932,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "legumi"
   },
   "pere": {
     "energia_kcal": 57,
@@ -917,7 +956,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "albicocche": {
     "energia_kcal": 48,
@@ -940,7 +980,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "pasta_integrale": {
     "energia_kcal": 348,
@@ -963,7 +1004,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "farro_cotto": {
     "energia_kcal": 127,
@@ -986,7 +1028,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "biscotti_integrali": {
     "energia_kcal": 435,
@@ -1009,7 +1052,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "yogurt_magro": {
     "energia_kcal": 41,
@@ -1032,7 +1076,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "grana_padano": {
     "energia_kcal": 398,
@@ -1055,7 +1100,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "bieta_cotta": {
     "energia_kcal": 17,
@@ -1078,7 +1124,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "pesce_spada": {
     "energia_kcal": 121,
@@ -1101,7 +1148,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "salmone_affumicato": {
     "energia_kcal": 172,
@@ -1124,7 +1172,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "fagiolini_cotti": {
     "energia_kcal": 35,
@@ -1147,7 +1196,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "uva": {
     "energia_kcal": 61,
@@ -1170,7 +1220,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "cavolfiore_cotto": {
     "energia_kcal": 23,
@@ -1193,7 +1244,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   },
   "piselli_cotti": {
     "energia_kcal": 84,
@@ -1216,7 +1268,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "legumi"
   },
   "arancia": {
     "energia_kcal": 47,
@@ -1239,7 +1292,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "miele": {
     "energia_kcal": 47,
@@ -1262,7 +1316,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "dolci"
   },
   "kiwi": {
     "energia_kcal": 47,
@@ -1285,7 +1340,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "ciliegie": {
     "energia_kcal": 47,
@@ -1308,7 +1364,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "mirtilli": {
     "energia_kcal": 47,
@@ -1331,7 +1388,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta"
   },
   "crostata_di_marmellata": {
     "energia_kcal": 389,
@@ -1354,7 +1412,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "dolci"
   },
   "cracker": {
     "energia_kcal": 433,
@@ -1377,7 +1436,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "grissini": {
     "energia_kcal": 421,
@@ -1400,7 +1460,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "gelato_fiordilatte": {
     "energia_kcal": 193,
@@ -1423,7 +1484,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "dolci"
   },
   "gelato_cioccolato": {
     "energia_kcal": 216,
@@ -1446,7 +1508,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "dolci"
   },
   "burro": {
     "energia_kcal": 758,
@@ -1469,7 +1532,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "grassi_aggiunti"
   },
   "margarina": {
     "energia_kcal": 717,
@@ -1492,7 +1556,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "grassi_aggiunti"
   },
   "yogurt_greco_0percento": {
     "energia_kcal": 59,
@@ -1515,7 +1580,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "yogurt_greco_2percento": {
     "energia_kcal": 73,
@@ -1538,7 +1604,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "latticini"
   },
   "cornflakes": {
     "energia_kcal": 378,
@@ -1561,7 +1628,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "avena": {
     "energia_kcal": 378,
@@ -1584,7 +1652,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "cereali"
   },
   "pro_milk_20g_proteine": {
     "energia_kcal": 100,
@@ -1607,7 +1676,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "integratori"
   },
   "iso_fuji_yamamoto": {
     "energia_kcal": 377,
@@ -1630,7 +1700,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "integratori"
   },
   "albume_uova": {
     "energia_kcal": 377,
@@ -1653,7 +1724,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "uova"
   },
   "burro_arachidi": {
     "energia_kcal": 588,
@@ -1676,7 +1748,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "grassi_aggiunti"
   },
   "mandorle": {
     "energia_kcal": 603,
@@ -1699,7 +1772,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta_secca"
   },
   "anacardi": {
     "energia_kcal": 603,
@@ -1722,7 +1796,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta_secca"
   },
   "nocciole": {
     "energia_kcal": 603,
@@ -1745,7 +1820,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta_secca"
   },
   "noccioline": {
     "energia_kcal": 603,
@@ -1768,7 +1844,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta_secca"
   },
   "noci_sgusciate": {
     "energia_kcal": 689,
@@ -1791,7 +1868,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "frutta_secca"
   },
   "salmone_al_naturale": {
     "energia_kcal": 143,
@@ -1814,7 +1892,8 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "proteine_animali"
   },
   "broccoli": {
     "energia_kcal": 34,
@@ -1837,6 +1916,7 @@
     "vitamina_A_ug": 0.0,
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
-    "vitamina_K_ug": 0.0
+    "vitamina_K_ug": 0.0,
+    "categoria": "verdure"
   }
 }

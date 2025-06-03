@@ -102,8 +102,22 @@ class NutriDB:
             "frollini": "biscotti_secchi",
             "biscotti integrali": "biscotti_integrali",
             "patata": "patate",
+            "patate dolci": "patate",
             "salmone": "salmone_affumicato",
-            "tonno": "tonno_naturale"
+            "tonno": "tonno_naturale",
+            "olio di oliva": "olio_oliva",
+            "olio": "olio_oliva",
+            "olio extravergine": "olio_oliva",
+            "olio extravergine di oliva": "olio_oliva",
+            "olio extravergine di oliva": "olio_oliva",
+            "olio d'oliva": "olio_oliva",
+            "olio di semi": "olio_oliva",
+            "pane": "pane_bianco",
+            "pane integrale": "pane_bianco",
+            "pane bianco": "pane_bianco",
+            "pane al latte": "pane_bianco",
+            "pan bauletto": "pane_bianco",
+            "pane fresco": "pane_bianco"
             })
         return mapping
 

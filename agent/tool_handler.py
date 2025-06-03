@@ -19,6 +19,7 @@ from agent_tools.nutridb_tool import (
 from agent_tools.user_data_tool import (
     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
 )
+from agent_tools.meal_optimizer_tool import optimize_meal_portions
 
 
 class ToolHandler:
@@ -54,6 +55,9 @@ class ToolHandler:
             "get_progress_history": get_progress_history,
             "get_agent_qa": get_agent_qa,
             "get_nutritional_info": get_nutritional_info,
+            
+            # Tool per ottimizzazione porzioni pasti
+            "optimize_meal_portions": optimize_meal_portions,
             
             # Per retrocompatibilità (da rimuovere in futuro)
             "nutridb_tool": lambda **args: self._legacy_nutridb_tool(**args),
