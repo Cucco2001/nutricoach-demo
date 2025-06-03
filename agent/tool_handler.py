@@ -19,7 +19,7 @@ from agent_tools.nutridb_tool import (
 from agent_tools.user_data_tool import (
     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
 )
-from agent_tools.meal_optimizer_tool import optimize_meal_portions
+from agent_tools.meal_optimization_tool import optimize_meal_portions
 
 
 class ToolHandler:

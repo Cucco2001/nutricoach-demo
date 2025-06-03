@@ -52,6 +52,7 @@ class NutriDB:
             "ali pollo": "pollo_ali",
             "riso normale": "riso",
             "riso basmati": "riso_basmati",
+            "riso bianco": "riso",
             "basmati riso": "riso_basmati",
             "riso integrale": "riso_integrale",
             "integrale riso": "riso_integrale",     
@@ -127,7 +128,25 @@ class NutriDB:
             raise ValueError(f"Alimento '{alimento}' non trovato.")
         info = self.alimenti[key]
         factor = quantità / 100
-        return {k: round(v * factor, 2) for k, v in info.items()}
+        
+        # Filtra solo i valori numerici e gestisce anche i valori stringa che rappresentano numeri
+        result = {}
+        for k, v in info.items():
+            if isinstance(v, (int, float)):
+                result[k] = round(v * factor, 2)
+            elif isinstance(v, str):
+                # Prova a convertire stringhe che rappresentano numeri
+                try:
+                    numeric_value = float(v)
+                    result[k] = round(numeric_value * factor, 2)
+                except ValueError:
+                    # Se non è convertibile, mantieni la stringa originale
+                    result[k] = v
+            else:
+                # Per altri tipi (liste, dict, etc.) mantieni il valore originale
+                result[k] = v
+        
+        return result
 
     def get_LARN_protein(self, sesso, età):
         """Calcola il fabbisogno proteico in g/kg usando i LARN.
@@ -907,3 +926,28 @@ class NutriDB:
                 "calculation_method": "Equivalenza calorica con priorità per similarità macronutrienti"
             }
         }
+
+    def check_foods_in_db(self, food_list):
+        """Verifica se una lista di alimenti è presente nel database.
+        
+        Args:
+            food_list: Lista di nomi di alimenti da verificare
+            
+        Returns:
+            tuple: (all_found: bool, foods_not_found: list)
+                - all_found: True se tutti gli alimenti sono trovati, False altrimenti
+                - foods_not_found: Lista degli alimenti non trovati nel database
+        """
+        foods_not_found = []
+        
+        for food in food_list:
+            # Applica la logica di normalizzazione utilizzata nella classe
+            normalized_food = food.lower().replace("_", " ")
+            
+            # Controlla se l'alimento è presente negli alias
+            if normalized_food not in self.alias:
+                foods_not_found.append(food)
+        
+        all_found = len(foods_not_found) == 0
+        
+        return all_found, foods_not_found
