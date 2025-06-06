@@ -1,0 +1,50 @@
+{
+  "personal_info": {
+    "nome": "Mario",
+    "età": 30,
+    "sesso": "maschio",
+    "peso": 75,
+    "altezza": 175,
+    "obiettivo": "Mantenimento"
+  },
+  "nutritional_info_extracted": {
+    "daily_macros": {
+      "kcal_totali": 2400,
+      "proteine_g_totali": 120,
+      "carboidrati_g_totali": 300,
+      "grassi_g_totali": 80,
+      "distribuzione_pasti": {
+        "colazione": {
+          "kcal": 480,
+          "proteine_g": 24,
+          "carboidrati_g": 60,
+          "grassi_g": 16
+        },
+        "spuntino_mattutino": {
+          "kcal": 240,
+          "proteine_g": 12,
+          "carboidrati_g": 30,
+          "grassi_g": 8
+        },
+        "pranzo": {
+          "kcal": 720,
+          "proteine_g": 36,
+          "carboidrati_g": 90,
+          "grassi_g": 24
+        },
+        "spuntino_pomeridiano": {
+          "kcal": 240,
+          "proteine_g": 12,
+          "carboidrati_g": 30,
+          "grassi_g": 8
+        },
+        "cena": {
+          "kcal": 720,
+          "proteine_g": 36,
+          "carboidrati_g": 90,
+          "grassi_g": 24
+        }
+      }
+    }
+  }
+}

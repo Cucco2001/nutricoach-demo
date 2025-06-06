@@ -405,7 +405,31 @@
     "vitamina_D_ug": 0.03,
     "vitamina_E_mg": 0.09,
     "vitamina_K_ug": 0.4,
-    "categoria": "latticini"
+    "categoria": "latte"
+  },
+  "parmigiano_reggiano": {
+    "energia_kcal": 64,
+    "proteine_g": 32.4,
+    "carboidrati_g": 0,
+    "zuccheri_g": 0,
+    "grassi_g": 29.7,
+    "grassi_saturi_g": 15,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "vitamina_C_mg": 1.0,
+    "tiamina_mg": 0.04,
+    "riboflavina_mg": 0.18,
+    "niacina_mg": 0.1,
+    "acido_pantotenico_mg": 0.4,
+    "vitamina_B6_mg": 0.04,
+    "biotina_ug": 3.5,
+    "folati_ug": 5.0,
+    "vitamina_B12_ug": 0.4,
+    "vitamina_A_ug": 28.0,
+    "vitamina_D_ug": 0.03,
+    "vitamina_E_mg": 0.09,
+    "vitamina_K_ug": 0.4,
+    "categoria": "formaggi"
   },
   "latte_scremato": {
     "energia_kcal": 64,
@@ -429,7 +453,7 @@
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.01,
     "vitamina_K_ug": 0.1,
-    "categoria": "latticini"
+    "categoria": "latte"
   },
   "fagioli_borlotti_cotti": {
     "energia_kcal": 102,
@@ -525,7 +549,7 @@
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
     "vitamina_K_ug": 0.0,
-    "categoria": "latticini"
+    "categoria": "formaggi"
   },
   "zucchero": {
     "energia_kcal": 392,
@@ -813,7 +837,7 @@
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
     "vitamina_K_ug": 0.0,
-    "categoria": "latticini"
+    "categoria": "formaggi"
   },
   "feta": {
     "energia_kcal": 264,
@@ -837,7 +861,7 @@
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
     "vitamina_K_ug": 0.0,
-    "categoria": "latticini"
+    "categoria": "formaggi"
   },
   "prosciutto_crudo": {
     "energia_kcal": 215,
@@ -1101,7 +1125,7 @@
     "vitamina_D_ug": 0.0,
     "vitamina_E_mg": 0.0,
     "vitamina_K_ug": 0.0,
-    "categoria": "latticini"
+    "categoria": "formaggi"
   },
   "bieta_cotta": {
     "energia_kcal": 17,
