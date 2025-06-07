@@ -103,7 +103,7 @@ NUTRITION_QUESTIONS = [
                     "type": "number",
                     "min": 1,
                     "max": 6,
-                    "default": 5
+                    "default": 4
                 },
                 {
                     "id": "meal_times",

@@ -1,33 +1,26 @@
-"""
-Servizio per l'estrazione e gestione dei dati nutrizionali con DeepSeek.
-
-Questo modulo gestisce l'estrazione asincrona, il salvataggio e la sincronizzazione
-dei dati nutrizionali estratti dalle conversazioni usando DeepSeek AI.
-"""
-
-import os
 import json
+import os
 import threading
-import queue
-from datetime import datetime
-from typing import Dict, Any, List, Optional
+import time
+from typing import Dict, Any, List
 from .deepseek_client import DeepSeekClient
 
 
+
 class NutritionalDataExtractor:
-    """Servizio per l'estrazione asincrona di dati nutrizionali."""
+    """
+    Servizio per l'estrazione di dati nutrizionali dalle conversazioni usando DeepSeek.
+    """
     
     def __init__(self):
-        """Inizializza il servizio di estrazione."""
         self.deepseek_client = DeepSeekClient()
-        self.results_queue = queue.Queue()
-        self.lock = threading.Lock()
+        self.pending_requests = []
         self.file_access_lock = threading.Lock()
         
     def is_available(self) -> bool:
-        """Verifica se il servizio è disponibile."""
+        """Verifica se il servizio di estrazione è disponibile."""
         return self.deepseek_client.is_available()
-    
+        
     def extract_data_async(
         self, 
         user_id: str, 
@@ -42,145 +35,118 @@ class NutritionalDataExtractor:
             user_id: ID dell'utente
             conversation_history: Storia delle conversazioni
             user_info: Informazioni dell'utente
-            interaction_count: Numero di interazioni correnti
+            interaction_count: Numero di interazioni
         """
         if not self.is_available():
-            print("[EXTRACTION_SERVICE] DeepSeek non disponibile")
+            print("[EXTRACTION_SERVICE] DeepSeek non disponibile, estrazione saltata")
             return
             
-        print(f"[EXTRACTION_SERVICE] Avvio estrazione asincrona per utente {user_id}")
-        
-        # Crea una copia locale dei dati per il thread
-        user_info_copy = dict(user_info) if user_info else {}
+        # Il controllo della frequenza è gestito dal DeepSeek Manager
+        # Quando arriviamo qui, l'estrazione è già stata approvata
+        print(f"[EXTRACTION_SERVICE] Avviando estrazione per utente {user_id} (interazione {interaction_count})")
         
         def extract_in_background():
-            """Funzione per l'estrazione in background."""
             try:
-                # Estrai i dati usando DeepSeek
+                # Chiama DeepSeek per l'estrazione
                 extracted_data = self.deepseek_client.extract_nutritional_data(
                     conversation_history, 
-                    user_info_copy
+                    user_info
                 )
                 
                 if extracted_data:
                     success = self._save_extracted_data(user_id, extracted_data)
-                    
-                    # Comunica il risultato tramite la coda
-                    with self.lock:
-                        self.results_queue.put({
-                            "success": success,
-                            "user_id": user_id,
-                            "interaction_count": interaction_count
-                        })
+                    if success:
+                        print(f"[EXTRACTION_SERVICE] Dati estratti e salvati per utente {user_id}")
+                    else:
+                        print(f"[EXTRACTION_SERVICE] Errore nel salvataggio dati per utente {user_id}")
                 else:
-                    with self.lock:
-                        self.results_queue.put({
-                            "success": False,
-                            "error": "Nessun dato estratto",
-                            "user_id": user_id
-                        })
-                        
+                    print(f"[EXTRACTION_SERVICE] Nessun dato estratto per utente {user_id}")
+                    
             except Exception as e:
-                print(f"[EXTRACTION_SERVICE] Errore nell'estrazione: {str(e)}")
-                with self.lock:
-                    self.results_queue.put({
-                        "success": False,
-                        "error": str(e),
-                        "user_id": user_id
-                    })
+                print(f"[EXTRACTION_SERVICE] Errore nell'estrazione per utente {user_id}: {str(e)}")
         
-        # Avvia il thread
-        thread = threading.Thread(target=extract_in_background, daemon=True)
-        thread.start()
-        
-        print(f"[EXTRACTION_SERVICE] Thread avviato per utente {user_id}")
+        # Avvia in background thread
+        extraction_thread = threading.Thread(
+            target=extract_in_background,
+            daemon=True,
+            name=f"DeepSeekExtraction-{user_id}"
+        )
+        extraction_thread.start()
     
     def get_results(self) -> List[Dict[str, Any]]:
         """
-        Recupera i risultati dell'estrazione disponibili.
+        Recupera i risultati delle estrazioni completate.
         
         Returns:
             Lista dei risultati disponibili
         """
         results = []
         
-        with self.lock:
-            while not self.results_queue.empty():
-                try:
-                    result = self.results_queue.get_nowait()
-                    results.append(result)
-                except queue.Empty:
-                    break
-                    
+        try:
+            # Controlla la cartella user_data per i file con nutritional_info_extracted
+            user_data_dir = "user_data"
+            if os.path.exists(user_data_dir):
+                for filename in os.listdir(user_data_dir):
+                    if filename.endswith('.json'):
+                        user_id = filename[:-5]  # Rimuovi .json
+                        
+                        with open(f"{user_data_dir}/{filename}", 'r', encoding='utf-8') as f:
+                            user_data = json.load(f)
+                            
+                        if "nutritional_info_extracted" in user_data:
+                            results.append({
+                                "user_id": user_id,
+                                "data": user_data["nutritional_info_extracted"]
+                            })
+        except Exception as e:
+            print(f"[EXTRACTION_SERVICE] Errore nel recupero risultati: {str(e)}")
+            
         return results
     
     def _save_extracted_data(self, user_id: str, extracted_data: Dict[str, Any]) -> bool:
         """
-        Salva i dati estratti nel file utente.
+        Salva i dati estratti nel file dell'utente.
         
         Args:
             user_id: ID dell'utente
             extracted_data: Dati estratti da DeepSeek
             
         Returns:
-            True se il salvataggio è andato a buon fine
+            True se il salvataggio è riuscito
         """
         try:
+            user_file_path = f"user_data/{user_id}.json"
+            
+            # Crea la cartella se non esiste
+            os.makedirs("user_data", exist_ok=True)
+            
             with self.file_access_lock:
-                print(f"[EXTRACTION_SERVICE] Inizio salvataggio per utente {user_id}")
-                
-                # Carica il file utente
-                user_file_path = f"user_data/{user_id}.json"
-                
-                if not os.path.exists(user_file_path):
-                    print(f"[EXTRACTION_SERVICE] File utente {user_id} non trovato")
-                    return False
-                
-                # Operazione atomica: leggi, modifica, scrivi tutto sotto lock
-                with open(user_file_path, 'r', encoding='utf-8') as f:
-                    user_data = json.load(f)
-                
-                # Crea una copia di backup dei dati nutrizionali esistenti
-                existing_data = user_data.get("nutritional_info_extracted", {}).copy()
-                print(f"[EXTRACTION_SERVICE] Backup dati esistenti: {list(existing_data.keys())}")
-                
-                # Inizializza la sezione se non esiste
-                if "nutritional_info_extracted" not in user_data:
-                    user_data["nutritional_info_extracted"] = {}
-                
-                # Ripristina i dati esistenti dalla copia di backup
-                user_data["nutritional_info_extracted"] = existing_data.copy()
+                # Carica dati esistenti o crea nuovo file
+                if os.path.exists(user_file_path):
+                    with open(user_file_path, 'r', encoding='utf-8') as f:
+                        user_data = json.load(f)
+                else:
+                    user_data = {}
                 
                 # Merge intelligente dei dati
-                changes_made = self._merge_extracted_data(
-                    user_data["nutritional_info_extracted"], 
-                    extracted_data, 
-                    user_id
-                )
-                
-                # Aggiorna il timestamp se ci sono stati cambiamenti
-                if changes_made:
-                    user_data["nutritional_info_extracted"]["last_updated"] = datetime.now().isoformat()
-                    print(f"[EXTRACTION_SERVICE] Timestamp aggiornato per utente {user_id}")
-                
-                # Verifica finale
-                if not user_data["nutritional_info_extracted"]:
-                    print(f"[EXTRACTION_SERVICE] ERRORE: Dati vuoti prima del salvataggio!")
-                    user_data["nutritional_info_extracted"] = existing_data
-                
-                final_keys = list(user_data["nutritional_info_extracted"].keys())
-                print(f"[EXTRACTION_SERVICE] Dati finali da salvare: {final_keys}")
-                
-                # Salva il file solo se ci sono stati cambiamenti
-                if changes_made or not existing_data:
-                    with open(user_file_path, 'w', encoding='utf-8') as f:
-                        json.dump(user_data, f, indent=2, ensure_ascii=False)
-                    print(f"[EXTRACTION_SERVICE] File salvato con successo per utente {user_id}")
+                if "nutritional_info_extracted" in user_data:
+                    existing_data = user_data["nutritional_info_extracted"]
+                    merged = self._merge_extracted_data(existing_data, extracted_data, user_id)
+                    if merged:
+                        user_data["nutritional_info_extracted"] = existing_data
+                        print(f"[EXTRACTION_SERVICE] Dati merged per utente {user_id}")
+                    else:
+                        print(f"[EXTRACTION_SERVICE] Nessun merge necessario per utente {user_id}")
                 else:
-                    print(f"[EXTRACTION_SERVICE] Nessun cambiamento, file non modificato per utente {user_id}")
+                    user_data["nutritional_info_extracted"] = extracted_data
+                    print(f"[EXTRACTION_SERVICE] Primi dati estratti per utente {user_id}")
+                
+                # Salva il file aggiornato
+                with open(user_file_path, 'w', encoding='utf-8') as f:
+                    json.dump(user_data, f, indent=2, ensure_ascii=False)
                     
                 return True
-            
+                
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nel salvataggio per utente {user_id}: {str(e)}")
             return False
@@ -192,7 +158,7 @@ class NutritionalDataExtractor:
         user_id: str
     ) -> bool:
         """
-        Fa il merge dei nuovi dati con quelli esistenti.
+        Merge intelligente dei dati estratti.
         
         Args:
             existing_data: Dati esistenti (modificati in place)
@@ -204,38 +170,152 @@ class NutritionalDataExtractor:
         """
         changes_made = False
         
-        for data_type, data_content in new_data.items():
-            if data_content:  # Solo se ci sono dati
-                if data_type in existing_data:
-                    # Se il tipo di dato esiste già, fai un merge intelligente
-                    if isinstance(data_content, dict) and isinstance(existing_data[data_type], dict):
-                        # Conta le chiavi prima e dopo per vedere se ci sono cambiamenti
-                        keys_before = set(existing_data[data_type].keys())
-                        existing_data[data_type].update(data_content)
-                        keys_after = set(existing_data[data_type].keys())
-                        if keys_before != keys_after or any(k in data_content for k in keys_before):
-                            changes_made = True
-                            print(f"[EXTRACTION_SERVICE] Aggiornato (merge) {data_type} per utente {user_id}")
-                    elif isinstance(data_content, list) and isinstance(existing_data[data_type], list):
-                        # Per le liste, sostituisci solo se i nuovi dati sono più completi
-                        if len(data_content) >= len(existing_data[data_type]):
-                            existing_data[data_type] = data_content
-                            changes_made = True
-                            print(f"[EXTRACTION_SERVICE] Sostituito (lista più completa) {data_type} per utente {user_id}")
-                        else:
-                            print(f"[EXTRACTION_SERVICE] Mantenuto {data_type} esistente (più completo) per utente {user_id}")
-                    else:
-                        # Sostituisci per altri tipi
-                        existing_data[data_type] = data_content
-                        changes_made = True
-                        print(f"[EXTRACTION_SERVICE] Sostituito {data_type} per utente {user_id}")
-                else:
-                    # Se il tipo di dato non esiste, aggiungilo
-                    existing_data[data_type] = data_content
+        # Merge semplice per dati scalari
+        for key in ["caloric_needs", "macros_total", "daily_macros"]:
+            if key in new_data and new_data[key]:
+                if key not in existing_data or existing_data[key] != new_data[key]:
+                    existing_data[key] = new_data[key]
                     changes_made = True
-                    print(f"[EXTRACTION_SERVICE] Aggiunto nuovo {data_type} per utente {user_id}")
+                    print(f"[EXTRACTION_SERVICE] Aggiornato {key} per utente {user_id}")
+        
+        # Merge specializzato per registered_meals
+        if "registered_meals" in new_data and new_data["registered_meals"]:
+            if "registered_meals" not in existing_data:
+                existing_data["registered_meals"] = []
+            
+            meal_changes = self._merge_registered_meals(
+                existing_data["registered_meals"], 
+                new_data["registered_meals"], 
+                user_id
+            )
+            
+            if meal_changes:
+                changes_made = True
         
         return changes_made
+    
+    def _merge_registered_meals(
+        self, 
+        existing_meals: List[Dict[str, Any]], 
+        new_meals: List[Dict[str, Any]], 
+        user_id: str
+    ) -> bool:
+        """
+        Merge intelligente dei pasti registrati.
+        Sostituisce i pasti esistenti dello stesso tipo invece di duplicarli.
+        
+        Args:
+            existing_meals: Lista pasti esistenti (modificata in place)
+            new_meals: Nuovi pasti da DeepSeek
+            user_id: ID utente per logging
+            
+        Returns:
+            True se sono stati fatti cambiamenti
+        """
+        if not new_meals:
+            return False
+            
+        changes_made = False
+        
+        for new_meal in new_meals:
+            meal_type = new_meal.get("nome_pasto", "").lower()
+            if not meal_type:
+                continue
+                
+            print(f"[EXTRACTION_SERVICE] Processando nuovo pasto: {meal_type}")
+            
+            # Trova tutti i pasti esistenti dello stesso tipo
+            meals_to_remove = []
+            for i, existing_meal in enumerate(existing_meals):
+                existing_type = existing_meal.get("nome_pasto", "").lower()
+                
+                # Normalizza i nomi dei pasti per il confronto
+                normalized_existing = self._normalize_meal_name(existing_type)
+                normalized_new = self._normalize_meal_name(meal_type)
+                
+                if normalized_existing == normalized_new:
+                    meals_to_remove.append(i)
+                    print(f"[EXTRACTION_SERVICE] Trovato pasto esistente da sostituire: {existing_type}")
+            
+            # Rimuovi i pasti dello stesso tipo (in ordine inverso per non alterare gli indici)
+            for i in reversed(meals_to_remove):
+                del existing_meals[i]
+                changes_made = True
+                print(f"[EXTRACTION_SERVICE] Rimosso pasto duplicato per utente {user_id}")
+            
+            # Aggiungi il nuovo pasto
+            existing_meals.append(new_meal)
+            changes_made = True
+            print(f"[EXTRACTION_SERVICE] Aggiunto nuovo pasto {meal_type} per utente {user_id}")
+        
+        return changes_made
+    
+    def _normalize_meal_name(self, meal_name: str) -> str:
+        """
+        Normalizza il nome di un pasto per il confronto.
+        Mantiene la distinzione tra spuntino mattutino e pomeridiano.
+        
+        Args:
+            meal_name: Nome del pasto
+            
+        Returns:
+            Nome normalizzato
+        """
+        if not meal_name:
+            return ""
+            
+        name = meal_name.lower().strip().replace("_", " ")
+        
+        # Mapping per normalizzare i nomi dei pasti MANTENENDO la distinzione mattutino/pomeridiano
+        meal_mappings = {
+            # Colazione
+            "colazione": "colazione",
+            "breakfast": "colazione",
+            "prima colazione": "colazione",
+            "prima_colazione": "colazione",
+            
+            # Spuntino Mattutino
+            "spuntino mattutino": "spuntino_mattutino",
+            "spuntino_mattutino": "spuntino_mattutino",
+            "spuntino del mattino": "spuntino_mattutino",
+            "spuntino di mattina": "spuntino_mattutino",
+            "merenda mattutina": "spuntino_mattutino",
+            "merenda del mattino": "spuntino_mattutino",
+            "snack mattutino": "spuntino_mattutino",
+            "snack del mattino": "spuntino_mattutino",
+            "break mattutino": "spuntino_mattutino",
+            
+            # Spuntino Pomeridiano  
+            "spuntino pomeridiano": "spuntino_pomeridiano",
+            "spuntino_pomeridiano": "spuntino_pomeridiano",
+            "spuntino del pomeriggio": "spuntino_pomeridiano",
+            "spuntino di pomeriggio": "spuntino_pomeridiano",
+            "merenda": "spuntino_pomeridiano",  # "merenda" generica = pomeridiana
+            "merenda pomeridiana": "spuntino_pomeridiano",
+            "merenda del pomeriggio": "spuntino_pomeridiano",
+            "snack pomeridiano": "spuntino_pomeridiano",
+            "snack del pomeriggio": "spuntino_pomeridiano",
+            
+            # Spuntino generico - mantieni per ora, ma DeepSeek dovrebbe essere più specifico
+            "spuntino": "spuntino",
+            "snack": "spuntino",
+            
+            # Pranzo
+            "pranzo": "pranzo",
+            "lunch": "pranzo",
+            "pasto principale": "pranzo",
+            
+            # Cena
+            "cena": "cena",
+            "dinner": "cena",
+            "secondo pasto": "cena",
+        }
+        
+        # Restituisci il mapping o il nome normalizzato se non trovato
+        normalized = meal_mappings.get(name, name.replace(" ", "_"))
+        
+        print(f"[EXTRACTION_SERVICE] Normalized '{meal_name}' → '{normalized}'")
+        return normalized
     
     def clear_user_extracted_data(self, user_id: str) -> bool:
         """

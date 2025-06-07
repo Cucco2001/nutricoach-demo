@@ -178,7 +178,7 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
     }},
     "registered_meals": [
         {{
-            "nome_pasto": "colazione/pranzo/cena/spuntino",
+            "nome_pasto": "colazione/pranzo/cena/spuntino_mattutino/spuntino_pomeridiano o altri se specificati",
             "alimenti": [
                 {{
                     "nome_alimento": "nome",
@@ -215,6 +215,30 @@ ESEMPI:
 - "100g di pasta" → quantita_g: 100, misura_casalinga: "100g"
 - "1 tazza di latte" → quantita_g: 0, misura_casalinga: "1 tazza"
 - "3 fette di pane" → quantita_g: 0, misura_casalinga: "3 fette"
+
+IMPORTANTE PER I TIPI DI PASTO:
+- "nome_pasto" deve essere SPECIFICO:
+  * "colazione" per il primo pasto della giornata
+  * "spuntino_mattutino" per lo spuntino del mattino (tra colazione e pranzo)
+  * "pranzo" per il pasto principale di mezzogiorno
+  * "spuntino_pomeridiano" per merenda/spuntino pomeridiano (tra pranzo e cena)
+  * "cena" per il pasto serale
+  * altri nomi se specificati nella conversazione in maniera diversa
+- NON usare "spuntino" generico - specifica sempre se è mattutino o pomeridiano
+- Se il testo parla di "merenda" senza specificare, considera "spuntino_pomeridiano"
+- Analizza il contesto temporale per determinare il tipo di spuntino
+
+IMPORTANTE PER I TIPI DI PASTO:
+- "nome_pasto" deve essere SPECIFICO:
+  * "colazione" per il primo pasto della giornata
+  * "spuntino_mattutino" per lo spuntino del mattino (tra colazione e pranzo)
+  * "pranzo" per il pasto principale di mezzogiorno
+  * "spuntino_pomeridiano" per merenda/spuntino pomeridiano (tra pranzo e cena)
+  * "cena" per il pasto serale
+  * altri nomi se specificati nella conversazione in maniera diversa
+- NON usare "spuntino" generico - specifica sempre se è mattutino o pomeridiano
+- Se il testo parla di "merenda" senza specificare, considera "spuntino_pomeridiano"
+- Analizza il contesto temporale per determinare il tipo di spuntino
 
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo
