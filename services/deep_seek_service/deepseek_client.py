@@ -65,7 +65,7 @@ class DeepSeekClient:
                 # Prepara il contesto della conversazione
                 conversation_text = "\n\n".join([
                     f"UTENTE: {qa.question}\nAGENTE: {qa.answer}" 
-                    for qa in conversation_history[-10:]  # Ultimi 10 scambi
+                    for qa in conversation_history[-3:]  # Ultimi 3 scambi
                 ])
                 
                 # Costruisci il prompt
@@ -216,17 +216,10 @@ ESEMPI:
 - "1 tazza di latte" → quantita_g: 0, misura_casalinga: "1 tazza"
 - "3 fette di pane" → quantita_g: 0, misura_casalinga: "3 fette"
 
-IMPORTANTE PER I TIPI DI PASTO:
-- "nome_pasto" deve essere SPECIFICO:
-  * "colazione" per il primo pasto della giornata
-  * "spuntino_mattutino" per lo spuntino del mattino (tra colazione e pranzo)
-  * "pranzo" per il pasto principale di mezzogiorno
-  * "spuntino_pomeridiano" per merenda/spuntino pomeridiano (tra pranzo e cena)
-  * "cena" per il pasto serale
-  * altri nomi se specificati nella conversazione in maniera diversa
-- NON usare "spuntino" generico - specifica sempre se è mattutino o pomeridiano
-- Se il testo parla di "merenda" senza specificare, considera "spuntino_pomeridiano"
-- Analizza il contesto temporale per determinare il tipo di spuntino
+IMPORTANTE:
+- Rileggi SEMPRE la conversazione e cerca di estrarre SEMPRE tutti i campi del JSON
+- Le informazioni sono SEMPRE nella conversazione, quindi non inventare informazioni
+
 
 IMPORTANTE PER I TIPI DI PASTO:
 - "nome_pasto" deve essere SPECIFICO:
@@ -239,6 +232,7 @@ IMPORTANTE PER I TIPI DI PASTO:
 - NON usare "spuntino" generico - specifica sempre se è mattutino o pomeridiano
 - Se il testo parla di "merenda" senza specificare, considera "spuntino_pomeridiano"
 - Analizza il contesto temporale per determinare il tipo di spuntino
+
 
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo
