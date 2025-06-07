@@ -65,7 +65,7 @@ class DeepSeekClient:
                 # Prepara il contesto della conversazione
                 conversation_text = "\n\n".join([
                     f"UTENTE: {qa.question}\nAGENTE: {qa.answer}" 
-                    for qa in conversation_history[-3:]  # Ultimi 3 scambi
+                    for qa in conversation_history[-2:]  # Ultimi 3 scambi
                 ])
                 
                 # Costruisci il prompt

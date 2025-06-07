@@ -2,8 +2,9 @@ import json
 import os
 import threading
 import time
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .deepseek_client import DeepSeekClient
+from .caloric_data_completer import CaloricDataCompleter
 
 
 
@@ -14,6 +15,7 @@ class NutritionalDataExtractor:
     
     def __init__(self):
         self.deepseek_client = DeepSeekClient()
+        self.caloric_data_completer = CaloricDataCompleter()
         self.pending_requests = []
         self.file_access_lock = threading.Lock()
         
@@ -54,7 +56,20 @@ class NutritionalDataExtractor:
                 )
                 
                 if extracted_data:
-                    success = self._save_extracted_data(user_id, extracted_data)
+                    # Carica i dati completi dell'utente dal file per il completer
+                    complete_user_data = self._load_complete_user_data(user_id)
+                    if complete_user_data:
+                        # Completa i dati calorici mancanti usando i dati completi
+                        completed_data = self.caloric_data_completer.complete_caloric_data(
+                            user_id, complete_user_data, extracted_data
+                        )
+                    else:
+                        # Se non ci sono dati completi, usa quelli passati (fallback)
+                        completed_data = self.caloric_data_completer.complete_caloric_data(
+                            user_id, user_info, extracted_data
+                        )
+                    
+                    success = self._save_extracted_data(user_id, completed_data)
                     if success:
                         print(f"[EXTRACTION_SERVICE] Dati estratti e salvati per utente {user_id}")
                     else:
@@ -102,6 +117,32 @@ class NutritionalDataExtractor:
             print(f"[EXTRACTION_SERVICE] Errore nel recupero risultati: {str(e)}")
             
         return results
+    
+    def _load_complete_user_data(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Carica i dati completi dell'utente dal file per il CaloricDataCompleter.
+        
+        Args:
+            user_id: ID dell'utente
+            
+        Returns:
+            Dati completi dell'utente o None se non trovati
+        """
+        try:
+            user_file_path = f"user_data/{user_id}.json"
+            
+            if os.path.exists(user_file_path):
+                with open(user_file_path, 'r', encoding='utf-8') as f:
+                    user_data = json.load(f)
+                    print(f"[EXTRACTION_SERVICE] Dati completi caricati per utente {user_id}")
+                    return user_data
+            else:
+                print(f"[EXTRACTION_SERVICE] File utente non trovato per {user_id}")
+                return None
+                
+        except Exception as e:
+            print(f"[EXTRACTION_SERVICE] Errore nel caricamento dati utente {user_id}: {str(e)}")
+            return None
     
     def _save_extracted_data(self, user_id: str, extracted_data: Dict[str, Any]) -> bool:
         """
@@ -170,13 +211,21 @@ class NutritionalDataExtractor:
         """
         changes_made = False
         
-        # Merge semplice per dati scalari
+        # Merge intelligente per sezioni strutturate (preserva i campi esistenti)
         for key in ["caloric_needs", "macros_total", "daily_macros"]:
             if key in new_data and new_data[key]:
-                if key not in existing_data or existing_data[key] != new_data[key]:
-                    existing_data[key] = new_data[key]
+                if key not in existing_data:
+                    existing_data[key] = {}
+                
+                # Merge a livello di campo, non di sezione intera
+                section_changes = self._merge_section_fields(
+                    existing_data[key], 
+                    new_data[key], 
+                    f"{key} per utente {user_id}"
+                )
+                
+                if section_changes:
                     changes_made = True
-                    print(f"[EXTRACTION_SERVICE] Aggiornato {key} per utente {user_id}")
         
         # Merge specializzato per registered_meals
         if "registered_meals" in new_data and new_data["registered_meals"]:
@@ -191,6 +240,37 @@ class NutritionalDataExtractor:
             
             if meal_changes:
                 changes_made = True
+        
+        return changes_made
+    
+    def _merge_section_fields(
+        self, 
+        existing_section: Dict[str, Any], 
+        new_section: Dict[str, Any], 
+        section_name: str
+    ) -> bool:
+        """
+        Merge intelligente a livello di campo preservando i valori esistenti.
+        
+        Args:
+            existing_section: Sezione esistente (modificata in place)
+            new_section: Nuova sezione da DeepSeek
+            section_name: Nome della sezione per logging
+            
+        Returns:
+            True se sono stati fatti cambiamenti
+        """
+        changes_made = False
+        
+        for field_name, field_value in new_section.items():
+            if field_name not in existing_section and field_value is not None:
+                # Aggiungi solo campi nuovi con valore non nullo
+                existing_section[field_name] = field_value
+                changes_made = True
+                print(f"[EXTRACTION_SERVICE] Aggiunto nuovo campo {field_name} in {section_name}")
+            elif field_name in existing_section:
+                # Campo già presente - mantieni il valore esistente
+                print(f"[EXTRACTION_SERVICE] Campo {field_name} già presente in {section_name}, mantenuto valore esistente")
         
         return changes_made
     
