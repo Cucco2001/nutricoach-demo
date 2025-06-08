@@ -288,7 +288,8 @@ def get_portion_constraints():
         "latte": {"min": 100, "max": 500},
         "formaggi": {"min": 30, "max": 300},
         "latticini": {"min": 100, "max": 300},  # Per yogurt e altri latticini
-        "cereali": {"min": 30, "max": 150},
+        "cereali": {"min": 60, "max": 150},
+        "cereali_colazione": {"min": 20, "max": 60},
         "tuberi": {"min": 80, "max": 500},  # Aumentato max per patate
         "legumi": {"min": 40, "max": 200},
         "verdure": {"min": 50, "max": 400},
@@ -369,9 +370,27 @@ def optimize_portions(target_nutrients: Dict[str, float],
         
         if result.success:
             optimized_portions = result.x
+            logger.info("Ottimizzazione convergente completata")
         else:
-            logger.warning("Ottimizzazione non convergente, uso valori iniziali")
-            optimized_portions = initial_guess
+            # Anche se non converge, confronta il risultato parziale con i valori iniziali
+            if hasattr(result, 'x') and result.x is not None:
+                # Calcola l'errore per il risultato parziale dell'ottimizzatore
+                partial_error = objective(result.x)
+                # Calcola l'errore per i valori iniziali
+                initial_error = objective(initial_guess)
+                
+                if partial_error < initial_error:
+                    # Il risultato parziale è migliore dei valori iniziali
+                    optimized_portions = result.x
+                    logger.warning(f"Ottimizzazione non convergente, ma uso miglior risultato parziale (errore: {partial_error:.3f} vs iniziale: {initial_error:.3f})")
+                else:
+                    # I valori iniziali sono migliori
+                    optimized_portions = initial_guess
+                    logger.warning(f"Ottimizzazione non convergente, uso valori iniziali (errore iniziale: {initial_error:.3f} vs parziale: {partial_error:.3f})")
+            else:
+                # Fallback ai valori iniziali se non c'è result.x
+                optimized_portions = initial_guess
+                logger.warning("Ottimizzazione non convergente senza risultato parziale, uso valori iniziali")
     except Exception as e:
         logger.error(f"Errore nell'ottimizzazione: {str(e)}")
         optimized_portions = initial_guess

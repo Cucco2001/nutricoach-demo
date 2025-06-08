@@ -269,8 +269,6 @@ class PDFGenerator:
         
         # Informazioni aggiuntive
         additional_info = []
-        laf = caloric_data.get('laf_utilizzato', 'N/A')
-        additional_info.append(f"<b>Fattore Attività (LAF):</b> {laf}")
         
         aggiustamento = caloric_data.get('aggiustamento_obiettivo', 0)
         if aggiustamento != 0:
@@ -428,7 +426,10 @@ class PDFGenerator:
         # Titolo sezione
         story.append(Paragraph("👨‍🍳 Ricette e Pasti Creati", self.styles['CustomSectionTitle']))
         
-        for i, meal in enumerate(meals_data):
+        # Ordina i pasti in ordine cronologico corretto
+        sorted_meals = self._sort_meals_by_time(meals_data)
+        
+        for i, meal in enumerate(sorted_meals):
             nome_pasto = meal.get('nome_pasto', 'Pasto').title()
             
             # Sottotitolo del pasto
@@ -438,18 +439,16 @@ class PDFGenerator:
             if "alimenti" in meal and meal["alimenti"]:
                 story.append(Paragraph("<b>Ingredienti:</b>", self.styles['CustomBodyText']))
                 
-                ingredients_data = [['Alimento', 'Quantità', 'Stato', 'Misura Casalinga', 'Metodo Cottura']]
+                ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga']]
                 
                 for alimento in meal["alimenti"]:
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
-                    stato = alimento.get('stato', 'N/A')
                     misura = alimento.get('misura_casalinga', 'N/A')
-                    metodo = alimento.get('metodo_cottura', 'N/A')
                     
-                    ingredients_data.append([nome, f"{quantita}g", stato, misura, metodo])
+                    ingredients_data.append([nome, f"{quantita}g", misura])
                 
-                ingredients_table = Table(ingredients_data, colWidths=[2*inch, 0.8*inch, 0.8*inch, 1.2*inch, 1*inch])
+                ingredients_table = Table(ingredients_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
                 ingredients_table.setStyle(TableStyle([
                     ('BACKGROUND', (0, 0), (-1, 0), HexColor('#8e44ad')),
                     ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -511,6 +510,88 @@ class PDFGenerator:
                 story.append(Spacer(1, 15))
         
         story.append(Spacer(1, 20))
+    
+    def _sort_meals_by_time(self, meals_data):
+        """
+        Ordina i pasti in base all'ordine cronologico corretto: colazione, spuntino mattutino, 
+        pranzo, spuntino pomeridiano, cena, spuntino serale.
+        
+        Args:
+            meals_data: Lista dei pasti non ordinati
+            
+        Returns:
+            list: Lista dei pasti ordinati cronologicamente
+        """
+        if not meals_data:
+            return []
+        
+        # Definisce l'ordine cronologico dei pasti
+        meal_order = {
+            'colazione': 1,
+            'breakfast': 1,
+            'prima_colazione': 1,
+            
+            'spuntino_mattutino': 2,
+            'spuntino_mattina': 2,
+            'spuntino_del_mattino': 2,
+            'merenda_mattutina': 2,
+            'snack_mattutino': 2,
+            'break_mattutino': 2,
+            
+            'pranzo': 3,
+            'lunch': 3,
+            'pasto_principale': 3,
+            
+            'spuntino_pomeridiano': 4,
+            'spuntino_pomeriggio': 4,
+            'spuntino_del_pomeriggio': 4,
+            'merenda': 4,
+            'merenda_pomeridiana': 4,
+            'snack_pomeridiano': 4,
+            'break_pomeridiano': 4,
+            
+            'cena': 5,
+            'dinner': 5,
+            'secondo_pasto': 5,
+            
+            'spuntino_serale': 6,
+            'merenda_serale': 6,
+            'snack_serale': 6,
+        }
+        
+        def get_meal_priority(meal):
+            """Calcola la priorità di ordinamento per un pasto"""
+            nome_pasto = meal.get('nome_pasto', '').lower().strip()
+            
+            # Normalizza il nome rimuovendo spazi e caratteri speciali
+            nome_normalizzato = nome_pasto.replace(' ', '_').replace('-', '_')
+            
+            # Cerca corrispondenza diretta
+            if nome_normalizzato in meal_order:
+                return meal_order[nome_normalizzato]
+            
+            # Ricerca parziale con parole chiave
+            if 'colazione' in nome_pasto or 'breakfast' in nome_pasto:
+                return 1
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('mattut' in nome_pasto or 'mattina' in nome_pasto):
+                return 2
+            elif 'pranzo' in nome_pasto or 'lunch' in nome_pasto:
+                return 3
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('pomer' in nome_pasto or 'pomeriggio' in nome_pasto):
+                return 4
+            elif 'cena' in nome_pasto or 'dinner' in nome_pasto:
+                return 5
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('seral' in nome_pasto or 'sera' in nome_pasto):
+                return 6
+            else:
+                # Pasti non riconosciuti vanno alla fine
+                return 999
+        
+        # Ordina i pasti in base alla priorità cronologica
+        return sorted(meals_data, key=get_meal_priority)
     
     def _add_document_footer(self, story: list):
         """

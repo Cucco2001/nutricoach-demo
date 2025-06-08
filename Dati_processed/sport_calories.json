@@ -145,6 +145,11 @@
       "kcal_per_hour": 250,
       "description": "Allenamento leggero in palestra"
     },
+    "Pilates": {
+      "category": "Fitness - Allenamento medio",
+      "kcal_per_hour": 350,
+      "description": "Allenamento di Pilates"
+    },
     "Fitness - Bodybuilding Massa": {
       "category": "Fitness - Bodybuilding Massa",
       "kcal_per_hour": 450,

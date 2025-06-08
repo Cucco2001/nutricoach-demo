@@ -216,9 +216,10 @@ ESEMPI:
 - "1 tazza di latte" → quantita_g: 0, misura_casalinga: "1 tazza"
 - "3 fette di pane" → quantita_g: 0, misura_casalinga: "3 fette"
 
-IMPORTANTE:
+**FONDAMENTALE**:
 - Rileggi SEMPRE la conversazione e cerca di estrarre SEMPRE tutti i campi del JSON
 - Le informazioni sono SEMPRE nella conversazione, quindi non inventare informazioni
+- Particolare attenzione ai pasti e a macros_total
 
 
 IMPORTANTE PER I TIPI DI PASTO:

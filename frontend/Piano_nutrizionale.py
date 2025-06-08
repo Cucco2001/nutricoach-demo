@@ -433,8 +433,93 @@ class PianoNutrizionale:
         with st.expander("👨‍🍳 Ricette e Pasti Creati", expanded=False):
             meals_data = extracted_data["registered_meals"]
             
-            for i, meal in enumerate(meals_data):
-                self._display_single_meal(meal, i, len(meals_data))
+            # Ordina i pasti in ordine cronologico corretto
+            sorted_meals = self._sort_meals_by_time(meals_data)
+            
+            for i, meal in enumerate(sorted_meals):
+                self._display_single_meal(meal, i, len(sorted_meals))
+    
+    def _sort_meals_by_time(self, meals_data):
+        """
+        Ordina i pasti in base all'ordine cronologico corretto: colazione, spuntino mattutino, 
+        pranzo, spuntino pomeridiano, cena, spuntino serale.
+        
+        Args:
+            meals_data: Lista dei pasti non ordinati
+            
+        Returns:
+            list: Lista dei pasti ordinati cronologicamente
+        """
+        if not meals_data:
+            return []
+        
+        # Definisce l'ordine cronologico dei pasti
+        meal_order = {
+            'colazione': 1,
+            'breakfast': 1,
+            'prima_colazione': 1,
+            
+            'spuntino_mattutino': 2,
+            'spuntino_mattina': 2,
+            'spuntino_del_mattino': 2,
+            'merenda_mattutina': 2,
+            'snack_mattutino': 2,
+            'break_mattutino': 2,
+            
+            'pranzo': 3,
+            'lunch': 3,
+            'pasto_principale': 3,
+            
+            'spuntino_pomeridiano': 4,
+            'spuntino_pomeriggio': 4,
+            'spuntino_del_pomeriggio': 4,
+            'merenda': 4,
+            'merenda_pomeridiana': 4,
+            'snack_pomeridiano': 4,
+            'break_pomeridiano': 4,
+            
+            'cena': 5,
+            'dinner': 5,
+            'secondo_pasto': 5,
+            
+            'spuntino_serale': 6,
+            'merenda_serale': 6,
+            'snack_serale': 6,
+        }
+        
+        def get_meal_priority(meal):
+            """Calcola la priorità di ordinamento per un pasto"""
+            nome_pasto = meal.get('nome_pasto', '').lower().strip()
+            
+            # Normalizza il nome rimuovendo spazi e caratteri speciali
+            nome_normalizzato = nome_pasto.replace(' ', '_').replace('-', '_')
+            
+            # Cerca corrispondenza diretta
+            if nome_normalizzato in meal_order:
+                return meal_order[nome_normalizzato]
+            
+            # Ricerca parziale con parole chiave
+            if 'colazione' in nome_pasto or 'breakfast' in nome_pasto:
+                return 1
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('mattut' in nome_pasto or 'mattina' in nome_pasto):
+                return 2
+            elif 'pranzo' in nome_pasto or 'lunch' in nome_pasto:
+                return 3
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('pomer' in nome_pasto or 'pomeriggio' in nome_pasto):
+                return 4
+            elif 'cena' in nome_pasto or 'dinner' in nome_pasto:
+                return 5
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('seral' in nome_pasto or 'sera' in nome_pasto):
+                return 6
+            else:
+                # Pasti non riconosciuti vanno alla fine
+                return 999
+        
+        # Ordina i pasti in base alla priorità cronologica
+        return sorted(meals_data, key=get_meal_priority)
     
     def _display_single_meal(self, meal, index, total_meals):
         """
