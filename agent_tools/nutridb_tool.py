@@ -28,7 +28,7 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "get_LARN_vitamine": ["sesso", "età"],
         "compute_Harris_Benedict_Equation": ["sesso", "peso", "altezza", "età", "livello_attività"],
         "get_protein_multiplier": ["sports"],
-        "check_ultraprocessed_foods": ["foods_with_grams"],
+        "check_ultraprocessed_foods": [],
         "calculate_sport_expenditure": ["sports"],
         "calculate_weight_goal_calories": ["kg_change", "time_months", "goal_type"],
         "analyze_bmi_and_goals": ["peso", "altezza", "sesso", "età", "obiettivo"],
@@ -479,7 +479,7 @@ def compute_Harris_Benedict_Equation(sesso: str, peso: float, altezza: float, et
         logger.error(f"Errore in compute_Harris_Benedict_Equation: {str(e)}")
         return {"error": str(e)}
 
-def check_ultraprocessed_foods(foods_with_grams: Dict[str, float]) -> Dict[str, Any]:
+def check_ultraprocessed_foods() -> Dict[str, Any]:
     """
     Controlla quali alimenti sono ultra-processati e fornisce raccomandazioni.
     
@@ -489,16 +489,9 @@ def check_ultraprocessed_foods(foods_with_grams: Dict[str, float]) -> Dict[str, 
     Returns:
         Dict con i risultati dell'analisi
     """
-    try:
-        if not isinstance(foods_with_grams, dict):
-            raise ValueError("Il parametro foods_with_grams deve essere un dizionario")
-        
-        result = db.check_ultraprocessed_foods(foods_with_grams)
-        logger.info(f"Risultato check_ultraprocessed_foods: {result}")
-        return result
-    except Exception as e:
-        logger.error(f"Errore nel controllo degli alimenti ultra-processati: {str(e)}")
-        return {"error": f"Errore: {str(e)}"}
+    result = db.check_ultraprocessed_foods()
+    logger.info(f"Risultato check_ultraprocessed_foods: {result}")
+    return result
 
 def calculate_weight_goal_calories(kg_change: float, time_months: float, goal_type: str, bmr: Optional[float] = None) -> Dict[str, Any]:
     """

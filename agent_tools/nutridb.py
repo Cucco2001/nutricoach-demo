@@ -1,5 +1,6 @@
 import json
 import os
+import streamlit as st
 
 
 class NutriDB:
@@ -388,11 +389,75 @@ class NutriDB:
         else:
             return self.larn_vitamine["femmine_18_29"] if età < 30 else self.larn_vitamine["femmine_30_59"]
 
-    def check_ultraprocessed_foods(self, foods_with_grams):
+    def _get_user_id(self):
+        """Estrae l'ID dell'utente dalla sessione Streamlit."""
+        if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
+            raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
+        return st.session_state.user_info["id"]
+
+    def _extract_foods_from_user_data(self, user_id):
+        """Estrae gli alimenti e le quantità dal file dell'utente."""
+        user_file_path = f"user_data/{user_id}.json"
+        
+        if not os.path.exists(user_file_path):
+            raise ValueError(f"File utente {user_id} non trovato.")
+        
+        with open(user_file_path, 'r', encoding='utf-8') as f:
+            user_data = json.load(f)
+        
+        foods_with_grams = {}
+        
+        # Cerca nella struttura ottimizzazioni_pasti
+        if "ottimizzazioni_pasti" in user_data:
+            for optimization in user_data["ottimizzazioni_pasti"]:
+                if "alimenti" in optimization:
+                    for alimento in optimization["alimenti"]:
+                        nome_alimento = alimento.get("nome_alimento", "")
+                        quantita_g = alimento.get("quantita_g", 0)
+                        
+                        if nome_alimento and quantita_g > 0:
+                            # Accumula le quantità se l'alimento appare più volte
+                            if nome_alimento in foods_with_grams:
+                                foods_with_grams[nome_alimento] += quantita_g
+                            else:
+                                foods_with_grams[nome_alimento] = quantita_g
+        
+        # Se non trova ottimizzazioni_pasti, cerca in altre strutture dati dell'utente
+        if not foods_with_grams:
+            nutritional_info = user_data.get("nutritional_info_extracted", {})
+            
+            # Cerca in registered_meals (pasti registrati dall'agente)
+            if "registered_meals" in nutritional_info:
+                for meal in nutritional_info["registered_meals"]:
+                    if "alimenti" in meal:
+                        for alimento in meal["alimenti"]:
+                            nome_alimento = alimento.get("nome_alimento", "")
+                            quantita_g = alimento.get("quantita_g", 0)
+                            
+                            if nome_alimento and quantita_g > 0:
+                                # Accumula le quantità se l'alimento appare più volte
+                                if nome_alimento in foods_with_grams:
+                                    foods_with_grams[nome_alimento] += quantita_g
+                                else:
+                                    foods_with_grams[nome_alimento] = quantita_g
+            
+            # Cerca in macro_single_foods se disponibile (dal meal optimization tool)
+            if not foods_with_grams and "macro_single_foods" in nutritional_info:
+                for food_name, food_data in nutritional_info["macro_single_foods"].items():
+                    portion_g = food_data.get("portion_g", 0)
+                    if portion_g > 0:
+                        foods_with_grams[food_name] = portion_g
+        
+        return foods_with_grams
+
+    def check_ultraprocessed_foods(self):
         """Verifica se una dieta giornaliera contiene troppi alimenti ultra-processati (NOVA classe 4).
+        
+        Se non viene fornito foods_with_grams, estrae automaticamente gli alimenti dal file dell'utente.
         
         Args:
             foods_with_grams: Un dizionario dove le chiavi sono i nomi degli alimenti e i valori sono i grammi.
+                             Se None, estrae automaticamente dal file utente.
             
         Returns:
             Un dizionario contenente:
@@ -400,26 +465,60 @@ class NutriDB:
             - 'ultraprocessed_ratio': Rapporto tra grammi di alimenti ultraprocessati e grammi totali
             - 'ultraprocessed_grams': Grammi totali di alimenti ultraprocessati
             - 'total_grams': Grammi totali di tutti gli alimenti
+            - 'ultraprocessed_foods': Lista degli alimenti ultraprocessati trovati
+            - 'unrecognized_foods': Lista degli alimenti non riconosciuti (se presenti)
+            - 'data_source': Fonte dei dati ('parameter' o 'user_file')
         """
+        # Se non forniti i dati, estrai dal file utente
+        user_id = self._get_user_id()
+        foods_with_grams = self._extract_foods_from_user_data(user_id)
+        data_source = "user_file"
+        
+        if not foods_with_grams:
+            return {
+                "too_much_ultraprocessed": False,
+                "ultraprocessed_ratio": 0,
+                "ultraprocessed_grams": 0,
+                "total_grams": 0,
+                "ultraprocessed_foods": [],
+                "data_source": data_source,
+                "foods_analyzed": 0,
+                "nova_groups_found": {},
+                "warning": "Nessun alimento trovato nel file utente"
+            }
+        
         ultraprocessed_grams = 0
         total_grams = 0
         ultraprocessed_foods = []
         unrecognized_foods = []
+        nova_groups_found = {}  # Per debug: traccia i gruppi NOVA trovati
         
         for food, grams in foods_with_grams.items():
             total_grams += grams
             
             try:
+                # Normalizza il nome dell'alimento per la ricerca negli alias
+                normalized_food = food.lower().replace("_", " ").replace("'", "'")
+                
                 # Cerca l'alimento nella banca dati usando gli alias
-                key = self.alias.get(food.lower().replace("_", " "))
+                key = self.alias.get(normalized_food)
+                if not key:
+                    # Prova anche senza normalizzazione per retrocompatibilità
+                    key = self.alias.get(food.lower())
+                
                 if not key:
                     unrecognized_foods.append(food)
                     continue
                 
-                # Controlla il gruppo NOVA dell'alimento
-                if self.alimenti[key].get("nova_group") == 4:
+                # Ottieni il gruppo NOVA dell'alimento
+                nova_group = self.alimenti[key].get("nova_group", 0)
+                nova_groups_found[food] = nova_group
+                
+                # Controlla se è ultra-processato (NOVA gruppo 4)
+                if nova_group == 4:
                     ultraprocessed_grams += grams
                     ultraprocessed_foods.append(food)
+                    
             except Exception as e:
                 unrecognized_foods.append(food)
         
@@ -432,7 +531,10 @@ class NutriDB:
             "ultraprocessed_ratio": round(ultraprocessed_ratio, 3),
             "ultraprocessed_grams": ultraprocessed_grams,
             "total_grams": total_grams,
-            "ultraprocessed_foods": ultraprocessed_foods
+            "ultraprocessed_foods": ultraprocessed_foods,
+            "data_source": data_source,
+            "foods_analyzed": len(foods_with_grams),
+            "nova_groups_found": nova_groups_found  # Utile per debug
         }
         
         if unrecognized_foods:

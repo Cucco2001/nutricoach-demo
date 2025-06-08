@@ -344,16 +344,7 @@ available_tools = [
             "description": "Controlla quali alimenti sono ultra-processati e restituisce un dizionario con too_much_ultraprocessed = True se più del 20% della dieta è composta da troppi alimenti ultraprocessati",
             "parameters": {
                 "type": "object",
-                "properties": {
-                    "foods_with_grams": {
-                        "type": "object",
-                        "description": "Dizionario con alimenti e relative grammature",
-                        "additionalProperties": {
-                            "type": "number"
-                        }
-                    }
-                },
-                "required": ["foods_with_grams"]
+                "properties": {}
             }
         }
     },
