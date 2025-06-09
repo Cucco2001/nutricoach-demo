@@ -8,12 +8,11 @@ inclusi tool per database nutrizionale e dati utente.
 import json
 import streamlit as st
 from agent_tools.nutridb_tool import (
-    get_macros, get_LARN_protein, get_standard_portion, 
-    get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
+    get_LARN_protein, get_fattore_cottura, get_LARN_fibre, 
     get_LARN_lipidi_percentuali, get_LARN_vitamine, 
     compute_Harris_Benedict_Equation, get_protein_multiplier,
     calculate_sport_expenditure, calculate_weight_goal_calories, 
-    analyze_bmi_and_goals, check_vitamins, get_food_substitutes, 
+    analyze_bmi_and_goals, 
     check_ultraprocessed_foods
 )
 from agent_tools.user_data_tool import (
@@ -33,10 +32,7 @@ class ToolHandler:
         """Configura la mappa delle funzioni disponibili"""
         self.function_map = {
             # Funzioni per accedere al database nutrizionale
-            "get_macros": get_macros,
             "get_LARN_protein": get_LARN_protein,
-            "get_standard_portion": get_standard_portion,
-            "get_weight_from_volume": get_weight_from_volume,
             "get_fattore_cottura": get_fattore_cottura,
             "get_LARN_fibre": get_LARN_fibre,
             "get_LARN_lipidi_percentuali": get_LARN_lipidi_percentuali,
@@ -46,8 +42,6 @@ class ToolHandler:
             "calculate_sport_expenditure": calculate_sport_expenditure,
             "calculate_weight_goal_calories": calculate_weight_goal_calories,
             "analyze_bmi_and_goals": analyze_bmi_and_goals,
-            "check_vitamins": check_vitamins,
-            "get_food_substitutes": get_food_substitutes,
             "check_ultraprocessed_foods": check_ultraprocessed_foods,
             
             # Funzioni per accedere ai dati dell'utente

@@ -13,51 +13,6 @@ available_tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_macros",
-            "description": "Ottiene i valori nutrizionali per un dato alimento a parire dal nome e dalla quantità",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "alimento": {"type": "string", "description": "Nome dell'alimento"},
-                    "quantità": {"type": "number", "description": "Quantità in grammi (default 100g)"}
-                },
-                "required": ["alimento"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_standard_portion",
-            "description": "Ottiene le porzioni standard per una data categoria di alimenti.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "categoria": {"type": "string", "description": "Categoria dell'alimento"},
-                    "sottocategoria": {"type": "string", "description": "Sottocategoria dell'alimento"}
-                },
-                "required": ["categoria", "sottocategoria"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_weight_from_volume",
-            "description": "Converte una misura di volume in peso per un dato alimento.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "alimento": {"type": "string", "description": "Nome dell'alimento"},
-                    "tipo_misura": {"type": "string", "description": "Tipo di misura (es. 'cucchiaio', 'tazza')"}
-                },
-                "required": ["alimento", "tipo_misura"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_fattore_cottura",
             "description": "Ottiene il fattore di conversione per la cottura di un alimento.",
             "parameters": {
@@ -274,66 +229,6 @@ available_tools = [
                     }
                 },
                 "required": ["peso", "altezza", "sesso", "età", "obiettivo"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "check_vitamins",
-            "description": "Controlla l'apporto vitaminico totale della dieta e lo confronta con i LARN per identificare carenze o eccessi.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "foods_with_grams": {
-                        "type": "object",
-                        "description": "Dizionario con alimenti e relative grammature {alimento: grammi}",
-                        "additionalProperties": {
-                            "type": "number"
-                        }
-                    },
-                    "sesso": {
-                        "type": "string",
-                        "enum": ["maschio", "femmina"],
-                        "description": "Sesso della persona"
-                    },
-                    "età": {
-                        "type": "integer",
-                        "minimum": 18,
-                        "maximum": 100,
-                        "description": "Età in anni"
-                    }
-                },
-                "required": ["foods_with_grams", "sesso", "età"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_food_substitutes",
-            "description": "Ottiene alimenti sostitutivi per un dato alimento e quantità basati sui macronutrienti e equivalenza calorica.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "food_name": {
-                        "type": "string",
-                        "description": "Nome dell'alimento per cui cercare sostituti"
-                    },
-                    "grams": {
-                        "type": "number",
-                        "minimum": 1,
-                        "maximum": 2000,
-                        "description": "Grammi dell'alimento di riferimento"
-                    },
-                    "num_substitutes": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 5,
-                        "description": "Numero massimo di sostituti da restituire (default 5)"
-                    }
-                },
-                "required": ["food_name", "grams"]
             }
         }
     },
@@ -902,7 +797,7 @@ Se utente chiede di modificare un pasto, usa sempre il tool optimize_meal_portio
 
 IMPORTANTE:
 - Usa SEMPRE i tool indicati per i calcoli e i ragionamenti
-- NON MOSTRARE MAI le chiamate JSON dei tool nell'output (es: optimize_meal_portions(...), check_vitamins(...), etc.)
+- NON MOSTRARE MAI le chiamate JSON dei tool nell'output (es: optimize_meal_portions(...), etc.)
 - Descrivi SOLO i risultati ottenuti dai tool in linguaggio naturale
 - Mostra TUTTI i calcoli numerici in formato semplice e chiaro
 - Specifica SEMPRE le grammature E le misure casalinghe (per esempio: 1 banana, 1 tazza di riso, 100 gr di pollo, 1 uovo, etc.)
