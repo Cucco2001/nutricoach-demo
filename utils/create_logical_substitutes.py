@@ -7,101 +7,42 @@ import json
 import math
 from typing import Dict, List, Tuple
 
+# CONFIGURAZIONE: Categorie che possono avere sostituti da altre categorie
+# Tutte le altre categorie avranno sostituti SOLO dalla propria categoria
+CATEGORIES_WITH_EXTERNAL_SUBSTITUTES = {
+    "tuberi",
+    "uova"
+}
+
 def load_foods_data():
     """Carica i dati degli alimenti"""
     with open('Dati_processed/banca_alimenti_crea_60alimenti.json', 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def define_food_categories():
-    """Definisce categorie alimentari logiche"""
-    return {
-        # CEREALI E DERIVATI
-        "cereali_pasta": [
-            "pasta_secca", "pasta_integrale", "riso", "riso_integrale", "riso_basmati",
-            "avena", "cornflakes"
-        ],
-        
-        # PANE E PRODOTTI DA FORNO
-        "pane_prodotti_forno": [
-            "pane_bianco", "crostata_di_marmellata"
-        ],
-        
-        # PROTEINE ANIMALI - CARNI
-        "carni_bianche": [
-            "pollo", "pollo_petto", "pollo_coscia", "pollo_ali"
-        ],
-        
-        # PROTEINE ANIMALI - PESCI
-        "pesci": [
-            "tonno_naturale", "tonno_sottolio_sgocciolato", "salmone_al_naturale", 
-            "salmone_affumicato", "pesce_spada"
-        ],
-        
-        # PROTEINE ANIMALI - SALUMI
-        "salumi": [
-            "bresaola", "prosciutto_crudo"
-        ],
-        
-        # PROTEINE - INTEGRATORI
-        "proteine_integratori": [
-            "iso_fuji_yamamoto", "pro_milk_20g_proteine"
-        ],
-        
-        # LATTICINI
-        "latticini_latte": [
-            "latte_intero", "latte_scremato"
-        ],
-        
-        "latticini_yogurt": [
-            "yogurt_greco_0percento", "yogurt_greco_2percento", "yogurt_magro"
-        ],
-        
-        "latticini_gelati": [
-            "gelato_cioccolato", "gelato_fiordilatte"
-        ],
-        
-        # UOVA
-        "uova": [
-            "uovo", "uova", "albume_uova"
-        ],
-        
-        # GRASSI E OLI
-        "grassi_oli": [
-            "olio_oliva", "burro", "margarina"
-        ],
-        
-        "frutta_secca": [
-            "noci_sgusciate", "mandorle", "burro_arachidi"
-        ],
-        
-        # VERDURE
-        "verdure_foglia": [
-            "verdure_miste", "spinaci_cotti"
-        ],
-        
-        "verdure_varie": [
-            "zucchine", "melanzane", "carote_crude"
-        ],
-        
-        # FRUTTA
-        "frutta_dolce": [
-            "mela", "pera", "banana", "uva"
-        ],
-        
-        "frutta_agrumi": [
-            "arancia"
-        ],
-        
-        "frutta_estiva": [
-            "albicocche", "frutti_di_bosco"
-        ]
-    }
+def get_food_categories_from_database():
+    """Estrae le categorie direttamente dalla banca alimenti"""
+    foods_data = load_foods_data()
+    categories = {}
+    
+    # Raggruppa gli alimenti per categoria
+    for food_name, food_data in foods_data.items():
+        categoria = food_data.get('categoria', 'uncategorized')
+        if categoria not in categories:
+            categories[categoria] = []
+        categories[categoria].append(food_name)
+    
+    return categories
 
-def get_food_category(food_name: str, categories: Dict[str, List[str]]) -> str:
-    """Trova la categoria di un alimento"""
-    for category, foods in categories.items():
-        if food_name in foods:
-            return category
+def define_food_categories():
+    """Definisce categorie alimentari basate sulla banca alimenti"""
+    # Ottieni le categorie direttamente dalla banca alimenti
+    return get_food_categories_from_database()
+
+def get_food_category(food_name: str, categories: Dict[str, List[str]] = None) -> str:
+    """Trova la categoria di un alimento direttamente dalla banca alimenti"""
+    foods_data = load_foods_data()
+    if food_name in foods_data:
+        return foods_data[food_name].get('categoria', 'uncategorized')
     return "uncategorized"
 
 def calculate_macronutrient_similarity(food1_data: Dict, food2_data: Dict) -> float:
@@ -138,118 +79,29 @@ def calculate_macronutrient_similarity(food1_data: Dict, food2_data: Dict) -> fl
     
     return similarity
 
-def calculate_logical_substitutes():
-    """Calcola sostituti logici basati su categorie e macronutrienti"""
-    
-    foods_data = load_foods_data()
-    categories = define_food_categories()
-    
-    substitutes = {}
-    
-    for food_name, food_data in foods_data.items():
-        food_category = get_food_category(food_name, categories)
-        food_kcal = food_data.get('energia_kcal', 0)
-        
-        if food_kcal == 0:
-            continue
-        
-        candidates = []
-        
-        # Trova candidati nella stessa categoria
-        same_category_foods = categories.get(food_category, [])
-        
-        for candidate_name, candidate_data in foods_data.items():
-            if candidate_name == food_name:
-                continue
-            
-            candidate_category = get_food_category(candidate_name, categories)
-            candidate_kcal = candidate_data.get('energia_kcal', 0)
-            
-            if candidate_kcal == 0:
-                continue
-            
-            # Calcola equivalenza calorica (grammi necessari per uguagliare 100g del cibo di riferimento)
-            equivalent_grams = (food_kcal / candidate_kcal) * 100
-            
-            # Calcola similarità macronutrienti
-            macro_similarity = calculate_macronutrient_similarity(food_data, candidate_data)
-            
-            # Bonus per stessa categoria
-            category_bonus = 0
-            if candidate_category == food_category:
-                category_bonus = 30  # Bonus significativo per stessa categoria
-            elif self._are_related_categories(food_category, candidate_category):
-                category_bonus = 15  # Bonus minore per categorie correlate
-            
-            # Penalità per grammature irrealistiche
-            gram_penalty = 0
-            if equivalent_grams > 500:  # Se servono più di 500g
-                gram_penalty = min(30, (equivalent_grams - 500) / 20)  # Penalità crescente
-            elif equivalent_grams < 20:  # Se servono meno di 20g
-                gram_penalty = min(20, (20 - equivalent_grams) / 2)
-            
-            # Score finale
-            final_score = macro_similarity + category_bonus - gram_penalty
-            
-            # Filtri di esclusione logica
-            if self._should_exclude_combination(food_name, candidate_name, food_category, candidate_category):
-                continue
-            
-            # Solo candidati con score ragionevole
-            if final_score >= 60:  # Soglia più alta per qualità
-                candidates.append({
-                    'name': candidate_name,
-                    'grams': round(equivalent_grams, 1),
-                    'similarity_score': round(final_score, 1),
-                    'category': candidate_category,
-                    'macro_similarity': round(macro_similarity, 1),
-                    'category_bonus': category_bonus
-                })
-        
-        # Ordina per score e prendi i migliori 5
-        candidates.sort(key=lambda x: x['similarity_score'], reverse=True)
-        top_candidates = candidates[:5]
-        
-        if top_candidates:
-            substitutes[food_name] = {}
-            for candidate in top_candidates:
-                substitutes[food_name][candidate['name']] = {
-                    'grams': candidate['grams'],
-                    'similarity_score': candidate['similarity_score']
-                }
-    
-    return substitutes
 
-def _are_related_categories(cat1: str, cat2: str) -> bool:
-    """Verifica se due categorie sono correlate"""
-    related_groups = [
-        ["cereali_pasta", "pane_prodotti_forno"],  # Carboidrati complessi
-        ["carni_bianche", "pesci", "salumi"],      # Proteine animali
-        ["latticini_latte", "latticini_yogurt"],   # Latticini liquidi/cremosi
-        ["grassi_oli", "frutta_secca"],            # Grassi
-        ["verdure_foglia", "verdure_varie"],       # Verdure
-        ["frutta_dolce", "frutta_agrumi", "frutta_estiva"],  # Frutta
-        ["proteine_integratori", "carni_bianche", "pesci"]   # Proteine ad alto valore
-    ]
-    
-    for group in related_groups:
-        if cat1 in group and cat2 in group:
-            return True
-    return False
 
 def _should_exclude_combination(food1: str, food2: str, cat1: str, cat2: str) -> bool:
-    """Esclude combinazioni illogiche"""
+    """Esclude combinazioni illogiche basandosi sulle categorie della banca alimenti"""
     
     # Esclusioni specifiche illogiche
     illogical_combinations = [
-        # Verdure non possono sostituire cereali/pasta
-        (["verdure_foglia", "verdure_varie"], ["cereali_pasta", "pane_prodotti_forno"]),
-        # Frutta non può sostituire cereali/pasta (tranne in casi molto specifici)
-        (["frutta_dolce", "frutta_agrumi", "frutta_estiva"], ["cereali_pasta", "pane_prodotti_forno"]),
+        # Verdure non possono sostituire cereali/carboidrati
+        (["verdure"], ["cereali", "cereali_colazione", "tuberi"]),
+        # Frutta non può sostituire cereali/carboidrati (tranne in casi molto specifici)
+        (["frutta"], ["cereali", "cereali_colazione", "tuberi"]),
         # Cereali non possono sostituire verdure
-        (["cereali_pasta", "pane_prodotti_forno"], ["verdure_foglia", "verdure_varie"]),
-        # Proteine non possono sostituire verdure
-        (["carni_bianche", "pesci", "salumi"], ["verdure_foglia", "verdure_varie"]),
+        (["cereali", "cereali_colazione", "tuberi"], ["verdure"]),
+        # Proteine animali non possono sostituire verdure
+        (["proteine_animali"], ["verdure"]),
+        # Grassi non possono sostituire verdure
+        (["grassi_aggiunti"], ["verdure"]),
+        # Verdure non possono sostituire grassi
+        (["verdure"], ["grassi_aggiunti", "frutta_secca"]),
+        # Dolci non possono sostituire proteine
+        (["dolci"], ["proteine_animali", "legumi", "uova"]),
+        # Proteine non possono sostituire dolci
+        (["proteine_animali", "legumi", "uova"], ["dolci"]),
     ]
     
     for group1, group2 in illogical_combinations:
@@ -263,7 +115,7 @@ def create_logical_substitutes_database():
     
     print("🔄 Generazione database sostituti alimentari logici...")
     
-    substitutes = calculate_logical_substitutes()
+    substitutes = patched_calculate_logical_substitutes()
     
     # Conta le categorie
     foods_data = load_foods_data()
@@ -312,9 +164,6 @@ def create_logical_substitutes_database():
     return database
 
 if __name__ == "__main__":
-    # Aggiungi i metodi mancanti alla classe globale
-    def are_related_categories(cat1: str, cat2: str) -> bool:
-        return _are_related_categories(cat1, cat2)
     
     def should_exclude_combination(food1: str, food2: str, cat1: str, cat2: str) -> bool:
         return _should_exclude_combination(food1, food2, cat1, cat2)
@@ -348,6 +197,12 @@ if __name__ == "__main__":
                 if candidate_kcal == 0:
                     continue
                 
+                # NUOVO FILTRO: Limita i sostituti alla stessa categoria, 
+                # tranne per le categorie specificate in CATEGORIES_WITH_EXTERNAL_SUBSTITUTES
+                if food_category not in CATEGORIES_WITH_EXTERNAL_SUBSTITUTES:
+                    if candidate_category != food_category:
+                        continue  # Salta candidati di categorie diverse
+                
                 # Calcola equivalenza calorica
                 equivalent_grams = (food_kcal / candidate_kcal) * 100
                 
@@ -358,8 +213,6 @@ if __name__ == "__main__":
                 category_bonus = 0
                 if candidate_category == food_category:
                     category_bonus = 30
-                elif are_related_categories(food_category, candidate_category):
-                    category_bonus = 15
                 
                 # Penalità per grammature irrealistiche
                 gram_penalty = 0

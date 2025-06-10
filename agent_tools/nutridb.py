@@ -3,6 +3,47 @@ import os
 import streamlit as st
 
 
+class SmartAliasDict(dict):
+    """Dizionario intelligente per alias che implementa ricerca a 3 step"""
+    
+    def __init__(self, base_mapping, preparation_words):
+        super().__init__(base_mapping)
+        self.preparation_words = preparation_words
+        
+    def get(self, key, default=None):
+        """
+        Ricerca intelligente a 3 step:
+        1. Ricerca diretta
+        2. Sostituisce _ con spazi e riprova
+        3. Rimuove parole di preparazione e riprova
+        """
+        # STEP 1: Ricerca diretta
+        result = super().get(key, None)
+        if result is not None:
+            return result
+            
+        # STEP 2: Sostituisce _ con spazi e riprova
+        key_with_spaces = key.replace("_", " ")
+        result = super().get(key_with_spaces, None)
+        if result is not None:
+            return result
+            
+        # STEP 3: Rimuove parole di preparazione e riprova
+        cleaned_key = key_with_spaces
+        for prep_word in self.preparation_words:
+            cleaned_key = cleaned_key.replace(prep_word, "").strip()
+            # Rimuovi spazi multipli
+            cleaned_key = " ".join(cleaned_key.split())
+        
+        # Solo se è cambiato qualcosa, riprova la ricerca
+        if cleaned_key != key_with_spaces and cleaned_key:
+            result = super().get(cleaned_key, None)
+            if result is not None:
+                return result
+        
+        return default
+
+
 class NutriDB:
     def __init__(self, path):
         self.alimenti = self._load_json(os.path.join(path, "banca_alimenti_crea_60alimenti.json"))
@@ -28,23 +69,39 @@ class NutriDB:
             return json.load(f)
         
     def _build_alias(self):
-        """Costruisce un dizionario di alias per i nomi degli alimenti.
+        """Costruisce un dizionario di alias intelligente per i nomi degli alimenti.
         
-        Questa è una funzione interna usata solo dalla classe NutriDB durante l'inizializzazione.
-        Crea un mapping tra nomi comuni/alternativi degli alimenti e le loro chiavi nel database.
-        
-        Non dovrebbe essere chiamata direttamente - viene invocata automaticamente dal costruttore
-        di NutriDB per popolare l'attributo self.alias.
+        Implementa mapping intelligente a 3 livelli:
+        1. Mapping diretto delle chiavi del database
+        2. Alias manuali specifici  
+        3. Mapping automatico con rimozione parole di preparazione (tramite SmartAliasDict)
         
         Returns:
-            Dict[str, str]: Mapping tra alias (chiave) e nome canonico (valore) dell'alimento
+            SmartAliasDict: Dizionario con ricerca intelligente
         """
-        mapping = {}
+        # Parole di preparazione/cottura da rimuovere
+        preparation_words = [
+            "al forno", "alla griglia", "in padella", "fritto", "fritti", "fritta", "fritte",
+            "bollito", "bolliti", "bollita", "bollite", "lessato", "lessati", "lessata", "lesse",
+            "al vapore", "saltato", "saltati", "saltata", "saltate", "cotto", "cotti", "cotta", "cotte",
+            "crudo", "crudi", "cruda", "crude", "marinato", "marinati", "marinata", "marinate",
+            "affumicato", "affumicati", "affumicata", "affumicate", "arrosto", "arrostito", "brasato",
+            "stufato", "stufati", "al naturale", "naturale", "sott'olio", "sottolio", "sgocciolato",
+            "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
+            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche"
+        ]
+        
+        # Base mapping dalle chiavi del database
+        base_mapping = {}
         for key in self.alimenti:
+            # Mapping diretto: "pollo_petto" → "pollo_petto" 
+            base_mapping[key] = key
+            # Mapping pulito: "pollo petto" → "pollo_petto"
             clean = key.lower().replace("_", " ")
-            mapping[clean] = key
-        mapping.update({
-            "pollo": "pollo",
+            base_mapping[clean] = key
+        # Aggiungi alias manuali specifici
+        base_mapping.update({
+            "pollo": "pollo_petto",
             "petto di pollo": "pollo_petto", 
             "petto pollo": "pollo_petto",
             "coscia di pollo": "pollo_coscia",
@@ -52,9 +109,10 @@ class NutriDB:
             "ali di pollo": "pollo_ali",
             "ali pollo": "pollo_ali",
             "riso normale": "riso",
-            "riso basmati": "riso_basmati",
+            "riso basmati": "riso",
             "riso bianco": "riso",
-            "basmati riso": "riso_basmati",
+            "pan bauletto": "pan_bauletto",
+            "basmati riso": "riso",
             "riso integrale": "riso_integrale",
             "fiocchi di riso": "riso",
             "fiocchi di avena": "avena",
@@ -107,6 +165,7 @@ class NutriDB:
             "noci": "noci_sgusciate",
             "mandorle tostate": "mandorle",
             "frutti di bosco": "frutti_di_bosco",
+            "uovo": "uova",
             "albume uova": "albume_uova",
             "albume": "albume_uova",
             "albume d'uovo": "albume_uova",
@@ -138,8 +197,10 @@ class NutriDB:
             "pane al latte": "pane_bianco",
             "pan bauletto": "pane_bianco",
             "pane fresco": "pane_bianco"
-            })
-        return mapping
+        })
+        
+        # Ritorna il dizionario intelligente che implementa ricerca a 3 step
+        return SmartAliasDict(base_mapping, preparation_words)
 
     def get_macros(self, alimento, quantità=100):
         key = self.alias.get(alimento.lower().replace("_", " "))

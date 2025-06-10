@@ -286,6 +286,7 @@ def get_portion_constraints():
         # CATEGORIE PRINCIPALI DALLA BANCA ALIMENTI
         "proteine_animali": {"min": 50, "max": 300},
         "latte": {"min": 100, "max": 500},
+        "affettati": {"min": 50, "max": 150},
         "formaggi": {"min": 30, "max": 300},
         "latticini": {"min": 100, "max": 300},  # Per yogurt e altri latticini
         "cereali": {"min": 60, "max": 150},
