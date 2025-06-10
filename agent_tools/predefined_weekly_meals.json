@@ -1,0 +1,57 @@
+{
+  "predefined_days": {
+    "giorno_2": {
+      "colazione": ["avena", "banana", "mandorle", "latte_scremato"],
+      "spuntino_mattutino": ["yogurt_greco", "mirtilli"],
+      "pranzo": ["riso_basmati", "pollo_petto", "zucchine", "olio_oliva"],
+      "spuntino_pomeridiano": ["mela", "noci"],
+      "cena": ["salmone", "patate_dolci", "broccoli", "olio_oliva"]
+    },
+    "giorno_3": {
+      "colazione": ["pane_integrale", "ricotta", "fragole"],
+      "spuntino_mattutino": ["crackers_integrali", "hummus"],
+      "pranzo": ["pasta_integrale", "tonno", "pomodorini", "basilico", "olio_oliva"],
+      "spuntino_pomeridiano": ["pera", "mandorle"],
+      "cena": ["petto_tacchino", "quinoa", "asparagi", "olio_oliva"]
+    },
+    "giorno_4": {
+      "colazione": ["cereali_integrali", "latte_scremato", "kiwi"],
+      "spuntino_mattutino": ["yogurt_naturale", "granola"],
+      "pranzo": ["farro", "legumi_misti", "carote", "sedano", "olio_oliva"],
+      "spuntino_pomeridiano": ["banana", "burro_arachidi"],
+      "cena": ["orata", "riso_integrale", "spinaci", "pomodori", "olio_oliva"]
+    },
+    "giorno_5": {
+      "colazione": ["toast_integrale", "avocado", "pomodoro"],
+      "spuntino_mattutino": ["frullato_proteine", "frutti_bosco"],
+      "pranzo": ["orzo", "gamberi", "zucchine", "prezzemolo", "olio_oliva"],
+      "spuntino_pomeridiano": ["arancia", "pistacchi"],
+      "cena": ["petto_pollo", "patate", "fagiolini", "olio_oliva"]
+    },
+    "giorno_6": {
+      "colazione": ["pancake_avena", "sciroppo_acero", "lamponi"],
+      "spuntino_mattutino": ["barretta_cereali", "te_verde"],
+      "pranzo": ["risotto", "funghi", "parmigiano", "rucola", "olio_oliva"],
+      "spuntino_pomeridiano": ["smoothie_verde", "spinaci", "mela"],
+      "cena": ["merluzzo", "cous_cous", "melanzane", "olio_oliva"]
+    },
+    "giorno_7": {
+      "colazione": ["muesli", "latte_vegetale", "datteri"],
+      "spuntino_mattutino": ["centrifugato", "carota", "zenzero"],
+      "pranzo": ["gnocchi", "pomodoro", "basilico", "mozzarella", "olio_oliva"],
+      "spuntino_pomeridiano": ["macedonia", "frutta_stagione"],
+      "cena": ["bistecca_manzo", "insalata_mista", "olio_oliva", "aceto_balsamico"]
+    }
+  },
+  "description": "6 giorni di dieta predefiniti per la generazione automatica della settimana",
+  "rules": {
+    "special_days": [3, 5, 7],
+    "copy_meals": ["colazione", "spuntino_mattutino", "spuntino_pomeridiano"],
+    "copy_from_day": 1
+  },
+  "notes": [
+    "I giorni 3, 5, 7 avranno colazione e spuntini identici al giorno 1",
+    "Tutti i giorni verranno adattati alla struttura dei pasti del giorno 1",
+    "Le grammature vengono calcolate automaticamente usando optimize_meal_portions"
+  ]
+} 

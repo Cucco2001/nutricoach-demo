@@ -8,8 +8,48 @@
   "chat_history": [
     {
       "role": "assistant",
-      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Mantenimento\n\n📚 Fonti utilizzate: Messuri et al., 2023\n\n➔ L'obiettivo di mantenimento è coerente con il tuo BMI attuale di 24.2, che rientra nella categoria di normopeso. Possiamo quindi procedere con la FASE 1 per valutare ulteriormente le tue esigenze e preferenze.\n\n➡️ Conclusione: Se hai domande riguardo i calcoli o le scelte fatte, non esitare a chiedere. Vuoi continuare alla FASE 1 o hai altre domande?",
-      "timestamp": 1749379043.9359412
+      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Mantenimento\n\n✅ L'obiettivo di mantenimento è coerente con il tuo BMI attuale che rientra nella categoria Normopeso.\n\n📚 Fonti utilizzate: \n- Messuri et al., 2023 per il calcolo BMI\n\n➡️ Conclusione: Procediamo alla FASE 1 - Analisi delle risposte fornite\n\nSe hai domande sui calcoli o desideri ulteriori dettagli sui risultati, fammi sapere! Sei pronto per continuare con la FASE 1?",
+      "timestamp": 1749586069.5790503
+    },
+    {
+      "role": "user",
+      "content": "procediamo",
+      "timestamp": 1749586075.7099273
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto elaborando: Dati del cliente iniziali e risposte supplementari.\n\n1. Dati del cliente:\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n   - Obiettivo: Mantenimento\n\n2. Allergie e intolleranze alimentari:\n   - Nessuna allergia o intolleranza indicata\n\n3. Attività sportiva:\n   - Sport praticato: Fitness - Allenamento medio (principianti e livello intermedio)\n   - Intensità: Easy\n   - Ore settimanali: 3\n   - Consumo calorico stimato per l'allenamento: 250 kcal/ora\n\n4. Numero di pasti e orari preferiti:\n   - Numero pasti: 4\n   - Orari: \n     - Colazione: 07:30\n     - Pranzo: 13:00\n     - Spuntino pomeridiano: 16:30\n     - Cena: 20:00\n\n📚 Fonti utilizzate:\n- Nessuna fonte esterna specifica per preferenze e abitudini, ma ho utilizzato le risposte fornite.\n\n➡️ Conclusione: Ho raccolto tutte le preferenze alimentari e abitudini dell'utente. Procederò ora a determinare il dispendio calorico per l'attività sportiva.\n\nFammi sapere se hai domande sulle preferenze analizzate o se vuoi continuare con la FASE 2 per il calcolo del fabbisogno energetico!",
+      "timestamp": 1749586092.3170688
+    },
+    {
+      "role": "user",
+      "content": "procediamo",
+      "timestamp": 1749586100.710276
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 2 - CALCOLO FABBISOGNI ENERGETICI\n\n⚡ Sto elaborando: Calcolo del metabolismo basale, fabbisogno energetico totale e dispendio calorico dell'attività sportiva.\n\n1. Metabolismo Basale e Fabbisogno Giornaliero Totale:\n   - Metabolismo basale (BMR): 1672 kcal/giorno\n   - Livello di Attività Fisico Quotidiano: Sedentario (LAF: 1.3)\n   - Fabbisogno energetico giornaliero di base: 2173 kcal/giorno\n\n2. Dispendio energetico dall'attività sportiva:\n   - Allenamento: Fitness - allenamento medio\n   - Intensità: Easy\n   - Ore settimanali: 3\n   - Kcal per sessione: 600\n   - Kcal giornaliere aggiunte da attività sportiva: 86 kcal\n\n3. Fabbisogno calorico totale:\n   - Fabbisogno totale giornaliero = Fabbisogno di base + Dispendio sportivo\n   - Fabbisogno totale giornaliero = 2173 + 86 = 2259 kcal/giorno\n\n📚 Fonti utilizzate:\n- Harris-Benedict Equation per il calcolo BMR\n- Studi ICSS per il dispendio energetico sportivo\n\n➡️ Conclusione: Il tuo fabbisogno energetico totale giornaliero, considerando lo sport praticato, è di 2259 kcal. \n\nSe hai domande sui calcoli o desideri ulteriori dettagli, fammi sapere! Sei pronto per procedere alla FASE 3 per il calcolo dei macronutrienti?",
+      "timestamp": 1749586119.8327482
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1749586135.1871786
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Distribuzione delle calorie tra i macronutrienti.\n\n1. **Proteine**:\n   - Moltiplicatore proteico: 1.0 g/kg\n   - Peso corporeo = 70 kg\n   - Grammi totali di proteine = 1.0 * 70 = 70 g\n   - Kcal dalle proteine = 70 * 4 = 280 kcal\n   - Percentuale sulle kcal totali = (280 / 2259) * 100 ≈ 12%\n\n2. **Grassi**:\n   - Range raccomandato: 20-35% delle kcal totali\n   - Scelgo di mantenere i grassi al 30% delle kcal totali per un bilanciamento ottimale\n   - Kcal dai grassi = 2259 * 0.30 = 678 kcal\n   - Grammi totali = 678 / 9 = 75 g\n\n3. **Carboidrati**:\n   - Kcal rimanenti per i carboidrati = 2259 - (280 + 678) = 1301 kcal\n   - Grammi totali di carboidrati = 1301 / 4 = 325 g\n\n4. **Fibre**:\n   - Apporto raccomandato: tra 28.5 e 37.7 g\n\n📊 Riepilogo macronutrienti:\n- Proteine: 70 g (280 kcal, 12%)\n- Grassi: 75 g (678 kcal, 30%)\n- Carboidrati: 325 g (1301 kcal, 58%)\n- Fibre: 28.5-37.7 g\n\n📚 Fonti utilizzate:\n- Project Invictus per il fabbisogno proteico\n- LARN per il fabbisogno di grassi e fibre\n\n➡️ Conclusione: Ho calcolato la distribuzione ottimale dei macronutrienti per il tuo fabbisogno energetico giornaliero. \n\nSe hai domande sui calcoli o vuoi modificare la distribuzione dei macronutrienti, fammi sapere! Sei pronto per procedere alla FASE 4 per la distribuzione delle calorie tra i pasti?",
+      "timestamp": 1749586168.7917233
+    },
+    {
+      "role": "user",
+      "content": "procediamo",
+      "timestamp": 1749586206.6686044
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 4 - DISTRIBUZIONE CALORICA DEI PASTI\n\n⚡ Sto elaborando: Distribuzione delle calorie giornaliere tra i pasti.\n\nCon 4 pasti al giorno come specificato:\n\n1. **Colazione (07:30)**:\n   - 25% delle calorie totali\n   - Calorie: 2259 * 0.25 = 565 kcal\n\n2. **Pranzo (13:00)**:\n   - 35% delle calorie totali\n   - Calorie: 2259 * 0.35 = 791 kcal\n\n3. **Spuntino pomeridiano (16:30)**:\n   - 10% delle calorie totali\n   - Calorie: 2259 * 0.10 = 226 kcal\n\n4. **Cena (20:00)**:\n   - 30% delle calorie totali\n   - Calorie: 2259 * 0.30 = 678 kcal\n\n📊 Distribuzione calorica giornaliera:\n- Colazione: 565 kcal (25%)\n- Pranzo: 791 kcal (35%)\n- Spuntino pomeridiano: 226 kcal (10%)\n- Cena: 678 kcal (30%)\n\n📚 Fonti utilizzate: \n- Dati preferenze pasti dell'utente\n\n➡️ Conclusione: Abbiamo distribuito le calorie giornaliere in modo equilibrato tra i quattro pasti che hai selezionato. \n\nSe vuoi discutere eventuali modifiche alla distribuzione o hai altre domande, fammi sapere! Altrimenti, sei pronto per procedere alla FASE 5 per la distribuzione dei macronutrienti tra i pasti?",
+      "timestamp": 1749586218.712844
     }
   ],
   "nutritional_info": {
@@ -23,8 +63,117 @@
       "allergies": {
         "answer": "No",
         "follow_up": null
+      },
+      "sports": {
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Fitness - Allenamento medio (principianti e livello intermedio)",
+            "specific_sport": {
+              "name": "Fitness - allenamento medio",
+              "key": "Fitness - Allenamento medio",
+              "kcal_per_hour": 250,
+              "description": "Allenamento leggero in palestra"
+            },
+            "intensity": "easy",
+            "hours_per_week": 3
+          }
+        ]
+      },
+      "meal_preferences": {
+        "answer": "Sì",
+        "follow_up": {
+          "num_meals": 4,
+          "meal_times": {
+            "Colazione": "07:30",
+            "Pranzo": "13:00",
+            "Cena": "20:00",
+            "Spuntino pomeridiano": "16:30"
+          }
+        }
       }
     },
-    "agent_qa": []
+    "agent_qa": [
+      {
+        "question": "procediamo",
+        "answer": "✓ FASE 1 - ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto elaborando: Dati del cliente iniziali e risposte supplementari.\n\n1. Dati del cliente:\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Peso: 70 kg\n   - Altezza: 170 cm\n   - Livello di attività quotidiana: Sedentario\n   - Obiettivo: Mantenimento\n\n2. Allergie e intolleranze alimentari:\n   - Nessuna allergia o intolleranza indicata\n\n3. Attività sportiva:\n   - Sport praticato: Fitness - Allenamento medio (principianti e livello intermedio)\n   - Intensità: Easy\n   - Ore settimanali: 3\n   - Consumo calorico stimato per l'allenamento: 250 kcal/ora\n\n4. Numero di pasti e orari preferiti:\n   - Numero pasti: 4\n   - Orari: \n     - Colazione: 07:30\n     - Pranzo: 13:00\n     - Spuntino pomeridiano: 16:30\n     - Cena: 20:00\n\n📚 Fonti utilizzate:\n- Nessuna fonte esterna specifica per preferenze e abitudini, ma ho utilizzato le risposte fornite.\n\n➡️ Conclusione: Ho raccolto tutte le preferenze alimentari e abitudini dell'utente. Procederò ora a determinare il dispendio calorico per l'attività sportiva.\n\nFammi sapere se hai domande sulle preferenze analizzate o se vuoi continuare con la FASE 2 per il calcolo del fabbisogno energetico!",
+        "timestamp": 1749586092.322183
+      },
+      {
+        "question": "procediamo",
+        "answer": "✓ FASE 2 - CALCOLO FABBISOGNI ENERGETICI\n\n⚡ Sto elaborando: Calcolo del metabolismo basale, fabbisogno energetico totale e dispendio calorico dell'attività sportiva.\n\n1. Metabolismo Basale e Fabbisogno Giornaliero Totale:\n   - Metabolismo basale (BMR): 1672 kcal/giorno\n   - Livello di Attività Fisico Quotidiano: Sedentario (LAF: 1.3)\n   - Fabbisogno energetico giornaliero di base: 2173 kcal/giorno\n\n2. Dispendio energetico dall'attività sportiva:\n   - Allenamento: Fitness - allenamento medio\n   - Intensità: Easy\n   - Ore settimanali: 3\n   - Kcal per sessione: 600\n   - Kcal giornaliere aggiunte da attività sportiva: 86 kcal\n\n3. Fabbisogno calorico totale:\n   - Fabbisogno totale giornaliero = Fabbisogno di base + Dispendio sportivo\n   - Fabbisogno totale giornaliero = 2173 + 86 = 2259 kcal/giorno\n\n📚 Fonti utilizzate:\n- Harris-Benedict Equation per il calcolo BMR\n- Studi ICSS per il dispendio energetico sportivo\n\n➡️ Conclusione: Il tuo fabbisogno energetico totale giornaliero, considerando lo sport praticato, è di 2259 kcal. \n\nSe hai domande sui calcoli o desideri ulteriori dettagli, fammi sapere! Sei pronto per procedere alla FASE 3 per il calcolo dei macronutrienti?",
+        "timestamp": 1749586119.8359714
+      },
+      {
+        "question": "procedi",
+        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Distribuzione delle calorie tra i macronutrienti.\n\n1. **Proteine**:\n   - Moltiplicatore proteico: 1.0 g/kg\n   - Peso corporeo = 70 kg\n   - Grammi totali di proteine = 1.0 * 70 = 70 g\n   - Kcal dalle proteine = 70 * 4 = 280 kcal\n   - Percentuale sulle kcal totali = (280 / 2259) * 100 ≈ 12%\n\n2. **Grassi**:\n   - Range raccomandato: 20-35% delle kcal totali\n   - Scelgo di mantenere i grassi al 30% delle kcal totali per un bilanciamento ottimale\n   - Kcal dai grassi = 2259 * 0.30 = 678 kcal\n   - Grammi totali = 678 / 9 = 75 g\n\n3. **Carboidrati**:\n   - Kcal rimanenti per i carboidrati = 2259 - (280 + 678) = 1301 kcal\n   - Grammi totali di carboidrati = 1301 / 4 = 325 g\n\n4. **Fibre**:\n   - Apporto raccomandato: tra 28.5 e 37.7 g\n\n📊 Riepilogo macronutrienti:\n- Proteine: 70 g (280 kcal, 12%)\n- Grassi: 75 g (678 kcal, 30%)\n- Carboidrati: 325 g (1301 kcal, 58%)\n- Fibre: 28.5-37.7 g\n\n📚 Fonti utilizzate:\n- Project Invictus per il fabbisogno proteico\n- LARN per il fabbisogno di grassi e fibre\n\n➡️ Conclusione: Ho calcolato la distribuzione ottimale dei macronutrienti per il tuo fabbisogno energetico giornaliero. \n\nSe hai domande sui calcoli o vuoi modificare la distribuzione dei macronutrienti, fammi sapere! Sei pronto per procedere alla FASE 4 per la distribuzione delle calorie tra i pasti?",
+        "timestamp": 1749586168.7993836
+      },
+      {
+        "question": "procediamo",
+        "answer": "✓ FASE 4 - DISTRIBUZIONE CALORICA DEI PASTI\n\n⚡ Sto elaborando: Distribuzione delle calorie giornaliere tra i pasti.\n\nCon 4 pasti al giorno come specificato:\n\n1. **Colazione (07:30)**:\n   - 25% delle calorie totali\n   - Calorie: 2259 * 0.25 = 565 kcal\n\n2. **Pranzo (13:00)**:\n   - 35% delle calorie totali\n   - Calorie: 2259 * 0.35 = 791 kcal\n\n3. **Spuntino pomeridiano (16:30)**:\n   - 10% delle calorie totali\n   - Calorie: 2259 * 0.10 = 226 kcal\n\n4. **Cena (20:00)**:\n   - 30% delle calorie totali\n   - Calorie: 2259 * 0.30 = 678 kcal\n\n📊 Distribuzione calorica giornaliera:\n- Colazione: 565 kcal (25%)\n- Pranzo: 791 kcal (35%)\n- Spuntino pomeridiano: 226 kcal (10%)\n- Cena: 678 kcal (30%)\n\n📚 Fonti utilizzate: \n- Dati preferenze pasti dell'utente\n\n➡️ Conclusione: Abbiamo distribuito le calorie giornaliere in modo equilibrato tra i quattro pasti che hai selezionato. \n\nSe vuoi discutere eventuali modifiche alla distribuzione o hai altre domande, fammi sapere! Altrimenti, sei pronto per procedere alla FASE 5 per la distribuzione dei macronutrienti tra i pasti?",
+        "timestamp": 1749586218.71857
+      }
+    ]
+  },
+  "nutritional_info_extracted": {
+    "caloric_needs": {
+      "bmr": 1672,
+      "fabbisogno_base": 2173,
+      "dispendio_sportivo": 86,
+      "fabbisogno_totale": 2259,
+      "laf_utilizzato": 1.3,
+      "aggiustamento_obiettivo": 0
+    },
+    "daily_macros": {
+      "numero_pasti": 4,
+      "distribuzione_pasti": {
+        "colazione": {
+          "orario": "07:30",
+          "kcal": 565,
+          "percentuale_kcal": 25,
+          "proteine_g": 18,
+          "carboidrati_g": 81,
+          "grassi_g": 19
+        },
+        "pranzo": {
+          "orario": "13:00",
+          "kcal": 791,
+          "percentuale_kcal": 35,
+          "proteine_g": 24,
+          "carboidrati_g": 114,
+          "grassi_g": 26
+        },
+        "spuntino_pomeridiano": {
+          "orario": "16:30",
+          "kcal": 226,
+          "percentuale_kcal": 10,
+          "proteine_g": 7,
+          "carboidrati_g": 32,
+          "grassi_g": 8
+        },
+        "cena": {
+          "orario": "20:00",
+          "kcal": 678,
+          "percentuale_kcal": 30,
+          "proteine_g": 21,
+          "carboidrati_g": 98,
+          "grassi_g": 22
+        }
+      }
+    },
+    "macros_total": {
+      "kcal_totali": 2259,
+      "proteine_g": 70,
+      "proteine_kcal": 280,
+      "proteine_percentuale": 12,
+      "grassi_g": 75,
+      "grassi_kcal": 678,
+      "grassi_percentuale": 30,
+      "carboidrati_g": 325,
+      "carboidrati_kcal": 1301,
+      "carboidrati_percentuale": 58,
+      "fibre_g": 28.5
+    }
   }
 }

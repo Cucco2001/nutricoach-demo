@@ -19,6 +19,7 @@ from agent_tools.user_data_tool import (
     get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
 )
 from agent_tools.meal_optimization_tool import optimize_meal_portions
+from agent_tools.weekly_diet_generator_tool import generate_6_additional_days
 
 
 class ToolHandler:
@@ -52,6 +53,9 @@ class ToolHandler:
             
             # Tool per ottimizzazione porzioni pasti
             "optimize_meal_portions": optimize_meal_portions,
+            
+            # Tool per generazione settimanale diete
+            "generate_6_additional_days": generate_6_additional_days,
             
             # Per retrocompatibilità (da rimuovere in futuro)
             "nutridb_tool": lambda **args: self._legacy_nutridb_tool(**args),
