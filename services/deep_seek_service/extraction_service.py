@@ -271,6 +271,13 @@ class NutritionalDataExtractor:
             if meal_changes:
                 changes_made = True
         
+        # Merge specializzato per weekly_diet (dieta settimanale completa)
+        if "weekly_diet" in new_data and new_data["weekly_diet"]:
+            # Sostituisce completamente la dieta settimanale se presente nei nuovi dati
+            existing_data["weekly_diet"] = new_data["weekly_diet"]
+            changes_made = True
+            print(f"[EXTRACTION_SERVICE] Dieta settimanale aggiornata per utente {user_id} con {len(new_data['weekly_diet'])} giorni")
+        
         return changes_made
     
     def _get_missing_fields(self, section_name: str, section_data: Dict[str, Any]) -> List[str]:

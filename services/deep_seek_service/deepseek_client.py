@@ -127,31 +127,38 @@ class DeepSeekClient:
         Returns:
             Prompt formattato per DeepSeek
         """
-        return f"""
+        # Costruiamo il prompt manualmente per evitare problemi con f-string e parentesi graffe
+        eta = user_info.get('età', 'N/A')
+        sesso = user_info.get('sesso', 'N/A')
+        peso = user_info.get('peso', 'N/A')
+        altezza = user_info.get('altezza', 'N/A')
+        obiettivo = user_info.get('obiettivo', 'N/A')
+        
+        prompt = """
 Analizza questa conversazione tra un nutrizionista AI e un utente per estrarre i dati nutrizionali calcolati.
 
 INFORMAZIONI UTENTE:
-- Età: {user_info.get('età', 'N/A')} anni
-- Sesso: {user_info.get('sesso', 'N/A')}
-- Peso: {user_info.get('peso', 'N/A')} kg
-- Altezza: {user_info.get('altezza', 'N/A')} cm
-- Obiettivo: {user_info.get('obiettivo', 'N/A')}
+- Età: """ + str(eta) + """ anni
+- Sesso: """ + str(sesso) + """
+- Peso: """ + str(peso) + """ kg
+- Altezza: """ + str(altezza) + """ cm
+- Obiettivo: """ + str(obiettivo) + """
 
 CONVERSAZIONE:
-{conversation_text}
+""" + conversation_text + """
 
 ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella conversazione):
 
-{{
-    "caloric_needs": {{
+{
+    "caloric_needs": {
         "bmr": numero_metabolismo_basale,
         "fabbisogno_base": numero_fabbisogno_senza_sport,
         "dispendio_sportivo": numero_calorie_da_sport,
         "aggiustamento_obiettivo": numero_deficit_o_surplus,
         "fabbisogno_totale": numero_calorie_finali,
         "laf_utilizzato": numero_fattore_attivita
-    }},
-    "macros_total": {{
+    },
+    "macros_total": {
         "kcal_totali": numero,
         "proteine_g": numero,
         "proteine_kcal": numero,
@@ -163,46 +170,62 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
         "carboidrati_kcal": numero,
         "carboidrati_percentuale": numero,
         "fibre_g": numero
-    }},
-    "daily_macros": {{
+    },
+    "daily_macros": {
         "numero_pasti": numero,
-        "distribuzione_pasti": {{
-            "nome_pasto": {{
+        "distribuzione_pasti": {
+            "nome_pasto": {
                 "kcal": numero,
                 "percentuale_kcal": numero,
                 "proteine_g": numero,
                 "carboidrati_g": numero,
                 "grassi_g": numero
-            }}
-        }}
-    }},
+            }
+        }
+    },
     "registered_meals": [
-        {{
+        {
             "nome_pasto": "colazione/pranzo/cena/spuntino_mattutino/spuntino_pomeridiano o altri se specificati",
             "alimenti": [
-                {{
+                {
                     "nome_alimento": "nome",
                     "quantita_g": numero_grammi_quando_possibile,
                     "stato": "crudo/cotto",
                     "metodo_cottura": "se_applicabile",
                     "misura_casalinga": "equivalenza_descrittiva_es_2_uova_1_tazza",
-                    "macronutrienti": {{
+                    "macronutrienti": {
                         "proteine": numero,
                         "carboidrati": numero, 
                         "grassi": numero,
                         "kcal": numero
-                    }}
-                }}
+                    }
+                }
             ],
-            "totali_pasto": {{
+            "totali_pasto": {
                 "kcal_totali": numero,
                 "proteine_totali": numero,
                 "carboidrati_totali": numero,
                 "grassi_totali": numero
-            }}
-        }}
-    ]
-}}
+            }
+        }
+    ],
+    "weekly_diet": {
+        "giorno_2": {
+            "colazione": {
+                "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga}
+            },
+            "pranzo": {"...simile..."},
+            "cena": {"...simile..."},
+            "spuntino_mattutino": {"...simile..."},
+            "spuntino_pomeridiano": {"...simile..."}
+        },
+        "giorno_3": {"...struttura identica..."},
+        "giorno_4": {"...struttura identica..."},
+        "giorno_5": {"...struttura identica..."},
+        "giorno_6": {"...struttura identica..."},
+        "giorno_7": {"...struttura identica..."}
+    }
+}
 
 IMPORTANTE PER LE QUANTITÀ:
 - "quantita_g": Inserisci il peso in grammi SOLO se menzionato esplicitamente in grammi
@@ -235,9 +258,28 @@ IMPORTANTE PER I TIPI DI PASTO:
 - Analizza il contesto temporale per determinare il tipo di spuntino
 
 
+IMPORTANTE PER LA DIETA SETTIMANALE:
+- Se nella conversazione è presente una dieta settimanale completa (giorni 2-7), estrai TUTTI i dati
+- La sezione "weekly_diet" deve contenere SOLO i giorni 2-7 (il giorno 1 è già nei "registered_meals")
+- Per ogni giorno, estrai tutti i pasti con i loro alimenti e grammature
+- Se ci sono informazioni sui target nutrizionali e valori effettivi, includili
+- Se l'agente ha fornito dettagli sui macronutrienti per pasto, estraili accuratamente
+- Cerca pattern come "GIORNO 2:", "GIORNO 3:", etc. nella conversazione
+- Ogni pasto deve avere la struttura completa con alimenti e valori nutrizionali
+
+ESEMPI DI ESTRAZIONE DIETA SETTIMANALE:
+- "GIORNO 2 - Colazione: Avena 45g, Banana 120g" → 
+  "giorno_2": {"colazione": {"alimenti": {"Avena": 45, "Banana": 120}}}
+- "Target: 400 kcal, 15g proteine" → 
+  "target_nutrients": {"kcal": 400, "proteine": 15}
+
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo
 - Se un dato non è presente, ometti quella sezione
 - I numeri devono essere numerici, non stringhe
 - Cerca con attenzione i calcoli numerici nella conversazione
-""" 
+- La sezione "weekly_diet" è OPZIONALE: includila solo se presente nella conversazione
+"""
+        
+        return prompt
+

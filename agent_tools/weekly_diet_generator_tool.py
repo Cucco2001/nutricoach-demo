@@ -622,11 +622,14 @@ def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
         
         logger.info("Generazione completata con successo")
         
+        import time
+        
         result = {
             "success": True,
             "giorni_generati": final_days,
             "user_id": user_id,
             "giorni_totali": len(final_days),
+            "generation_timestamp": time.time(),
             "summary": f"Generati con successo {len(final_days)} giorni aggiuntivi di dieta"
         }
         
