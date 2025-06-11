@@ -224,6 +224,13 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
         "giorno_5": {"...struttura identica..."},
         "giorno_6": {"...struttura identica..."},
         "giorno_7": {"...struttura identica..."}
+    },
+    "weekly_diet_partial": {
+        "day": "giorno_X",
+        "meal": "nome_pasto",
+        "data": {
+            "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga}
+        }
     }
 }
 
@@ -240,6 +247,7 @@ ESEMPI:
 - "3 fette di pane" → quantita_g: 0, misura_casalinga: "3 fette"
 
 **FONDAMENTALE**:
+- I CAMPI SOTTO REGISTERED_MEALS CORRISPONDONO AI PASTI DEL GIORNO 1, MENTRE IN WEEKLY_DIET SONO I PASTI DEL GIORNO 2-7
 - Rileggi SEMPRE la conversazione e cerca di estrarre SEMPRE tutti i campi del JSON
 - Le informazioni sono SEMPRE nella conversazione, quindi non inventare informazioni
 - Particolare attenzione ai pasti e a macros_total
@@ -269,9 +277,22 @@ IMPORTANTE PER LA DIETA SETTIMANALE:
 
 ESEMPI DI ESTRAZIONE DIETA SETTIMANALE:
 - "GIORNO 2 - Colazione: Avena 45g, Banana 120g" → 
-  "giorno_2": {"colazione": {"alimenti": {"Avena": 45, "Banana": 120}}}
+  "giorno_2": {"colazione": {"alimenti": [{"nome_alimento": "Avena", "quantita_g": 45, "misura_casalinga": "due pugni di avena"}, {"nome_alimento": "Banana", "quantita_g": 120, "misura_casalinga": ""1 banana piccola}]}}
 - "Target: 400 kcal, 15g proteine" → 
   "target_nutrients": {"kcal": 400, "proteine": 15}
+
+MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
+- Usa "weekly_diet_partial" SOLO quando viene richiesta la modifica di un singolo pasto specifico tra giorno 2 e giorno 7.
+- Esempio: "Cambia il pranzo del giorno 2 con tacchino e lenticchie" →
+  "weekly_diet_partial": {
+    "day": "giorno_2",
+    "meal": "pranzo", 
+    "data": {
+      "alimenti": [{"nome_alimento": "Petto di tacchino", "quantita_g": 90, "misura_casalinga": "1 filetto medio"}, {"nome_alimento": "Riso integrale", "quantita_g": 100, "misura_casalinga": "1 porzione media"}, {"nome_alimento": "Lenticchie", "quantita_g": 90, "misura_casalinga": "1 ciotola"}, {"nome_alimento": "Carote", "quantita_g": 150, "misura_casalinga": "1 ciotola"}, {"nome_alimento": "Olio extravergine di oliva", "quantita_g": 20, "misura_casalinga": "1 cucchiaio"}]
+    }
+  }
+- Non usare "weekly_diet_partial" per diete settimanali complete
+- weekly_diet_partial preserva tutti gli altri pasti del giorno invariati
 
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo

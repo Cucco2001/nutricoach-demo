@@ -833,44 +833,36 @@ FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
    - Include per ogni giorno:
      * Tutti i pasti con alimenti e porzioni in grammi
      * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
-     * Statistiche nutrizionali totali di ciascun giorno
    - Riassumi le caratteristiche nutrizionali della settimana
 
 **FORMATO OBBLIGATORIO PER LA PRESENTAZIONE:**
 
-**ESEMPIO COMPLETO DI GIORNO:**
+**ESEMPIO COMPLETO DI UN GIORNO:**
 
 ```
 🗓️ **GIORNO 1 - LUNEDÌ**
 
 🌅 **COLAZIONE** 
-• **Avena**: 60g → 🥄 3/4 tazza
-• **Latte scremato**: 200ml → 🥛 1 bicchiere
-• **Banana**: 120g → 🍌 1 banana media
-• **Mandorle**: 15g → 🥜 12-15 mandorle
+• **Alimento_1**: Xg → 🥄 misura_casalinga
+• **Alimento_2**: Xg → 🥛 misura_casalinga
+• **Alimento_3**: Xg → 🍌 misura_casalinga
+• **Alimento_4**: Xg → 🥜 misura_casalinga
 
 🍽️ **PRANZO** 
-• **Riso basmati**: 80g → 🍚 1 porzione media (crudo)
-• **Petto di pollo**: 120g → 🍗 1 filetto medio
-• **Zucchine**: 150g → 🥒 1 ciotola a dadini
-• **Olio extravergine**: 10g → 🫒 1 cucchiaio
+• **Alimento_1**: Xg → 🍚 misura_casalinga
+• **Alimento_2**: Xg → 🍗 misura_casalinga
+• **Alimento_3**: Xg → 🥒 misura_casalinga
+• **Alimento_4**: Xg → 🫒 misura_casalinga
 
 🥨 **SPUNTINO POMERIDIANO** 
-• **Yogurt greco**: 125g → 🥛 1 vasetto
-• **Mirtilli**: 80g → 🫐 1/2 tazza
+• **Alimento_1**: Xg → 🥛 misura_casalinga
+• **Alimento_2**: Xg → 🫐 misura_casalinga
 
 🌙 **CENA** 
-• **Salmone**: 100g → 🐟 1 filetto piccolo
-• **Patate dolci**: 200g → 🥔 1 patata dolce grande
-• **Spinaci**: 100g → 🥬 1 ciotola
-• **Olio extravergine**: 8g → 🫒 1 cucchiaino scarso
-
-📊 **TOTALI GIORNALIERI GIORNO 1:**
-• Calorie: 1680 kcal 
-• Proteine: 98 g 
-• Carboidrati: 190 g  
-• Grassi: 53 g  
-• Rapporto target raggiunto: ✅
+• **Alimento_1**: Xg → 🐟 misura_casalinga
+• **Alimento_2**: Xg → 🥔 misura_casalinga
+• **Alimento_3**: Xg → 🥬 misura_casalinga
+• **Alimento_4**: Xg → 🫒 misura_casalinga
 
 ---
 **ESEMPI DI MISURE CASALINGHE DA USARE:**
@@ -884,7 +876,20 @@ FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 - Frutta secca: "1 manciata" (30g), "15 mandorle" (20g)
 ```
 
-IMPORTANTE: Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
+**FONDAMENTALE**: 
+- Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
+- Devi SEMPRE generare TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7.
+
+**REGOLE DI FORMATTAZIONE OBBLIGATORIE:**
+1. **A CAPO DOPO OGNI PASTO**: Ogni nome del pasto (🌅 **COLAZIONE**, 🍽️ **PRANZO**, etc.) DEVE essere seguito da un cibo A CAPO
+2. **A CAPO TRA OGNI ALIMENTO**: Ogni alimento DEVE essere su una riga diversa rispetto al successivo
+3. **FORMATO ESATTO**: 
+   ```
+   🌅 **COLAZIONE** 
+   • **Nome_Alimento**: Xg → 🥄 misura_casalinga
+   • **Nome_Alimento**: Xg → 🥛 misura_casalinga
+   ```
+4. **MAI**: Alimenti sulla stessa riga
 
 """
 

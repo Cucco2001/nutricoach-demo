@@ -271,12 +271,33 @@ class NutritionalDataExtractor:
             if meal_changes:
                 changes_made = True
         
-        # Merge specializzato per weekly_diet (dieta settimanale completa)
+        # Merge specializzato per weekly_diet (supporta modifiche parziali e complete)
         if "weekly_diet" in new_data and new_data["weekly_diet"]:
-            # Sostituisce completamente la dieta settimanale se presente nei nuovi dati
-            existing_data["weekly_diet"] = new_data["weekly_diet"]
-            changes_made = True
-            print(f"[EXTRACTION_SERVICE] Dieta settimanale aggiornata per utente {user_id} con {len(new_data['weekly_diet'])} giorni")
+            if "weekly_diet" not in existing_data:
+                existing_data["weekly_diet"] = {}
+            
+            weekly_changes = self._merge_weekly_diet_smart(
+                existing_data["weekly_diet"], 
+                new_data["weekly_diet"], 
+                user_id
+            )
+            
+            if weekly_changes:
+                changes_made = True
+                
+        # Merge specializzato per weekly_diet_partial (modifiche specifiche di sottocampi)
+        if "weekly_diet_partial" in new_data and new_data["weekly_diet_partial"]:
+            if "weekly_diet" not in existing_data:
+                existing_data["weekly_diet"] = {}
+                
+            partial_changes = self._merge_weekly_diet_partial(
+                existing_data["weekly_diet"],
+                new_data["weekly_diet_partial"],
+                user_id
+            )
+            
+            if partial_changes:
+                changes_made = True
         
         return changes_made
     
@@ -778,4 +799,215 @@ class NutritionalDataExtractor:
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nella cancellazione dati utente {user_id}: {str(e)}")
             return False
+    
+    def _merge_weekly_diet_smart(
+        self, 
+        existing_weekly_diet: Dict[str, Any], 
+        new_weekly_diet: Dict[str, Any], 
+        user_id: str
+    ) -> bool:
+        """
+        Merge intelligente per weekly_diet che preserva dati esistenti quando possibile.
+        
+        Args:
+            existing_weekly_diet: Dati weekly_diet esistenti
+            new_weekly_diet: Nuovi dati weekly_diet da DeepSeek  
+            user_id: ID utente per logging
+            
+        Returns:
+            True se sono stati fatti cambiamenti
+        """
+        if not new_weekly_diet:
+            return False
+            
+        changes_made = False
+        
+        for day_key, new_day_data in new_weekly_diet.items():
+            if not isinstance(new_day_data, dict):
+                continue
+                
+            # Se il giorno non esiste, aggiungilo completamente
+            if day_key not in existing_weekly_diet:
+                existing_weekly_diet[day_key] = new_day_data.copy()
+                changes_made = True
+                print(f"[EXTRACTION_SERVICE] Aggiunto nuovo giorno {day_key} per utente {user_id}")
+                continue
+            
+            # Il giorno esiste, merge intelligente dei pasti
+            existing_day = existing_weekly_diet[day_key]
+            if not isinstance(existing_day, dict):
+                existing_day = {}
+                existing_weekly_diet[day_key] = existing_day
+            
+            day_changes = self._merge_day_meals(existing_day, new_day_data, day_key, user_id)
+            if day_changes:
+                changes_made = True
+        
+        return changes_made
+    
+    def _merge_weekly_diet_partial(
+        self, 
+        existing_weekly_diet: Dict[str, Any], 
+        partial_updates: Dict[str, Any], 
+        user_id: str
+    ) -> bool:
+        """
+        Merge parziale per aggiornamenti specifici della weekly_diet.
+        
+        Formato partial_updates atteso:
+        {
+            "day": "giorno_2",
+            "meal": "pranzo", 
+            "data": {
+                "alimenti": {...},
+                "target_nutrients": {...},
+                "actual_nutrients": {...}
+            }
+        }
+        
+        O formato batch per più modifiche:
+        {
+            "updates": [
+                {"day": "giorno_2", "meal": "pranzo", "data": {...}},
+                {"day": "giorno_3", "meal": "cena", "data": {...}}
+            ]
+        }
+        
+        Args:
+            existing_weekly_diet: Dati weekly_diet esistenti
+            partial_updates: Aggiornamenti parziali specifici
+            user_id: ID utente per logging
+            
+        Returns:
+            True se sono stati fatti cambiamenti
+        """
+        if not partial_updates:
+            return False
+            
+        changes_made = False
+        
+        # Supporta sia formato singolo che batch
+        updates_list = []
+        
+        if "updates" in partial_updates and isinstance(partial_updates["updates"], list):
+            # Formato batch
+            updates_list = partial_updates["updates"]
+        elif "day" in partial_updates and "meal" in partial_updates and "data" in partial_updates:
+            # Formato singolo
+            updates_list = [partial_updates]
+        else:
+            print(f"[EXTRACTION_SERVICE] Formato partial_updates non riconosciuto per utente {user_id}")
+            return False
+        
+        for update in updates_list:
+            day_key = update.get("day")
+            meal_name = update.get("meal") 
+            meal_data = update.get("data")
+            
+            if not all([day_key, meal_name, meal_data]):
+                print(f"[EXTRACTION_SERVICE] Update parziale incompleto ignorato: {update}")
+                continue
+            
+            # Assicura che il giorno esista
+            if day_key not in existing_weekly_diet:
+                existing_weekly_diet[day_key] = {}
+                print(f"[EXTRACTION_SERVICE] Creato nuovo giorno {day_key} per update parziale")
+            
+            # Assicura che sia un dizionario
+            if not isinstance(existing_weekly_diet[day_key], dict):
+                existing_weekly_diet[day_key] = {}
+                print(f"[EXTRACTION_SERVICE] Ripristinato giorno {day_key} come dict per update parziale")
+            
+            # Aggiorna il pasto specifico
+            existing_weekly_diet[day_key][meal_name] = meal_data.copy()
+            changes_made = True
+            
+            print(f"[EXTRACTION_SERVICE] Aggiornato {day_key}.{meal_name} per utente {user_id}")
+            
+            # Log dettagliato degli alimenti aggiornati
+            if isinstance(meal_data, dict) and "alimenti" in meal_data:
+                alimenti = meal_data["alimenti"]
+                if isinstance(alimenti, dict):
+                    alimenti_count = len([k for k, v in alimenti.items() if v and v > 0])
+                    print(f"[EXTRACTION_SERVICE] Nuovo {meal_name} con {alimenti_count} alimenti")
+                elif isinstance(alimenti, list):
+                    alimenti_count = len(alimenti)
+                    print(f"[EXTRACTION_SERVICE] Nuovo {meal_name} con {alimenti_count} alimenti")
+        
+        return changes_made
+    
+    def _merge_day_meals(
+        self, 
+        existing_day: Dict[str, Any], 
+        new_day: Dict[str, Any], 
+        day_key: str, 
+        user_id: str
+    ) -> bool:
+        """
+        Merge intelligente dei pasti di un singolo giorno.
+        
+        Args:
+            existing_day: Dati del giorno esistente
+            new_day: Nuovi dati del giorno
+            day_key: Chiave del giorno (es. "giorno_2")
+            user_id: ID utente per logging
+            
+        Returns:
+            True se sono stati fatti cambiamenti
+        """
+        changes_made = False
+        
+        for meal_name, new_meal_data in new_day.items():
+            if not new_meal_data:
+                continue
+                
+            # Controllo se il pasto è sostanzialmente diverso da quello esistente
+            if meal_name in existing_day:
+                existing_meal = existing_day[meal_name]
+                
+                # Confronto semplificato: se la struttura alimenti è diversa, sovrascrive
+                if self._meals_are_different(existing_meal, new_meal_data):
+                    existing_day[meal_name] = new_meal_data.copy()
+                    changes_made = True
+                    print(f"[EXTRACTION_SERVICE] Sovrascritto {day_key}.{meal_name} per utente {user_id} (differente)")
+                else:
+                    print(f"[EXTRACTION_SERVICE] Mantenuto {day_key}.{meal_name} esistente (simile)")
+            else:
+                # Nuovo pasto, aggiungilo
+                existing_day[meal_name] = new_meal_data.copy()
+                changes_made = True
+                print(f"[EXTRACTION_SERVICE] Aggiunto nuovo {day_key}.{meal_name} per utente {user_id}")
+        
+        return changes_made
+    
+    def _meals_are_different(self, meal1: Dict[str, Any], meal2: Dict[str, Any]) -> bool:
+        """
+        Confronta due pasti per determinare se sono sostanzialmente diversi.
+        
+        Args:
+            meal1: Primo pasto
+            meal2: Secondo pasto
+            
+        Returns:
+            True se i pasti sono diversi
+        """
+        # Confronto basato sugli alimenti
+        alimenti1 = meal1.get("alimenti", {}) if isinstance(meal1, dict) else {}
+        alimenti2 = meal2.get("alimenti", {}) if isinstance(meal2, dict) else {}
+        
+        # Se uno dei due è vuoto e l'altro no, sono diversi
+        if bool(alimenti1) != bool(alimenti2):
+            return True
+        
+        # Confronto semplificato delle chiavi degli alimenti
+        if isinstance(alimenti1, dict) and isinstance(alimenti2, dict):
+            keys1 = set(alimenti1.keys())
+            keys2 = set(alimenti2.keys())
+            
+            # Se hanno alimenti diversi, sono diversi
+            if keys1 != keys2:
+                return True
+                
+        # Se sono arrivato qui, considera simili (stesso tipo di alimenti)
+        return False
     

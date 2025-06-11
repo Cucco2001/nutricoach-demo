@@ -131,6 +131,7 @@ class NutriDB:
             "pasta integrale": "pasta_integrale",
             "tonno": "tonno_naturale",
             "tonno naturale": "tonno_naturale",
+            "tonno al naturale": "tonno_naturale",
             "filetto di tonno": "tonno_naturale",
             "filetto tonno": "tonno_naturale",
             "tonno filetto": "tonno_naturale",
