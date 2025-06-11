@@ -1,0 +1,228 @@
+🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️
+DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
+🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️🍽️
+
+📊 INFORMAZIONI GENERAZIONE:
+   • User ID: 1749309652
+   • Data generazione: 2025-06-11 10:08:58
+   • Pipeline: extract_day1_meal_structure → generate_6_additional_days
+
+📅 GIORNO 1 - DATI UTENTE REGISTRATI
+================================================================================
+
+   🍽️  COLAZIONE
+      📋 ALIMENTI REGISTRATI:
+         • Avena: 100g
+      🎯 TARGET NUTRIZIONALI:
+         • Calorie: 592
+         • Proteine: 28g
+         • Carboidrati: 76g
+         • Grassi: 20g
+         • Orario: 07:30
+
+   ⭕ SPUNTINO_MATTUTINO: PASTO VUOTO
+
+   🍽️  PRANZO
+      📋 ALIMENTI REGISTRATI:
+         • Pollo: 110g
+         • Riso integrale: 130g
+         • Verdure miste: 220g
+         • Olio d'oliva: 20g
+      🎯 TARGET NUTRIZIONALI:
+         • Calorie: 828
+         • Proteine: 39g
+         • Carboidrati: 106g
+         • Grassi: 28g
+         • Orario: 13:00
+
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI REGISTRATI:
+         • Grissini: 60g
+         • Scaglie di Parmigiano: 30g
+      🎯 TARGET NUTRIZIONALI:
+         • Calorie: 237
+         • Proteine: 11g
+         • Carboidrati: 30g
+         • Grassi: 8g
+         • Orario: 16:30
+
+   🍽️  CENA
+      📋 ALIMENTI REGISTRATI:
+         • Salmone al forno: 150g
+         • Patate dolci al forno: 200g
+         • Spinaci saltati: 190g
+      🎯 TARGET NUTRIZIONALI:
+         • Calorie: 710
+         • Proteine: 34g
+         • Carboidrati: 91g
+         • Grassi: 24g
+         • Orario: 20:00
+
+   ⭕ SPUNTINO_SERALE: PASTO VUOTO
+
+📅 GIORNI 2-7 - GENERATI AUTOMATICAMENTE
+================================================================================
+
+📅 GIORNO 2
+----------------------------------------
+   🍽️  COLAZIONE
+      📋 ALIMENTI:
+         • avena: 30.0g
+         • banana: 190.0g
+         • mandorle: 20.0g
+         • latte_scremato: 300.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 595.1 / 592.0 target (0.5% errore)
+         ❌ proteine_g: 18.8 / 28.0 target (32.9% errore)
+         ✅ carboidrati_g: 78.9 / 76.0 target (3.8% errore)
+         ❌ grassi_g: 24.6 / 20.0 target (23.0% errore)
+      💡 Ottimizzazione completata per colazione con 4 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   🍽️  PRANZO
+      📋 ALIMENTI:
+         • riso_basmati: 120.0g
+         • pollo_petto: 120.0g
+         • zucchine: 270.0g
+         • olio_oliva: 30.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 857.4 / 828.0 target (3.6% errore)
+         ✅ proteine_g: 39.1 / 39.0 target (0.3% errore)
+         ✅ carboidrati_g: 99.8 / 106.0 target (5.8% errore)
+         ⚠️ grassi_g: 32.2 / 28.0 target (15.0% errore)
+      💡 Ottimizzazione completata per pranzo con 4 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI:
+         • mela: 190.0g
+         • noci: 20.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 236.6 / 237.0 target (0.2% errore)
+         ❌ proteine_g: 3.6 / 11.0 target (67.3% errore)
+         ✅ carboidrati_g: 27.6 / 30.0 target (8.0% errore)
+         ❌ grassi_g: 13.4 / 8.0 target (67.5% errore)
+      💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   🍽️  CENA
+      📋 ALIMENTI:
+         • salmone: 60.0g
+         • patate_dolci: 90.0g
+         • broccoli: 50.0g
+         • olio_oliva: 20.0g
+         • pane: 70.0g
+      📊 NUTRIENTI:
+         ⚠️ kcal: 806.7 / 710.0 target (13.6% errore)
+         ✅ proteine_g: 32.8 / 34.0 target (3.5% errore)
+         ❌ carboidrati_g: 67.8 / 91.0 target (25.5% errore)
+         ⚠️ grassi_g: 27.2 / 24.0 target (13.3% errore)
+      💡 Ottimizzazione completata per cena con 5 alimenti. pane aggiunto per migliorare i carboidrati. Porzioni arrotondate alla decina più vicina.
+
+
+📅 GIORNO 3
+----------------------------------------
+   🍽️  COLAZIONE
+      📋 ALIMENTI:
+         • Avena: 60.0g
+      📊 NUTRIENTI:
+         ❌ kcal: 226.8 / 592.0 target (61.7% errore)
+         ❌ proteine_g: 4.8 / 28.0 target (82.9% errore)
+         ❌ carboidrati_g: 40.1 / 76.0 target (47.2% errore)
+         ❌ grassi_g: 4.5 / 20.0 target (77.5% errore)
+      💡 Ottimizzazione completata per colazione con 1 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: pomodorini, basilico
+
+   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: Scaglie di Parmigiano
+
+   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: petto_tacchino, asparagi
+
+
+📅 GIORNO 4
+----------------------------------------
+   🍽️  COLAZIONE
+      📋 ALIMENTI:
+         • cereali_integrali: 40.0g
+         • latte_scremato: 500.0g
+         • kiwi: 300.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 612.2 / 592.0 target (3.4% errore)
+         ❌ proteine_g: 22.2 / 28.0 target (20.7% errore)
+         ❌ carboidrati_g: 93.5 / 76.0 target (23.0% errore)
+         ✅ grassi_g: 18.5 / 20.0 target (7.5% errore)
+      💡 Ottimizzazione completata per colazione con 3 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: farro, legumi_misti, carote, sedano
+
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI:
+         • banana: 80.0g
+         • burro_arachidi: 30.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 247.6 / 237.0 target (4.5% errore)
+         ❌ proteine_g: 8.4 / 11.0 target (23.6% errore)
+         ⚠️ carboidrati_g: 24.2 / 30.0 target (19.3% errore)
+         ❌ grassi_g: 14.0 / 8.0 target (75.0% errore)
+      💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: orata
+
+
+📅 GIORNO 5
+----------------------------------------
+   🍽️  COLAZIONE
+      📋 ALIMENTI:
+         • Avena: 60.0g
+      📊 NUTRIENTI:
+         ❌ kcal: 226.8 / 592.0 target (61.7% errore)
+         ❌ proteine_g: 4.8 / 28.0 target (82.9% errore)
+         ❌ carboidrati_g: 40.1 / 76.0 target (47.2% errore)
+         ❌ grassi_g: 4.5 / 20.0 target (77.5% errore)
+      💡 Ottimizzazione completata per colazione con 1 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: orzo, gamberi, prezzemolo
+
+   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: Scaglie di Parmigiano
+
+   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: fagiolini
+
+
+📅 GIORNO 6
+----------------------------------------
+   ❌ COLAZIONE: ERRORE - I seguenti alimenti non sono stati trovati nel database: pancake_avena, sciroppo_acero, lamponi
+
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: risotto, funghi, rucola
+
+   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: smoothie_verde
+
+   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: merluzzo, cous_cous
+
+
+📅 GIORNO 7
+----------------------------------------
+   🍽️  COLAZIONE
+      📋 ALIMENTI:
+         • Avena: 60.0g
+      📊 NUTRIENTI:
+         ❌ kcal: 226.8 / 592.0 target (61.7% errore)
+         ❌ proteine_g: 4.8 / 28.0 target (82.9% errore)
+         ❌ carboidrati_g: 40.1 / 76.0 target (47.2% errore)
+         ❌ grassi_g: 4.5 / 20.0 target (77.5% errore)
+      💡 Ottimizzazione completata per colazione con 1 alimenti. Porzioni arrotondate alla decina più vicina.
+
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: gnocchi, basilico
+
+   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: Scaglie di Parmigiano
+
+   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: bistecca_manzo, insalata_mista, aceto_balsamico
+
+
+📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈
+STATISTICHE GENERAZIONE
+📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈
+
+📊 RIEPILOGO:
+   • Giorni generati: 7 (1 da dati utente + 6 automatici)
+   • Pasti processati: 24
+   • Pasti ottimizzati con successo: 9
+   • Tasso di successo: 37.5%
+
+✅ Generazione completata con successo!

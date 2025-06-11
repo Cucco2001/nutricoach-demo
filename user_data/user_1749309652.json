@@ -477,31 +477,7 @@
         "alimenti": [
           {
             "nome_alimento": "Avena",
-            "quantita_g": 0,
-            "stato": "crudo",
-            "metodo_cottura": "non specificato",
-            "misura_casalinga": "non specificato",
-            "macronutrienti": {
-              "proteine": 0,
-              "carboidrati": 0,
-              "grassi": 0,
-              "kcal": 0
-            }
-          }
-        ],
-        "totali_pasto": {
-          "kcal_totali": 0,
-          "proteine_totali": 0,
-          "carboidrati_totali": 0,
-          "grassi_totali": 0
-        }
-      },
-      {
-        "nome_pasto": "spuntino_mattutino",
-        "alimenti": [
-          {
-            "nome_alimento": "Grissini",
-            "quantita_g": 0,
+            "quantita_g": 100,
             "stato": "crudo",
             "metodo_cottura": "non specificato",
             "misura_casalinga": "non specificato",

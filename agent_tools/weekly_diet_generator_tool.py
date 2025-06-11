@@ -145,7 +145,42 @@ def load_predefined_days() -> Dict[str, Any]:
     return predefined_days
 
 def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
-    """Estrae la struttura dei pasti del giorno 1 dal file utente."""
+    """
+    Estrae la struttura dei pasti del giorno 1 dal file utente.
+    
+    STRUTTURA OUTPUT:
+    {
+        "colazione": ["nome_alimento_1", "nome_alimento_2", ...],          # Lista alimenti per colazione
+        "spuntino_mattutino": ["nome_alimento_1", ...],                    # Lista alimenti per spuntino mattutino
+        "pranzo": ["nome_alimento_1", "nome_alimento_2", ...],             # Lista alimenti per pranzo
+        "spuntino_pomeridiano": ["nome_alimento_1", ...],                  # Lista alimenti per spuntino pomeridiano
+        "cena": ["nome_alimento_1", "nome_alimento_2", ...],               # Lista alimenti per cena
+        "spuntino_serale": ["nome_alimento_1", ...]                        # Lista alimenti per spuntino serale
+    }
+    
+    LOGICA:
+    - Cerca in user_data/user_{user_id}.json -> nutritional_info_extracted -> registered_meals
+    - Per ogni pasto registrato, estrae solo gli alimenti con quantita_g > 0
+    - Normalizza i nomi dei pasti usando get_canonical_meal_name()
+    - Include solo i pasti che hanno almeno un alimento valido
+    - I pasti vuoti risultano come liste vuote []
+    
+    ESEMPIO OUTPUT REALE:
+    {
+        "colazione": ["fiocchi d'avena", "latte scremato", "uva", "burro di arachidi"],
+        "spuntino_mattutino": [],           # Pasto non registrato o senza alimenti
+        "pranzo": [],                       # Pasto non registrato o senza alimenti
+        "spuntino_pomeridiano": [],         # Pasto non registrato o senza alimenti
+        "cena": [],                         # Pasto non registrato o senza alimenti
+        "spuntino_serale": []               # Pasto non registrato o senza alimenti
+    }
+    
+    Args:
+        user_id: ID dell'utente per cui estrarre la struttura
+        
+    Returns:
+        Dict con la struttura dei pasti o None se errore/file non trovato
+    """
     user_file_path = f"user_data/user_{user_id}.json"
     
     if not os.path.exists(user_file_path):
@@ -217,7 +252,56 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
 
 def adapt_meals_to_day1_structure(predefined_day: Dict[str, List[str]], 
                                 day1_structure: Dict[str, List[str]]) -> Dict[str, List[str]]:
-    """Adatta i pasti di un giorno predefinito alla struttura del giorno 1, escludendo i pasti vuoti."""
+    """
+    Adatta i pasti di un giorno predefinito alla struttura del giorno 1, escludendo i pasti vuoti.
+    
+    STRUTTURA INPUT:
+    predefined_day = {
+        "colazione": ["avena", "banana", "mandorle", "latte_scremato"],
+        "spuntino_mattutino": ["yogurt_greco", "mirtilli"],
+        "pranzo": ["riso_basmati", "pollo_petto", "zucchine", "olio_oliva"],
+        "spuntino_pomeridiano": ["mela", "noci"],
+        "cena": ["salmone", "patate_dolci", "broccoli", "olio_oliva"]
+    }
+    
+    day1_structure = {
+        "colazione": ["fiocchi d'avena", "latte scremato", "uva", "burro di arachidi"],  # NON VUOTO
+        "spuntino_mattutino": [],                                                        # VUOTO
+        "pranzo": [],                                                                    # VUOTO
+        "spuntino_pomeridiano": [],                                                      # VUOTO
+        "cena": [],                                                                      # VUOTO
+        "spuntino_serale": []                                                            # VUOTO
+    }
+    
+    STRUTTURA OUTPUT:
+    {
+        "colazione": ["avena", "banana", "mandorle", "latte_scremato"]  # Solo questo pasto viene incluso
+        # Altri pasti NON vengono inclusi perché vuoti nel day1_structure
+    }
+    
+    LOGICA:
+    1. Itera sui pasti del GIORNO 1 (day1_structure)
+    2. Per ogni pasto del giorno 1:
+       - Se ha alimenti (lista NON vuota):
+         * Cerca lo stesso pasto nel giorno predefinito
+         * Se lo trova: copia gli alimenti del predefinito nell'output
+         * Se non lo trova: crea un pasto vuoto nell'output
+       - Se è vuoto (lista vuota):
+         * SALTA completamente (non appare nell'output)
+    3. I pasti del predefinito non presenti nel giorno 1 vengono IGNORATI
+    
+    CASO D'USO:
+    - Serve per mantenere la stessa struttura temporale dei pasti dell'utente
+    - Evita di generare pasti che l'utente normalmente non consuma
+    - Garantisce coerenza tra giorno 1 (esistente) e giorni generati
+    
+    Args:
+        predefined_day: Giorno predefinito con pasti completi
+        day1_structure: Struttura estratta dal giorno 1 dell'utente
+        
+    Returns:
+        Dict con solo i pasti corrispondenti a quelli non vuoti del giorno 1
+    """
     adapted_day = {}
     
     for meal_name, food_list in day1_structure.items():
@@ -237,9 +321,68 @@ def adapt_meals_to_day1_structure(predefined_day: Dict[str, List[str]],
 
 def apply_special_rules_for_days_357(days_dict: Dict[str, Dict[str, List[str]]],
                                    day1_structure: Dict[str, List[str]]) -> Dict[str, Dict[str, List[str]]]:
-    """Applica le regole speciali per i giorni 3, 5, 7."""
+    """
+    Applica le regole speciali per i giorni 3, 5, 7: copia specifici pasti dal giorno 1.
+    
+    SCOPO:
+    Crea coerenza nella settimana copiando colazione e spuntini dal giorno 1 
+    ai giorni 3, 5, 7, mantenendo varietà solo per pranzo e cena.
+    
+    STRUTTURA INPUT:
+    days_dict = {
+        "giorno_2": {"colazione": ["cereali"], "pranzo": ["pasta"], ...},
+        "giorno_3": {"colazione": ["pane"], "pranzo": ["riso"], ...},
+        ...
+    }
+    
+    day1_structure = {
+        "colazione": ["avena", "latte"],              # Verrà copiato
+        "spuntino_mattutino": ["yogurt"],             # Verrà copiato  
+        "spuntino_pomeridiano": ["frutta"],           # Verrà copiato
+        "spuntino_serale": ["tisana"],                # Verrà copiato (AGGIUNTO)
+        "pranzo": ["pasta"],                          # NON verrà copiato
+        "cena": ["pollo"]                             # NON verrà copiato
+    }
+    
+    STRUTTURA OUTPUT:
+    days_dict = {
+        "giorno_2": {"colazione": ["cereali"], ...},           # INVARIATO
+        "giorno_3": {"colazione": ["avena", "latte"], ...},    # MODIFICATO: copiato dal giorno 1
+        "giorno_4": {"colazione": ["pane"], ...},              # INVARIATO
+        "giorno_5": {"colazione": ["avena", "latte"], ...},    # MODIFICATO: copiato dal giorno 1
+        "giorno_6": {"colazione": ["toast"], ...},             # INVARIATO
+        "giorno_7": {"colazione": ["avena", "latte"], ...}     # MODIFICATO: copiato dal giorno 1
+    }
+    
+    LOGICA:
+    1. Identifica giorni speciali: ["giorno_3", "giorno_5", "giorno_7"]
+    2. Identifica pasti da copiare: ["colazione", "spuntino_mattutino", "spuntino_pomeridiano", "spuntino_serale"]
+    3. Per ogni giorno speciale:
+       - Per ogni pasto da copiare:
+         * Copia ESATTAMENTE la lista alimenti dal day1_structure
+         * SOVRASCRIVE completamente il contenuto esistente
+         * Mantiene invariati pranzo e cena (varietà)
+    
+    MODIFICA RECENTE:
+    - Aggiunto "spuntino_serale" alla lista meals_to_copy
+    - Ora i giorni 3, 5, 7 avranno anche lo spuntino serale identico al giorno 1
+    - Maggiore coerenza negli spuntini durante la settimana
+    
+    BENEFICI:
+    • Pattern riconoscibile: giorni 1,3,5,7 hanno colazione/spuntini identici
+    • Abitudini consolidate: rispetta le preferenze per i pasti minori
+    • Varietà mantenuta: pranzo e cena rimangono diversificati
+    • Semplificazione: meno decisioni per pasti di routine
+    
+    Args:
+        days_dict: Dizionario con tutti i giorni già adattati
+        day1_structure: Struttura pasti del giorno 1 di riferimento
+        
+    Returns:
+        Dizionario modificato con regole speciali applicate ai giorni 3, 5, 7
+    """
     special_days = ["giorno_3", "giorno_5", "giorno_7"]
-    meals_to_copy = ["colazione", "spuntino_mattutino", "spuntino_pomeridiano"]
+    meals_to_copy = ["colazione", "spuntino_mattutino", "spuntino_pomeridiano", "spuntino_serale"]
     
     for day_key in special_days:
         if day_key in days_dict:
@@ -251,7 +394,7 @@ def apply_special_rules_for_days_357(days_dict: Dict[str, Dict[str, List[str]]],
     return days_dict
 
 
-def optimize_day_portions(day_meals: Dict[str, List[str]]) -> Dict[str, Any]:
+def optimize_day_portions(day_meals: Dict[str, List[str]], user_id: str) -> Dict[str, Any]:
     """Ottimizza le porzioni per tutti i pasti di un giorno."""
     optimized_day = {}
     
@@ -260,7 +403,7 @@ def optimize_day_portions(day_meals: Dict[str, List[str]]) -> Dict[str, Any]:
             continue
             
         try:
-            optimization_result = optimize_meal_portions(meal_name, food_list)
+            optimization_result = optimize_meal_portions(meal_name, food_list, user_id)
             
             if optimization_result.get("success", False):
                 optimized_day[meal_name] = {
@@ -290,7 +433,100 @@ def optimize_day_portions(day_meals: Dict[str, List[str]]) -> Dict[str, Any]:
 
 
 def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
-    """Genera automaticamente 6 giorni aggiuntivi di dieta."""
+    """
+    Genera automaticamente 6 giorni aggiuntivi di dieta (giorni 2-7) per l'utente.
+    
+    PIPELINE COMPLETA:
+    1. Estrae la struttura dei pasti del giorno 1 dell'utente
+    2. Carica i 6 giorni predefiniti dal file JSON
+    3. Adatta ogni giorno predefinito alla struttura del giorno 1
+    4. Applica regole speciali per giorni 3, 5, 7 (copia colazione e spuntini dal giorno 1)
+    5. Ottimizza le porzioni di ogni pasto per ogni giorno
+    
+    STRUTTURA INPUT UTENTE (esempio):
+    user_data/user_{user_id}.json → nutritional_info_extracted → registered_meals
+    [
+        {"nome_pasto": "colazione", "alimenti": [{"nome_alimento": "Avena", "quantita_g": 100}]},
+        {"nome_pasto": "pranzo", "alimenti": [{"nome_alimento": "Pollo", "quantita_g": 110}, ...]},
+        {"nome_pasto": "spuntino_pomeridiano", "alimenti": [{"nome_alimento": "Grissini", "quantita_g": 60}]},
+        {"nome_pasto": "cena", "alimenti": [{"nome_alimento": "Salmone al forno", "quantita_g": 150}]}
+    ]
+    
+    STRUTTURA OUTPUT:
+    {
+        "success": True,
+        "giorni_generati": {
+            "giorno_2": {
+                "colazione": {
+                    "alimenti": {"avena": 45, "banana": 120, "mandorle": 15, "latte_scremato": 200},
+                    "target_nutrients": {"kcal": 592, "proteine": 28, "carboidrati": 76, "grassi": 20},
+                    "actual_nutrients": {"kcal": 587, "proteine": 26, "carboidrati": 74, "grassi": 21},
+                    "optimization_summary": "Ottimizzazione completata con successo"
+                },
+                "pranzo": {...},
+                "spuntino_pomeridiano": {...},
+                "cena": {...}
+            },
+            "giorno_3": {
+                "colazione": {  # ← COPIATO dal giorno 1 (regola speciale)
+                    "alimenti": {"Avena": 100},  # Identico al giorno 1
+                    ...
+                },
+                "pranzo": {...},  # Diverso dal giorno 1
+                "spuntino_pomeridiano": {  # ← COPIATO dal giorno 1 (regola speciale)
+                    "alimenti": {"Grissini": 60, "Scaglie di Parmigiano": 30},  # Identico al giorno 1
+                    ...
+                },
+                "cena": {...}  # Diverso dal giorno 1
+            },
+            "giorno_4": {...},  # Completamente diverso dal giorno 1
+            "giorno_5": {...},  # Colazione e spuntini identici al giorno 1 (regola speciale)
+            "giorno_6": {...},  # Completamente diverso dal giorno 1
+            "giorno_7": {...}   # Colazione e spuntini identici al giorno 1 (regola speciale)
+        },
+        "user_id": "1749309652",
+        "giorni_totali": 6,
+        "summary": "Generati con successo 6 giorni aggiuntivi di dieta"
+    }
+    
+    LOGICA ADATTAMENTO:
+    • Solo i pasti NON vuoti del giorno 1 vengono generati negli altri giorni
+    • Se l'utente ha solo colazione e cena, tutti i giorni avranno solo colazione e cena
+    • Garantisce coerenza con le abitudini alimentari dell'utente
+    
+    REGOLE SPECIALI GIORNI 3, 5, 7:
+    • Colazione identica al giorno 1 (abitudini consolidate)
+    • Spuntino mattutino identico al giorno 1 (se presente)
+    • Spuntino pomeridiano identico al giorno 1 (se presente)  
+    • Spuntino serale identico al giorno 1 (se presente)
+    • Pranzo e cena mantengono varietà (diversi dal giorno 1)
+    
+    VANTAGGI:
+    • Pattern riconoscibile: giorni 1,3,5,7 hanno colazione/spuntini identici
+    • Varietà garantita: pranzo e cena sempre diversi
+    • Rispetto abitudini: mantiene la struttura temporale dell'utente
+    • Ottimizzazione automatica: calcola grammature precise per ogni pasto
+    
+    REQUISITI:
+    • File utente valido con pasti registrati
+    • Contesto Streamlit attivo per l'ottimizzazione delle porzioni
+    • File predefined_weekly_meals.json presente
+    
+    Args:
+        user_id: ID dell'utente (opzionale, usa get_user_id() se None)
+        
+    Returns:
+        Dict con i giorni generati e metadati del processo
+        
+    Raises:
+        ValueError: Se impossibile estrarre struttura giorno 1
+        Exception: Se errori durante il processo di generazione
+        
+    Examples:
+        >>> result = generate_6_additional_days("1749309652")
+        >>> print(f"Giorni generati: {result['giorni_totali']}")
+        >>> print(f"Pasti nel giorno 2: {len(result['giorni_generati']['giorno_2'])}")
+    """
     try:
         if user_id is None:
             user_id = get_user_id()
@@ -316,7 +552,7 @@ def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
         final_days = {}
         for day_key, day_meals in adapted_days.items():
             logger.info(f"Ottimizzazione {day_key}...")
-            final_days[day_key] = optimize_day_portions(day_meals)
+            final_days[day_key] = optimize_day_portions(day_meals, user_id)
         
         logger.info("Generazione completata con successo")
         

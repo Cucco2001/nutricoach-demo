@@ -48,7 +48,7 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
     Raises:
         ValueError: Se i dati non sono disponibili
     """
-    user_file_path = f"user_data/{user_id}.json"
+    user_file_path = f"user_data/user_{user_id}.json"
     
     print(f"🔍 DEBUG load_user_meal_targets:")
     print(f"   📁 User ID: {user_id}")
@@ -435,7 +435,7 @@ def calculate_actual_nutrients(portions: Dict[str, float],
     }
 
 
-def optimize_meal_portions(meal_name: str, food_list: List[str]) -> Dict[str, Any]:
+def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = None) -> Dict[str, Any]:
     """
     Ottimizza automaticamente le porzioni degli alimenti per un pasto specifico.
     
@@ -454,6 +454,7 @@ def optimize_meal_portions(meal_name: str, food_list: List[str]) -> Dict[str, An
     Args:
         meal_name: Nome del pasto (es: 'Colazione', 'Pranzo', 'Cena', 'Spuntino')
         food_list: Lista degli alimenti da includere nel pasto
+        user_id: ID dell'utente (opzionale, usa get_user_id() se None - per compatibilità con test)
         
     Returns:
         Dict contenente:
@@ -474,7 +475,8 @@ def optimize_meal_portions(meal_name: str, food_list: List[str]) -> Dict[str, An
     """
     try:
         # 1. Estrai l'ID utente e carica i target nutrizionali
-        user_id = get_user_id()
+        if user_id is None:
+            user_id = get_user_id()
         target_nutrients = load_user_meal_targets(user_id, meal_name)
         
         # 2. Verifica che tutti gli alimenti originali siano nel database
