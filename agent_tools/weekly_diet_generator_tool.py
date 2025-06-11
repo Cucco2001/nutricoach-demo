@@ -125,16 +125,43 @@ def get_user_id() -> str:
     return st.session_state.user_info["id"]
 
 
-def load_predefined_days() -> Dict[str, Any]:
-    """Carica i 6 giorni di dieta predefiniti dal file JSON."""
+def load_predefined_days(user_id: str) -> Dict[str, Any]:
+    """
+    Carica i 6 giorni di dieta predefiniti dal file JSON.
+    Seleziona automaticamente la versione pro o no_pro in base al fabbisogno proteico dell'utente.
+    
+    LOGICA SELEZIONE:
+    - Se proteine totali giornaliere > 130g → usa "predefined_days_pro"
+    - Se proteine totali giornaliere ≤ 130g → usa "predefined_days_no_pro"
+    
+    Args:
+        user_id: ID dell'utente per calcolare il fabbisogno proteico
+        
+    Returns:
+        Dict con i giorni predefiniti della versione appropriata
+    """
     predefined_file = "agent_tools/predefined_weekly_meals.json"
     
     try:
         if os.path.exists(predefined_file):
             with open(predefined_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                predefined_days = data.get("predefined_days", {})
-                logger.info(f"Caricati giorni predefiniti da {predefined_file}")
+            
+            # Calcola le proteine totali giornaliere dell'utente
+            total_daily_proteins = calculate_user_daily_proteins(user_id)
+            
+            # Seleziona la versione appropriata
+            if total_daily_proteins > 130:
+                predefined_days = data.get("predefined_days_pro", {})
+                version_used = "pro"
+                logger.info(f"Proteine giornaliere: {total_daily_proteins:.1f}g > 130g → Uso versione PRO")
+            else:
+                predefined_days = data.get("predefined_days_no_pro", {})
+                version_used = "no_pro"
+                logger.info(f"Proteine giornaliere: {total_daily_proteins:.1f}g ≤ 130g → Uso versione NO_PRO")
+            
+            logger.info(f"Caricati giorni predefiniti da {predefined_file} (versione: {version_used})")
+            
         else:
             logger.error(f"File {predefined_file} non trovato")
             predefined_days = {}
@@ -143,6 +170,41 @@ def load_predefined_days() -> Dict[str, Any]:
         predefined_days = {}
     
     return predefined_days
+
+
+def calculate_user_daily_proteins(user_id: str) -> float:
+    """
+    Calcola le proteine totali giornaliere dell'utente sommando tutti i pasti.
+    
+    Args:
+        user_id: ID dell'utente
+        
+    Returns:
+        Proteine totali giornaliere in grammi
+    """
+    try:
+        user_file_path = f"user_data/user_{user_id}.json"
+        
+        if not os.path.exists(user_file_path):
+            logger.warning(f"File utente {user_id} non trovato, uso default 100g proteine")
+            return 100.0
+        
+        with open(user_file_path, 'r', encoding='utf-8') as f:
+            user_data = json.load(f)
+        
+        # Estrai i totali giornalieri
+        nutritional_info = user_data.get("nutritional_info_extracted", {})
+        daily_macros = nutritional_info.get("daily_macros", {})
+        totali_giornalieri = daily_macros.get("totali_giornalieri", {})
+        
+        total_proteins = totali_giornalieri.get("proteine_totali", 100.0)
+        
+        logger.info(f"Proteine totali giornaliere utente {user_id}: {total_proteins}g")
+        return float(total_proteins)
+        
+    except Exception as e:
+        logger.error(f"Errore nel calcolo proteine per utente {user_id}: {str(e)}")
+        return 100.0  # Default fallback
 
 def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
     """
@@ -533,7 +595,7 @@ def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
         
         logger.info(f"Avvio generazione 6 giorni aggiuntivi per utente {user_id}")
         
-        predefined_days = load_predefined_days()
+        predefined_days = load_predefined_days(user_id)
         logger.info("Caricati giorni predefiniti")
         
         day1_structure = extract_day1_meal_structure(user_id)
