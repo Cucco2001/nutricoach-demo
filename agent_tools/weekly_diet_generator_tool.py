@@ -6,9 +6,9 @@ import os
 import json
 import logging
 from typing import Dict, List, Any, Optional
-import streamlit as st
 
 from .meal_optimization_tool import optimize_meal_portions
+from .nutridb_tool import get_user_id
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -118,20 +118,7 @@ def get_canonical_meal_name(meal_name: str) -> str:
     
     return canonical_meal_name
 
-def get_user_id() -> str:
-    """Estrae l'ID dell'utente dalla sessione Streamlit."""
-    # Prova prima a estrarre l'user_id dal nome del thread (per DeepSeek)
-    import threading
-    thread_name = threading.current_thread().name
-    if "DeepSeekExtraction-" in thread_name:
-        user_id = thread_name.replace("DeepSeekExtraction-", "")
-        logger.info(f"ID utente estratto dal thread DeepSeek: {user_id}")
-        return user_id
-    
-    # Fallback al session state di Streamlit
-    if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
-        raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
-    return st.session_state.user_info["id"]
+# get_user_id è ora importato da nutridb_tool
 
 
 def load_predefined_days(user_id: str) -> Dict[str, Any]:

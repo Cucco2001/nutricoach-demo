@@ -7,13 +7,13 @@ per un pasto in modo da rispettare i target nutrizionali del pasto.
 
 import os
 import json
-import streamlit as st
 from typing import Dict, List, Any, Tuple
 import logging
 from scipy.optimize import minimize
 import numpy as np
 
 from .nutridb import NutriDB
+from .nutridb_tool import get_user_id
 
 # Configurazione logging
 logging.basicConfig(level=logging.INFO)
@@ -27,20 +27,7 @@ except Exception as e:
     raise
 
 
-def get_user_id() -> str:
-    """Estrae l'ID dell'utente dalla sessione Streamlit."""
-    # Prova prima a estrarre l'user_id dal nome del thread (per DeepSeek)
-    import threading
-    thread_name = threading.current_thread().name
-    if "DeepSeekExtraction-" in thread_name:
-        user_id = thread_name.replace("DeepSeekExtraction-", "")
-        print(f"ID utente estratto dal thread DeepSeek: {user_id}")
-        return user_id
-    
-    # Fallback al session state di Streamlit
-    if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
-        raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
-    return st.session_state.user_info["id"]
+# get_user_id è ora importato da nutridb_tool
 
 
 def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
