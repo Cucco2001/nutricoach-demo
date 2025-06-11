@@ -69,7 +69,7 @@ class CaloricDataCompleter:
             return completed_data
             
         # Calcola BMR e fabbisogno base usando la funzione originale dell'agente
-        harris_benedict_result = self._calculate_harris_benedict(user_basic_info)
+        harris_benedict_result = self._calculate_harris_benedict()
         if harris_benedict_result:
             if not has_field(caloric_data, 'bmr'):
                 set_field(caloric_data, 'bmr', harris_benedict_result.get('bmr'))
@@ -156,42 +156,26 @@ class CaloricDataCompleter:
             print(f"[CALORIC_COMPLETER] Errore estrazione info utente: {str(e)}")
             return None
     
-    def _calculate_harris_benedict(self, user_info: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def _calculate_harris_benedict(self, user_id: str) -> Optional[Dict[str, Any]]:
         """
         Calcola BMR e fabbisogno base usando la funzione originale dell'agente.
         
         Args:
-            user_info: Informazioni di base dell'utente
+            user_id: ID dell'utente
             
         Returns:
             Risultato della funzione compute_Harris_Benedict_Equation
         """
         try:
-            sesso = user_info.get('sesso', '')
-            peso = user_info.get('peso')
-            altezza = user_info.get('altezza')
-            età = user_info.get('età')
-            attività = user_info.get('attività', 'Sedentario')
-            
-            # Verifica che tutti i dati necessari siano presenti
-            if not all([sesso, peso, altezza, età]):
-                print(f"[CALORIC_COMPLETER] Dati insufficienti per Harris-Benedict: sesso={sesso}, peso={peso}, altezza={altezza}, età={età}")
-                return None
-            
-            # Chiama la funzione originale dell'agente
-            result = compute_Harris_Benedict_Equation(
-                sesso=sesso,
-                peso=float(peso),
-                altezza=float(altezza),
-                età=float(età),
-                livello_attività=attività
-            )
+            # Chiama la funzione aggiornata che estrae automaticamente i dati dal file utente
+            result = compute_Harris_Benedict_Equation()
             
             # Verifica se c'è stato un errore
             if 'error' in result:
                 print(f"[CALORIC_COMPLETER] Errore in Harris-Benedict: {result['error']}")
                 return None
                 
+            print(f"[CALORIC_COMPLETER] Harris-Benedict calcolato con successo per utente {user_id}")
             return result
             
         except Exception as e:

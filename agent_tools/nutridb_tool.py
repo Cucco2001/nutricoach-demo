@@ -26,7 +26,7 @@ def validate_parameters(function_name: str, parameters: Dict[str, Any]) -> None:
         "get_LARN_fibre": ["kcal"],
         "get_LARN_lipidi_percentuali": [],
         "get_LARN_vitamine": ["sesso", "età"],
-        "compute_Harris_Benedict_Equation": ["sesso", "peso", "altezza", "età", "livello_attività"],
+        "compute_Harris_Benedict_Equation": [],
         "get_protein_multiplier": ["sports"],
         "check_ultraprocessed_foods": [],
         "calculate_sport_expenditure": ["sports"],
@@ -440,22 +440,116 @@ def get_LARN_vitamine(sesso: str, età: int) -> Dict[str, Any]:
         logger.error(f"Errore in get_LARN_vitamine: {str(e)}")
         return {"error": str(e)}
 
-def compute_Harris_Benedict_Equation(sesso: str, peso: float, altezza: float, età: float, livello_attività: str) -> Dict[str, Any]:
+def get_user_id() -> str:
     """
-    Calcola il metabolismo basale e il fabbisogno energetico totale.
+    Ottiene l'ID dell'utente dal session state di Streamlit.
+    
+    Returns:
+        str: ID dell'utente
+        
+    Raises:
+        ValueError: Se l'utente non è loggato o l'ID non è disponibile
+    """
+    import streamlit as st
+    
+    if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
+        raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
+    return st.session_state.user_info["id"]
+
+
+def load_user_basic_data(user_id: str = None) -> Dict[str, Any]:
+    """
+    Carica i dati di base dell'utente dal file JSON.
     
     Args:
-        sesso: Sesso della persona ("maschio" o "femmina")
-        peso: Peso in kg
-        altezza: Altezza in cm
-        età: Età in anni
-        livello_attività: Livello di attività fisica
+        user_id: ID dell'utente (opzionale, usa get_user_id() se None)
+        
+    Returns:
+        Dict con i dati di base dell'utente
+        
+    Raises:
+        ValueError: Se il file utente non esiste o i dati sono incompleti
+    """
+    if user_id is None:
+        user_id = get_user_id()
+    
+    user_file_path = f"user_data/user_{user_id}.json"
+    
+    logger.info(f"🔍 DEBUG load_user_basic_data:")
+    logger.info(f"   📁 User ID: {user_id}")
+    logger.info(f"   📄 File path: {user_file_path}")
+    
+    if not os.path.exists(user_file_path):
+        raise ValueError(f"File utente {user_id} non trovato.")
+    
+    with open(user_file_path, 'r', encoding='utf-8') as f:
+        user_data = json.load(f)
+    
+    logger.info(f"   ✅ File caricato con successo")
+    
+    # Estrai i dati di base dell'utente (prova multiple sezioni)
+    user_info = user_data.get("user_info", {})
+    nutritional_info = user_data.get("nutritional_info", {})
+    
+    # Mapping robusto per i campi - prova prima nutritional_info poi user_info
+    basic_data = {
+        "sesso": (nutritional_info.get("sesso") or user_info.get("sesso") or 
+                 nutritional_info.get("gender") or user_info.get("gender", "")),
+        "peso": (nutritional_info.get("peso") or user_info.get("peso") or 
+                nutritional_info.get("weight") or user_info.get("weight") or 
+                nutritional_info.get("peso_kg") or user_info.get("peso_kg", 0)),
+        "altezza": (nutritional_info.get("altezza") or user_info.get("altezza") or 
+                   nutritional_info.get("height") or user_info.get("height") or 
+                   nutritional_info.get("altezza_cm") or user_info.get("altezza_cm", 0)),
+        "età": (nutritional_info.get("età") or user_info.get("età") or 
+               nutritional_info.get("age") or user_info.get("age") or 
+               nutritional_info.get("eta") or user_info.get("eta", 0)),
+        "attività": (nutritional_info.get("attività") or user_info.get("attività") or 
+                    nutritional_info.get("activity_level") or user_info.get("activity_level") or 
+                    nutritional_info.get("livello_attivita") or user_info.get("livello_attivita", "Sedentario"))
+    }
+    
+    logger.info(f"   📊 Dati estratti:")
+    logger.info(f"      Sesso: {basic_data['sesso']}")
+    logger.info(f"      Peso: {basic_data['peso']} kg")
+    logger.info(f"      Altezza: {basic_data['altezza']} cm")
+    logger.info(f"      Età: {basic_data['età']} anni")
+    logger.info(f"      Attività: {basic_data['attività']}")
+    
+    # Validazione dati
+    required_fields = ["sesso", "peso", "altezza", "età"]
+    missing_fields = [field for field in required_fields 
+                     if not basic_data[field] or basic_data[field] == 0]
+    
+    if missing_fields:
+        raise ValueError(f"Dati utente incompleti. Campi mancanti: {', '.join(missing_fields)}")
+    
+    return basic_data
+
+
+def compute_Harris_Benedict_Equation(user_id: str = None) -> Dict[str, Any]:
+    """
+    Calcola il metabolismo basale e il fabbisogno energetico totale per l'utente.
+    Estrae automaticamente i dati necessari dal file utente.
+    
+    Args:
+        user_id: ID dell'utente (opzionale, usa get_user_id() se None)
         
     Returns:
         Dict con metabolismo basale e fabbisogno giornaliero
     """
     try:
-        sesso = sesso.lower()
+        # Carica i dati dell'utente
+        user_data = load_user_basic_data()
+        
+        sesso = str(user_data["sesso"]).lower()
+        peso = float(user_data["peso"])
+        altezza = float(user_data["altezza"])
+        età = float(user_data["età"])
+        livello_attività = str(user_data["attività"])
+        
+        logger.info(f"Calcolo Harris-Benedict per utente {user_id or 'current'}")
+        logger.info(f"Parametri: {sesso}, {peso}kg, {altezza}cm, {età}anni, {livello_attività}")
         
         # Calcolo BMR (Metabolismo Basale)
         if sesso == "m" or sesso == "maschio":
@@ -473,7 +567,8 @@ def compute_Harris_Benedict_Equation(sesso: str, peso: float, altezza: float, et
         return {
             "bmr": round(bmr),
             "fabbisogno_giornaliero": round(fabbisogno_giornaliero),
-            "laf_utilizzato": laf
+            "laf_utilizzato": laf,
+            "user_id": user_id or get_user_id()
         }
     except Exception as e:
         logger.error(f"Errore in compute_Harris_Benedict_Equation: {str(e)}")

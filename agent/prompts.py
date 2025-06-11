@@ -70,17 +70,11 @@ available_tools = [
         "type": "function",
         "function": {
             "name": "compute_Harris_Benedict_Equation",
-            "description": "Calcola il metabolismo basale e il fabbisogno energetico totale.",
+            "description": "Calcola automaticamente il metabolismo basale e il fabbisogno energetico totale dell'utente. Estrae automaticamente i dati necessari (sesso, peso, altezza, età, livello di attività) dal file utente corrente.",
             "parameters": {
                 "type": "object",
-                "properties": {
-                    "sesso": {"type": "string", "enum": ["maschio", "femmina"], "description": "Sesso della persona"},
-                    "peso": {"type": "number", "minimum": 30, "maximum": 200, "description": "Peso in kg"},
-                    "altezza": {"type": "number", "minimum": 140, "maximum": 220, "description": "Altezza in cm"},
-                    "età": {"type": "number", "minimum": 18, "maximum": 100, "description": "Età in anni"},
-                    "livello_attività": {"type": "string", "enum": ["Sedentario", "Leggermente attivo", "Attivo", "Molto attivo"], "description": "Livello di attività fisica"}
-                },
-                "required": ["sesso", "peso", "altezza", "età", "livello_attività"]
+                "properties": {},
+                "required": []
             }
         }
     },
@@ -438,9 +432,7 @@ Scrivi SEMPRE unità di misura nel testo normale:
 - Corretto: 2595 kcal
 - Sbagliato: 33.6 \\ g o 2595 \\ kcal
 
-Esempio: Per l'equazione di Harris-Benedict scrivi così:
-MB = 88.362 + (13.397 * peso in kg) + (4.799 * altezza in cm) - (5.677 * età in anni)
-
+Esempio: 
 Fabbisogno totale = MB * LAF
 Fabbisogno totale = 1695 * 1.75 = 2967 kcal/giorno
 
@@ -595,12 +587,6 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
 FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
 1. Calcola fabbisogno energetico:
    - Usa compute_Harris_Benedict_Equation per calcolare il metabolismo basale e il fabbisogno energetico totale
-        - Parametri richiesti:
-            * sesso: "maschio" o "femmina"
-            * peso: in kg
-            * altezza: in cm
-            * età: in anni
-            * livello_attività: "Sedentario" (LAF 1.30), "Leggermente attivo" (LAF 1.45), "Attivo" (LAF 1.60), "Molto attivo" (LAF 1.75)
         - La funzione restituirà:
             * bmr: metabolismo basale in kcal
             * fabbisogno_giornaliero: fabbisogno totale in kcal
