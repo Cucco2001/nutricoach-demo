@@ -156,12 +156,10 @@ class CaloricDataCompleter:
             print(f"[CALORIC_COMPLETER] Errore estrazione info utente: {str(e)}")
             return None
     
-    def _calculate_harris_benedict(self, user_id: str) -> Optional[Dict[str, Any]]:
+    def _calculate_harris_benedict(self) -> Optional[Dict[str, Any]]:
         """
         Calcola BMR e fabbisogno base usando la funzione originale dell'agente.
-        
-        Args:
-            user_id: ID dell'utente
+        Usa automaticamente l'utente corrente in sessione.
             
         Returns:
             Risultato della funzione compute_Harris_Benedict_Equation
@@ -175,7 +173,7 @@ class CaloricDataCompleter:
                 print(f"[CALORIC_COMPLETER] Errore in Harris-Benedict: {result['error']}")
                 return None
                 
-            print(f"[CALORIC_COMPLETER] Harris-Benedict calcolato con successo per utente {user_id}")
+            print(f"[CALORIC_COMPLETER] Harris-Benedict calcolato con successo")
             return result
             
         except Exception as e:

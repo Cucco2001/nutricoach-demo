@@ -457,7 +457,7 @@ def get_user_id() -> str:
     return st.session_state.user_info["id"]
 
 
-def load_user_basic_data(user_id: str = None) -> Dict[str, Any]:
+def load_user_basic_data() -> Dict[str, Any]:
     """
     Carica i dati di base dell'utente dal file JSON.
     
@@ -470,8 +470,7 @@ def load_user_basic_data(user_id: str = None) -> Dict[str, Any]:
     Raises:
         ValueError: Se il file utente non esiste o i dati sono incompleti
     """
-    if user_id is None:
-        user_id = get_user_id()
+    user_id = get_user_id()
     
     user_file_path = f"user_data/user_{user_id}.json"
     
@@ -527,7 +526,7 @@ def load_user_basic_data(user_id: str = None) -> Dict[str, Any]:
     return basic_data
 
 
-def compute_Harris_Benedict_Equation(user_id: str = None) -> Dict[str, Any]:
+def compute_Harris_Benedict_Equation() -> Dict[str, Any]:
     """
     Calcola il metabolismo basale e il fabbisogno energetico totale per l'utente.
     Estrae automaticamente i dati necessari dal file utente.
