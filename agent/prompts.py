@@ -317,6 +317,23 @@ available_tools = [
                 "required": ["meal_name", "food_list"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "generate_6_additional_days",
+            "description": "Genera automaticamente 6 giorni aggiuntivi di dieta (giorni 2-7) mantenendo la struttura e i target nutrizionali del giorno 1. Utilizza il sistema di selezione automatica delle diete basato sui macronutrienti dell'utente e applica ottimizzazione delle porzioni per ogni pasto.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string",
+                        "description": "ID dell'utente (opzionale, usa l'utente corrente se non specificato)"
+                    }
+                },
+                "required": []
+            }
+        }
     }
 ]
 
@@ -797,6 +814,30 @@ FASE 7 - CONTROLLO ALIMENTI ULTRAPROCESSATI
 3. Se il limite è superato, SOSTITUISCI gli alimenti ultraprocessati con alternative meno processate
 
 IMPORTANTE: Questa fase è OBBLIGATORIA e deve essere eseguita sempre dopo aver completato TUTTI i pasti della giornata.
+
+FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
+
+1. **Generazione automatica dei giorni 2-7**:
+   - Usa il tool generate_6_additional_days per generare automaticamente 6 giorni aggiuntivi di dieta in base alla struttura e ai target nutrizionali del giorno 1
+
+2. **Adattamento alle preferenze e intolleranze dell'utente**:
+   - Confronta TUTTI gli alimenti generati con le intolleranze/allergie dichiarate dall'utente
+   - Se trovi alimenti non compatibili:
+     * Identifica sostituzioni appropriate mantenendo i target nutrizionali
+     * Usa il tool optimize_meal_portions per ricalcolare le porzioni con gli alimenti sostitutivi
+     * Mantieni il bilanciamento nutrizionale del pasto
+   - Considera le preferenze alimentari dell'utente per migliorare la gradibilità dei pasti
+
+3. **Presentazione finale al cliente**:
+   - Presenta la dieta settimanale completa (giorni 1-7) in modo chiaro e organizzato
+   - Include per ogni giorno:
+     * Tutti i pasti con alimenti e porzioni in grammi
+     * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
+     * Statistiche nutrizionali totali di ciascun giorn
+   - Riassumi le caratteristiche nutrizionali della settimana
+
+IMPORTANTE: Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
+
 """
 
 
@@ -896,8 +937,13 @@ FASE 6: Creazione e modifica dei singoli pasti
 FASE 7: Controllo ultraprocessati
 - Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
 
+FASE 8: Generazione dieta settimanale completa
+- Usa il tool generate_6_additional_days per generare 6 giorni aggiuntivi di dieta (giorni 2-7)
+- Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
+- Presenta la dieta settimanale completa (giorni 1-7) al cliente in formato finale
+
 IMPORTANTE: 
-- Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 7
+- Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 8
 - Usa SEMPRE i tool indicati per i calcoli e i ragionamenti (specialmente optimize_meal_portions)
 - Prenditi il tempo necessario per procedere e ragionare su ogni fase
 - Comunica SEMPRE i ragionamenti e i calcoli in modo chiaro e semplice senza usare LaTeX
@@ -925,7 +971,8 @@ def get_follow_up_prompt(phase: str, context: str = ""):
         "FASE_4": "Procedi con la distribuzione delle calorie tra i pasti.",
         "FASE_5": "Continua con la distribuzione dei macronutrienti tra i pasti.",
         "FASE_6": "Procedi con la creazione dei singoli pasti.",
-        "FASE_7": "Concludi con il controllo vitaminico e degli ultraprocessati."
+        "FASE_7": "Continua con il controllo vitaminico e degli ultraprocessati.",
+        "FASE_8": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days e presenta il piano finale al cliente."
     }
     
     prompt = base_prompts.get(phase, "Continua con la fase successiva del piano nutrizionale.")
