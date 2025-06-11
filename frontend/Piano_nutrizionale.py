@@ -188,16 +188,44 @@ class PianoNutrizionale:
         Returns:
             dict: Dati nutrizionali estratti o None se non trovati
         """
-        user_file_path = f"user_data/{user_id}.json"
+        # Gestisci diversi formati di user_id
+        possible_paths = [
+            f"user_data/{user_id}.json",
+            f"user_data/user_{user_id}.json"
+        ]
         
-        if not os.path.exists(user_file_path):
-            st.warning("📝 File utente non trovato.")
+        user_file_path = None
+        for path in possible_paths:
+            if os.path.exists(path):
+                user_file_path = path
+                break
+        
+        if not user_file_path:
+            st.warning(f"📝 File utente non trovato per ID: {user_id}")
+            st.info("💡 Possibili percorsi cercati:")
+            for path in possible_paths:
+                st.info(f"   • {path}")
             return None
             
-        with open(user_file_path, 'r', encoding='utf-8') as f:
-            user_data = json.load(f)
-        
-        return user_data.get("nutritional_info_extracted", {})
+        try:
+            with open(user_file_path, 'r', encoding='utf-8') as f:
+                user_data = json.load(f)
+            
+            extracted_data = user_data.get("nutritional_info_extracted", {})
+            
+            # Verifica che ci siano effettivamente dati utili
+            if not extracted_data:
+                st.info("🤖 Nessuna sezione 'nutritional_info_extracted' trovata nel file utente.")
+                return None
+                
+            return extracted_data
+            
+        except json.JSONDecodeError as e:
+            st.error(f"❌ Errore nel parsing del file JSON: {str(e)}")
+            return None
+        except Exception as e:
+            st.error(f"❌ Errore nel caricamento del file: {str(e)}")
+            return None
     
     def _display_caloric_needs_section(self, extracted_data):
         """
@@ -206,7 +234,7 @@ class PianoNutrizionale:
         Args:
             extracted_data: Dati nutrizionali estratti
         """
-        if "caloric_needs" not in extracted_data:
+        if not extracted_data or "caloric_needs" not in extracted_data:
             return
             
         with st.expander("🔥 Fabbisogno Energetico Giornaliero", expanded=False):
@@ -263,7 +291,7 @@ class PianoNutrizionale:
         Args:
             extracted_data: Dati nutrizionali estratti
         """
-        if "macros_total" not in extracted_data:
+        if not extracted_data or "macros_total" not in extracted_data:
             return
             
         with st.expander("🥗 Distribuzione Calorica Giornaliera", expanded=False):
@@ -361,7 +389,7 @@ class PianoNutrizionale:
         Args:
             extracted_data: Dati nutrizionali estratti
         """
-        if "daily_macros" not in extracted_data:
+        if not extracted_data or "daily_macros" not in extracted_data:
             return
             
         with st.expander("🍽️ Piano Pasti Giornaliero", expanded=False):
@@ -385,6 +413,10 @@ class PianoNutrizionale:
         meal_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD']
         
         for i, (pasto_nome, pasto_data) in enumerate(distribuzione_pasti.items()):
+            # Controllo di sicurezza per pasto_data
+            if not pasto_data:
+                continue
+                
             color = meal_colors[i % len(meal_colors)]
             kcal = pasto_data.get('kcal', 0)
             percentuale = pasto_data.get('percentuale_kcal', 0)
@@ -407,6 +439,10 @@ class PianoNutrizionale:
         Args:
             pasto_data: Dati del pasto
         """
+        # Controllo di sicurezza per pasto_data
+        if not pasto_data:
+            return
+            
         col1, col2, col3 = st.columns(3)
         
         macro_info = [
@@ -422,22 +458,320 @@ class PianoNutrizionale:
     
     def _display_registered_meals_section(self, extracted_data):
         """
-        Mostra la sezione dei pasti creati/registrati.
+        Mostra la sezione dei pasti creati/registrati organizzati per giorno.
         
         Args:
             extracted_data: Dati nutrizionali estratti
         """
-        if "registered_meals" not in extracted_data:
+        # Verifica che extracted_data non sia None
+        if not extracted_data:
             return
             
-        with st.expander("👨‍🍳 Ricette e Pasti Creati", expanded=False):
-            meals_data = extracted_data["registered_meals"]
+        # Controlla se ci sono dati da mostrare
+        has_day1_data = "registered_meals" in extracted_data and extracted_data["registered_meals"]
+        has_weekly_data = "weekly_diet" in extracted_data and extracted_data["weekly_diet"]
+        
+        if not has_day1_data and not has_weekly_data:
+            return
             
-            # Ordina i pasti in ordine cronologico corretto
-            sorted_meals = self._sort_meals_by_time(meals_data)
+        with st.expander("📅 Piano Settimanale - Ricette e Pasti Creati", expanded=True):
+            # Mostra i giorni disponibili
+            self._display_weekly_plan_overview(extracted_data)
             
+            # Crea il menu a tendina per selezionare il giorno
+            self._display_day_selector_and_content(extracted_data, has_day1_data, has_weekly_data)
+    
+    def _display_weekly_plan_overview(self, extracted_data):
+        """
+        Mostra una panoramica dei giorni disponibili nel piano settimanale.
+        
+        Args:
+            extracted_data: Dati nutrizionali estratti
+        """
+        if not extracted_data:
+            return
+            
+        has_day1 = "registered_meals" in extracted_data and extracted_data["registered_meals"]
+        weekly_diet = extracted_data.get("weekly_diet", {})
+        
+        available_days = []
+        if has_day1:
+            available_days.append("Giorno 1")
+        
+        for day_num in range(2, 8):
+            day_key = f"giorno_{day_num}"
+            if day_key in weekly_diet and weekly_diet[day_key]:
+                available_days.append(f"Giorno {day_num}")
+        
+        if available_days:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
+                        padding: 15px; border-radius: 12px; margin: 10px 0; color: white; text-align: center;">
+                <h4>📊 Piano Settimanale Disponibile</h4>
+                <p><strong>Giorni con dati:</strong> {' • '.join(available_days)}</p>
+                <p><em>Totale giorni pianificati: {len(available_days)}/7</em></p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    def _display_day_selector_and_content(self, extracted_data, has_day1_data, has_weekly_data):
+        """
+        Mostra il selettore di giorni e il contenuto del giorno selezionato.
+        
+        Args:
+            extracted_data: Dati nutrizionali estratti
+            has_day1_data: True se ci sono dati del giorno 1
+            has_weekly_data: True se ci sono dati della settimana
+        """
+        # Prepara le opzioni del menu a tendina
+        day_options = {}
+        day_names = {
+            1: "Lunedì", 2: "Martedì", 3: "Mercoledì", 4: "Giovedì", 
+            5: "Venerdì", 6: "Sabato", 7: "Domenica"
+        }
+        
+        # Aggiungi Giorno 1 se disponibile
+        if has_day1_data:
+            day_options["Giorno 1"] = (1, extracted_data["registered_meals"], True)
+        
+        # Aggiungi Giorni 2-7 se disponibili
+        if has_weekly_data:
+            weekly_diet = extracted_data["weekly_diet"]
+            for day_num in range(2, 8):
+                day_key = f"giorno_{day_num}"
+                if day_key in weekly_diet and weekly_diet[day_key]:
+                    day_label = f"Giorno {day_num}"
+                    day_options[day_label] = (day_num, weekly_diet[day_key], False)
+        
+        # Se non ci sono giorni disponibili, non mostrare nulla
+        if not day_options:
+            st.info("📝 Nessun giorno di dieta disponibile")
+            return
+        
+        # Menu a tendina per selezionare il giorno
+        st.markdown("### 📅 Seleziona il giorno da visualizzare:")
+        
+        selected_day_label = st.selectbox(
+            "Scegli un giorno:",
+            options=list(day_options.keys()),
+            format_func=lambda x: f"{day_names.get(int(x.split()[-1]), '')} {x}",
+            key="day_selector"
+        )
+        
+        # Mostra il contenuto del giorno selezionato
+        if selected_day_label and selected_day_label in day_options:
+            day_num, day_data, is_registered_meals = day_options[selected_day_label]
+            
+            st.markdown("---")  # Separatore
+            
+            # Mostra i pasti del giorno selezionato
+            self._display_day_meals(day_num, day_data, is_registered_meals)
+    
+    def _display_day_meals(self, day_num, day_data, is_registered_meals=False):
+        """
+        Mostra i pasti di un singolo giorno.
+        
+        Args:
+            day_num: Numero del giorno (1-7)
+            day_data: Dati del giorno (lista per registered_meals, dict per weekly_diet)
+            is_registered_meals: True se i dati vengono da registered_meals (giorno 1)
+        """
+        # Determina il nome del giorno
+        day_names = {
+            1: "Lunedì", 2: "Martedì", 3: "Mercoledì", 4: "Giovedì", 
+            5: "Venerdì", 6: "Sabato", 7: "Domenica"
+        }
+        day_name = day_names.get(day_num, f"Giorno {day_num}")
+        
+        # Header del giorno
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); 
+                    padding: 20px; border-radius: 15px; margin: 20px 0; color: white; text-align: center;">
+            <h2>📅 {day_name} (Giorno {day_num})</h2>
+            <p><em>{'Piano base creato' if is_registered_meals else 'Piano settimanale generato'}</em></p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if is_registered_meals:
+            # Giorno 1: registered_meals (lista di pasti)
+            sorted_meals = self._sort_meals_by_time(day_data)
             for i, meal in enumerate(sorted_meals):
                 self._display_single_meal(meal, i, len(sorted_meals))
+        else:
+            # Giorni 2-7: weekly_diet (dict di pasti)
+            self._display_weekly_diet_day(day_data)
+    
+    def _display_weekly_diet_day(self, day_data):
+        """
+        Mostra i pasti di un giorno dalla weekly_diet.
+        
+        Args:
+            day_data: Dati del giorno dalla sezione weekly_diet
+        """
+        # Ordine dei pasti
+        meal_order = ['colazione', 'spuntino_mattutino', 'pranzo', 'spuntino_pomeridiano', 'cena', 'spuntino_serale']
+        
+        meals_found = 0
+        for meal_name in meal_order:
+            if meal_name in day_data and day_data[meal_name]:
+                meal_data = day_data[meal_name]
+                self._display_weekly_diet_meal(meal_name, meal_data)
+                meals_found += 1
+        
+        # Se non ci sono pasti nell'ordine standard, mostra tutti quelli disponibili
+        if meals_found == 0:
+            for meal_name, meal_data in day_data.items():
+                if meal_data:
+                    self._display_weekly_diet_meal(meal_name, meal_data)
+    
+    def _display_weekly_diet_meal(self, meal_name, meal_data):
+        """
+        Mostra un singolo pasto dalla weekly_diet.
+        
+        Args:
+            meal_name: Nome del pasto
+            meal_data: Dati del pasto dalla weekly_diet
+        """
+        # Converti il nome del pasto in forma leggibile
+        meal_display_names = {
+            'colazione': '🌅 Colazione',
+            'spuntino_mattutino': '🥤 Spuntino Mattutino', 
+            'pranzo': '🍽️ Pranzo',
+            'spuntino_pomeridiano': '🥨 Spuntino Pomeridiano',
+            'cena': '🌙 Cena',
+            'spuntino_serale': '🌃 Spuntino Serale'
+        }
+        
+        display_name = meal_display_names.get(meal_name, f'🍽️ {meal_name.title()}')
+        
+        # Header del pasto
+        st.markdown(f'''
+        <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
+                    padding: 15px; border-radius: 12px; margin: 15px 0; color: white;">
+            <h3>{display_name}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # Alimenti del pasto
+        if "alimenti" in meal_data and meal_data["alimenti"]:
+            st.markdown("**🛒 Ingredienti:**")
+            
+            alimenti = meal_data["alimenti"]
+            
+            # Gestisce sia formato lista che formato dizionario
+            if isinstance(alimenti, list):
+                # Formato lista: [{"nome_alimento": "...", "quantita_g": ..., "misura_casalinga": "..."}]
+                for alimento in alimenti:
+                    nome = alimento.get('nome_alimento', 'N/A')
+                    quantita = alimento.get('quantita_g', 'N/A')
+                    misura = alimento.get('misura_casalinga', '')
+                    
+                    st.markdown(f'''
+                    <div class="ingredient-card">
+                        <strong>{nome}</strong><br>
+                        📏 {quantita}g{f'<br>🥄 {misura}' if misura else ''}
+                    </div>
+                    ''', unsafe_allow_html=True)
+            
+            elif isinstance(alimenti, dict):
+                # Formato dizionario: {"nome_alimento": quantita_g}
+                for nome_alimento, quantita in alimenti.items():
+                    if isinstance(quantita, (int, float)) and quantita > 0:
+                        st.markdown(f'''
+                        <div class="ingredient-card">
+                            <strong>{nome_alimento}</strong><br>
+                            📏 {quantita}g
+                        </div>
+                        ''', unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'''
+                        <div class="ingredient-card">
+                            <strong>{nome_alimento}</strong><br>
+                            📏 Quantità da definire
+                        </div>
+                        ''', unsafe_allow_html=True)
+        
+        # Valori nutrizionali target e effettivi (se presenti)
+        self._display_weekly_diet_nutrition(meal_data)
+        
+        # Separatore
+        st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
+    
+    def _display_weekly_diet_nutrition(self, meal_data):
+        """
+        Mostra i valori nutrizionali di un pasto dalla weekly_diet.
+        
+        Args:
+            meal_data: Dati del pasto
+        """
+        target_nutrients = meal_data.get("target_nutrients", {})
+        actual_nutrients = meal_data.get("actual_nutrients", {})
+        
+        if target_nutrients or actual_nutrients:
+            st.markdown("**📊 Valori Nutrizionali:**")
+            
+            # Se ci sono sia target che actual, mostra entrambi
+            if target_nutrients and actual_nutrients:
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("**🎯 Target:**")
+                    self._display_nutrition_metrics(target_nutrients, prefix="target")
+                
+                with col2:
+                    st.markdown("**✅ Effettivi:**")
+                    self._display_nutrition_metrics(actual_nutrients, prefix="actual")
+            
+            # Altrimenti mostra quello disponibile
+            elif target_nutrients:
+                st.markdown("**🎯 Valori Target:**")
+                self._display_nutrition_metrics(target_nutrients, prefix="target")
+            elif actual_nutrients:
+                st.markdown("**📈 Valori Nutrizionali:**")
+                self._display_nutrition_metrics(actual_nutrients, prefix="actual")
+        
+        # Mostra optimization summary se presente
+        if "optimization_summary" in meal_data and meal_data["optimization_summary"]:
+            st.markdown(f"""
+            <div class="info-card">
+                <strong>🔧 Note Ottimizzazione:</strong><br>
+                {meal_data["optimization_summary"]}
+            </div>
+            """, unsafe_allow_html=True)
+    
+    def _display_nutrition_metrics(self, nutrients, prefix=""):
+        """
+        Mostra le metriche nutrizionali in formato colonne.
+        
+        Args:
+            nutrients: Dizionario con i valori nutrizionali
+            prefix: Prefisso per distinguere target/actual
+        """
+        col1, col2, col3, col4 = st.columns(4)
+        nutrition_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
+        
+        # Estrai i valori nutritivi
+        kcal = nutrients.get('kcal', nutrients.get('kcal_totali', 0))
+        proteine = nutrients.get('proteine', nutrients.get('proteine_g', 0))
+        carboidrati = nutrients.get('carboidrati', nutrients.get('carboidrati_g', 0))
+        grassi = nutrients.get('grassi', nutrients.get('grassi_g', 0))
+        
+        nutrition_data = [
+            ('🔥 Calorie', f"{kcal} kcal"),
+            ('🥩 Proteine', f"{proteine}g"),
+            ('🍞 Carboidrati', f"{carboidrati}g"),
+            ('🥑 Grassi', f"{grassi}g")
+        ]
+        
+        for k, (col, (label, value)) in enumerate(zip([col1, col2, col3, col4], nutrition_data)):
+            with col:
+                color = nutrition_colors[k]
+                st.markdown(f'''
+                <div style="background: {color}; padding: 8px; border-radius: 6px; 
+                            text-align: center; color: white; margin: 2px;">
+                    <div style="font-size: 10px;">{label}</div>
+                    <div style="font-size: 12px; font-weight: bold;">{value}</div>
+                </div>
+                ''', unsafe_allow_html=True)
     
     def _sort_meals_by_time(self, meals_data):
         """
@@ -589,6 +923,11 @@ class PianoNutrizionale:
             return
             
         totali = meal["totali_pasto"]
+        
+        # Controllo di sicurezza per totali None - non mostra nulla se non disponibili
+        if not totali:
+            return
+        
         st.markdown("**📊 Valori Nutrizionali Totali:**")
         
         col1, col2, col3, col4 = st.columns(4)

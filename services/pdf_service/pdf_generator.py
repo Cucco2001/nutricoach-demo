@@ -135,7 +135,7 @@ class PDFGenerator:
         self._add_caloric_needs_section(story, extracted_data)
         self._add_macros_section(story, extracted_data)
         self._add_daily_plan_section(story, extracted_data)
-        self._add_registered_meals_section(story, extracted_data)
+        self._add_weekly_diet_section(story, extracted_data)
         
         # Footer informativo
         self._add_document_footer(story)
@@ -152,6 +152,7 @@ class PDFGenerator:
     def _load_user_nutritional_data(self, user_id: str) -> Optional[Dict[str, Any]]:
         """
         Carica i dati nutrizionali dell'utente dal file JSON.
+        Gestisce entrambi i formati di file: user_data/{user_id}.json e user_data/user_{user_id}.json
         
         Args:
             user_id: ID dell'utente
@@ -159,15 +160,40 @@ class PDFGenerator:
         Returns:
             dict: Dati nutrizionali estratti o None se non trovati
         """
-        user_file_path = f"user_data/{user_id}.json"
+        # Percorsi possibili per il file utente
+        possible_paths = [
+            f"user_data/{user_id}.json",
+            f"user_data/user_{user_id}.json"
+        ]
         
-        if not os.path.exists(user_file_path):
+        user_data = None
+        
+        # Prova i percorsi possibili
+        for user_file_path in possible_paths:
+            if os.path.exists(user_file_path):
+                try:
+                    with open(user_file_path, 'r', encoding='utf-8') as f:
+                        user_data = json.load(f)
+                    print(f"[PDF_SERVICE] File utente caricato da: {user_file_path}")
+                    break
+                except (json.JSONDecodeError, Exception) as e:
+                    print(f"[PDF_ERROR] Errore lettura {user_file_path}: {str(e)}")
+                    continue
+        
+        if not user_data:
+            print(f"[PDF_ERROR] File utente non trovato per user_id: {user_id}")
+            print(f"[PDF_ERROR] Percorsi cercati: {possible_paths}")
             return None
-            
-        with open(user_file_path, 'r', encoding='utf-8') as f:
-            user_data = json.load(f)
         
-        return user_data.get("nutritional_info_extracted", {})
+        # Estrai i dati nutrizionali
+        nutritional_data = user_data.get("nutritional_info_extracted", {})
+        
+        if not nutritional_data:
+            print(f"[PDF_ERROR] Nessun dato nutrizionale estratto trovato per user_id: {user_id}")
+            return None
+        
+        print(f"[PDF_SERVICE] Dati nutrizionali caricati con successo per user_id: {user_id}")
+        return nutritional_data
     
     def _add_document_header(self, story: list, user_info: Dict[str, Any], extracted_data: Dict[str, Any]):
         """
@@ -218,7 +244,7 @@ class PDFGenerator:
             ]))
             
             story.append(personal_table)
-            story.append(Spacer(1, 20))
+            story.append(Spacer(1, 70))
     
     def _add_caloric_needs_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -228,10 +254,14 @@ class PDFGenerator:
             story: Lista degli elementi del PDF
             extracted_data: Dati nutrizionali estratti
         """
-        if "caloric_needs" not in extracted_data:
+        if not extracted_data or "caloric_needs" not in extracted_data:
+            print("[PDF_SERVICE] Sezione caloric_needs saltata - dati non disponibili")
             return
         
         caloric_data = extracted_data["caloric_needs"]
+        if not caloric_data:
+            print("[PDF_SERVICE] Sezione caloric_needs saltata - dati vuoti")
+            return
         
         # Titolo sezione
         story.append(Paragraph("🔥 Fabbisogno Energetico Giornaliero", self.styles['CustomSectionTitle']))
@@ -280,7 +310,7 @@ class PDFGenerator:
             for info in additional_info:
                 story.append(Paragraph(info, self.styles['CustomBodyText']))
         
-        story.append(Spacer(1, 20))
+        story.append(Spacer(1, 50))
     
     def _add_macros_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -290,10 +320,14 @@ class PDFGenerator:
             story: Lista degli elementi del PDF
             extracted_data: Dati nutrizionali estratti
         """
-        if "macros_total" not in extracted_data:
+        if not extracted_data or "macros_total" not in extracted_data:
+            print("[PDF_SERVICE] Sezione macros_total saltata - dati non disponibili")
             return
         
         macros_data = extracted_data["macros_total"]
+        if not macros_data:
+            print("[PDF_SERVICE] Sezione macros_total saltata - dati vuoti")
+            return
         
         # Titolo sezione
         story.append(Paragraph("🥗 Distribuzione Calorica Giornaliera", self.styles['CustomSectionTitle']))
@@ -342,7 +376,7 @@ class PDFGenerator:
         for info in totals_info:
             story.append(Paragraph(info, self.styles['CustomBodyText']))
         
-        story.append(Spacer(1, 20))
+        story.append(Spacer(1, 40))
     
     def _add_daily_plan_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -352,10 +386,14 @@ class PDFGenerator:
             story: Lista degli elementi del PDF
             extracted_data: Dati nutrizionali estratti
         """
-        if "daily_macros" not in extracted_data:
+        if not extracted_data or "daily_macros" not in extracted_data:
+            print("[PDF_SERVICE] Sezione daily_macros saltata - dati non disponibili")
             return
         
         daily_data = extracted_data["daily_macros"]
+        if not daily_data:
+            print("[PDF_SERVICE] Sezione daily_macros saltata - dati vuoti")
+            return
         
         # Titolo sezione
         story.append(Paragraph("🍽️ Piano Pasti Giornaliero", self.styles['CustomSectionTitle']))
@@ -372,6 +410,11 @@ class PDFGenerator:
         meal_table_data = [['Pasto', 'Calorie', '% del Totale', 'Proteine', 'Carboidrati', 'Grassi']]
         
         for pasto_nome, pasto_data in distribuzione_pasti.items():
+            # Controllo di sicurezza per pasto_data
+            if not pasto_data:
+                print(f"[PDF_SERVICE] Saltato pasto '{pasto_nome}' - dati vuoti")
+                continue
+                
             kcal = pasto_data.get('kcal', 0)
             percentuale = pasto_data.get('percentuale_kcal', 0)
             proteine = pasto_data.get('proteine_g', 0)
@@ -408,7 +451,7 @@ class PDFGenerator:
         ]))
         
         story.append(meal_table)
-        story.append(Spacer(1, 20))
+        story.append(Spacer(1, 30))
     
     def _add_registered_meals_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -418,7 +461,8 @@ class PDFGenerator:
             story: Lista degli elementi del PDF
             extracted_data: Dati nutrizionali estratti
         """
-        if "registered_meals" not in extracted_data or not extracted_data["registered_meals"]:
+        if not extracted_data or "registered_meals" not in extracted_data or not extracted_data["registered_meals"]:
+            print("[PDF_SERVICE] Sezione registered_meals saltata - dati non disponibili")
             return
         
         meals_data = extracted_data["registered_meals"]
@@ -442,6 +486,11 @@ class PDFGenerator:
                 ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga']]
                 
                 for alimento in meal["alimenti"]:
+                    # Controllo di sicurezza per alimento
+                    if not alimento:
+                        print("[PDF_SERVICE] Saltato alimento vuoto")
+                        continue
+                        
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
                     misura = alimento.get('misura_casalinga', 'N/A')
@@ -474,42 +523,324 @@ class PDFGenerator:
             if "totali_pasto" in meal:
                 totali = meal["totali_pasto"]
                 
-                totals_data = [
-                    ['Calorie Totali', 'Proteine Totali', 'Carboidrati Totali', 'Grassi Totali'],
-                    [
-                        f"{totali.get('kcal_totali', 0)} kcal",
-                        f"{totali.get('proteine_totali', 0)}g",
-                        f"{totali.get('carboidrati_totali', 0)}g",
-                        f"{totali.get('grassi_totali', 0)}g"
+                # Controllo di sicurezza per totali
+                if not totali:
+                    print(f"[PDF_SERVICE] Saltati totali per pasto '{nome_pasto}' - dati vuoti")
+                else:
+                    totals_data = [
+                        ['Calorie Totali', 'Proteine Totali', 'Carboidrati Totali', 'Grassi Totali'],
+                        [
+                            f"{totali.get('kcal_totali', 0)} kcal",
+                            f"{totali.get('proteine_totali', 0)}g",
+                            f"{totali.get('carboidrati_totali', 0)}g",
+                            f"{totali.get('grassi_totali', 0)}g"
+                        ]
                     ]
-                ]
-                
-                totals_table = Table(totals_data, colWidths=[1.5*inch, 1.5*inch, 1.5*inch, 1.5*inch])
-                totals_table.setStyle(TableStyle([
-                    ('BACKGROUND', (0, 0), (-1, 0), HexColor('#f39c12')),
-                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                    ('FONTSIZE', (0, 0), (-1, 0), 9),
-                    ('BACKGROUND', (0, 1), (-1, -1), HexColor('#fff3cd')),
-                    ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
-                    ('FONTNAME', (0, 1), (-1, -1), 'Helvetica-Bold'),
-                    ('FONTSIZE', (0, 1), (-1, -1), 9),
-                    ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
-                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                    ('LEFTPADDING', (0, 0), (-1, -1), 6),
-                    ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-                    ('TOPPADDING', (0, 0), (-1, -1), 4),
-                    ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
-                ]))
-                
-                story.append(totals_table)
+                    
+                    totals_table = Table(totals_data, colWidths=[1.5*inch, 1.5*inch, 1.5*inch, 1.5*inch])
+                    totals_table.setStyle(TableStyle([
+                        ('BACKGROUND', (0, 0), (-1, 0), HexColor('#f39c12')),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('FONTSIZE', (0, 0), (-1, 0), 9),
+                        ('BACKGROUND', (0, 1), (-1, -1), HexColor('#fff3cd')),
+                        ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
+                        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica-Bold'),
+                        ('FONTSIZE', (0, 1), (-1, -1), 9),
+                        ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+                        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+                        ('TOPPADDING', (0, 0), (-1, -1), 4),
+                        ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+                    ]))
+                    
+                    story.append(totals_table)
             
             # Separatore tra pasti (tranne l'ultimo)
             if i < len(meals_data) - 1:
                 story.append(Spacer(1, 15))
         
         story.append(Spacer(1, 20))
+    
+    def _add_weekly_diet_section(self, story: list, extracted_data: Dict[str, Any]):
+        """
+        Aggiunge la sezione della dieta settimanale completa (giorni 1-7).
+        Ogni giorno viene posizionato su una pagina separata.
+        
+        Args:
+            story: Lista degli elementi del PDF
+            extracted_data: Dati nutrizionali estratti
+        """
+        # Verifica che ci siano dati da mostrare
+        has_day1_data = "registered_meals" in extracted_data and extracted_data["registered_meals"]
+        has_weekly_data = "weekly_diet" in extracted_data and extracted_data["weekly_diet"]
+        
+        if not has_day1_data and not has_weekly_data:
+            print("[PDF_SERVICE] Sezione weekly_diet saltata - nessun dato disponibile")
+            return
+        
+        # Inizia una nuova pagina per la sezione settimanale
+        story.append(PageBreak())
+        
+        # Titolo sezione
+        story.append(Paragraph("📅 Piano Nutrizionale Settimanale", self.styles['CustomSectionTitle']))
+        story.append(Spacer(1, 10))
+        
+        # Nomi dei giorni
+        day_names = {
+            1: "Lunedì", 2: "Martedì", 3: "Mercoledì", 4: "Giovedì", 
+            5: "Venerdì", 6: "Sabato", 7: "Domenica"
+        }
+        
+        # Mostra tutti i giorni 1-7
+        for day_num in range(1, 8):
+            # Inizia una nuova pagina per ogni giorno (tranne il primo)
+            if day_num > 1:
+                story.append(PageBreak())
+            
+            day_name = day_names.get(day_num, f"Giorno {day_num}")
+            
+            # Header del giorno
+            story.append(Paragraph(f"📆 {day_name} (Giorno {day_num})", self.styles['CustomSectionTitle']))
+            story.append(Spacer(1, 15))
+            
+            if day_num == 1 and has_day1_data:
+                # Giorno 1: dati da registered_meals
+                self._add_day1_meals_to_pdf(story, extracted_data["registered_meals"])
+            elif day_num > 1 and has_weekly_data:
+                # Giorni 2-7: dati da weekly_diet
+                weekly_diet = extracted_data["weekly_diet"]
+                day_key = f"giorno_{day_num}"
+                if day_key in weekly_diet and weekly_diet[day_key]:
+                    day_data = weekly_diet[day_key]
+                    self._add_weekly_diet_day_to_pdf(story, day_data)
+                else:
+                    story.append(Paragraph("📝 Nessun piano disponibile per questo giorno", self.styles['CustomBodyText']))
+            else:
+                story.append(Paragraph("📝 Nessun piano disponibile per questo giorno", self.styles['CustomBodyText']))
+            
+            # Aggiungi spazio alla fine della pagina se non è l'ultimo giorno
+            if day_num < 7:
+                story.append(Spacer(1, 30))
+    
+    def _add_day1_meals_to_pdf(self, story: list, registered_meals: list):
+        """
+        Aggiunge i pasti del giorno 1 (da registered_meals) al PDF.
+        
+        Args:
+            story: Lista degli elementi del PDF
+            registered_meals: Lista dei pasti registrati del giorno 1
+        """
+        if not registered_meals:
+            story.append(Paragraph("📝 Nessun pasto disponibile per questo giorno", self.styles['CustomBodyText']))
+            return
+        
+        # Ordina i pasti
+        sorted_meals = self._sort_meals_by_time(registered_meals)
+        
+        for meal in sorted_meals:
+            nome_pasto = meal.get('nome_pasto', 'Pasto').title()
+            
+            # Sottotitolo del pasto
+            meal_display_names = {
+                'colazione': '🌅 Colazione',
+                'spuntino_mattutino': '🥤 Spuntino Mattutino', 
+                'pranzo': '🍽️ Pranzo',
+                'spuntino_pomeridiano': '🥨 Spuntino Pomeridiano',
+                'cena': '🌙 Cena',
+                'spuntino_serale': '🌃 Spuntino Serale'
+            }
+            
+            canonical_name = nome_pasto.lower().replace(' ', '_')
+            display_name = meal_display_names.get(canonical_name, f'🍽️ {nome_pasto}')
+            
+            story.append(Paragraph(display_name, self.styles['CustomSubTitle']))
+            
+            # Ingredienti
+            if "alimenti" in meal and meal["alimenti"]:
+                ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga']]
+                
+                for alimento in meal["alimenti"]:
+                    if not alimento:
+                        continue
+                    nome = alimento.get('nome_alimento', 'N/A')
+                    quantita = alimento.get('quantita_g', 'N/A')
+                    misura = alimento.get('misura_casalinga', 'N/A')
+                    ingredients_data.append([nome, f"{quantita}g", misura])
+                
+                if len(ingredients_data) > 1:
+                    ingredients_table = Table(ingredients_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
+                    ingredients_table.setStyle(TableStyle([
+                        ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('FONTSIZE', (0, 0), (-1, 0), 8),
+                        ('BACKGROUND', (0, 1), (-1, -1), HexColor('#f8f9fa')),
+                        ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
+                        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+                        ('FONTSIZE', (0, 1), (-1, -1), 7),
+                        ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
+                        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                        ('LEFTPADDING', (0, 0), (-1, -1), 4),
+                        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+                        ('TOPPADDING', (0, 0), (-1, -1), 3),
+                        ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+                    ]))
+                    
+                    story.append(ingredients_table)
+            
+            story.append(Spacer(1, 15))
+    
+    def _add_weekly_diet_day_to_pdf(self, story: list, day_data: Dict[str, Any]):
+        """
+        Aggiunge i pasti di un giorno dalla weekly_diet al PDF.
+        
+        Args:
+            story: Lista degli elementi del PDF
+            day_data: Dati del giorno dalla weekly_diet
+        """
+        # Ordine dei pasti
+        meal_order = ['colazione', 'spuntino_mattutino', 'pranzo', 'spuntino_pomeridiano', 'cena', 'spuntino_serale']
+        
+        meals_found = 0
+        for meal_name in meal_order:
+            if meal_name in day_data and day_data[meal_name]:
+                meal_data = day_data[meal_name]
+                self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data)
+                meals_found += 1
+        
+        # Se non ci sono pasti nell'ordine standard, mostra tutti quelli disponibili
+        if meals_found == 0:
+            for meal_name, meal_data in day_data.items():
+                if meal_data:
+                    self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data)
+    
+    def _add_weekly_diet_meal_to_pdf(self, story: list, meal_name: str, meal_data: Dict[str, Any]):
+        """
+        Aggiunge un singolo pasto della weekly diet al PDF.
+        
+        Args:
+            story: Lista degli elementi del PDF
+            meal_name: Nome del pasto
+            meal_data: Dati del pasto
+        """
+        # Converti il nome del pasto in forma leggibile
+        meal_display_names = {
+            'colazione': '🌅 Colazione',
+            'spuntino_mattutino': '🥤 Spuntino Mattutino', 
+            'pranzo': '🍽️ Pranzo',
+            'spuntino_pomeridiano': '🥨 Spuntino Pomeridiano',
+            'cena': '🌙 Cena',
+            'spuntino_serale': '🌃 Spuntino Serale'
+        }
+        
+        display_name = meal_display_names.get(meal_name, f'🍽️ {meal_name.title()}')
+        
+        # Sottotitolo del pasto
+        story.append(Paragraph(display_name, self.styles['CustomSubTitle']))
+        
+        # Alimenti del pasto
+        if "alimenti" not in meal_data or not meal_data["alimenti"]:
+            return
+        
+        alimenti = meal_data["alimenti"]
+        ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga']]
+        
+        # Gestisce sia formato lista che formato dizionario
+        if isinstance(alimenti, list):
+            # Formato lista: [{"nome_alimento": "...", "quantita_g": ...}]
+            for alimento in alimenti:
+                if not alimento:
+                    continue
+                nome = alimento.get('nome_alimento', 'N/A')
+                quantita = alimento.get('quantita_g', 'N/A')
+                misura = alimento.get('misura_casalinga', 'N/A')
+                ingredients_data.append([nome, f"{quantita}g", misura])
+        
+        elif isinstance(alimenti, dict):
+            # Formato dizionario: {"alimento": quantita}
+            for nome_alimento, quantita in alimenti.items():
+                if quantita and quantita > 0:
+                    ingredients_data.append([nome_alimento, f"{quantita}g", "N/A"])
+        
+        # Se ci sono ingredienti, crea la tabella
+        if len(ingredients_data) > 1:
+            ingredients_table = Table(ingredients_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
+            ingredients_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 8),
+                ('BACKGROUND', (0, 1), (-1, -1), HexColor('#f8f9fa')),
+                ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
+                ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 1), (-1, -1), 7),
+                ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('LEFTPADDING', (0, 0), (-1, -1), 4),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+                ('TOPPADDING', (0, 0), (-1, -1), 3),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+            ]))
+            
+            story.append(ingredients_table)
+        
+        # Valori nutrizionali se disponibili
+        if "target_nutrients" in meal_data or "actual_nutrients" in meal_data:
+            nutrients = meal_data.get("actual_nutrients", meal_data.get("target_nutrients", {}))
+            if nutrients:
+                self._add_weekly_diet_nutrition_to_pdf(story, nutrients)
+        
+        story.append(Spacer(1, 10))
+    
+    def _add_weekly_diet_nutrition_to_pdf(self, story: list, nutrients: Dict[str, Any]):
+        """
+        Aggiunge i valori nutrizionali di un pasto della weekly diet al PDF.
+        
+        Args:
+            story: Lista degli elementi del PDF
+            nutrients: Dati nutrizionali del pasto
+        """
+        if not nutrients:
+            return
+        
+        # Estrai i valori nutrizionali con diverse possibili chiavi
+        kcal = nutrients.get('kcal', nutrients.get('kcal_totali', 0))
+        proteine = nutrients.get('proteine', nutrients.get('proteine_g', 0))
+        carboidrati = nutrients.get('carboidrati', nutrients.get('carboidrati_g', 0))
+        grassi = nutrients.get('grassi', nutrients.get('grassi_g', 0))
+        
+        # Se ci sono valori nutrizionali, mostrali
+        if any([kcal, proteine, carboidrati, grassi]):
+            nutrition_data = [
+                ['Calorie', 'Proteine', 'Carboidrati', 'Grassi'],
+                [f"{kcal} kcal", f"{proteine}g", f"{carboidrati}g", f"{grassi}g"]
+            ]
+            
+            nutrition_table = Table(nutrition_data, colWidths=[1*inch, 1*inch, 1*inch, 1*inch])
+            nutrition_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), HexColor('#e67e22')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 8),
+                ('BACKGROUND', (0, 1), (-1, -1), HexColor('#fef9e7')),
+                ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
+                ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 1), (-1, -1), 8),
+                ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('LEFTPADDING', (0, 0), (-1, -1), 4),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+                ('TOPPADDING', (0, 0), (-1, -1), 3),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+            ]))
+            
+            story.append(nutrition_table)
     
     def _sort_meals_by_time(self, meals_data):
         """
@@ -603,21 +934,53 @@ class PDFGenerator:
         story.append(PageBreak())
         
         # Titolo note
-        story.append(Paragraph("📋 Note Importanti", self.styles['CustomSectionTitle']))
+        story.append(Paragraph("📋 Note Importanti e Protocolli Nutrizionali", self.styles['CustomSectionTitle']))
+        story.append(Spacer(1, 15))
         
-        # Note sul sistema
-        notes = [
+        # Sezione Idratazione e Timing Pasti
+        story.append(Paragraph("💧 Protocollo Idratazione e Timing Pasti", self.styles['CustomSubTitle']))
+        hydration_notes = [
+            "• <b>Idratazione:</b> Assumere almeno 30-35ml di acqua per kg di peso corporeo al giorno (circa 2-2.5L per un adulto di 70kg).",
+            "• <b>Timing idratazione:</b> Bere 1-2 bicchieri d'acqua al risveglio, un bicchiere 30 minuti prima di ogni pasto e distribuire il resto durante la giornata.",
+            "• <b>Distanziamento pasti:</b> Mantenere sempre almeno 1 ora e 30 minuti di distanza tra i pasti principali e gli spuntini per ottimizzare digestione e assorbimento.",
+            "• <b>Ultima assunzione:</b> Evitare liquidi abbondanti 2 ore prima del sonno per non compromettere il riposo notturno."
+        ]
+        
+        for note in hydration_notes:
+            story.append(Paragraph(note, self.styles['CustomBodyText']))
+            story.append(Spacer(1, 6))
+        
+        story.append(Spacer(1, 15))
+        
+        # Sezione Basi Scientifiche
+        story.append(Paragraph("🔬 Basi Scientifiche e Metodologie", self.styles['CustomSubTitle']))
+        scientific_notes = [
+            "• <b>Fabbisogno energetico:</b> Calcolato secondo l'equazione di Harris-Benedict validata da studi internazionali.",
+            "• <b>Dispendio sportivo:</b> Basato su ricerche dell'International Centre for Sport Studies (ICSS).",
+            "• <b>Fabbisogno proteico:</b> Determinato secondo le linee guida Project Invictus e letteratura scientifica specifica.",
+            "• <b>Distribuzione macronutrienti:</b> Conforme ai LARN (Livelli di Assunzione di Riferimento di Nutrienti) italiani.",
+            "• <b>Valutazione ultraprocessati:</b> Classificazione secondo il sistema NOVA dell'Università di San Paolo.",
+            "• <b>Database nutrizionale:</b> Valori CREA (Consiglio per la ricerca in agricoltura) - tabelle ufficiali italiane."
+        ]
+        
+        for note in scientific_notes:
+            story.append(Paragraph(note, self.styles['CustomBodyText']))
+            story.append(Spacer(1, 6))
+        
+        story.append(Spacer(1, 15))
+        
+        # Sezione Sistema e Personalizzazione
+        story.append(Paragraph("🤖 Sistema e Personalizzazione", self.styles['CustomSubTitle']))
+        system_notes = [
             "• I dati nutrizionali sono estratti automaticamente dalle conversazioni con l'assistente NutriCoach usando tecnologia AI avanzata.",
-            "• Tutti i valori sono calcolati secondo le linee guida LARN (Livelli di Assunzione di Riferimento di Nutrienti).",
-            "• I calcoli del fabbisogno energetico utilizzano l'equazione di Harris-Benedict modificata.",
             "• Il piano è personalizzato in base alle tue caratteristiche fisiche, livello di attività e obiettivi.",
             "• Per modifiche o aggiornamenti, continua la conversazione con l'assistente nutrizionale.",
             "• Questo documento è stato generato automaticamente e riflette le informazioni disponibili al momento della creazione."
         ]
         
-        for note in notes:
+        for note in system_notes:
             story.append(Paragraph(note, self.styles['CustomBodyText']))
-            story.append(Spacer(1, 8))
+            story.append(Spacer(1, 6))
         
         # Footer finale
         story.append(Spacer(1, 20))
