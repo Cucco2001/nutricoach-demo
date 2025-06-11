@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 
 # Add the project root to Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agent_tools.weekly_diet_generator_tool import generate_6_additional_days, extract_day1_meal_structure
 

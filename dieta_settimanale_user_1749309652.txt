@@ -4,7 +4,7 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
 
 📊 INFORMAZIONI GENERAZIONE:
    • User ID: 1749309652
-   • Data generazione: 2025-06-11 10:08:58
+   • Data generazione: 2025-06-11 12:49:12
    • Pipeline: extract_day1_meal_structure → generate_6_additional_days
 
 📅 GIORNO 1 - DATI UTENTE REGISTRATI
@@ -67,16 +67,15 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
 ----------------------------------------
    🍽️  COLAZIONE
       📋 ALIMENTI:
-         • avena: 30.0g
-         • banana: 190.0g
-         • mandorle: 20.0g
-         • latte_scremato: 300.0g
+         • pane_integrale: 110.0g
+         • burro_arachidi: 30.0g
+         • marmellata: 30.0g
       📊 NUTRIENTI:
-         ✅ kcal: 595.1 / 592.0 target (0.5% errore)
-         ❌ proteine_g: 18.8 / 28.0 target (32.9% errore)
-         ✅ carboidrati_g: 78.9 / 76.0 target (3.8% errore)
-         ❌ grassi_g: 24.6 / 20.0 target (23.0% errore)
-      💡 Ottimizzazione completata per colazione con 4 alimenti. Porzioni arrotondate alla decina più vicina.
+         ✅ kcal: 590.1 / 592.0 target (0.3% errore)
+         ❌ proteine_g: 17.9 / 28.0 target (36.1% errore)
+         ⚠️ carboidrati_g: 83.9 / 76.0 target (10.4% errore)
+         ✅ grassi_g: 19.7 / 20.0 target (1.5% errore)
+      💡 Ottimizzazione completata per colazione con 3 alimenti. Porzioni arrotondate alla decina più vicina.
 
    🍽️  PRANZO
       📋 ALIMENTI:
@@ -93,13 +92,13 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
 
    🍽️  SPUNTINO_POMERIDIANO
       📋 ALIMENTI:
-         • mela: 190.0g
-         • noci: 20.0g
+         • grissini: 60.0g
+         • parmigiano: 30.0g
       📊 NUTRIENTI:
-         ✅ kcal: 236.6 / 237.0 target (0.2% errore)
-         ❌ proteine_g: 3.6 / 11.0 target (67.3% errore)
-         ✅ carboidrati_g: 27.6 / 30.0 target (8.0% errore)
-         ❌ grassi_g: 13.4 / 8.0 target (67.5% errore)
+         ⚠️ kcal: 271.8 / 237.0 target (14.7% errore)
+         ❌ proteine_g: 16.3 / 11.0 target (48.2% errore)
+         ❌ carboidrati_g: 42.6 / 30.0 target (42.0% errore)
+         ❌ grassi_g: 14.9 / 8.0 target (86.2% errore)
       💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
    🍽️  CENA
@@ -114,7 +113,7 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
          ✅ proteine_g: 32.8 / 34.0 target (3.5% errore)
          ❌ carboidrati_g: 67.8 / 91.0 target (25.5% errore)
          ⚠️ grassi_g: 27.2 / 24.0 target (13.3% errore)
-      💡 Ottimizzazione completata per cena con 5 alimenti. pane aggiunto per migliorare i carboidrati. Porzioni arrotondate alla decina più vicina.
+      💡 Ottimizzazione completata per cena con 5 alimenti. olio aggiunto automaticamente (miglioramento: 15.0%). pane aggiunto per migliorare i carboidrati. Porzioni arrotondate alla decina più vicina.
 
 
 📅 GIORNO 3
@@ -129,41 +128,86 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
          ❌ grassi_g: 4.5 / 20.0 target (77.5% errore)
       💡 Ottimizzazione completata per colazione con 1 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: pomodorini, basilico
+   🍽️  PRANZO
+      📋 ALIMENTI:
+         • pasta_integrale: 130.0g
+         • pomodorini: 350.0g
+         • basilico: 220.0g
+         • olio_oliva: 20.0g
+         • pollo: 70.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 792.9 / 828.0 target (4.2% errore)
+         ✅ proteine_g: 38.6 / 39.0 target (1.0% errore)
+         ✅ carboidrati_g: 103.8 / 106.0 target (2.1% errore)
+         ⚠️ grassi_g: 24.2 / 28.0 target (13.6% errore)
+      💡 Ottimizzazione completata per pranzo con 5 alimenti. pollo aggiunto per deficit proteico. Porzioni arrotondate alla decina più vicina.
 
-   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: Scaglie di Parmigiano
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI:
+         • Grissini: 60.0g
+         • Scaglie di Parmigiano: 30.0g
+      📊 NUTRIENTI:
+         ⚠️ kcal: 271.8 / 237.0 target (14.7% errore)
+         ❌ proteine_g: 16.3 / 11.0 target (48.2% errore)
+         ❌ carboidrati_g: 42.6 / 30.0 target (42.0% errore)
+         ❌ grassi_g: 14.9 / 8.0 target (86.2% errore)
+      💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: petto_tacchino, asparagi
+   🍽️  CENA
+      📋 ALIMENTI:
+         • pesce_spada: 80.0g
+         • pane_bianco: 150.0g
+         • asparagi: 320.0g
+         • olio_oliva: 20.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 716.8 / 710.0 target (1.0% errore)
+         ✅ proteine_g: 33.9 / 34.0 target (0.3% errore)
+         ✅ carboidrati_g: 87.0 / 91.0 target (4.4% errore)
+         ✅ grassi_g: 25.4 / 24.0 target (5.8% errore)
+      💡 Ottimizzazione completata per cena con 4 alimenti. Porzioni arrotondate alla decina più vicina.
 
 
 📅 GIORNO 4
 ----------------------------------------
    🍽️  COLAZIONE
       📋 ALIMENTI:
-         • cereali_integrali: 40.0g
-         • latte_scremato: 500.0g
-         • kiwi: 300.0g
+         • cornflakes: 60.0g
+         • latte_scremato: 490.0g
+         • kiwi: 80.0g
+         • mandorle: 10.0g
       📊 NUTRIENTI:
-         ✅ kcal: 612.2 / 592.0 target (3.4% errore)
-         ❌ proteine_g: 22.2 / 28.0 target (20.7% errore)
-         ❌ carboidrati_g: 93.5 / 76.0 target (23.0% errore)
-         ✅ grassi_g: 18.5 / 20.0 target (7.5% errore)
-      💡 Ottimizzazione completata per colazione con 3 alimenti. Porzioni arrotondate alla decina più vicina.
+         ✅ kcal: 638.3 / 592.0 target (7.8% errore)
+         ⚠️ proteine_g: 23.6 / 28.0 target (15.7% errore)
+         ⚠️ carboidrati_g: 84.2 / 76.0 target (10.8% errore)
+         ⚠️ grassi_g: 23.5 / 20.0 target (17.5% errore)
+      💡 Ottimizzazione completata per colazione con 4 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: farro, legumi_misti, carote, sedano
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: avocado
 
    🍽️  SPUNTINO_POMERIDIANO
       📋 ALIMENTI:
-         • banana: 80.0g
-         • burro_arachidi: 30.0g
+         • pan bauletto: 60.0g
+         • fesa di tacchino: 50.0g
       📊 NUTRIENTI:
-         ✅ kcal: 247.6 / 237.0 target (4.5% errore)
-         ❌ proteine_g: 8.4 / 11.0 target (23.6% errore)
-         ⚠️ carboidrati_g: 24.2 / 30.0 target (19.3% errore)
-         ❌ grassi_g: 14.0 / 8.0 target (75.0% errore)
+         ⚠️ kcal: 269.5 / 237.0 target (13.7% errore)
+         ❌ proteine_g: 18.3 / 11.0 target (66.4% errore)
+         ⚠️ carboidrati_g: 33.0 / 30.0 target (10.0% errore)
+         ❌ grassi_g: 6.3 / 8.0 target (21.3% errore)
       💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: orata
+   🍽️  CENA
+      📋 ALIMENTI:
+         • orata: 80.0g
+         • riso_integrale: 110.0g
+         • spinaci: 200.0g
+         • pomodori: 220.0g
+         • olio_oliva: 20.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 747.2 / 710.0 target (5.2% errore)
+         ✅ proteine_g: 35.0 / 34.0 target (2.9% errore)
+         ✅ carboidrati_g: 96.1 / 91.0 target (5.6% errore)
+         ⚠️ grassi_g: 26.8 / 24.0 target (11.7% errore)
+      💡 Ottimizzazione completata per cena con 5 alimenti. Porzioni arrotondate alla decina più vicina.
 
 
 📅 GIORNO 5
@@ -178,22 +222,71 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
          ❌ grassi_g: 4.5 / 20.0 target (77.5% errore)
       💡 Ottimizzazione completata per colazione con 1 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: orzo, gamberi, prezzemolo
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: prezzemolo
 
-   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: Scaglie di Parmigiano
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI:
+         • Grissini: 60.0g
+         • Scaglie di Parmigiano: 30.0g
+      📊 NUTRIENTI:
+         ⚠️ kcal: 271.8 / 237.0 target (14.7% errore)
+         ❌ proteine_g: 16.3 / 11.0 target (48.2% errore)
+         ❌ carboidrati_g: 42.6 / 30.0 target (42.0% errore)
+         ❌ grassi_g: 14.9 / 8.0 target (86.2% errore)
+      💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: fagiolini
+   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: petto di tacchino, fagiolini
 
 
 📅 GIORNO 6
 ----------------------------------------
-   ❌ COLAZIONE: ERRORE - I seguenti alimenti non sono stati trovati nel database: pancake_avena, sciroppo_acero, lamponi
+   🍽️  COLAZIONE
+      📋 ALIMENTI:
+         • uova: 170.0g
+         • pane_integrale: 140.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 595.6 / 592.0 target (0.6% errore)
+         ⚠️ proteine_g: 32.6 / 28.0 target (16.4% errore)
+         ✅ carboidrati_g: 78.2 / 76.0 target (2.9% errore)
+         ⚠️ grassi_g: 16.6 / 20.0 target (17.0% errore)
+      💡 Ottimizzazione completata per colazione con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: risotto, funghi, rucola
+   🍽️  PRANZO
+      📋 ALIMENTI:
+         • pasta: 150.0g
+         • funghi: 400.0g
+         • parmigiano: 50.0g
+         • olio_oliva: 10.0g
+      📊 NUTRIENTI:
+         ⚠️ kcal: 695.4 / 828.0 target (16.0% errore)
+         ✅ proteine_g: 38.6 / 39.0 target (1.0% errore)
+         ✅ carboidrati_g: 113.6 / 106.0 target (7.2% errore)
+         ✅ grassi_g: 27.5 / 28.0 target (1.8% errore)
+      💡 Ottimizzazione completata per pranzo con 4 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: smoothie_verde
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI:
+         • pane_bianco: 60.0g
+         • bresaola: 50.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 237.5 / 237.0 target (0.2% errore)
+         ❌ proteine_g: 20.8 / 11.0 target (89.1% errore)
+         ⚠️ carboidrati_g: 33.0 / 30.0 target (10.0% errore)
+         ❌ grassi_g: 2.1 / 8.0 target (73.8% errore)
+      💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: merluzzo, cous_cous
+   🍽️  CENA
+      📋 ALIMENTI:
+         • merluzzo: 100.0g
+         • riso_integrale: 110.0g
+         • melanzane: 220.0g
+         • olio_oliva: 20.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 740.8 / 710.0 target (4.3% errore)
+         ✅ proteine_g: 34.0 / 34.0 target (0.0% errore)
+         ✅ carboidrati_g: 93.3 / 91.0 target (2.5% errore)
+         ⚠️ grassi_g: 26.8 / 24.0 target (11.7% errore)
+      💡 Ottimizzazione completata per cena con 4 alimenti. Porzioni arrotondate alla decina più vicina.
 
 
 📅 GIORNO 7
@@ -208,11 +301,31 @@ DIETA SETTIMANALE COMPLETA - GENERATA AUTOMATICAMENTE
          ❌ grassi_g: 4.5 / 20.0 target (77.5% errore)
       💡 Ottimizzazione completata per colazione con 1 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: gnocchi, basilico
+   ❌ PRANZO: ERRORE - I seguenti alimenti non sono stati trovati nel database: gnocchi
 
-   ❌ SPUNTINO_POMERIDIANO: ERRORE - I seguenti alimenti non sono stati trovati nel database: Scaglie di Parmigiano
+   🍽️  SPUNTINO_POMERIDIANO
+      📋 ALIMENTI:
+         • Grissini: 60.0g
+         • Scaglie di Parmigiano: 30.0g
+      📊 NUTRIENTI:
+         ⚠️ kcal: 271.8 / 237.0 target (14.7% errore)
+         ❌ proteine_g: 16.3 / 11.0 target (48.2% errore)
+         ❌ carboidrati_g: 42.6 / 30.0 target (42.0% errore)
+         ❌ grassi_g: 14.9 / 8.0 target (86.2% errore)
+      💡 Ottimizzazione completata per spuntino_pomeridiano con 2 alimenti. Porzioni arrotondate alla decina più vicina.
 
-   ❌ CENA: ERRORE - I seguenti alimenti non sono stati trovati nel database: bistecca_manzo, insalata_mista, aceto_balsamico
+   🍽️  CENA
+      📋 ALIMENTI:
+         • bistecca_manzo: 100.0g
+         • insalata_mista: 240.0g
+         • pane_bianco: 150.0g
+         • olio_oliva: 20.0g
+      📊 NUTRIENTI:
+         ✅ kcal: 736.2 / 710.0 target (3.7% errore)
+         ✅ proteine_g: 34.6 / 34.0 target (1.8% errore)
+         ✅ carboidrati_g: 85.9 / 91.0 target (5.6% errore)
+         ⚠️ grassi_g: 27.2 / 24.0 target (13.3% errore)
+      💡 Ottimizzazione completata per cena con 4 alimenti. olio aggiunto automaticamente (miglioramento: 23.1%). Porzioni arrotondate alla decina più vicina.
 
 
 📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈📈
@@ -222,7 +335,7 @@ STATISTICHE GENERAZIONE
 📊 RIEPILOGO:
    • Giorni generati: 7 (1 da dati utente + 6 automatici)
    • Pasti processati: 24
-   • Pasti ottimizzati con successo: 9
-   • Tasso di successo: 37.5%
+   • Pasti ottimizzati con successo: 20
+   • Tasso di successo: 83.3%
 
 ✅ Generazione completata con successo!

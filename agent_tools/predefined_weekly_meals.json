@@ -38,7 +38,7 @@
     "giorno_7": {
       "colazione": ["uova", "pane_integrale"],
       "spuntino_mattutino": ["parmigiano", "crackers_integrali"],
-      "pranzo": ["gnocchi_integrali", "ragù_magro_manzo", "grana"],
+      "pranzo": ["gnocchi", "ragù_magro_manzo", "grana"],
       "spuntino_pomeridiano": ["fiocchi_latte", "frutta_mista"],
       "cena": ["hamburger_manzo", "pane_integrale", "insalata"]
     }
@@ -63,12 +63,12 @@
       "spuntino_mattutino": ["yogurt_naturale", "avena"],
       "pranzo": ["farro", "lenticchie", "carote", "sedano", "avocado"],
       "spuntino_pomeridiano": ["pan bauletto", "fesa di tacchino"],
-      "cena": ["orata", "riso_integrale", "spinaci", "pomodori", "olio_oliva"]
+      "cena": ["orata", "riso_integrale", "spinaci", "olio_oliva"]
     },
     "giorno_5": {
       "colazione": ["cornflakes", "latte_scremato", "kiwi", "mandorle"],
       "spuntino_mattutino": ["pera", "noci sgusciate"],
-      "pranzo": ["orzo", "gamberi", "zucchine", "prezzemolo", "olio_oliva"],
+      "pranzo": ["riso_basmati", "gamberi", "zucchine", "prezzemolo", "olio_oliva"],
       "spuntino_pomeridiano": ["banana", "burro_arachidi"],
       "cena": ["petto di tacchino", "patate", "fagiolini", "olio_oliva"]
     },

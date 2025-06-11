@@ -241,7 +241,7 @@
     "nova_group": 4,
     "categoria": "dolci"
   },
-  "lenticchie_cotte": {
+  "lenticchie": {
     "energia_kcal": 114,
     "proteine_g": 9.0,
     "carboidrati_g": 20.0,
@@ -252,7 +252,7 @@
     "nova_group": 1,
     "categoria": "legumi"
   },
-  "carote_crude": {
+  "carote": {
     "energia_kcal": 41,
     "proteine_g": 0.9,
     "carboidrati_g": 9.6,
@@ -439,7 +439,7 @@
     "nova_group": 1,
     "categoria": "cereali"
   },
-  "farro_cotto": {
+  "farro": {
     "energia_kcal": 127,
     "proteine_g": 5.0,
     "carboidrati_g": 26.0,
@@ -878,5 +878,16 @@
     "fibra_g": 2.2,
     "nova_group": 3,
     "categoria": "cereali_colazione"
+  },
+  "carne_manzo": {
+    "energia_kcal": 125,
+    "proteine_g": 20.0,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 5.0,
+    "grassi_saturi_g": 2.0,
+    "fibra_g": 0.0,
+    "nova_group": 3,
+    "categoria": "proteine_animali"
   }
 }
