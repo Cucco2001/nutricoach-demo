@@ -34,7 +34,7 @@ class AssistantManager:
                     name="Nutricoach Assistant",
                     instructions=system_prompt,
                     tools=available_tools,
-                    model="gpt-4o"
+                    model="gpt-4.1"
                 )
                 st.session_state.assistant_created = True
             except Exception as e:

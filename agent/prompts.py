@@ -833,8 +833,56 @@ FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
    - Include per ogni giorno:
      * Tutti i pasti con alimenti e porzioni in grammi
      * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
-     * Statistiche nutrizionali totali di ciascun giorn
+     * Statistiche nutrizionali totali di ciascun giorno
    - Riassumi le caratteristiche nutrizionali della settimana
+
+**FORMATO OBBLIGATORIO PER LA PRESENTAZIONE:**
+
+**ESEMPIO COMPLETO DI GIORNO:**
+
+```
+🗓️ **GIORNO 1 - LUNEDÌ**
+
+🌅 **COLAZIONE** 
+• **Avena**: 60g → 🥄 3/4 tazza
+• **Latte scremato**: 200ml → 🥛 1 bicchiere
+• **Banana**: 120g → 🍌 1 banana media
+• **Mandorle**: 15g → 🥜 12-15 mandorle
+
+🍽️ **PRANZO** 
+• **Riso basmati**: 80g → 🍚 1 porzione media (crudo)
+• **Petto di pollo**: 120g → 🍗 1 filetto medio
+• **Zucchine**: 150g → 🥒 1 ciotola a dadini
+• **Olio extravergine**: 10g → 🫒 1 cucchiaio
+
+🥨 **SPUNTINO POMERIDIANO** 
+• **Yogurt greco**: 125g → 🥛 1 vasetto
+• **Mirtilli**: 80g → 🫐 1/2 tazza
+
+🌙 **CENA** 
+• **Salmone**: 100g → 🐟 1 filetto piccolo
+• **Patate dolci**: 200g → 🥔 1 patata dolce grande
+• **Spinaci**: 100g → 🥬 1 ciotola
+• **Olio extravergine**: 8g → 🫒 1 cucchiaino scarso
+
+📊 **TOTALI GIORNALIERI GIORNO 1:**
+• Calorie: 1680 kcal 
+• Proteine: 98 g 
+• Carboidrati: 190 g  
+• Grassi: 53 g  
+• Rapporto target raggiunto: ✅
+
+---
+**ESEMPI DI MISURE CASALINGHE DA USARE:**
+- Cereali/Avena: "1 tazza" (80g), "3/4 tazza" (60g)
+- Pasta/Riso: "1 porzione media" (80g), "1 tazza cotta" (150g)
+- Carne/Pesce: "1 filetto medio" (120g), "1 fetta" (100g), "1 coscia" (150g)
+- Verdure: "1 ciotola media" (200g), "1 piatto" (150g), "1 manciata" (50g)
+- Frutta: "1 banana media" (120g), "1 mela grande" (180g), "1 arancia" (150g)
+- Latticini: "1 yogurt" (125g), "1 bicchiere" (200ml), "2 fette" (60g)
+- Oli/Grassi: "1 cucchiaio" (10g), "1 cucchiaino" (5g)
+- Frutta secca: "1 manciata" (30g), "15 mandorle" (20g)
+```
 
 IMPORTANTE: Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
 
@@ -940,7 +988,12 @@ FASE 7: Controllo ultraprocessati
 FASE 8: Generazione dieta settimanale completa
 - Usa il tool generate_6_additional_days per generare 6 giorni aggiuntivi di dieta (giorni 2-7)
 - Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
-- Presenta la dieta settimanale completa (giorni 1-7) al cliente in formato finale
+- Presenta la dieta settimanale completa (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
+  * Ogni giorno con emoji distintive per i pasti (🌅 🥤 🍽️ 🥨 🌙)
+  * Alimenti con grammature precise + misure casalinghe intuitive
+  * Target nutrizionali per ogni pasto
+  * Totali giornalieri con verifica target raggiunti
+  * Separatori chiari tra i giorni
 
 IMPORTANTE: 
 - Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 8
@@ -972,7 +1025,7 @@ def get_follow_up_prompt(phase: str, context: str = ""):
         "FASE_5": "Continua con la distribuzione dei macronutrienti tra i pasti.",
         "FASE_6": "Procedi con la creazione dei singoli pasti.",
         "FASE_7": "Continua con il controllo vitaminico e degli ultraprocessati.",
-        "FASE_8": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days e presenta il piano finale al cliente."
+        "FASE_8": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
     }
     
     prompt = base_prompts.get(phase, "Continua con la fase successiva del piano nutrizionale.")

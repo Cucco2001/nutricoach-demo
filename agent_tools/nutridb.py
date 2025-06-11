@@ -128,6 +128,7 @@ class NutriDB:
             "integrale riso": "riso_integrale",     
             "pasta": "pasta_secca",
             "pasta secca": "pasta_secca",
+            "pasta integrale": "pasta_integrale",
             "tonno": "tonno_naturale",
             "tonno naturale": "tonno_naturale",
             "filetto di tonno": "tonno_naturale",
@@ -240,8 +241,11 @@ class NutriDB:
             "bistecca manzo": "carne_manzo",
             "bistecca di manzo": "carne_manzo",
             "bistecca di tacchino": "prosciutto_crudo",
+            "petto di tacchino": "pollo_petto",
             "basilico": "verdure_miste",
-            "scaglie di parmigiano": "parmigiano_reggiano"
+            "scaglie di parmigiano": "parmigiano_reggiano",
+            "avocado": "olio_oliva",
+            "gnocchi": "pasta_secca"
         })
         
         # Ritorna il dizionario intelligente che implementa ricerca a 3 step

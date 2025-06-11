@@ -175,7 +175,7 @@
     "nova_group": 1,
     "categoria": "latte"
   },
-  "fagioli_borlotti_cotti": {
+  "fagioli": {
     "energia_kcal": 102,
     "proteine_g": 6.8,
     "carboidrati_g": 13.6,
@@ -527,7 +527,7 @@
     "nova_group": 3,
     "categoria": "proteine_animali"
   },
-  "fagiolini_cotti": {
+  "fagiolini": {
     "energia_kcal": 35,
     "proteine_g": 2.4,
     "carboidrati_g": 4.3,

@@ -68,7 +68,7 @@
     "giorno_5": {
       "colazione": ["cornflakes", "latte_scremato", "kiwi", "mandorle"],
       "spuntino_mattutino": ["pera", "noci sgusciate"],
-      "pranzo": ["riso_basmati", "gamberi", "zucchine", "prezzemolo", "olio_oliva"],
+      "pranzo": ["riso_basmati", "gamberi", "zucchine", "olio_oliva"],
       "spuntino_pomeridiano": ["banana", "burro_arachidi"],
       "cena": ["petto di tacchino", "patate", "fagiolini", "olio_oliva"]
     },

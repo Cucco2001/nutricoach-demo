@@ -442,7 +442,7 @@ def get_LARN_vitamine(sesso: str, età: int) -> Dict[str, Any]:
 
 def get_user_id() -> str:
     """
-    Ottiene l'ID dell'utente dal session state di Streamlit.
+    Ottiene l'ID dell'utente dal session state di Streamlit o dal thread name.
     
     Returns:
         str: ID dell'utente
@@ -451,8 +451,10 @@ def get_user_id() -> str:
         ValueError: Se l'utente non è loggato o l'ID non è disponibile
     """
     import streamlit as st
+    import os
+    import glob
     
-    # Prova prima a estrarre l'user_id dal nome del thread (per DeepSeek)
+    # Strategia 1: Estrai dall'user_id dal nome del thread (per DeepSeek)
     import threading
     thread_name = threading.current_thread().name
     if "DeepSeekExtraction-" in thread_name:
@@ -460,10 +462,36 @@ def get_user_id() -> str:
         logger.info(f"ID utente estratto dal thread DeepSeek: {user_id}")
         return user_id
     
-    # Fallback al session state di Streamlit
-    if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
-        raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
-    return st.session_state.user_info["id"]
+    # Strategia 2: Streamlit session state
+    try:
+        if "user_info" in st.session_state and "id" in st.session_state.user_info:
+            user_id = st.session_state.user_info["id"]
+            logger.info(f"ID utente estratto da Streamlit session: {user_id}")
+            return user_id
+    except Exception as e:
+        logger.warning(f"Non posso accedere al session state Streamlit: {e}")
+    
+    # Strategia 3: Fallback - cerca il file utente più recente in user_data/
+    try:
+        user_files = glob.glob("user_data/user_*.json")
+        if user_files:
+            # Ordina per data di modifica (più recente prima)
+            latest_file = max(user_files, key=os.path.getmtime)
+            # Estrai l'ID dal nome del file
+            filename = os.path.basename(latest_file)
+            user_id = filename.replace("user_", "").replace(".json", "")
+            logger.warning(f"FALLBACK: Usando utente più recente trovato: {user_id}")
+            return user_id
+    except Exception as e:
+        logger.error(f"Errore nel fallback search: {e}")
+    
+    # Strategia 4: Cerca da variabili ambiente (per testing)
+    env_user_id = os.environ.get("NUTRICOACH_USER_ID")
+    if env_user_id:
+        logger.warning(f"FALLBACK: Usando user_id da environment: {env_user_id}")
+        return env_user_id
+    
+    raise ValueError("Nessun utente autenticato. ID utente non disponibile. Metodi tentati: DeepSeek thread, Streamlit session, file recente, environment.")
 
 
 def load_user_basic_data(user_id: Optional[str] = None) -> Dict[str, Any]:
