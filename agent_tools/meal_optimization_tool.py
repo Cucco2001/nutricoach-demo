@@ -29,6 +29,15 @@ except Exception as e:
 
 def get_user_id() -> str:
     """Estrae l'ID dell'utente dalla sessione Streamlit."""
+    # Prova prima a estrarre l'user_id dal nome del thread (per DeepSeek)
+    import threading
+    thread_name = threading.current_thread().name
+    if "DeepSeekExtraction-" in thread_name:
+        user_id = thread_name.replace("DeepSeekExtraction-", "")
+        print(f"ID utente estratto dal thread DeepSeek: {user_id}")
+        return user_id
+    
+    # Fallback al session state di Streamlit
     if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
         raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
     return st.session_state.user_info["id"]
@@ -48,7 +57,11 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
     Raises:
         ValueError: Se i dati non sono disponibili
     """
-    user_file_path = f"user_data/user_{user_id}.json"
+    # Fix: Handle user_id that may already contain 'user_' prefix
+    if user_id.startswith("user_"):
+        user_file_path = f"user_data/{user_id}.json"
+    else:
+        user_file_path = f"user_data/user_{user_id}.json"
     
     print(f"🔍 DEBUG load_user_meal_targets:")
     print(f"   📁 User ID: {user_id}")

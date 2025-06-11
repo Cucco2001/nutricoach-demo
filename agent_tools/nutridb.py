@@ -503,7 +503,11 @@ class NutriDB:
 
     def _extract_foods_from_user_data(self, user_id):
         """Estrae gli alimenti e le quantità dal file dell'utente."""
-        user_file_path = f"user_data/{user_id}.json"
+        # Fix: Handle user_id that may already contain 'user_' prefix
+        if user_id.startswith("user_"):
+            user_file_path = f"user_data/{user_id}.json"
+        else:
+            user_file_path = f"user_data/user_{user_id}.json"
         
         if not os.path.exists(user_file_path):
             raise ValueError(f"File utente {user_id} non trovato.")

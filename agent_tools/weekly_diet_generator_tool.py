@@ -120,6 +120,15 @@ def get_canonical_meal_name(meal_name: str) -> str:
 
 def get_user_id() -> str:
     """Estrae l'ID dell'utente dalla sessione Streamlit."""
+    # Prova prima a estrarre l'user_id dal nome del thread (per DeepSeek)
+    import threading
+    thread_name = threading.current_thread().name
+    if "DeepSeekExtraction-" in thread_name:
+        user_id = thread_name.replace("DeepSeekExtraction-", "")
+        logger.info(f"ID utente estratto dal thread DeepSeek: {user_id}")
+        return user_id
+    
+    # Fallback al session state di Streamlit
     if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
         raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
     return st.session_state.user_info["id"]
@@ -183,7 +192,11 @@ def calculate_user_daily_proteins(user_id: str) -> float:
         Proteine totali giornaliere in grammi
     """
     try:
-        user_file_path = f"user_data/user_{user_id}.json"
+        # Fix: Handle user_id that may already contain 'user_' prefix
+        if user_id.startswith("user_"):
+            user_file_path = f"user_data/{user_id}.json"
+        else:
+            user_file_path = f"user_data/user_{user_id}.json"
         
         if not os.path.exists(user_file_path):
             logger.warning(f"File utente {user_id} non trovato, uso default 100g proteine")
@@ -243,7 +256,11 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
     Returns:
         Dict con la struttura dei pasti o None se errore/file non trovato
     """
-    user_file_path = f"user_data/user_{user_id}.json"
+    # Fix: Handle user_id that may already contain 'user_' prefix
+    if user_id.startswith("user_"):
+        user_file_path = f"user_data/{user_id}.json"
+    else:
+        user_file_path = f"user_data/user_{user_id}.json"
     
     if not os.path.exists(user_file_path):
         logger.error(f"File utente {user_id} non trovato.")

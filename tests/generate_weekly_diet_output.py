@@ -63,7 +63,11 @@ def format_day1_from_user_data(user_id):
     
     try:
         # Carica i dati dell'utente
-        user_file_path = f"user_data/user_{user_id}.json"
+        # Fix: Handle user_id that may already contain 'user_' prefix
+        if user_id.startswith("user_"):
+            user_file_path = f"user_data/{user_id}.json"
+        else:
+            user_file_path = f"user_data/user_{user_id}.json"
         with open(user_file_path, 'r', encoding='utf-8') as f:
             user_data = json.load(f)
         

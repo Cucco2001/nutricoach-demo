@@ -452,12 +452,21 @@ def get_user_id() -> str:
     """
     import streamlit as st
     
+    # Prova prima a estrarre l'user_id dal nome del thread (per DeepSeek)
+    import threading
+    thread_name = threading.current_thread().name
+    if "DeepSeekExtraction-" in thread_name:
+        user_id = thread_name.replace("DeepSeekExtraction-", "")
+        logger.info(f"ID utente estratto dal thread DeepSeek: {user_id}")
+        return user_id
+    
+    # Fallback al session state di Streamlit
     if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
         raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
     return st.session_state.user_info["id"]
 
 
-def load_user_basic_data() -> Dict[str, Any]:
+def load_user_basic_data(user_id: Optional[str] = None) -> Dict[str, Any]:
     """
     Carica i dati di base dell'utente dal file JSON.
     
@@ -470,9 +479,14 @@ def load_user_basic_data() -> Dict[str, Any]:
     Raises:
         ValueError: Se il file utente non esiste o i dati sono incompleti
     """
-    user_id = get_user_id()
+    if user_id is None:
+        user_id = get_user_id()
     
-    user_file_path = f"user_data/user_{user_id}.json"
+    # Fix: Handle user_id that may already contain 'user_' prefix
+    if user_id.startswith("user_"):
+        user_file_path = f"user_data/{user_id}.json"
+    else:
+        user_file_path = f"user_data/user_{user_id}.json"
     
     logger.info(f"🔍 DEBUG load_user_basic_data:")
     logger.info(f"   📁 User ID: {user_id}")
@@ -526,7 +540,7 @@ def load_user_basic_data() -> Dict[str, Any]:
     return basic_data
 
 
-def compute_Harris_Benedict_Equation() -> Dict[str, Any]:
+def compute_Harris_Benedict_Equation(user_id: Optional[str] = None) -> Dict[str, Any]:
     """
     Calcola il metabolismo basale e il fabbisogno energetico totale per l'utente.
     Estrae automaticamente i dati necessari dal file utente.
@@ -538,8 +552,12 @@ def compute_Harris_Benedict_Equation() -> Dict[str, Any]:
         Dict con metabolismo basale e fabbisogno giornaliero
     """
     try:
+        # Fix: Get user_id to avoid undefined variable reference
+        if user_id is None:
+            user_id = get_user_id()
+        
         # Carica i dati dell'utente
-        user_data = load_user_basic_data()
+        user_data = load_user_basic_data(user_id)
         
         sesso = str(user_data["sesso"]).lower()
         peso = float(user_data["peso"])
@@ -567,7 +585,7 @@ def compute_Harris_Benedict_Equation() -> Dict[str, Any]:
             "bmr": round(bmr),
             "fabbisogno_giornaliero": round(fabbisogno_giornaliero),
             "laf_utilizzato": laf,
-            "user_id": user_id or get_user_id()
+            "user_id": user_id
         }
     except Exception as e:
         logger.error(f"Errore in compute_Harris_Benedict_Equation: {str(e)}")
