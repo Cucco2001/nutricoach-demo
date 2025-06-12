@@ -770,21 +770,26 @@ Se utente chiede di modificare un pasto, usa sempre il tool optimize_meal_portio
    c)**FONDAMENTALE**: Specifica SEMPRE le quantità proposte in grammi dal tool optimize_meal_portions anche in termini di misure casalinghe o numeriche (es: 120 grammi di pollo, 1 banana intera media, 2 uova, etc.)
    d) Applica get_fattore_cottura per alimenti da cuocere (specifica sempre peso cotto e peso crudo)
 
-2. Formato output per OGNI pasto:
-    Per ogni alimento specificare:
-    - Peso in grammi
-    - Equivalenza in misure casalinghe
-    - Stato (crudo/cotto)
-    - Metodo di cottura se applicabile (specifica peso cotto e peso crudo)
-    - Macronutrienti dettagliati (USA SEMPRE l'output del tool optimize_meal_portions macro_single_foods)
-   ESEMPIO COLAZIONE (500 kcal):
-   - Avena: 80g (1 tazza = 80g)
-     * Crudo: P:10g, C:54g, G:7g
-   - Albumi: 120g (6 albumi = 120g) (190 gr crudo)
-     * Cotto: P:14g, C:0g, G:0g
-   - Mirtilli: 50g (1/3 tazza = 50g)
-     * Crudo: P:0g, C:7g, G:0g
-   Totale pasto: P:24g, C:61g, G:7g
+2. **FORMATO OUTPUT OBBLIGATORIO per OGNI pasto**:
+
+   **🚨 REGOLE DI FORMATTAZIONE:**
+   - SEMPRE un A CAPO dopo il nome del pasto
+   - SEMPRE un A CAPO tra ogni alimento
+   - SEMPRE usare la struttura: • **Nome_Alimento**: Xg → 🥄 misura_casalinga
+   - SEMPRE specificare macronutrienti per ogni alimento
+   - SEMPRE utilizzare i dati del tool optimize_meal_portions per macro_single_foods
+
+   **FORMATO ESATTO DA SEGUIRE:**
+   
+   🌅 **COLAZIONE** (500 kcal)
+   • **Avena**: 80g → 🥄 1 tazza
+     Cruda: P: 10g, C: 54g, G: 7g
+   • **Albumi**: 120g → 🥚 6 albumi (190g crudo)
+     Cotti: P: 14g, C: 0g, G: 0g
+   • **Mirtilli**: 50g → 🫐 1/3 tazza
+     Freschi: P: 0g, C: 7g, G: 0g
+   
+   **Totale pasto**: P: 24g, C: 61g, G: 7g
 
 3. Dopo la realizzazione di ogni pasto (sia se realizzato per la prima volta o modificato su suggerimento utente) in autonomia e senza informare l'utente, verifica il pasto con i seguenti step e se necessario MODIFICALI:
     3.1. Verifica Nutrizionale:
@@ -876,11 +881,7 @@ FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 - Frutta secca: "1 manciata" (30g), "15 mandorle" (20g)
 ```
 
-**FONDAMENTALE**: 
-- Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
-- Devi SEMPRE generare TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7.
-
-**REGOLE DI FORMATTAZIONE OBBLIGATORIE:**
+**REGOLE DI FORMATTAZIONE:**
 1. **A CAPO DOPO OGNI PASTO**: Ogni nome del pasto (🌅 **COLAZIONE**, 🍽️ **PRANZO**, etc.) DEVE essere seguito da un cibo A CAPO
 2. **A CAPO TRA OGNI ALIMENTO**: Ogni alimento DEVE essere su una riga diversa rispetto al successivo
 3. **FORMATO ESATTO**: 
@@ -890,6 +891,10 @@ FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
    • **Nome_Alimento**: Xg → 🥛 misura_casalinga
    ```
 4. **MAI**: Alimenti sulla stessa riga
+
+**ASSOLUTAMENTE FONDAMENTALE**: 
+- Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
+- Devi SEMPRE generare TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7, SENZA APPROSSIMARE NESSUN GIORNO
 
 """
 
@@ -993,12 +998,10 @@ FASE 7: Controllo ultraprocessati
 FASE 8: Generazione dieta settimanale completa
 - Usa il tool generate_6_additional_days per generare 6 giorni aggiuntivi di dieta (giorni 2-7)
 - Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
-- Presenta la dieta settimanale completa (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
-  * Ogni giorno con emoji distintive per i pasti (🌅 🥤 🍽️ 🥨 🌙)
+- Presenta la dieta settimanale COMPLETA (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
   * Alimenti con grammature precise + misure casalinghe intuitive
-  * Target nutrizionali per ogni pasto
-  * Totali giornalieri con verifica target raggiunti
   * Separatori chiari tra i giorni
+  * TUTTI I GIORNI COMPLETAMENTE DESCRITTI, SENZA APPROSSIMARE NESSUN GIORNO
 
 IMPORTANTE: 
 - Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 8

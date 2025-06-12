@@ -20,6 +20,76 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 
 
+class SmartDocTemplate(SimpleDocTemplate):
+    """
+    Estensione di SimpleDocTemplate che rimuove automaticamente le pagine vuote.
+    """
+    
+    def build(self, flowables, **kwargs):
+        """
+        Sovrascrivo il metodo build per rimuovere le pagine vuote.
+        """
+        # Filtra gli elementi per rimuovere PageBreak consecutivi e quelli alla fine
+        filtered_flowables = self._remove_empty_pages(flowables)
+        
+        # Chiama il metodo build originale con la story filtrata
+        super().build(filtered_flowables, **kwargs)
+    
+    def _remove_empty_pages(self, flowables):
+        """
+        Rimuove i PageBreak che creerebbero pagine vuote.
+        """
+        if not flowables:
+            return flowables
+        
+        filtered = []
+        last_was_pagebreak = False
+        
+        for i, item in enumerate(flowables):
+            is_pagebreak = isinstance(item, PageBreak)
+            
+            # Salta PageBreak consecutivi
+            if is_pagebreak and last_was_pagebreak:
+                continue
+            
+            # Salta PageBreak all'inizio
+            if is_pagebreak and len(filtered) == 0:
+                continue
+            
+            # Salta PageBreak alla fine
+            if is_pagebreak and i == len(flowables) - 1:
+                continue
+            
+            # Controlla se c'è contenuto significativo dopo un PageBreak
+            if is_pagebreak:
+                has_content_after = self._has_meaningful_content_after(flowables, i)
+                if not has_content_after:
+                    continue
+            
+            filtered.append(item)
+            last_was_pagebreak = is_pagebreak
+        
+        return filtered
+    
+    def _has_meaningful_content_after(self, flowables, pagebreak_index):
+        """
+        Verifica se c'è contenuto significativo dopo un PageBreak.
+        """
+        for item in flowables[pagebreak_index + 1:]:
+            # Ignora altri PageBreak
+            if isinstance(item, PageBreak):
+                continue
+            
+            # Ignora Spacer molto piccoli (meno di 20 punti)
+            if isinstance(item, Spacer) and item.height < 20:
+                continue
+            
+            # Se troviamo qualsiasi altro elemento, c'è contenuto
+            return True
+        
+        return False
+
+
 class PDFGenerator:
     """Genera documenti PDF per il piano nutrizionale dell'utente"""
     
@@ -115,8 +185,8 @@ class PDFGenerator:
         # Crea il buffer per il PDF
         buffer = io.BytesIO()
         
-        # Crea il documento PDF
-        doc = SimpleDocTemplate(
+        # Crea il documento PDF con rimozione automatica delle pagine vuote
+        doc = SmartDocTemplate(
             buffer,
             pagesize=A4,
             rightMargin=50,
@@ -140,7 +210,7 @@ class PDFGenerator:
         # Footer informativo
         self._add_document_footer(story)
         
-        # Genera il PDF
+        # Genera il PDF con rimozione automatica delle pagine vuote
         doc.build(story)
         
         # Restituisci i bytes del PDF
