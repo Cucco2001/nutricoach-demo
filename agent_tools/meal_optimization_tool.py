@@ -444,6 +444,9 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
     dell'utente per quel pasto, e infine arrotonda le quantità alla decina
     più vicina (es. 118.7g diventa 120g).
     
+    Per i pasti di colazione, esegue ottimizzazioni intelligenti:
+    1. Se deficit di grassi >3g e >15%, prova ad aggiungere mandorle
+    
     Per i pasti di pranzo e cena, esegue ottimizzazioni intelligenti:
     1. Prova ad aggiungere olio d'oliva se può migliorare l'ottimizzazione
     2. Aggiunge/rimuove proteine (pollo) se l'errore proteico è >15%
@@ -466,6 +469,8 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
         - error_message: messaggio di errore se fallisce
         - optimization_summary: messaggio di riepilogo delle modifiche apportate
         - oil_added: bool se è stato aggiunto automaticamente l'olio
+        - fat_added: bool se sono state aggiunte mandorle per deficit di grassi
+        - fat_adjustment_food: alimento aggiunto per i grassi (es: "mandorle")
         - protein_added/protein_removed: bool per aggiustamenti proteici
         - carb_added/carb_substituted: bool per aggiustamenti dei carboidrati
         - carb_substitution_type: tipo di sostituzione effettuata (es: "pasta→riso")
@@ -558,7 +563,67 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
                 final_actual_nutrients = actual_nutrients_with_oil
                 final_food_list = food_list_with_oil
         
-        # 8. Step aggiuntivo: ottimizzazione proteine per pranzo/cena
+        # 8. Step aggiuntivo: ottimizzazione grassi per colazione
+        fat_added = False
+        fat_adjustment_food = None
+        
+        # Determina se è colazione
+        is_breakfast = any(keyword in meal_name_lower for keyword in 
+                          ["colazione", "breakfast", "Colazione", "Breakfast", "COLAZIONE", "BREAKFAST"])
+        
+        if is_breakfast:
+            # Calcola errore sui grassi attuale
+            fat_target = target_nutrients["grassi_g"]
+            fat_actual = final_actual_nutrients["grassi_g"]
+            fat_deficit = fat_target - fat_actual
+            fat_error_pct = abs(fat_deficit) / fat_target * 100 if fat_target > 0 else 0
+            
+            # Se c'è un deficit significativo di grassi (>15%), prova ad aggiungere mandorle
+            if fat_deficit > 3 and fat_error_pct > 15:  # Deficit significativo (>3g e >15%)
+                # Controlla se le mandorle non sono già presenti
+                almond_variants = ["mandorle", "mandorla", "mandorle_sgusciate", "mandorle sgusciate"]
+                almonds_already_present = any(any(variant in food.lower() for variant in almond_variants) for food in final_food_list)
+                
+                if not almonds_already_present:
+                    test_food_list_almonds = final_food_list + ["mandorle"]
+                    almonds_found, _ = db.check_foods_in_db(["mandorle"])
+                    
+                    if almonds_found:
+                        try:
+                            # Calcola i dati nutrizionali per la lista con mandorle aggiunte
+                            foods_nutrition_almonds = get_food_nutrition_per_100g(test_food_list_almonds)
+                            
+                            optimized_portions_almonds = optimize_portions(target_nutrients, foods_nutrition_almonds)
+                            actual_nutrients_almonds = calculate_actual_nutrients(optimized_portions_almonds, foods_nutrition_almonds)
+                            
+                            # Calcola errore con mandorle aggiunte
+                            error_with_almonds = sum([
+                                abs(actual_nutrients_almonds["kcal"] - target_nutrients["kcal"]) / max(target_nutrients["kcal"], 1),
+                                abs(actual_nutrients_almonds["proteine_g"] - target_nutrients["proteine_g"]) / max(target_nutrients["proteine_g"], 1),
+                                abs(actual_nutrients_almonds["carboidrati_g"] - target_nutrients["carboidrati_g"]) / max(target_nutrients["carboidrati_g"], 1),
+                                abs(actual_nutrients_almonds["grassi_g"] - target_nutrients["grassi_g"]) / max(target_nutrients["grassi_g"], 1)
+                            ]) / 4
+                            
+                            # Calcola errore attuale
+                            current_error = sum([
+                                abs(final_actual_nutrients["kcal"] - target_nutrients["kcal"]) / max(target_nutrients["kcal"], 1),
+                                abs(final_actual_nutrients["proteine_g"] - target_nutrients["proteine_g"]) / max(target_nutrients["proteine_g"], 1),
+                                abs(final_actual_nutrients["carboidrati_g"] - target_nutrients["carboidrati_g"]) / max(target_nutrients["carboidrati_g"], 1),
+                                abs(final_actual_nutrients["grassi_g"] - target_nutrients["grassi_g"]) / max(target_nutrients["grassi_g"], 1)
+                            ]) / 4
+                            
+                            # Se aggiungere mandorle migliora significativamente
+                            if error_with_almonds < current_error - 0.03:
+                                fat_added = True
+                                final_portions = optimized_portions_almonds
+                                final_actual_nutrients = actual_nutrients_almonds
+                                final_food_list = test_food_list_almonds
+                                fat_adjustment_food = "mandorle"
+                                
+                        except Exception as e:
+                            logger.warning(f"Errore nel test con mandorle aggiunte: {str(e)}")
+
+        # 8.1. Step aggiuntivo: ottimizzazione proteine per pranzo/cena
         protein_added = False
         protein_removed = False
         protein_adjustment_food = None
@@ -841,6 +906,9 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
         if oil_added:
             summary_parts.append(f"olio aggiunto automaticamente (miglioramento: {improvement:.1%})")
         
+        if fat_added:
+            summary_parts.append(f"{fat_adjustment_food} aggiunte per deficit di grassi")
+        
         if protein_added:
             summary_parts.append(f"{protein_adjustment_food} aggiunto per deficit proteico")
         elif protein_removed:
@@ -864,6 +932,8 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             "meal_name": meal_name,
             "foods_included": final_food_list,
             "oil_added": oil_added,
+            "fat_added": fat_added,
+            "fat_adjustment_food": fat_adjustment_food,
             "protein_added": protein_added,
             "protein_removed": protein_removed,
             "protein_adjustment_food": protein_adjustment_food,
@@ -883,7 +953,8 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             "portions": {},
             "target_nutrients": {},
             "actual_nutrients": {},
-            "oil_added": False
+            "oil_added": False,
+            "fat_added": False
         }
 
 
