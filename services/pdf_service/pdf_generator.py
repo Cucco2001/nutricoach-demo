@@ -275,24 +275,24 @@ class PDFGenerator:
             ['Fabbisogno Totale', f"{caloric_data.get('fabbisogno_totale', 0)} kcal", 'Calorie totali giornaliere']
         ]
         
-        caloric_table = Table(caloric_table_data, colWidths=[2*inch, 1.5*inch, 2.5*inch])
+        caloric_table = Table(caloric_table_data, colWidths=[2.2*inch, 1.4*inch, 1.6*inch, 1.4*inch])
         caloric_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#3498db')),
+            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#8e44ad')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('FONTSIZE', (0, 0), (-1, 0), 11),
             ('BACKGROUND', (0, 1), (-1, -1), HexColor('#ecf0f1')),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
             ('FONTNAME', (1, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 9),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
             ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 8),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6)
+            ('LEFTPADDING', (0, 0), (-1, -1), 10),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+            ('TOPPADDING', (0, 0), (-1, -1), 8),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 8)
         ]))
         
         story.append(caloric_table)
@@ -340,24 +340,24 @@ class PDFGenerator:
             ['Grassi', f"{macros_data.get('grassi_g', 0)}g", f"{macros_data.get('grassi_kcal', 0)} kcal", f"{macros_data.get('grassi_percentuale', 0)}%"]
         ]
         
-        macros_table = Table(macros_table_data, colWidths=[1.5*inch, 1*inch, 1.2*inch, 1*inch])
+        macros_table = Table(macros_table_data, colWidths=[2.2*inch, 1.4*inch, 1.6*inch, 1.4*inch])
         macros_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), HexColor('#e74c3c')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('FONTSIZE', (0, 0), (-1, 0), 11),
             ('BACKGROUND', (0, 1), (-1, -1), HexColor('#ecf0f1')),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
             ('FONTNAME', (1, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 9),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
             ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 8),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6)
+            ('LEFTPADDING', (0, 0), (-1, -1), 10),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+            ('TOPPADDING', (0, 0), (-1, -1), 8),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 8)
         ]))
         
         story.append(macros_table)
@@ -430,24 +430,24 @@ class PDFGenerator:
                 f"{grassi}g"
             ])
         
-        meal_table = Table(meal_table_data, colWidths=[1.5*inch, 1*inch, 0.8*inch, 0.8*inch, 1*inch, 0.7*inch])
+        meal_table = Table(meal_table_data, colWidths=[2.0*inch, 1.3*inch, 1.1*inch, 1.1*inch, 1.3*inch, 1.0*inch])
         meal_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 9),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
             ('BACKGROUND', (0, 1), (-1, -1), HexColor('#ecf0f1')),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
             ('FONTNAME', (1, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 8),
+            ('FONTSIZE', (0, 1), (-1, -1), 9),
             ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 4),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-            ('TOPPADDING', (0, 0), (-1, -1), 4),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+            ('LEFTPADDING', (0, 0), (-1, -1), 6),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 6),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 6)
         ]))
         
         story.append(meal_table)
@@ -497,7 +497,7 @@ class PDFGenerator:
                     
                     ingredients_data.append([nome, f"{quantita}g", misura])
                 
-                ingredients_table = Table(ingredients_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
+                ingredients_table = Table(ingredients_data, colWidths=[2.7*inch, 1.2*inch, 2.7*inch])
                 ingredients_table.setStyle(TableStyle([
                     ('BACKGROUND', (0, 0), (-1, 0), HexColor('#8e44ad')),
                     ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -510,10 +510,10 @@ class PDFGenerator:
                     ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
                     ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
                     ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                    ('LEFTPADDING', (0, 0), (-1, -1), 4),
-                    ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-                    ('TOPPADDING', (0, 0), (-1, -1), 3),
-                    ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+                    ('LEFTPADDING', (0, 0), (-1, -1), 5),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+                    ('TOPPADDING', (0, 0), (-1, -1), 4),
+                    ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
                 ]))
                 
                 story.append(ingredients_table)
@@ -537,7 +537,7 @@ class PDFGenerator:
                         ]
                     ]
                     
-                    totals_table = Table(totals_data, colWidths=[1.5*inch, 1.5*inch, 1.5*inch, 1.5*inch])
+                    totals_table = Table(totals_data, colWidths=[1.6*inch, 1.6*inch, 1.6*inch, 1.6*inch])
                     totals_table.setStyle(TableStyle([
                         ('BACKGROUND', (0, 0), (-1, 0), HexColor('#f39c12')),
                         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -552,8 +552,8 @@ class PDFGenerator:
                         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
                         ('LEFTPADDING', (0, 0), (-1, -1), 6),
                         ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-                        ('TOPPADDING', (0, 0), (-1, -1), 4),
-                        ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+                        ('TOPPADDING', (0, 0), (-1, -1), 5),
+                        ('BOTTOMPADDING', (0, 0), (-1, -1), 5)
                     ]))
                     
                     story.append(totals_table)
@@ -671,7 +671,7 @@ class PDFGenerator:
                     ingredients_data.append([nome, f"{quantita}g", misura])
                 
                 if len(ingredients_data) > 1:
-                    ingredients_table = Table(ingredients_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
+                    ingredients_table = Table(ingredients_data, colWidths=[2.7*inch, 1.2*inch, 2.7*inch])
                     ingredients_table.setStyle(TableStyle([
                         ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
                         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -684,10 +684,10 @@ class PDFGenerator:
                         ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
                         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
                         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                        ('LEFTPADDING', (0, 0), (-1, -1), 4),
-                        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-                        ('TOPPADDING', (0, 0), (-1, -1), 3),
-                        ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+                        ('LEFTPADDING', (0, 0), (-1, -1), 5),
+                        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+                        ('TOPPADDING', (0, 0), (-1, -1), 4),
+                        ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
                     ]))
                     
                     story.append(ingredients_table)
@@ -768,7 +768,7 @@ class PDFGenerator:
         
         # Se ci sono ingredienti, crea la tabella
         if len(ingredients_data) > 1:
-            ingredients_table = Table(ingredients_data, colWidths=[2.5*inch, 1*inch, 2.5*inch])
+            ingredients_table = Table(ingredients_data, colWidths=[2.7*inch, 1.2*inch, 2.7*inch])
             ingredients_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -781,10 +781,10 @@ class PDFGenerator:
                 ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
                 ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('LEFTPADDING', (0, 0), (-1, -1), 4),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-                ('TOPPADDING', (0, 0), (-1, -1), 3),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+                ('LEFTPADDING', (0, 0), (-1, -1), 5),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+                ('TOPPADDING', (0, 0), (-1, -1), 4),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
             ]))
             
             story.append(ingredients_table)
@@ -821,7 +821,7 @@ class PDFGenerator:
                 [f"{kcal} kcal", f"{proteine}g", f"{carboidrati}g", f"{grassi}g"]
             ]
             
-            nutrition_table = Table(nutrition_data, colWidths=[1*inch, 1*inch, 1*inch, 1*inch])
+            nutrition_table = Table(nutrition_data, colWidths=[1.2*inch, 1.2*inch, 1.2*inch, 1.2*inch])
             nutrition_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), HexColor('#e67e22')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -834,10 +834,10 @@ class PDFGenerator:
                 ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('LEFTPADDING', (0, 0), (-1, -1), 4),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-                ('TOPPADDING', (0, 0), (-1, -1), 3),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
+                ('LEFTPADDING', (0, 0), (-1, -1), 5),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+                ('TOPPADDING', (0, 0), (-1, -1), 4),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
             ]))
             
             story.append(nutrition_table)
