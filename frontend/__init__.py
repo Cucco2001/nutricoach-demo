@@ -43,6 +43,14 @@ from .login import (
     get_username
 )
 
+# Gestione del tutorial
+from .tutorial import (
+    show_app_tutorial,
+    reset_tutorial,
+    show_tutorial_button_in_preferences,
+    check_tutorial_in_chat
+)
+
 __all__ = [
     'NUTRITION_QUESTIONS',
     'handle_nutrition_questions',
@@ -63,5 +71,9 @@ __all__ = [
     'get_current_user',
     'is_user_authenticated',
     'get_user_id',
-    'get_username'
+    'get_username',
+    'show_app_tutorial',
+    'reset_tutorial',
+    'show_tutorial_button_in_preferences',
+    'check_tutorial_in_chat'
 ] 

@@ -11,6 +11,7 @@ from frontend.nutrition_questions import NUTRITION_QUESTIONS
 from frontend.handle_nutrition_questions import handle_nutrition_questions
 from frontend.handle_initial_info import handle_user_info_form, handle_user_info_display
 from frontend.buttons import handle_restart_button
+from frontend.tutorial import show_app_tutorial, check_tutorial_in_chat
 from agent.prompts import get_initial_prompt
 
 
@@ -200,7 +201,7 @@ def render_chat_area():
     """
     Renderizza l'area principale della chat.
     
-    Gestisce il flusso tra domande nutrizionali e chat vera e propria.
+    Gestisce il flusso tra tutorial, domande nutrizionali e chat vera e propria.
     """
     if st.session_state.user_info.get("età"):
         # Se ci sono ancora domande nutrizionali da gestire
@@ -219,6 +220,14 @@ def render_chat_area():
         # Gestisci l'input dell'utente
         handle_user_input()
     else:
+        # Controlla se mostrare il tutorial
+        if check_tutorial_in_chat():
+            # Mostra il tutorial se non è stato completato
+            tutorial_completed = show_app_tutorial()
+            if not tutorial_completed:
+                return  # Tutorial in corso, non mostrare altro
+        
+        # Mostra il messaggio per inserire le informazioni
         st.info("👈 Per iniziare, inserisci le tue informazioni nella barra laterale")
 
 

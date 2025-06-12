@@ -8,6 +8,7 @@ delle preferenze alimentari, inclusi form, bottoni e validazione input.
 import streamlit as st
 from typing import Optional
 from .food_preferences import FoodPreferences
+from frontend.tutorial import show_tutorial_button_in_preferences
 
 
 class PreferencesUI:
@@ -29,6 +30,9 @@ class PreferencesUI:
         Args:
             user_id: ID dell'utente
         """
+        # Bottone per rivedere il tutorial dell'app
+        show_tutorial_button_in_preferences()
+        
         with st.expander("Gestisci le tue preferenze alimentari"):
             # Inizializza le preferenze nella sessione
             self.food_preferences.initialize_session_preferences(user_id)
