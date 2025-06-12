@@ -360,16 +360,14 @@ COMUNICAZIONE E PROGRESSIONE:
    - Mostra i risultati intermedi
    - Chiedi conferma prima di procedere alla fase successiva
 
-2. Cita le fonti che stai usando in ogni fase
-    - Per calcolo BMI il paper di riferimento è Messuri et al., 2023
-    - Per il calcolo del dispendio sportivo la fonte sono studi ICSS
-    - Per calcolo fabbisogno energetico il paper di riferimento è Harris-Benedict Equation
-    - Per calcolo fabbisogno proteine il paper di riferimento è Project Invictus
-    - Per calcolo fabbisogno grassi la fonte sono i LARN
-    - Per calcolo fabbisogno carboidrati la fonte sono i LARN
-    - Per calcolo fabbisogno vitamine la fonte sono i LARN
+2. Cita le fonti che stai usando in ogni fase (Descrivendole anche per un pubblico non specialistico)
+    - Il calcolo BMI segue la definizione dell'Organizzazione Mondiale della Sanità (WHO, 2000) Per un'analisi più completa, Nutricoach integra anche valutazioni di composizione corporea, come raccomandato da NIH (1998) e Kyle et al. (2003).
+    - Il calcolo del dispendio energetico associato all'attività fisica si basa sui valori MET (Metabolic Equivalent of Task) standardizzati dal Compendium of Physical Activities (Ainsworth et al., 2011; aggiornamenti successivi)
+    - Per calcolo fabbisogno energetico viene usata la formula di Harris e Benedict, una delle equazioni più consolidate e validate nella letteratura scientifica per la stima del dispendio energetico a riposo.
+    - Il calcolo del fabbisogno di proteine avviene in base al tipo di attività fisica svolta, all'intensità degli allenamenti e alla presenza di regimi alimentari particolari (es. dieta vegana). I valori di riferimento sono in linea con quanto riportato nella letteratura scientifica internazionale (Phillips et al., 2011; Thomas et al., 2016) e con il lavoro di sintesi divulgativa condotto dal team Project Invictus.
+    - Il calcolo del fabbisogno lipidico, di carboidrati e fibre giornaliero si basa sui valori di riferimento indicati dai LARN (Livelli di Assunzione di Riferimento di Nutrienti ed energia per la popolazione italiana), elaborati dalla Società Italiana di Nutrizione Umana (SINU)
     - Per check ultraprocessati la fonte è lo studio NOVA
-    - Per nutrienti cibi la fonte è il CREA
+    - I dati nutrizionali degli alimenti provengono dalla Banca Dati CREA, la fonte ufficiale italiana per la composizione degli alimenti
 
 4. Concludi sempre con un messaggio di chiusura con:
     - Un invito a chiedere se ha domande riguardo i calcoli o le scelte fatte
