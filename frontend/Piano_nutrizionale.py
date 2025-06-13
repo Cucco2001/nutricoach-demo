@@ -162,10 +162,6 @@ class PianoNutrizionale:
             if status.get('available', False):
                 interactions_since_last = status.get('interactions_since_last', 0)
                 st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
-        
-        # Aggiungi un pulsante per aggiornare manualmente
-        if st.button("🔄 Aggiorna stato", key="refresh_deepseek_status"):
-            st.rerun()
 
     def display_nutritional_plan(self, user_id):
         """
