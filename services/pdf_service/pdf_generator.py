@@ -16,7 +16,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.colors import HexColor
 import reportlab.lib.colors as colors
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, CondPageBreak
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 
 
@@ -115,10 +115,10 @@ class PDFGenerator:
         self.styles.add(ParagraphStyle(
             name='CustomSectionTitle',
             parent=self.styles['Heading1'],
-            fontSize=16,
+            fontSize=14,  # Font più piccolo
             textColor=HexColor('#2c3e50'),
-            spaceBefore=20,
-            spaceAfter=10,
+            spaceBefore=10,  # Spazio ridotto
+            spaceAfter=6,  # Spazio ridotto
             fontName='Helvetica-Bold'
         ))
         
@@ -201,10 +201,15 @@ class PDFGenerator:
         # Header del documento
         self._add_document_header(story, user_info, extracted_data)
         
-        # Sezioni principali
+        # Sezioni principali - prime tre tabelle nella prima pagina
         self._add_caloric_needs_section(story, extracted_data)
         self._add_macros_section(story, extracted_data)
         self._add_daily_plan_section(story, extracted_data)
+        
+        # Forza una nuova pagina per la dieta settimanale se rimane più spazio di quello 
+        # necessario per un titolo e poco contenuto. Con 700 punti (circa 25cm) forziamo 
+        # praticamente sempre una nuova pagina, assicurando che il Giorno 1 inizi sempre in pagina 2
+        story.append(CondPageBreak(700))  # 700 punti = forza nuova pagina nella maggior parte dei casi
         self._add_weekly_diet_section(story, extracted_data)
         
         # Footer informativo
@@ -314,7 +319,7 @@ class PDFGenerator:
             ]))
             
             story.append(personal_table)
-            story.append(Spacer(1, 70))
+            story.append(Spacer(1, 20))
     
     def _add_caloric_needs_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -333,10 +338,10 @@ class PDFGenerator:
             print("[PDF_SERVICE] Sezione caloric_needs saltata - dati vuoti")
             return
         
-        # Titolo sezione
+        # Titolo sezione più compatto
         story.append(Paragraph("🔥 Fabbisogno Energetico Giornaliero", self.styles['CustomSectionTitle']))
         
-        # Tabella con i valori calorici
+        # Tabella con i valori calorici - più compatta
         caloric_table_data = [
             ['Parametro', 'Valore', 'Descrizione'],
             ['Metabolismo Basale (BMR)', f"{caloric_data.get('bmr', 0)} kcal", 'Energia per le funzioni vitali'],
@@ -345,29 +350,29 @@ class PDFGenerator:
             ['Fabbisogno Totale', f"{caloric_data.get('fabbisogno_totale', 0)} kcal", 'Calorie totali giornaliere']
         ]
         
-        caloric_table = Table(caloric_table_data, colWidths=[2.2*inch, 1.4*inch, 1.6*inch, 1.4*inch])
+        caloric_table = Table(caloric_table_data, colWidths=[2.0*inch, 1.3*inch, 1.5*inch, 1.2*inch])
         caloric_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#8e44ad')),
+            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#3498db')),  # Blu
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 11),
+            ('FONTSIZE', (0, 0), (-1, 0), 9),  # Font più piccolo
             ('BACKGROUND', (0, 1), (-1, -1), HexColor('#ecf0f1')),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
             ('FONTNAME', (1, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),  # Font più piccolo
             ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 10),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 10),
-            ('TOPPADDING', (0, 0), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 8)
+            ('LEFTPADDING', (0, 0), (-1, -1), 6),  # Padding ridotto
+            ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),  # Padding ridotto
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
         ]))
         
         story.append(caloric_table)
         
-        # Informazioni aggiuntive
+        # Informazioni aggiuntive più compatte
         additional_info = []
         
         aggiustamento = caloric_data.get('aggiustamento_obiettivo', 0)
@@ -376,11 +381,11 @@ class PDFGenerator:
             additional_info.append(f"<b>Aggiustamento Obiettivo:</b> {simbolo}{aggiustamento} kcal")
         
         if additional_info:
-            story.append(Spacer(1, 10))
+            story.append(Spacer(1, 5))  # Spazio ridotto
             for info in additional_info:
                 story.append(Paragraph(info, self.styles['CustomBodyText']))
         
-        story.append(Spacer(1, 50))
+        story.append(Spacer(1, 15))  # Spazio ridotto
     
     def _add_macros_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -399,10 +404,10 @@ class PDFGenerator:
             print("[PDF_SERVICE] Sezione macros_total saltata - dati vuoti")
             return
         
-        # Titolo sezione
+        # Titolo sezione più compatto
         story.append(Paragraph("🥗 Distribuzione Calorica Giornaliera", self.styles['CustomSectionTitle']))
         
-        # Tabella macronutrienti
+        # Tabella macronutrienti - più compatta
         macros_table_data = [
             ['Macronutriente', 'Grammi', 'Calorie', 'Percentuale'],
             ['Proteine', f"{macros_data.get('proteine_g', 0)}g", f"{macros_data.get('proteine_kcal', 0)} kcal", f"{macros_data.get('proteine_percentuale', 0)}%"],
@@ -410,30 +415,30 @@ class PDFGenerator:
             ['Grassi', f"{macros_data.get('grassi_g', 0)}g", f"{macros_data.get('grassi_kcal', 0)} kcal", f"{macros_data.get('grassi_percentuale', 0)}%"]
         ]
         
-        macros_table = Table(macros_table_data, colWidths=[2.2*inch, 1.4*inch, 1.6*inch, 1.4*inch])
+        macros_table = Table(macros_table_data, colWidths=[2.0*inch, 1.3*inch, 1.5*inch, 1.2*inch])
         macros_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#e74c3c')),
+            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#e74c3c')),  # Rosso
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 11),
+            ('FONTSIZE', (0, 0), (-1, 0), 9),  # Font più piccolo
             ('BACKGROUND', (0, 1), (-1, -1), HexColor('#ecf0f1')),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
             ('FONTNAME', (1, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),  # Font più piccolo
             ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 10),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 10),
-            ('TOPPADDING', (0, 0), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 8)
+            ('LEFTPADDING', (0, 0), (-1, -1), 6),  # Padding ridotto
+            ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),  # Padding ridotto
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
         ]))
         
         story.append(macros_table)
         
-        # Totali aggiuntivi
-        story.append(Spacer(1, 10))
+        # Totali aggiuntivi più compatti
+        story.append(Spacer(1, 5))  # Spazio ridotto
         totals_info = []
         
         fibre = macros_data.get('fibre_g', 0)
@@ -446,7 +451,7 @@ class PDFGenerator:
         for info in totals_info:
             story.append(Paragraph(info, self.styles['CustomBodyText']))
         
-        story.append(Spacer(1, 40))
+        story.append(Spacer(1, 15))  # Spazio ridotto
     
     def _add_daily_plan_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -465,17 +470,17 @@ class PDFGenerator:
             print("[PDF_SERVICE] Sezione daily_macros saltata - dati vuoti")
             return
         
-        # Titolo sezione
+        # Titolo sezione più compatto
         story.append(Paragraph("🍽️ Piano Pasti Giornaliero", self.styles['CustomSectionTitle']))
         
         num_pasti = daily_data.get('numero_pasti', 0)
         story.append(Paragraph(f"<b>Piano giornaliero:</b> {num_pasti} pasti", self.styles['CustomBodyText']))
-        story.append(Spacer(1, 10))
+        story.append(Spacer(1, 5))  # Spazio ridotto
         
         if "distribuzione_pasti" not in daily_data:
             return
         
-        # Tabella distribuzione pasti
+        # Tabella distribuzione pasti - più compatta
         distribuzione_pasti = daily_data["distribuzione_pasti"]
         meal_table_data = [['Pasto', 'Calorie', '% del Totale', 'Proteine', 'Carboidrati', 'Grassi']]
         
@@ -500,28 +505,28 @@ class PDFGenerator:
                 f"{grassi}g"
             ])
         
-        meal_table = Table(meal_table_data, colWidths=[2.0*inch, 1.3*inch, 1.1*inch, 1.1*inch, 1.3*inch, 1.0*inch])
+        meal_table = Table(meal_table_data, colWidths=[1.5*inch, 1.0*inch, 0.8*inch, 0.8*inch, 1.0*inch, 0.9*inch])
         meal_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
+            ('BACKGROUND', (0, 0), (-1, 0), HexColor('#f39c12')),  # Arancione
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('FONTSIZE', (0, 0), (-1, 0), 9),  # Font più piccolo
             ('BACKGROUND', (0, 1), (-1, -1), HexColor('#ecf0f1')),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
             ('FONTNAME', (1, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 9),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),  # Font più piccolo
             ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 6),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6)
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),  # Padding ridotto
+            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+            ('TOPPADDING', (0, 0), (-1, -1), 3),  # Padding ridotto
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
         ]))
         
         story.append(meal_table)
-        story.append(Spacer(1, 30))
+        story.append(Spacer(1, 15))  # Spazio ridotto
     
     def _add_registered_meals_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -650,14 +655,6 @@ class PDFGenerator:
         if not has_day1_data and not has_weekly_data:
             print("[PDF_SERVICE] Sezione weekly_diet saltata - nessun dato disponibile")
             return
-        
-        # Inizia una nuova pagina per la sezione settimanale
-        story.append(PageBreak())
-        
-        # Titolo sezione
-        story.append(Paragraph("📅 Piano Nutrizionale Settimanale", self.styles['CustomSectionTitle']))
-        story.append(Spacer(1, 10))
-        
         # Nomi dei giorni
         day_names = {
             1: "Lunedì", 2: "Martedì", 3: "Mercoledì", 4: "Giovedì", 
@@ -710,6 +707,10 @@ class PDFGenerator:
         # Ordina i pasti
         sorted_meals = self._sort_meals_by_time(registered_meals)
         
+        # Conta i pasti per determinare se serve layout compatto
+        meals_count = len(sorted_meals)
+        is_compact = meals_count > 4
+        
         for meal in sorted_meals:
             nome_pasto = meal.get('nome_pasto', 'Pasto').title()
             
@@ -741,28 +742,42 @@ class PDFGenerator:
                     ingredients_data.append([nome, f"{quantita}g", misura])
                 
                 if len(ingredients_data) > 1:
-                    ingredients_table = Table(ingredients_data, colWidths=[2.7*inch, 1.2*inch, 2.7*inch])
+                    # Usa dimensioni compatte se ci sono più di 4 pasti
+                    if is_compact:
+                        col_widths = [2.2*inch, 1.0*inch, 2.3*inch]  # Ridotte
+                        header_font = 10  # Aumentato da 7 a 8
+                        content_font = 9  # Aumentato da 6 a 7
+                        padding = 3
+                    else:
+                        col_widths = [2.7*inch, 1.2*inch, 2.7*inch]  # Standard
+                        header_font = 11  # Aumentato da 8 a 9
+                        content_font = 10  # Aumentato da 7 a 8
+                        padding = 5
+                    
+                    ingredients_table = Table(ingredients_data, colWidths=col_widths)
                     ingredients_table.setStyle(TableStyle([
                         ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
                         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                        ('FONTSIZE', (0, 0), (-1, 0), 8),
+                        ('FONTSIZE', (0, 0), (-1, 0), header_font),
                         ('BACKGROUND', (0, 1), (-1, -1), HexColor('#f8f9fa')),
                         ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
                         ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-                        ('FONTSIZE', (0, 1), (-1, -1), 7),
+                        ('FONTSIZE', (0, 1), (-1, -1), content_font),
                         ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
                         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
                         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                        ('LEFTPADDING', (0, 0), (-1, -1), 5),
-                        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
-                        ('TOPPADDING', (0, 0), (-1, -1), 4),
-                        ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+                        ('LEFTPADDING', (0, 0), (-1, -1), padding),
+                        ('RIGHTPADDING', (0, 0), (-1, -1), padding),
+                        ('TOPPADDING', (0, 0), (-1, -1), padding),
+                        ('BOTTOMPADDING', (0, 0), (-1, -1), padding)
                     ]))
                     
                     story.append(ingredients_table)
             
-            story.append(Spacer(1, 15))
+            # Usa spazio ridotto se ci sono molti pasti
+            space_after_meal = 8 if is_compact else 15
+            story.append(Spacer(1, space_after_meal))
     
     def _add_weekly_diet_day_to_pdf(self, story: list, day_data: Dict[str, Any]):
         """
@@ -775,20 +790,26 @@ class PDFGenerator:
         # Ordine dei pasti
         meal_order = ['colazione', 'spuntino_mattutino', 'pranzo', 'spuntino_pomeridiano', 'cena', 'spuntino_serale']
         
+        # Conta i pasti totali per determinare se serve layout compatto
+        total_meals = sum(1 for meal_name in meal_order if meal_name in day_data and day_data[meal_name])
+        if total_meals == 0:
+            total_meals = sum(1 for meal_data in day_data.values() if meal_data)
+        is_compact = total_meals > 4
+        
         meals_found = 0
         for meal_name in meal_order:
             if meal_name in day_data and day_data[meal_name]:
                 meal_data = day_data[meal_name]
-                self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data)
+                self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data, is_compact)
                 meals_found += 1
         
         # Se non ci sono pasti nell'ordine standard, mostra tutti quelli disponibili
         if meals_found == 0:
             for meal_name, meal_data in day_data.items():
                 if meal_data:
-                    self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data)
+                    self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data, is_compact)
     
-    def _add_weekly_diet_meal_to_pdf(self, story: list, meal_name: str, meal_data: Dict[str, Any]):
+    def _add_weekly_diet_meal_to_pdf(self, story: list, meal_name: str, meal_data: Dict[str, Any], is_compact: bool = False):
         """
         Aggiunge un singolo pasto della weekly diet al PDF.
         
@@ -796,6 +817,7 @@ class PDFGenerator:
             story: Lista degli elementi del PDF
             meal_name: Nome del pasto
             meal_data: Dati del pasto
+            is_compact: Se True, usa layout compatto per molti pasti
         """
         # Converti il nome del pasto in forma leggibile
         meal_display_names = {
@@ -838,23 +860,35 @@ class PDFGenerator:
         
         # Se ci sono ingredienti, crea la tabella
         if len(ingredients_data) > 1:
-            ingredients_table = Table(ingredients_data, colWidths=[2.7*inch, 1.2*inch, 2.7*inch])
+            # Usa dimensioni compatte se ci sono più di 4 pasti
+            if is_compact:
+                col_widths = [2.2*inch, 1.0*inch, 2.3*inch]  # Ridotte
+                header_font = 10  # Aumentato da 7 a 8
+                content_font = 9  # Aumentato da 6 a 7
+                padding = 3
+            else:
+                col_widths = [2.7*inch, 1.2*inch, 2.7*inch]  # Standard
+                header_font = 11  # Aumentato da 8 a 9
+                content_font = 10  # Aumentato da 7 a 8
+                padding = 5
+            
+            ingredients_table = Table(ingredients_data, colWidths=col_widths)
             ingredients_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), HexColor('#27ae60')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 8),
+                ('FONTSIZE', (0, 0), (-1, 0), header_font),
                 ('BACKGROUND', (0, 1), (-1, -1), HexColor('#f8f9fa')),
                 ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
                 ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-                ('FONTSIZE', (0, 1), (-1, -1), 7),
+                ('FONTSIZE', (0, 1), (-1, -1), content_font),
                 ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),
                 ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('LEFTPADDING', (0, 0), (-1, -1), 5),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 5),
-                ('TOPPADDING', (0, 0), (-1, -1), 4),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+                ('LEFTPADDING', (0, 0), (-1, -1), padding),
+                ('RIGHTPADDING', (0, 0), (-1, -1), padding),
+                ('TOPPADDING', (0, 0), (-1, -1), padding),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), padding)
             ]))
             
             story.append(ingredients_table)
@@ -865,7 +899,9 @@ class PDFGenerator:
             if nutrients:
                 self._add_weekly_diet_nutrition_to_pdf(story, nutrients)
         
-        story.append(Spacer(1, 10))
+        # Usa spazio ridotto se ci sono molti pasti
+        space_after_meal = 6 if is_compact else 10
+        story.append(Spacer(1, space_after_meal))
     
     def _add_weekly_diet_nutrition_to_pdf(self, story: list, nutrients: Dict[str, Any]):
         """

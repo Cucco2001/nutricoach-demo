@@ -16,5 +16,11 @@
     "password_hash": "c74e8a44cdf2d248fd646073de1765356f84263483a1ddb5f4de5a92712d156d",
     "user_id": "user_1749309652",
     "created_at": 1749309652.1151597
+  },
+  "claudio": {
+    "username": "claudio",
+    "password_hash": "9109257b0b0081ed1167582606b966e791cf34c9cc2f0adfd12936e33ffa9580",
+    "user_id": "user_1749802708",
+    "created_at": 1749802708.5541632
   }
 }
