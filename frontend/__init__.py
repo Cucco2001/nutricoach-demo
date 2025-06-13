@@ -47,8 +47,8 @@ from .login import (
 from .tutorial import (
     show_app_tutorial,
     reset_tutorial,
-    show_tutorial_button_in_preferences,
-    check_tutorial_in_chat
+    check_tutorial_in_chat,
+    is_tutorial_completed
 )
 
 __all__ = [
@@ -74,6 +74,6 @@ __all__ = [
     'get_username',
     'show_app_tutorial',
     'reset_tutorial',
-    'show_tutorial_button_in_preferences',
-    'check_tutorial_in_chat'
+    'check_tutorial_in_chat',
+    'is_tutorial_completed'
 ] 

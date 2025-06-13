@@ -17,7 +17,7 @@ from agent_tools.nutridb_tool import (
     analyze_bmi_and_goals, check_vitamins, get_food_substitutes, check_ultraprocessed_foods
 )
 from agent_tools.user_data_tool import (
-    get_user_preferences, get_progress_history, get_agent_qa, get_nutritional_info
+    get_user_preferences, get_agent_qa, get_nutritional_info
 )
 # Import dal nuovi moduli frontend
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
@@ -35,8 +35,6 @@ from frontend import handle_login_registration, show_logout_button
 # Import del nuovo servizio DeepSeek modulare
 from services.deep_seek_service import DeepSeekManager
 
-# Import del nuovo servizio Progress modulare
-from services.progress_service import ProgressManager
 
 # Import del nuovo servizio Preferences modulare
 from services.preferences_service import PreferencesManager
@@ -100,7 +98,7 @@ def main():
                 # Navigazione normale quando l'agente non sta generando
                 page = st.radio(
                     "Seleziona una sezione",
-                    ["Chat", "Progressi", "Preferenze", "Piano Nutrizionale"]
+                    ["Chat", "Preferenze", "Piano Nutrizionale"]
                 )
                 # Salva la selezione corrente
                 st.session_state.current_page = page
@@ -111,9 +109,6 @@ def main():
         if page == "Chat":
             # Usa l'interfaccia chat modulare
             chat_interface()
-        elif page == "Progressi":
-            st.session_state.progress_manager.track_user_progress()
-            st.session_state.progress_manager.show_progress_history()
         elif page == "Preferenze":
             st.session_state.preferences_manager.handle_user_preferences(st.session_state.user_info["id"])
         elif page == "Piano Nutrizionale":

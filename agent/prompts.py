@@ -254,20 +254,6 @@ available_tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_progress_history",
-            "description": "Ottiene la storia dei progressi dell'utente.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "user_id": {"type": "string", "description": "ID dell'utente"}
-                },
-                "required": ["user_id"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_agent_qa",
             "description": "Ottiene la storia delle domande e risposte dell'agente.",
             "parameters": {
@@ -512,7 +498,6 @@ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
 
 1. Prima di creare o modificare un piano alimentare:
    - Controlla le preferenze abitudinarie e di cibi dell'utente usando get_user_preferences
-   - Verifica la storia dei progressi usando get_progress_history
    - Considera le conversazioni passate dell'utente usando get_agent_qa
    - Considera le informazioni nutrizionali dell'utente usando get_nutritional_info
    Se presenti, usa queste informazioni per creare il piano alimentare, se non presenti o gia visualizzate, continua.

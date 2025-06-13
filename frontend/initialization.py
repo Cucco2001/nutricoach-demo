@@ -15,7 +15,6 @@ from dotenv import load_dotenv
 # Import dei manager e servizi (evitando importazioni circolari)
 from agent_tools.user_data_manager import UserDataManager
 from services.deep_seek_service import DeepSeekManager
-from services.progress_service import ProgressManager
 from services.preferences_service import PreferencesManager
 
 
@@ -64,13 +63,6 @@ def initialize_app():
         st.session_state.deepseek_manager = DeepSeekManager()
         if not st.session_state.deepseek_manager.is_available():
             st.warning("⚠️ DEEPSEEK_API_KEY non trovata nel file .env. Il sistema di estrazione automatica dei dati nutrizionali sarà disabilitato.")
-
-    # === INIZIALIZZAZIONE SERVIZIO PROGRESS ===
-    if "progress_manager" not in st.session_state:
-        st.session_state.progress_manager = ProgressManager(
-            user_data_manager=st.session_state.user_data_manager,
-            chat_handler=lambda x: st.session_state.chat_manager.chat_with_assistant(x)
-        )
 
     # === INIZIALIZZAZIONE SERVIZIO PREFERENCES ===
     if "preferences_manager" not in st.session_state:

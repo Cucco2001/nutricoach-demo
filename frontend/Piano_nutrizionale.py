@@ -215,7 +215,6 @@ class PianoNutrizionale:
             
             # Verifica che ci siano effettivamente dati utili
             if not extracted_data:
-                st.info("🤖 Nessuna sezione 'nutritional_info_extracted' trovata nel file utente.")
                 return None
                 
             return extracted_data

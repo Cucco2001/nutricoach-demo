@@ -10,7 +10,8 @@ import streamlit as st
 
 def show_app_tutorial():
     """
-    Mostra il tutorial introduttivo delle 4 sezioni principali dell'app.
+    Mostra il tutorial introduttivo interattivo delle 3 sezioni principali dell'app.
+    L'utente deve visitare tutte e tre le sezioni per completare il tutorial.
     
     Returns:
         bool: True se il tutorial è stato completato, False se ancora in corso
@@ -21,10 +22,28 @@ def show_app_tutorial():
     if st.session_state.get(tutorial_key, False):
         return True
     
+    # Inizializza le chiavi per tracciare i passaggi del tutorial
+    user_id = st.session_state.user_info['id']
+    chat_visited_key = f"tutorial_chat_visited_{user_id}"
+    preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
+    plan_visited_key = f"tutorial_plan_visited_{user_id}"
+    
+    # Inizializza i valori se non esistono
+    chat_visited = st.session_state.get(chat_visited_key, False)
+    preferences_visited = st.session_state.get(preferences_visited_key, False)
+    plan_visited = st.session_state.get(plan_visited_key, False)
+    
     # Header del tutorial
     st.markdown("---")
     st.markdown("## 🎯 Benvenuto in NutriCoach!")
-    st.markdown("### Prima di iniziare, lascia che ti spieghi come funziona l'app")
+    st.markdown("### Scopri le funzionalità dell'app visitando ogni sezione")
+    
+    # Barra di progresso
+    total_sections = 3
+    completed_sections = sum([chat_visited, preferences_visited, plan_visited])
+    progress = completed_sections / total_sections
+    
+    st.progress(progress, text=f"Progresso tutorial: {completed_sections}/{total_sections} sezioni visitate")
     
     # Container principale del tutorial
     tutorial_container = st.container()
@@ -33,49 +52,57 @@ def show_app_tutorial():
         # Introduzione
         st.markdown("""
         **NutriCoach** è il tuo assistente nutrizionale personale! 🥗  
-        L'app è organizzata in **4 sezioni principali** che trovi nel menu a sinistra.
+        Per completare il tutorial, **esplora tutte e 3 le sezioni** cliccando sui pulsanti qui sotto.
+        Ogni sezione si aprirà con informazioni dettagliate.
         """)
         
-        # Sezioni con emoji e descrizioni
-        col1, col2 = st.columns(2)
+        # Sezioni interattive organizzate verticalmente
+        _display_tutorial_section(
+            "💬", "Chat", 
+            "Qui è dove avviene la magia!",
+            [
+                "Chatta direttamente con il tuo assistente nutrizionale AI",
+                "Ricevi consigli personalizzati e piani alimentari",
+                "Fai domande su nutrizione, ricette e obiettivi",
+                "L'agente ti guiderà passo dopo passo"
+            ],
+            chat_visited_key,
+            chat_visited
+        )
         
-        with col1:
-            st.markdown("""
-            ### 💬 **Chat**
-            **Qui è dove avviene la magia!**
-            - Chatta direttamente con il tuo assistente nutrizionale AI
-            - Ricevi consigli personalizzati e piani alimentari
-            - Fai domande su nutrizione, ricette e obiettivi
-            - L'agente ti guiderà passo dopo passo
-            
-            ### 📊 **Progressi**
-            **Traccia i tuoi risultati!**
-            - Monitora i tuoi progressi nel tempo
-            - Visualizza grafici del peso e misurazioni
-            - Tieni traccia degli obiettivi raggiunti
-            - Confronta i risultati settimana per settimana
-            """)
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        with col2:
-            st.markdown("""
-            ### ⚙️ **Preferenze**
-            **Personalizza la tua esperienza!**
-            - Imposta le tue preferenze alimentari
-            - Gestisci allergie e intolleranze
-            - Scegli i tuoi cibi preferiti e quelli da evitare
-            - Modifica le impostazioni quando necessario
-            
-            ### 📋 **Piano Nutrizionale**
-            **Il tuo piano personalizzato!**
-            - Visualizza il piano nutrizionale creato dall'agente
-            - Scarica il PDF del tuo piano settimanale
-            - Accedi a tutti i dettagli nutrizionali
-            - Stampa le ricette e le porzioni
-            """)
+        _display_tutorial_section(
+            "⚙️", "Preferenze",
+            "Personalizza la tua esperienza!",
+            [
+                "Imposta le tue preferenze alimentari",
+                "Gestisci allergie e intolleranze", 
+                "Scegli i tuoi cibi preferiti e quelli da evitare",
+                "Modifica le impostazioni quando necessario"
+            ],
+            preferences_visited_key,
+            preferences_visited
+        )
         
-        # Sezione con suggerimenti
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        _display_tutorial_section(
+            "📋", "Piano Nutrizionale",
+            "Il tuo piano personalizzato!",
+            [
+                "Visualizza il piano nutrizionale creato dall'agente",
+                "Scarica il PDF del tuo piano settimanale",
+                "Accedi a tutti i dettagli nutrizionali",
+                "Stampa le ricette e le porzioni"
+            ],
+            plan_visited_key,
+            plan_visited
+        )
+        
+        # Sezione con suggerimenti di utilizzo
         st.markdown("---")
-        st.markdown("### 🚀 **Per iniziare:**")
+        st.markdown("### 🚀 **Come utilizzare NutriCoach:**")
         
         step_cols = st.columns(3)
         with step_cols[0]:
@@ -96,22 +123,98 @@ def show_app_tutorial():
             Ricevi il tuo piano nutrizionale personalizzato
             """)
         
-        # Note aggiuntive
+        # Controllo per procedere
         st.markdown("---")
-        st.info("""
-        💡 **Suggerimento**: Puoi sempre tornare a questa spiegazione dal menu *Preferenze* > *Mostra Tutorial*
-        """)
         
-        # Bottoni di azione
-        col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
-        
-        with col_btn2:
-            if st.button("🎯 Ho capito, iniziamo!", type="primary", use_container_width=True):
-                # Segna il tutorial come completato
-                st.session_state[tutorial_key] = True
-                st.rerun()
+        if completed_sections == total_sections:
+            # Tutte le sezioni sono state visitate
+            st.success("🎉 Ottimo! Hai esplorato tutte le sezioni di NutriCoach!")
+            
+            col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+            with col_btn2:
+                if st.button("🎯 Perfetto, iniziamo!", type="primary", use_container_width=True):
+                    # Segna il tutorial come completato e resetta i flag di visita
+                    st.session_state[tutorial_key] = True
+                    if chat_visited_key in st.session_state:
+                        del st.session_state[chat_visited_key]
+                    if preferences_visited_key in st.session_state:
+                        del st.session_state[preferences_visited_key]
+                    if plan_visited_key in st.session_state:
+                        del st.session_state[plan_visited_key]
+                    st.rerun()
+        else:
+            # Non tutte le sezioni sono state visitate
+            missing_sections = []
+            if not chat_visited:
+                missing_sections.append("💬 Chat")
+            if not preferences_visited:
+                missing_sections.append("⚙️ Preferenze")
+            if not plan_visited:
+                missing_sections.append("📋 Piano Nutrizionale")
+            
+            st.warning(f"📍 **Per continuare, visita le seguenti sezioni:** {', '.join(missing_sections)}")
+            st.info("👆 Clicca sui pulsanti delle sezioni qui sopra per esplorarle!")
     
     return False
+
+
+def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_visited):
+    """
+    Mostra una singola sezione del tutorial in formato interattivo.
+    
+    Args:
+        emoji: Emoji della sezione
+        title: Titolo della sezione
+        subtitle: Sottotitolo descrittivo
+        features: Lista delle caratteristiche da mostrare
+        session_key: Chiave per salvare lo stato nella sessione
+        is_visited: Se la sezione è già stata visitata
+    """
+    # Colore del contenitore basato sullo stato
+    border_color = "#00b894" if is_visited else "#74b9ff"
+    bg_color = "#f1f8f6" if is_visited else "#f8fbff"
+    
+    # Pulsante per espandere la sezione
+    button_text = f"{emoji} {title}"
+    if is_visited:
+        button_text += " ✅"
+    
+    if st.button(button_text, key=f"btn_{session_key}", use_container_width=True):
+        # Segna come visitata
+        st.session_state[session_key] = True
+        st.rerun()
+    
+    # Se è stata visitata, mostra i dettagli espansi
+    if is_visited:
+        st.markdown(f"""
+        <div style="border: 2px solid {border_color}; border-radius: 10px; padding: 20px; 
+                    background-color: {bg_color}; margin: 10px 0;">
+            <h3 style="color: {border_color}; margin-top: 0;">{emoji} {title}</h3>
+            <p style="font-weight: bold; color: #2d3436;">{subtitle}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Mostra le caratteristiche in colonne
+        feature_cols = st.columns(2) if len(features) > 2 else [st.container()]
+        
+        for i, feature in enumerate(features):
+            col_index = i % len(feature_cols) if len(feature_cols) > 1 else 0
+            with feature_cols[col_index]:
+                st.markdown(f"• {feature}")
+
+
+def is_tutorial_completed(user_id: str) -> bool:
+    """
+    Controlla se il tutorial è stato completato per un utente specifico.
+    
+    Args:
+        user_id: ID dell'utente
+        
+    Returns:
+        bool: True se il tutorial è completato, False altrimenti
+    """
+    tutorial_key = f"tutorial_completed_{user_id}"
+    return st.session_state.get(tutorial_key, False)
 
 
 def reset_tutorial(user_id: str):
@@ -126,17 +229,7 @@ def reset_tutorial(user_id: str):
         del st.session_state[tutorial_key]
 
 
-def show_tutorial_button_in_preferences():
-    """
-    Mostra un bottone nelle preferenze per rivedere il tutorial.
-    """
-    st.markdown("---")
-    st.markdown("### 🎯 Tutorial")
-    
-    if st.button("📖 Rivedi il tutorial dell'app", help="Mostra di nuovo la spiegazione delle 4 sezioni"):
-        reset_tutorial(st.session_state.user_info['id'])
-        st.success("Tutorial resettato! Vai alla sezione Chat per rivederlo.")
-        st.rerun()
+
 
 
 def check_tutorial_in_chat():

@@ -13,12 +13,6 @@ class User:
     created_at: float
 
 @dataclass
-class ProgressEntry:
-    date: str
-    weight: float
-    measurements: Dict[str, float]
-
-@dataclass
 class UserPreferences:
     excluded_foods: List[str]
     preferred_foods: List[str]
@@ -73,7 +67,6 @@ class UserDataManager:
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(exist_ok=True)
         self._users: Dict[str, User] = {}  # username -> User
-        self._progress_data: Dict[str, List[ProgressEntry]] = {}
         self._user_preferences: Dict[str, UserPreferences] = {}
         self._chat_history: Dict[str, List[ChatMessage]] = {}
         self._nutritional_info: Dict[str, UserNutritionalInfo] = {}
@@ -162,32 +155,6 @@ class UserDataManager:
                 return user
         return None
 
-
-    def track_progress(self, user_id: str, weight: float, date: str, measurements: Optional[Dict[str, float]] = None) -> None:
-        """
-        Traccia il progresso dell'utente nel tempo
-        
-        Args:
-            user_id: ID dell'utente
-            weight: Peso in kg
-            date: Data della misurazione (formato YYYY-MM-DD)
-            measurements: Dizionario opzionale con altre misurazioni
-        """
-        if weight <= 0:
-            raise ValueError("Il peso deve essere positivo")
-
-        entry = ProgressEntry(
-            date=date,
-            weight=weight,
-            measurements=measurements or {}
-        )
-
-        if user_id not in self._progress_data:
-            self._progress_data[user_id] = []
-        
-        self._progress_data[user_id].append(entry)
-        self._save_user_data(user_id)
-
     def update_user_preferences(self, user_id: str, preferences: Dict[str, Union[List[str], Dict[str, str]]]) -> None:
         """
         Aggiorna le preferenze alimentari dell'utente
@@ -237,33 +204,6 @@ class UserDataManager:
                 return data.get("user_preferences")
         except Exception:
             return None
-
-    def get_progress_history(self, user_id: str) -> List[ProgressEntry]:
-        """Recupera la storia dei progressi dell'utente"""
-        return self._progress_data.get(user_id, [])
-
-    def delete_progress_entry(self, user_id: str, date: str) -> bool:
-        """
-        Elimina una voce di progresso per data specifica
-        
-        Args:
-            user_id: ID dell'utente
-            date: Data della voce da eliminare (formato YYYY-MM-DD)
-            
-        Returns:
-            bool: True se l'eliminazione è avvenuta con successo, False se la voce non è stata trovata
-        """
-        if user_id not in self._progress_data:
-            return False
-        
-        # Trova l'indice della voce da eliminare
-        for i, entry in enumerate(self._progress_data[user_id]):
-            if entry.date == date:
-                del self._progress_data[user_id][i]
-                self._save_user_data(user_id)
-                return True
-        
-        return False
 
 
     def save_chat_message(self, user_id: str, role: str, content: str) -> None:
@@ -425,9 +365,6 @@ class UserDataManager:
             }
         
         data = {
-            "progress_data": [
-                asdict(entry) for entry in self._progress_data.get(user_id, [])
-            ],
             "user_preferences": user_preferences,
             "chat_history": [
                 asdict(message) for message in self._chat_history.get(user_id, [])
@@ -452,12 +389,6 @@ class UserDataManager:
 
         with open(user_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
-
-        # Carica dati progresso
-        self._progress_data[user_id] = [
-            ProgressEntry(**entry_data)
-            for entry_data in data.get("progress_data", [])
-        ]
 
         # Carica preferenze
         if data.get("user_preferences"):

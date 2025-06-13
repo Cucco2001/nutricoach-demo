@@ -27,33 +27,6 @@ def get_user_preferences(user_id: str) -> Dict:
     except Exception as e:
         return {"error": str(e)}
 
-def get_progress_history(user_id: str) -> Dict:
-    """
-    Ottiene la storia dei progressi dell'utente.
-    
-    Args:
-        user_id: ID dell'utente
-    
-    Returns:
-        Dict con la storia dei progressi
-    """
-    try:
-        history = _user_data_manager.get_progress_history(user_id)
-        if history:
-            return {
-                "progress": [
-                    {
-                        "date": entry.date,
-                        "weight": entry.weight,
-                        "measurements": entry.measurements
-                    }
-                    for entry in history
-                ]
-            }
-        return {"error": "Nessun dato di progresso trovato per questo utente"}
-    except Exception as e:
-        return {"error": str(e)}
-
 
 def get_agent_qa(user_id: str) -> Dict:
     """
