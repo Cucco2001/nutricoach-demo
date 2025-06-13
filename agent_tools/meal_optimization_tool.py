@@ -447,6 +447,9 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
     Per i pasti di colazione, esegue ottimizzazioni intelligenti:
     1. Se deficit di grassi >3g e >15%, prova ad aggiungere mandorle
     
+    Per i pasti di spuntino, esegue ottimizzazioni intelligenti:
+    1. Se deficit di grassi >2g e >15%, prova ad aggiungere mandorle
+    
     Per i pasti di pranzo e cena, esegue ottimizzazioni intelligenti:
     1. Prova ad aggiungere olio d'oliva se può migliorare l'ottimizzazione
     2. Aggiunge/rimuove proteine (pollo) se l'errore proteico è >15%
@@ -623,7 +626,64 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
                         except Exception as e:
                             logger.warning(f"Errore nel test con mandorle aggiunte: {str(e)}")
 
-        # 8.1. Step aggiuntivo: ottimizzazione proteine per pranzo/cena
+        # 8.1. Step aggiuntivo: ottimizzazione grassi per spuntini
+        # Determina se è uno spuntino
+        is_snack = any(keyword in meal_name_lower for keyword in 
+                      ["spuntino", "merenda", "snack", "Spuntino", "Merenda", "Snack", "SPUNTINO", "MERENDA", "SNACK", "spuntino_pomeridiano", "spuntino_mattutino", "spuntino_serale", "spuntino_pomeriggio", "spuntino_mattina", "spuntino_sera"])
+        
+        if is_snack and not fat_added:  # Solo se non abbiamo già aggiunto grassi per la colazione
+            # Calcola errore sui grassi attuale
+            fat_target = target_nutrients["grassi_g"]
+            fat_actual = final_actual_nutrients["grassi_g"]
+            fat_deficit = fat_target - fat_actual
+            fat_error_pct = abs(fat_deficit) / fat_target * 100 if fat_target > 0 else 0
+            
+            # Se c'è un deficit significativo di grassi (>15%), prova ad aggiungere mandorle
+            if fat_deficit > 2 and fat_error_pct > 15:  # Soglia più bassa per spuntini (>2g e >15%)
+                # Controlla se le mandorle non sono già presenti
+                almond_variants = ["mandorle", "mandorla", "mandorle_sgusciate", "mandorle sgusciate"]
+                almonds_already_present = any(any(variant in food.lower() for variant in almond_variants) for food in final_food_list)
+                
+                if not almonds_already_present:
+                    test_food_list_almonds = final_food_list + ["mandorle"]
+                    almonds_found, _ = db.check_foods_in_db(["mandorle"])
+                    
+                    if almonds_found:
+                        try:
+                            # Calcola i dati nutrizionali per la lista con mandorle aggiunte
+                            foods_nutrition_almonds = get_food_nutrition_per_100g(test_food_list_almonds)
+                            
+                            optimized_portions_almonds = optimize_portions(target_nutrients, foods_nutrition_almonds)
+                            actual_nutrients_almonds = calculate_actual_nutrients(optimized_portions_almonds, foods_nutrition_almonds)
+                            
+                            # Calcola errore con mandorle aggiunte
+                            error_with_almonds = sum([
+                                abs(actual_nutrients_almonds["kcal"] - target_nutrients["kcal"]) / max(target_nutrients["kcal"], 1),
+                                abs(actual_nutrients_almonds["proteine_g"] - target_nutrients["proteine_g"]) / max(target_nutrients["proteine_g"], 1),
+                                abs(actual_nutrients_almonds["carboidrati_g"] - target_nutrients["carboidrati_g"]) / max(target_nutrients["carboidrati_g"], 1),
+                                abs(actual_nutrients_almonds["grassi_g"] - target_nutrients["grassi_g"]) / max(target_nutrients["grassi_g"], 1)
+                            ]) / 4
+                            
+                            # Calcola errore attuale
+                            current_error = sum([
+                                abs(final_actual_nutrients["kcal"] - target_nutrients["kcal"]) / max(target_nutrients["kcal"], 1),
+                                abs(final_actual_nutrients["proteine_g"] - target_nutrients["proteine_g"]) / max(target_nutrients["proteine_g"], 1),
+                                abs(final_actual_nutrients["carboidrati_g"] - target_nutrients["carboidrati_g"]) / max(target_nutrients["carboidrati_g"], 1),
+                                abs(final_actual_nutrients["grassi_g"] - target_nutrients["grassi_g"]) / max(target_nutrients["grassi_g"], 1)
+                            ]) / 4
+                            
+                            # Se aggiungere mandorle migliora significativamente
+                            if error_with_almonds < current_error - 0.03:
+                                fat_added = True
+                                final_portions = optimized_portions_almonds
+                                final_actual_nutrients = actual_nutrients_almonds
+                                final_food_list = test_food_list_almonds
+                                fat_adjustment_food = "mandorle"
+                                
+                        except Exception as e:
+                            logger.warning(f"Errore nel test con mandorle aggiunte per spuntino: {str(e)}")
+
+        # 8.2. Step aggiuntivo: ottimizzazione proteine per pranzo/cena
         protein_added = False
         protein_removed = False
         protein_adjustment_food = None
@@ -737,7 +797,7 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
                 final_actual_nutrients = best_solution["actual_nutrients"]
                 final_food_list = best_solution["food_list"]
         
-        # 8.5. Step aggiuntivo: ottimizzazione carboidrati per pranzo/cena
+        # 8.3. Step aggiuntivo: ottimizzazione carboidrati per pranzo/cena
         carb_added = False
         carb_substituted = False
         carb_adjustment_food = None
