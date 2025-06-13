@@ -9,6 +9,8 @@ import streamlit as st
 import os
 import json
 import pandas as pd
+import threading
+import time
 from datetime import datetime
 
 # Import del servizio PDF
@@ -88,9 +90,83 @@ class PianoNutrizionale:
             font-weight: bold;
             margin: 10px 0;
         }
+        .loading-container {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+            color: #2d3436;
+            border-left: 5px solid #e17055;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #e17055;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         </style>
         """, unsafe_allow_html=True)
     
+    def _is_deepseek_processing(self, user_id: str) -> bool:
+        """
+        Controlla se DeepSeek sta attualmente elaborando dati per l'utente.
+        
+        Args:
+            user_id: ID dell'utente
+            
+        Returns:
+            bool: True se DeepSeek sta elaborando, False altrimenti
+        """
+        try:
+            # Metodo 1: Controlla se esiste un thread di estrazione attivo per questo utente
+            for thread in threading.enumerate():
+                if thread.name == f"DeepSeekExtraction-{user_id}" and thread.is_alive():
+                    return True
+            
+            # Metodo 2: Controlla il session state per indicatori di elaborazione recente
+            if hasattr(st.session_state, 'deepseek_manager'):
+                # Controlla se c'è stata un'estrazione recente (negli ultimi 30 secondi)
+                last_extraction_time = st.session_state.get(f"last_extraction_start_{user_id}", 0)
+                current_time = time.time()
+                if current_time - last_extraction_time < 30:  # 30 secondi di grazia
+                    return True
+            
+            return False
+        except Exception as e:
+            print(f"[PIANO_NUTRIZIONALE] Errore nel controllo thread DeepSeek: {str(e)}")
+            return False
+    
+    def _display_deepseek_loading_indicator(self):
+        """Mostra l'indicatore di caricamento per l'elaborazione DeepSeek."""
+        st.markdown("""
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <strong>🤖 Stiamo estraendo i tuoi dati nutrizionali dalla conversazione...</strong>
+            <br>
+            <small>Il piano nutrizionale e il PDF verranno aggiornati automaticamente al termine dell'elaborazione.</small>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Mostra informazioni aggiuntive se disponibili
+        if hasattr(st.session_state, 'deepseek_manager'):
+            status = st.session_state.deepseek_manager.get_extraction_status()
+            if status.get('available', False):
+                interactions_since_last = status.get('interactions_since_last', 0)
+                st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
+        
+        # Aggiungi un pulsante per aggiornare manualmente
+        if st.button("🔄 Aggiorna stato", key="refresh_deepseek_status"):
+            st.rerun()
+
     def display_nutritional_plan(self, user_id):
         """
         Mostra il piano nutrizionale e i dati estratti per l'utente.
@@ -100,11 +176,27 @@ class PianoNutrizionale:
         """
         st.markdown('<h1 class="main-title">📊 Piano Nutrizionale Personalizzato</h1>', unsafe_allow_html=True)
         
+        # Controlla se DeepSeek sta elaborando
+        is_processing = self._is_deepseek_processing(user_id)
+        
+        if is_processing:
+            self._display_deepseek_loading_indicator()
+            # Auto-refresh ogni 5 secondi solo se è la prima volta che vediamo il processing
+            if not st.session_state.get(f"deepseek_processing_shown_{user_id}", False):
+                st.session_state[f"deepseek_processing_shown_{user_id}"] = True
+                time.sleep(2)
+                st.rerun()
+        else:
+            # Reset del flag quando il processing è finito
+            if f"deepseek_processing_shown_{user_id}" in st.session_state:
+                del st.session_state[f"deepseek_processing_shown_{user_id}"]
+        
         try:
             extracted_data = self._load_user_nutritional_data(user_id)
             
             if not extracted_data:
-                st.info("🤖 Nessun dato nutrizionale disponibile ancora. Continua la conversazione con l'agente per raccogliere dati.")
+                if not is_processing:
+                    st.info("🤖 Nessun dato nutrizionale disponibile ancora. Continua la conversazione con l'agente per raccogliere dati.")
                 return
             
             # Header con pulsante download
@@ -143,33 +235,39 @@ class PianoNutrizionale:
                     st.caption(f"📅 Ultimo aggiornamento dati: {last_updated}")
         
         with col2:
-            # Genera PDF e crea download button diretto
-            try:
-                # Ottieni le informazioni dell'utente da session_state
-                user_info = st.session_state.get('user_info', {})
-                
-                # Genera il PDF usando il servizio
-                pdf_bytes = self.pdf_generator.generate_nutritional_plan_pdf(user_id, user_info)
-                
-                # Crea nome file con timestamp
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                username = user_info.get('username', 'utente')
-                filename = f"piano_nutrizionale_{username}_{timestamp}.pdf"
-                
-                # Download diretto del PDF
-                st.download_button(
-                    label="📄 Scarica PDF",
-                    data=pdf_bytes,
-                    file_name=filename,
-                    mime="application/pdf",
-                    type="primary",
-                    use_container_width=True
-                )
-                
-            except Exception as e:
-                # Se c'è un errore nella generazione, mostra un pulsante disabilitato
-                st.button("❌ Errore PDF", disabled=True, use_container_width=True)
-                print(f"[PDF_ERROR] {str(e)}")
+            # Controlla se DeepSeek sta elaborando per disabilitare il PDF
+            is_processing = self._is_deepseek_processing(user_id)
+            
+            if is_processing:
+                st.button("⏳ PDF in aggiornamento...", disabled=True, use_container_width=True)
+            else:
+                # Genera PDF e crea download button diretto
+                try:
+                    # Ottieni le informazioni dell'utente da session_state
+                    user_info = st.session_state.get('user_info', {})
+                    
+                    # Genera il PDF usando il servizio
+                    pdf_bytes = self.pdf_generator.generate_nutritional_plan_pdf(user_id, user_info)
+                    
+                    # Crea nome file con timestamp
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    username = user_info.get('username', 'utente')
+                    filename = f"piano_nutrizionale_{username}_{timestamp}.pdf"
+                    
+                    # Download diretto del PDF
+                    st.download_button(
+                        label="📄 Scarica PDF",
+                        data=pdf_bytes,
+                        file_name=filename,
+                        mime="application/pdf",
+                        type="primary",
+                        use_container_width=True
+                    )
+                    
+                except Exception as e:
+                    # Se c'è un errore nella generazione, mostra un pulsante disabilitato
+                    st.button("❌ Errore PDF", disabled=True, use_container_width=True)
+                    print(f"[PDF_ERROR] {str(e)}")
 
     def _handle_pdf_download(self, user_id):
         """

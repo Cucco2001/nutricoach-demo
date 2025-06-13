@@ -10,6 +10,7 @@ from typing import Dict, Any, List, Optional
 from .deepseek_client import DeepSeekClient
 from .extraction_service import NutritionalDataExtractor
 from .notification_manager import NotificationManager
+import time
 
 
 class DeepSeekManager:
@@ -63,6 +64,9 @@ class DeepSeekManager:
         if interactions_since_last >= extraction_interval:
             print(f"[DEEPSEEK_MANAGER] Avvio estrazione dopo {interactions_since_last} interazioni")
             
+            # Imposta il timestamp di inizio estrazione
+            st.session_state[f"last_extraction_start_{user_id}"] = time.time()
+            
             # Ottieni la storia delle conversazioni
             conversation_history = user_data_manager.get_agent_qa(user_id)
             
@@ -93,6 +97,13 @@ class DeepSeekManager:
                     interaction_count = result.get("interaction_count")
                     if interaction_count:
                         st.session_state[self.last_extraction_count_key] = interaction_count
+                    
+                    # Pulisci il timestamp di estrazione per questo utente
+                    user_id = result.get("user_id")
+                    if user_id:
+                        extraction_start_key = f"last_extraction_start_{user_id}"
+                        if extraction_start_key in st.session_state:
+                            del st.session_state[extraction_start_key]
     
     def show_notifications(self) -> None:
         """Mostra le notifiche DeepSeek."""
