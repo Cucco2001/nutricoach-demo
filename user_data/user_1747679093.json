@@ -12,7 +12,16 @@
     "altezza": 170,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {},
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "No",
+        "follow_up": null
+      }
+    },
     "agent_qa": []
   }
 }

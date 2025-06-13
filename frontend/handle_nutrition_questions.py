@@ -366,8 +366,7 @@ class NutritionQuestionHandler:
             2: ["Pranzo", "Cena"],
             3: ["Colazione", "Pranzo", "Cena"],
             4: ["Colazione", "Pranzo", "Cena", "Spuntino pomeridiano"],
-            5: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena"],
-            6: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena", "Altro Spuntino"]
+            5: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena"]
         }
         
         # Get the appropriate meal labels for the selected number of meals
@@ -382,8 +381,7 @@ class NutritionQuestionHandler:
                 "Spuntino mattutino": "10:30",
                 "Pranzo": "13:00",
                 "Spuntino pomeridiano": "16:30",
-                "Cena": "20:00",
-                "Altro Spuntino": "22:00"
+                "Cena": "20:00"
             }
             
             # Convert default time string to datetime.time object

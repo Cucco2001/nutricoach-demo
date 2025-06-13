@@ -466,7 +466,7 @@ class NutritionalDataExtractor:
             follow_up = meal_preferences.get('follow_up', {})
             num_meals = follow_up.get('num_meals')
             
-            if isinstance(num_meals, int) and 1 <= num_meals <= 6:
+            if isinstance(num_meals, int) and 1 <= num_meals <= 5:
                 print(f"[EXTRACTION_SERVICE] Numero pasti da preferenze utente: {num_meals}")
                 return num_meals
         
@@ -505,8 +505,7 @@ class NutritionalDataExtractor:
             2: {"colazione": 60, "cena": 40},
             3: {"colazione": 30, "pranzo": 35, "cena": 35},
             4: {"colazione": 25, "pranzo": 35, "spuntino_pomeridiano": 10, "cena": 30},
-            5: {"colazione": 25, "spuntino_mattutino": 5, "pranzo": 35, "spuntino_pomeridiano": 5, "cena": 30},
-            6: {"colazione": 25, "spuntino_mattutino": 5, "pranzo": 30, "spuntino_pomeridiano": 5, "cena": 25, "spuntino_serale": 10}
+            5: {"colazione": 25, "spuntino_mattutino": 5, "pranzo": 35, "spuntino_pomeridiano": 5, "cena": 30}
         }
         
         return percentuali_map.get(numero_pasti, percentuali_map[4])  # Default a 4 pasti

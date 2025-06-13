@@ -59,7 +59,7 @@ def show_app_tutorial():
         # Sezioni interattive organizzate verticalmente
         _display_tutorial_section(
             "💬", "Chat", 
-            "Qui è dove avviene la magia!",
+            "L'agente ti guiderà nella realizzazione di un giorno di dieta tipo in base ai tuoi suggerimenti e spunti. Successivamente, in base alle tue preferenze, genererà un piano nutrizionale settimanale adatto a te!",
             [
                 "Chatta direttamente con il tuo assistente nutrizionale AI",
                 "Ricevi consigli personalizzati e piani alimentari",
@@ -74,7 +74,7 @@ def show_app_tutorial():
         
         _display_tutorial_section(
             "⚙️", "Preferenze",
-            "Personalizza la tua esperienza!",
+            "Personalizza ancor di più la tua esperienza!",
             [
                 "Imposta le tue preferenze alimentari",
                 "Gestisci allergie e intolleranze", 
@@ -89,7 +89,7 @@ def show_app_tutorial():
         
         _display_tutorial_section(
             "📋", "Piano Nutrizionale",
-            "Il tuo piano personalizzato!",
+            "Visualizza il tuo piano personalizzato!",
             [
                 "Visualizza il piano nutrizionale creato dall'agente",
                 "Scarica il PDF del tuo piano settimanale",

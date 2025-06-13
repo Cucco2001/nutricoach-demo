@@ -102,7 +102,7 @@ NUTRITION_QUESTIONS = [
                     "label": "Quanti pasti vuoi fare al giorno?",
                     "type": "number",
                     "min": 1,
-                    "max": 6,
+                    "max": 5,
                     "default": 4
                 },
                 {
@@ -116,9 +116,7 @@ NUTRITION_QUESTIONS = [
                         "Spuntino mattutino",
                         "Pranzo",
                         "Spuntino pomeridiano",
-                        "Cena",
-                        "Spuntino serale",
-                        "Altro pasto"
+                        "Cena"
                     ]
                 }
             ]
