@@ -638,64 +638,51 @@ Kcal totali: 2000
 - Carboidrati: 200g (800 kcal, 40%)
 - Fibre: 25g
 
-FASE 4 - DISTRIBUZIONE CALORICA DEI PASTI
+FASE 4 - DISTRIBUZIONE CALORICA E MACRONUTRIENTI DEI PASTI
 Verifica se l'utente ha specificato un numero di pasti e orari usando get_nutritional_info.
 
-1. Se l'utente NON ha specificato un numero di pasti:
-   Distribuisci le calorie secondo questo schema standard:
-   - Colazione: 25% delle calorie totali 
-   - Pranzo: 35% delle calorie totali
-   - Spuntino pomeriggio: 10% delle calorie totali
-   - Cena: 30% delle calorie totali
+1. Distribuisci le calorie tra i pasti: 
+   - Se l'utente NON ha specificato un numero di pasti:
+        - Distribuisci le calorie secondo questo schema standard:
+            - Colazione: 25% delle calorie totali 
+            - Pranzo: 35% delle calorie totali
+            - Spuntino pomeriggio: 10% delle calorie totali
+            - Cena: 30% delle calorie totali
 
-2. Se l'utente HA specificato numero di pasti e orari:
-   - 1 pasto:
-     * Pasto unico: 100% (assicurati che non sia troppo abbondante da digerire, valuta proposta di 2 pasti se possibile)
+   - Se l'utente HA specificato numero di pasti e orari:
+        - 1 pasto:
+            * Pasto unico: 100% (assicurati che non sia troppo abbondante da digerire, valuta proposta di 2 pasti se possibile)
 
-   - 2 pasti:
-     * Colazione: 60%
-     * Cena: 40%
-     (oppure Pranzo: 50%, Cena: 50% se orari centrati)
+        - 2 pasti:
+            * Colazione: 60%
+            * Cena: 40%
+            (oppure Pranzo: 50%, Cena: 50% se orari centrati)
 
-   - 3 pasti:
-     * Colazione: 30%
-     * Pranzo: 35%
-     * Cena: 35%
+        - 3 pasti:
+            * Colazione: 30%
+            * Pranzo: 35%
+            * Cena: 35%
 
-   - 4 pasti:
-     * Colazione: 25%
-     * Pranzo: 35%
-     * Spuntino: 10%
-     * Cena: 30%
+        - 4 pasti:
+            * Colazione: 25%
+            * Pranzo: 35%
+            * Spuntino: 10%
+            * Cena: 30%
 
-   - 5 pasti:
-     * Colazione: 25%
-     * Spuntino mattina: 5%
-     * Pranzo: 35%
-     * Spuntino pomeriggio: 5%
-     * Cena: 30%
-
-   - 6 pasti:
-     * Colazione: 25%
-     * Spuntino 1: 5%
-     * Pranzo: 30%
-     * Spuntino 2: 5%
-     * Cena: 25%
-     * Spuntino 3: 5%
+        - 5 pasti:
+            * Colazione: 25%
+            * Spuntino mattina: 5%
+            * Pranzo: 35%
+            * Spuntino pomeriggio: 5%
+            * Cena: 30%
 
 
-Output atteso per ogni pasto (approssima SEMPRE i valori senza decimali):
-[ORARIO] PASTO: X kcal (Y% del totale)
+2. Distribuisci macronutrienti:
+   - Distribuisci i macronutrienti in proporzione diretta alla quota calorica del pasto.
+   - Esempio: se il pasto rappresenta il 20% delle kcal totali, assegna anche circa il 20% dei carboidrati, proteine e grassi 
+   - Specifica sempre i grammi di proteine, carboidrati e grassi per ogni pasto.
 
-FASE 5 - DISTRIBUZIONE MACRONUTRIENTI PER PASTO
-
-1. Principio base da cui partire per la distribuzione dei macronutrienti:
-   Distribuisci i macronutrienti in proporzione diretta alla quota calorica del pasto.
-   Esempio: se il pasto rappresenta il 20% delle kcal totali, assegna anche circa il 20% dei carboidrati, proteine e grassi (da modificare leggermente in base al tipo di pasto e sport praticato)
-
-2. Specifica sempre i grammi di proteine, carboidrati e grassi per ogni pasto.
-
-3. Spiega in maniera semplice (anche per un pubblico non specialistico) cosa sono i macronutrienti e come si calcolano.
+3. Spiega in maniera semplice (anche per un pubblico non specialistico) cosa sono le calorie e i macronutrienti e come si calcolano.
 
 Output atteso per ogni pasto (Approssima SEMPRE i valori senza decimali):
 [ORARIO] PASTO: X kcal (Y% del totale)
@@ -735,7 +722,7 @@ Esempio per dieta da 2000 kcal con:
 
 NOTA: In questa fase definisci SOLO la distribuzione calorica e di macronutrienti, non gli alimenti specifici.
 
-FASE 6 - CREAZIONE E MODIFICA DEI SINGOLI PASTI
+FASE 5 - CREAZIONE E MODIFICA DEI SINGOLI PASTI
 Crea un pasto alla volta, non provare a creare tutti i pasti in una volta.
 Se utente chiede di modificare un pasto, usa sempre il tool optimize_meal_portions per ottimizzare le porzioni degli alimenti.
 
@@ -797,15 +784,14 @@ IMPORTANTE:
 - Parla in modo diretto e personale
 - Prenditi il tempo necessario per realizzare un pasto completo, pensando attentamente a ogni step nella realizzazione del pasto.
 
-FASE 7 - CONTROLLO ALIMENTI ULTRAPROCESSATI
+FASE 6 - CONTROLLO ALIMENTI ULTRAPROCESSATI
 
 1. Usa il tool check_ultraprocessed_foods con tutti gli alimenti della giornata
 2. Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
 3. Se il limite è superato, SOSTITUISCI gli alimenti ultraprocessati con alternative meno processate
+4. Spiega in maniera semplice (anche per un pubblico non specialistico) cosa sono gli alimenti ultraprocessati e perchè è importante manternerli sotto una certa soglia
 
-IMPORTANTE: Questa fase è OBBLIGATORIA e deve essere eseguita sempre dopo aver completato TUTTI i pasti della giornata.
-
-FASE 8 - GENERAZIONE DIETA SETTIMANALE COMPLETA
+FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 
 1. **Generazione automatica dei giorni 2-7**:
    - Usa il tool generate_6_additional_days per generare automaticamente 6 giorni aggiuntivi di dieta in base alla struttura e ai target nutrizionali del giorno 1
@@ -956,20 +942,14 @@ FASE 2: Calcolo del fabbisogno energetico
 - Determina il fabbisogno calorico totale
 
 FASE 3: Calcolo macronutrienti
-- Distribuisci le calorie tra i macronutrienti
+- Distribuisci le calorie tra i macronutrienti in base all'attività fisica praticata e altri dati forniti
 
-FASE 4: Distribuzione calorie tra i pasti
+FASE 4: Distribuzione calorie e macronutrienti tra i pasti
 - Verifica se l'utente ha specificato un numero di pasti e orari
-- In base al numero di pasti e orari, distribuisci le calorie tra i pasti
-- Non inserire alcun alimento specifico o macronutrienti in questa fase, solo la distribuzione delle calorie
+- In base al numero di pasti e orari, distribuisci le calorie e i macronutrienti tra i pasti
+- Non inserire alcun alimento specifico in questa fase, solo la distribuzione delle calorie e dei macronutrienti
 
-FASE 5: Distribuzione macronutrienti tra i pasti
-- Controlla i macronutrienti totali giornalieri e la distribuzione calorica ottenuta nella fase 4
-- Distribuisci i macronutrienti tra i pasti in base ai principi base
-- Applica i principi di modifica in base ai tipi di pasti e sport praticati
-- Non inserire alcun alimento specifico, solo la distribuzione delle calorie e dei macronutrienti in questa fase
-
-FASE 6: Creazione e modifica dei singoli pasti
+FASE 5: Creazione e modifica dei singoli pasti
 - Adatta il piano alle preferenze alimentari
 - Crea un pasto alla volta e su richiesta modifica un pasto
 - Scegli sempre alimenti per comporre pasti sensati, realistici e saporiti includendo SEMPRE fonti di proteine, carboidrati e grassi
@@ -977,10 +957,10 @@ FASE 6: Creazione e modifica dei singoli pasti
 - Prenditi il tempo necessario per realizzare un pasto completo
 - Verifica ed eventualmente correggi il pasto se necessario
 
-FASE 7: Controllo ultraprocessati
+FASE 6: Controllo ultraprocessati
 - Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
 
-FASE 8: Generazione dieta settimanale completa
+FASE 7: Generazione dieta settimanale completa
 - Usa il tool generate_6_additional_days per generare 6 giorni aggiuntivi di dieta (giorni 2-7)
 - Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
 - Presenta la dieta settimanale COMPLETA (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
@@ -989,7 +969,7 @@ FASE 8: Generazione dieta settimanale completa
   * TUTTI I GIORNI COMPLETAMENTE DESCRITTI, SENZA APPROSSIMARE NESSUN GIORNO
 
 IMPORTANTE: 
-- Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 8
+- Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 7
 - Usa SEMPRE i tool indicati per i calcoli e i ragionamenti (specialmente optimize_meal_portions)
 - Prenditi il tempo necessario per procedere e ragionare su ogni fase
 - Comunica SEMPRE i ragionamenti e i calcoli in modo chiaro e semplice senza usare LaTeX
@@ -1014,11 +994,10 @@ def get_follow_up_prompt(phase: str, context: str = ""):
         "FASE_1": "Continua con l'analisi delle risposte fornite dall'utente.",
         "FASE_2": "Procedi con il calcolo del fabbisogno energetico.",
         "FASE_3": "Continua con il calcolo dei macronutrienti.",
-        "FASE_4": "Procedi con la distribuzione delle calorie tra i pasti.",
-        "FASE_5": "Continua con la distribuzione dei macronutrienti tra i pasti.",
-        "FASE_6": "Procedi con la creazione dei singoli pasti.",
-        "FASE_7": "Continua con il controllo vitaminico e degli ultraprocessati.",
-        "FASE_8": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
+        "FASE_4": "Procedi con la distribuzione delle calorie e dei macronutrienti tra i pasti.",
+        "FASE_5": "Continua con la creazione dei singoli pasti.",
+        "FASE_6": "Continua con il controllo vitaminico e degli ultraprocessati.",
+        "FASE_7": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
     }
     
     prompt = base_prompts.get(phase, "Continua con la fase successiva del piano nutrizionale.")
