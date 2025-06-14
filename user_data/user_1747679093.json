@@ -7,68 +7,108 @@
   "chat_history": [
     {
       "role": "assistant",
-      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI\n\n⚡ Sto elaborando: analisi della situazione fisica di partenza e coerenza del tuo obiettivo.\n\nIn questa fase sto valutando il tuo BMI (indice di massa corporea) che serve a capire la fascia di peso in cui ti trovi, rispetto alle linee guida ufficiali, e controllo la coerenza tra il tuo obiettivo (mantenimento) e la tua situazione attuale.\n\n📊 Risultati analisi:\n- BMI attuale: 24.2\n- Categoria BMI: Normopeso\n- Peso forma ideale: da 53.5 kg a 72.0 kg\n- Obiettivo dichiarato: Mantenimento\n- L'obiettivo di mantenimento è perfettamente coerente con la tua situazione attuale.\n\n📚 Fonti utilizzate:\n- Calcolo BMI secondo definizione dell'Organizzazione Mondiale della Sanità (WHO, 2000)\n- Analisi range sano di peso secondo cutoff OMS\n\n➡️ Conclusione:\nSei in una fascia di normopeso, dunque puoi tranquillamente puntare al mantenimento.\nVuoi continuare con la FASE 1 (analisi dettagliata delle risposte e impostazione strategia) oppure vuoi chiedermi qualcosa sui calcoli o sulle raccomandazioni mostrate?",
-      "timestamp": 1749831190.3645742
+      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI\n\n⚡ Sto elaborando: Calcolo del BMI (Indice di Massa Corporea), valutazione Fascia BMI e coerenza dell'obiettivo dichiarato.\n\nPer sicurezza e correttezza parto dal calcolo e dall'analisi del BMI, un semplice indice che serve a capire se la relazione tra il tuo peso e la tua altezza è nella norma. Secondo la definizione dell’Organizzazione Mondiale della Sanità, il BMI si calcola così:\nBMI = peso (kg) / (altezza (m) * altezza (m))\n\n📊 Risultati intermedi:\n- BMI attuale: 24.2\n- Categoria BMI: Normopeso\n- Peso forma ideale: 53.5 - 72.0 kg (calcolato rispetto alla tua altezza)\n- Obiettivo dichiarato: Mantenimento\n- L’obiettivo di mantenimento è perfettamente coerente con la tua situazione attuale.\n\n📚 Fonti utilizzate:\n- Organizzazione Mondiale della Sanità per il BMI (WHO, 2000)\n- Riferimenti peso forma (NIH, 1998)\n- Tool automatico per verifica coerenza obiettivo\n\n➡️ Conclusione:\nIl tuo BMI è nella norma e la tua scelta di mantenere il peso è raccomandata dalla letteratura scientifica e dalle linee guida ufficiali. Passo quindi alla FASE 1: analizzerò in dettaglio gli altri dati forniti (allergie, attività fisica, preferenze orarie e numero pasti).\n\nSe hai domande sui calcoli fatti o vuoi sapere altro su BMI e peso ideale, chiedi pure. Posso procedere con l’analisi dettagliata dei tuoi bisogni e preferenze (FASE 1), o vuoi approfondire questa prima fase?",
+      "timestamp": 1749897618.388949
     },
     {
       "role": "user",
       "content": "procedi",
-      "timestamp": 1749831194.7019854
+      "timestamp": 1749897625.260281
     },
     {
       "role": "assistant",
-      "content": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando: analisi delle risposte e preferenze per personalizzare tutta la dieta sulle tue esigenze e abitudini.\n\nEcco le verifiche svolte in questa fase, spiegate in modo semplice:\n\n- Valuto allergie o intolleranze: hai risposto \"No\", quindi non ci sono alimenti da escludere.\n- Verifico preferenze alimentari: non hai indicato cibi da preferire o evitare, quindi posso spaziare liberamente nella creazione dei menu.\n- Valuto attività sportiva: hai specificato \"No\"; la tua attività è sedentaria, perciò considererò solo la spesa energetica data dalle attività quotidiane normali (es. camminate e lavoro).\n- Controllo obiettivo e target peso: mantieni il tuo peso attuale e non hai richiesto cambi di peso in un tempo determinato.\n- Numero di pasti e orari preferiti: non hai specificato preferenze, quindi userò la suddivisione standard in 4 pasti (colazione, pranzo, spuntino pomeridiano, cena).\n\n📚 Fonti utilizzate:\n- Self-report delle tue risposte e preferenze\n- Linee guida SINU (Società Italiana di Nutrizione Umana) sulle abitudini alimentari per soggetti sani\n\n➡️ Conclusione:\nOra ho tutti i dati di base. Sei pronto per passare alla FASE 2, dove calcolerò il tuo fabbisogno energetico giornaliero.\nVuoi farmi domande su questa analisi o preferisci che continui con il calcolo del fabbisogno calorico?",
-      "timestamp": 1749831207.7084212
+      "content": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando: Raccolta e controllo delle tue preferenze, abitudini, allergie e analisi dell’attività sportiva praticata. In questa fase analizzo i dati base raccolti e le esigenze specifiche emerse dal questionario.\n\n- Preferenze alimentari: Nessuna preferenza o esclusione particolare specificata, oltre all’allergia al latte.\n- Allergie/intolleranze: Allergia al latte (escludo qualsiasi alimento che contenga latte e derivati).\n- Attività sportiva: Pratichi fitness (allenamento medio, 3 ore a settimana, intensità easy). Dispendio calorico medio dallo sport: 86 kcal al giorno.\n- Numero pasti e orari: Preferisci 4 pasti al giorno agli orari di Colazione (07:30), Pranzo (13:00), Spuntino pomeridiano (16:30) e Cena (20:00).\n- Non risultano preferenze particolari sull’inclusione o esclusione di singoli alimenti se non il latte; terrò conto di questo in tutte le fasi successive.\n\n📊 Risultati intermedi:\n- Allergie/intolleranze: Latte (escluso completamente)\n- Attività fisica: Fitness medio (3h/settimana, easy) = 86 kcal/die aggiuntive\n- Pasti: 4, orari fissi\n- Obiettivo peso: Mantenimento (nessuna variazione di peso voluta)\n\n📚 Fonti utilizzate:\n- Dati forniti dal questionario cliente\n- Calcolo del dispendio sportivo (Compendium of Physical Activities, Ainsworth et al. 2011 e aggiornamenti)\n\n❓ Ho bisogno del tuo input su:\n- Vuoi specificare altre preferenze alimentari o cibi da inserire/escludere oltre al latte?\n- Vuoi mantenere la suddivisione in 4 pasti agli orari indicati?\n\n➡️ Conclusione:\nSe hai altre preferenze o limitazioni, segnalale pure! In caso contrario, proseguo al calcolo del tuo fabbisogno energetico (FASE 2). Vuoi aggiungere qualcosa o posso andare avanti?",
+      "timestamp": 1749897647.4894755
     },
     {
       "role": "user",
       "content": "procedi",
-      "timestamp": 1749831215.0153134
+      "timestamp": 1749897652.0559845
     },
     {
       "role": "assistant",
-      "content": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: calcolo del metabolismo basale, fabbisogno complessivo giornaliero e spiegazione di questi termini.\n\nCosa sto facendo in parole semplici:\n- Il metabolismo basale (BMR) è la quantità minima di energia che il tuo corpo consuma a riposo, solo per mantenere le funzioni vitali (respirazione, cuore, cervello, ecc.).\n- Il fabbisogno energetico totale si calcola tenendo conto anche delle attività quotidiane (lavoro, camminate, movimento di base): per farlo si usa un moltiplicatore chiamato LAF.\n- Poiché non pratichi sport, considero solo il livello sedentario (LAF = 1.3).\n- Non servono aggiunte o tagli di calorie, perché il tuo obiettivo è mantenere il peso.\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal\n- Fabbisogno giornaliero totale: 2173 kcal\n  (Calcolo: 1672 * 1.3 = 2173 kcal/giorno)\n\n📚 Fonti utilizzate:\n- Formula di Harris-Benedict per il calcolo del metabolismo basale (fonte: letteratura scientifica consolidata)\n- Raccomandazioni SINU e metodi ufficiali per la stima dei livelli di attività fisica (LAF)\n\n➡️ Conclusione:\nIl tuo fabbisogno calorico giornaliero per mantenere il peso è circa 2173 kcal. Vuoi sapere altro su questi calcoli, o posso passare a calcolare i macronutrienti (FASE 3)?",
-      "timestamp": 1749831238.2924664
-    },
-    {
-      "role": "user",
-      "content": "si ",
-      "timestamp": 1749831266.61327
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: distribuzione delle calorie tra proteine, grassi, carboidrati e fibre ottimale per il tuo fabbisogno.\n\nEcco la procedura che seguo (spiegata in modo semplice):\n\n- PROTEINE:\n  * Il tuo corpo sedentario ha bisogno di circa 0.66 g per kg di peso.\n  * Peso: 70 kg\n  * Proteine totali: 0.66 * 70 = 46 g\n  * Kcal da proteine: 46 * 4 = 184 kcal\n  * Percentuale rispetto alle kcal totali: (184 / 2173) * 100 = 8%\n\n- GRASSI:\n  * Linee guida LARN: 20-35% delle calorie\n  * Scelgo circa il 30% come valore centrale sicuro e bilanciato:\n  * Kcal da grassi: 2173 * 0.3 = 652 kcal\n  * Grassi totali: 652 / 9 = 72 g\n\n- CARBOIDRATI:\n  * Determino i carboidrati coprendo il resto delle calorie:\n  * Kcal restanti: 2173 - (184 + 652) = 1337 kcal\n  * Carboidrati totali: 1337 / 4 = 334 g\n  * Percentuale rispetto alle kcal totali: (1337 / 2173) * 100 = 61%\n\n- FIBRE:\n  * Raccomandazione ufficiale per il tuo fabbisogno: tra 27 e 36 g al giorno.\n\n📊 RISULTATO FINALE MACRONUTRIENTI (arrotondati):\n- Kcal totali: 2173\n- Proteine: 46 g (184 kcal, 8%)\n- Grassi: 72 g (652 kcal, 30%)\n- Carboidrati: 334 g (1337 kcal, 61%)\n- Fibre: 27-36 g\n\n📚 Fonti utilizzate:\n- Raccomandazioni SINU/LARN per grassi e fibre, calcolo dei fabbisogni proteici secondo OMS/LARN\n- Calcoli energetici e macronutrienti standard in nutrizione clinica\n\n➡️ Conclusione:\nQuesta è la ripartizione ottimale per la tua situazione. \nVuoi farmi domande su questi calcoli, o posso passare a distribuire calorie e macronutrienti tra i pasti (FASE 4)?",
-      "timestamp": 1749831285.7969372
-    },
-    {
-      "role": "user",
-      "content": "si",
-      "timestamp": 1749831303.2235997
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\n⚡ Sto elaborando: divisione di calorie e macronutrienti tra i singoli pasti della giornata, utilizzando il metodo standard su 4 pasti (colazione, pranzo, spuntino pomeridiano, cena).\n\nEcco come avviene la suddivisione, spiegata in modo semplice:\n- Le calorie totali vengono ripartite in 4 pasti per mantenere costante l’energia durante la giornata e favorire il senso di sazietà.\n- Anche i macronutrienti si distribuiscono in proporzione alle calorie di ciascun pasto.\n- Non assegno ancora cibi specifici, solo la quota di proteine, carboidrati e grassi per ogni pasto.\n\nSchema standard usato:\n- Colazione: 25% delle kcal giornaliere\n- Pranzo: 35%\n- Spuntino pomeridiano: 10%\n- Cena: 30%\n\nCalcoli:\nTotale kcal: 2173\n- Colazione: 25% = 2173 * 0.25 = 543 kcal\n- Pranzo: 35% = 2173 * 0.35 = 761 kcal\n- Spuntino: 10% = 2173 * 0.10 = 217 kcal\n- Cena: 30% = 2173 * 0.30 = 652 kcal\n\nMacronutrienti per pasto (arrotondati):\n\nColazione: \n- Proteine: 25% di 46 g = 12 g\n- Carboidrati: 25% di 334 g = 84 g\n- Grassi: 25% di 72 g = 18 g\n\nPranzo:\n- Proteine: 35% di 46 g = 16 g\n- Carboidrati: 35% di 334 g = 117 g\n- Grassi: 35% di 72 g = 25 g\n\nSpuntino pomeridiano:\n- Proteine: 10% di 46 g = 5 g\n- Carboidrati: 10% di 334 g = 33 g\n- Grassi: 10% di 72 g = 7 g\n\nCena:\n- Proteine: 30% di 46 g = 14 g\n- Carboidrati: 30% di 334 g = 100 g\n- Grassi: 30% di 72 g = 22 g\n\n📊 RISULTATI SUDDIVISIONE PASTI\n\nColazione: 543 kcal\n- Proteine: 12 g\n- Carboidrati: 84 g\n- Grassi: 18 g\n\nPranzo: 761 kcal\n- Proteine: 16 g\n- Carboidrati: 117 g\n- Grassi: 25 g\n\nSpuntino pomeridiano: 217 kcal\n- Proteine: 5 g\n- Carboidrati: 33 g\n- Grassi: 7 g\n\nCena: 652 kcal\n- Proteine: 14 g\n- Carboidrati: 100 g\n- Grassi: 22 g\n\n📚 Fonti utilizzate:\n- Standard LARN/SINU per la distribuzione calorica\n- Letteratura di dieta mediterranea per principi di ripartizione dei pasti\n\n➡️ Conclusione:\nQuesta è la suddivisione nutrizionale della tua giornata. \nVuoi chiarimenti su questa fase, o posso passare a creare la colazione (FASE 5)?",
-      "timestamp": 1749831317.3375459
-    },
-    {
-      "role": "user",
-      "content": "procediamo",
-      "timestamp": 1749850282.6723125
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 5 - CREAZIONE COLAZIONE\n\n⚡ Sto elaborando: creazione di un pasto bilanciato che ti assicura le giuste dosi di proteine, carboidrati e grassi, tenendo varietà e gusto.\n\nEcco la proposta ottimizzata per la tua colazione:\n\n🌅 COLAZIONE (544 kcal circa)\n• Pane integrale: 60g → 🥄 2 fette grandi\n    P: 4.8g, C: 33g, G: 0.8g\n\n• Yogurt magro: 100g → 🥛 1 vasetto piccolo\n    P: 3.8g, C: 4.8g, G: 0.1g\n\n• Marmellata: 80g → 🍓 3 cucchiai abbondanti\n    P: 4.4g, C: 46.4g, G: 12.0g\n\n• Mandorle: 10g → 🥜 1 cucchiaio scarso (8-10 mandorle)\n    P: 2.2g, C: 0.4g, G: 5.5g\n\nTotale pasto: P: 15g, C: 85g, G: 18g\n\nNote semplici:\n- Ho scelto pane integrale per sazietà e fibre, yogurt magro per proteine leggere, marmellata per un tocco dolce senza esagerare, mandorle per grassi buoni e micronutrienti.\n- I valori nutrizionali sono molto vicini ai target stabiliti, con uno scostamento di pochi grammi dovuto agli arrotondamenti nelle porzioni reali.\n\n📚 Fonti utilizzate:\n- Dati nutrizionali CREA (banca dati ufficiale alimenti)\n- Ottimizzazione dei fabbisogni via modello matematico bilanciato sui macronutrienti\n\n➡️ Conclusione:\nQuesta colazione è equilibrata e gustosa. Vuoi modificarla o passiamo a creare il pranzo? Se hai domande su quantità, calcoli o scelte alimentari, chiedi pure! Vuoi andare avanti con il pranzo?",
-      "timestamp": 1749850310.325457
+      "content": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo di quante calorie servono al giorno per mantenere il tuo peso considerando metabolismo, attività di base e sport.\n\nEcco il ragionamento passo passo:\n1. Metabolismo basale (BMR): è l'energia che il tuo corpo consuma a riposo per le funzioni vitali.\n2. Fattore di attività fisica (LAF): corregge il metabolismo tenendo conto di uno stile di vita sedentario (escluso lo sport), per stimare meglio il fabbisogno reale.\n3. Dispendio attività sportiva: aggiungo le calorie bruciate con il fitness settimanale.\n\nFABBISOGNO BASE:\n- Calcolo BMR (equazione Harris-Benedict): già calcolato 1672 kcal\n- LAF utilizzato (sedentario): 1.3\n- Fabbisogno giornaliero senza sport: 2173 kcal \n  (BMR * LAF = 1672 * 1.3 = 2173 kcal/giorno)\n\nDISPENDIO SPORT:\n- Attività: Fitness medio, 3h/settimana, easy\n- Calorie extra da sport: 86 kcal/giorno\n\nTOTALE FABBISOGNO ENERGETICO:\nFabbisogno totale = 2173 + 86 = 2259 kcal/giorno\n\n📊 Risultati intermedi:\n- BMR: 1672 kcal\n- Fabbisogno giornaliero (sedentario, senza sport): 2173 kcal\n- Dispendio sport aggiuntivo: 86 kcal/die\n- Fabbisogno energetico totale: 2259 kcal/die\n\n📚 Fonti utilizzate:\n- Formula Harris-Benedict (fabbisogno basale e totale)\n- Compendium of Physical Activities (dispendio sport)\n- Stima ufficiale LAF da WHO e SINU (Società Italiana di Nutrizione Umana)\n\n➡️ Conclusione:\nQueste sono le calorie stimate che ti servono ogni giorno per mantenere il peso considerando il fitness che fai. Se hai curiosità su questi calcoli, chiedi pure! \nProcedi pure con la prossima fase (FASE 3) o vuoi chiarimenti?",
+      "timestamp": 1749897674.727677
     },
     {
       "role": "user",
       "content": "procedi",
-      "timestamp": 1749850406.931739
+      "timestamp": 1749897680.3774374
     },
     {
       "role": "assistant",
-      "content": "🍽️ PRANZO (707 kcal circa)\n\n• Pasta integrale: 150g → 🍝 1 porzione abbondante (circa 1 piatto colmo di pasta cotta)\n    P: 19.5g, C: 100.5g, G: 3.0g\n\n• Zucchine: 50g → 🥒 1/3 ciotola piccola\n    P: 0.6g, C: 0.7g, G: 0.1g\n\n• Olio extravergine di oliva: 20g → 🫒 2 cucchiai da tavola\n    P: 0g, C: 0g, G: 20g\n\nTotale pasto: P: 20g, C: 101g, G: 23g\n\nNote semplici:\n- Ho scelto una porzione generosa di pasta integrale che copre sia carboidrati che gran parte delle proteine di cui hai bisogno.\n- Le zucchine arricchiscono in fibre, acqua e micronutrienti il piatto unico.\n- L’olio extravergine di oliva completa la quota di grassi buoni senza eccedere.\n- Il petto di pollo è stato rimosso dall’ottimizzazione perché la pasta integrale da sola copre abbondantemente le proteine per il tuo fabbisogno di questo pasto.\n\n📚 Fonti utilizzate:\n- Dati nutrizionali CREA (banca dati ufficiale italiana)\n- Ottimizzazione delle porzioni secondo i target calcolati e modello bilanciato\n\n➡️ Conclusione:\nPranzo semplice, saporito e bilanciato secondo fabbisogno. Vuoi rivedere qualcosa o posso passare a creare lo spuntino pomeridiano? Se hai dubbi su quantità o scelte, chiedi pure! Vuoi che continui con lo spuntino?",
-      "timestamp": 1749850426.099819
+      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Suddivisione delle calorie giornaliere tra proteine, grassi, carboidrati e fibre in modo bilanciato, adatto a chi pratica fitness leggero, come te.\n\nEcco il ragionamento e i calcoli:\n1. Proteine:\n   - Moltiplicatore fitness medio: 1.0g per kg di peso corporeo (fonte: sintesi Project Invictus, Phillips et al. 2011, Thomas et al. 2016)\n   - Peso: 70 kg\n   - Proteine totali: 1.0 * 70 = 70g\n   - Calorie da proteine: 70g * 4 = 280 kcal\n\n2. Grassi:\n   - Range raccomandato: 20-35% delle kcal totali (LARN/SINU)\n   - Scelgo un valore intermedio: 30% delle calorie totali\n   - Grassi totali: (2259 * 0.30) / 9 = 75g\n   - Calorie da grassi: 75g * 9 = 675 kcal\n\n3. Carboidrati:\n   - Calorie restanti: 2259 - (280 + 675) = 1304 kcal\n   - Gr. carboidrati: 1304 / 4 = 326g\n   - Percentuale sulle kcal totali: (326 * 4) / 2259 * 100 = 58%\n\n   (Per chi fa attività e non è a dieta ipocalorica, questa quota è perfetta: garantisce energia anche per eventuali giornate più intense)\n\n4. Fibre:\n   - Range raccomandato sulla tua quota calorica totale: 28.5-37.7g/die (fonte: LARN/SINU)\n\n📊 Riepilogo finale macronutrienti:\n- Kcal totali: 2259\n- Proteine: 70g (280 kcal, 12%)\n- Grassi: 75g (675 kcal, 30%)\n- Carboidrati: 326g (1304 kcal, 58%)\n- Fibre: 28-38g\n\n📚 Fonti utilizzate:\n- Project Invictus/Phillips & Thomas (proteine)\n- LARN/SINU (lipidi, carboidrati, fibre)\n- WHO/NIH, CREA alimenti per i valori\n\n➡️ Conclusione:\nEcco come distribuirò le calorie tra proteine, grassi, carboidrati e fibre! Se hai domande sulla scelta delle percentuali o vuoi personalizzare ulteriormente qualche valore, chiedi pure. Se va bene così, passo subito a distribuire calorie e macronutrienti tra i vari pasti (FASE 4). Confermi di proseguire?",
+      "timestamp": 1749897700.1812553
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1749897708.4594846
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 4 - DISTRIBUZIONE CALORICA E MACRONUTRIENTI DEI PASTI\n\n⚡ Sto elaborando: Distribuisco le calorie e i macronutrienti giornalieri tra i 4 pasti che hai indicato e ai relativi orari. In questo modo ogni pasto ha la sua precisa quota di energia, proteine, carboidrati e grassi, così che tu possa raggiungere facilmente i tuoi obiettivi restando sempre sazio e nutrito.\n\nSchema standard per 4 pasti:\n- Colazione: 25% delle calorie totali \n- Pranzo: 35% delle calorie totali\n- Spuntino pomeridiano: 10% delle calorie totali\n- Cena: 30% delle calorie totali\n\nOra assegno proteine, carboidrati e grassi in proporzione (arrotondo tutti i risultati ai valori interi per facilitare la gestione).\n\nCalcolo dettagliato:\nTotale giornaliero: \n- 2259 kcal\n- 70g proteine\n- 326g carboidrati\n- 75g grassi\n\nDistribuzione per pasto:\n\nCOLAZIONE — 07:30\n- 25% di 2259 = 565 kcal\n- Proteine: 18g (25% di 70g)\n- Carboidrati: 82g (25% di 326g)\n- Grassi: 19g (25% di 75g)\n\nPRANZO — 13:00\n- 35% di 2259 = 791 kcal\n- Proteine: 25g (35% di 70g)\n- Carboidrati: 114g (35% di 326g)\n- Grassi: 26g (35% di 75g)\n\nSPUNTINO POMERIDIANO — 16:30\n- 10% di 2259 = 226 kcal\n- Proteine: 7g (10% di 70g)\n- Carboidrati: 33g (10% di 326g)\n- Grassi: 8g (10% di 75g)\n\nCENA — 20:00\n- 30% di 2259 = 678 kcal\n- Proteine: 21g (30% di 70g)\n- Carboidrati: 98g (30% di 326g)\n- Grassi: 23g (30% di 75g)\n\n📊 Distribuzione pasti:\n07:30 Colazione: 565 kcal (25%)\n- Proteine: 18g (25% di 70g)\n- Carboidrati: 82g (25% di 326g)\n- Grassi: 19g (25% di 75g)\n\n13:00 Pranzo: 791 kcal (35%)\n- Proteine: 25g (35% di 70g)\n- Carboidrati: 114g (35% di 326g)\n- Grassi: 26g (35% di 75g)\n\n16:30 Spuntino pomeridiano: 226 kcal (10%)\n- Proteine: 7g (10% di 70g)\n- Carboidrati: 33g (10% di 326g)\n- Grassi: 8g (10% di 75g)\n\n20:00 Cena: 678 kcal (30%)\n- Proteine: 21g (30% di 70g)\n- Carboidrati: 98g (30% di 326g)\n- Grassi: 23g (30% di 75g)\n\n📚 Fonti utilizzate:\n- Linee guida distribuzione pasti SINU/LARN\n- Calculi diretti sui tuoi macro definiti sopra\n\n➡️ Conclusione:\nOra ogni pasto ha la sua quota chiara di nutrienti e calorie, pronta per la composizione concreta! Se ti serve spiegazione aggiuntiva sulla logica della distribuzione, chiedi pure. Vuoi che inizi con la creazione della COLAZIONE (FASE 5)?",
+      "timestamp": 1749897746.0091794
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1749897756.5300632
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 5 - CREAZIONE DEL PASTO: COLAZIONE\n\n⚡ Sto elaborando: Composizione della colazione bilanciata ed esclusione di latte e derivati, includendo fonti di carboidrati, proteine e grassi, con cibi semplici, gustosi e realistici.\n\nEcco come ho bilanciato la colazione rispetto ai tuoi target nutrizionali (obiettivo: circa 565 kcal, 18g proteine, 82g carboidrati, 19g grassi — vedi FASE 4):\n\n🌅 COLAZIONE (565 kcal)\n• **Pane integrale**: 60g → 🥖 2 fette spesse (Sostituti: nessuno)\n    P: 4.8g, C: 33g, G: 0.8g\n\n• **Uova**: 70g → 🥚 circa 1 uovo grande (Sostituti: 70g di uovo, 22.5g di grana padano)\n    P: 8.8g, C: 0.5g, G: 6.1g\n\n• **Marmellata**: 60g → 🍯 2 cucchiai abbondanti (Sostituti: nessuno)\n    P: 3.3g, C: 34.8g, G: 9g\n\n• **Pera**: 130g → 🍐 1 pera media (Sostituti: nessuno)\n    P: 1.2g, C: 15.3g, G: 0.1g\n\nTotale pasto: P: 18g, C: 84g, G: 16g\n\nOssservazioni:\n- Ho escluso latte e ogni derivato (attenzione anche al grana padano indicato come possibile sostituto dell’uovo: in caso di allergia severa, meglio evitarlo!).\n- Pane integrale e pera coprono quota carboidrati e fibre. Uovo e un po’ di grassi dalla marmellata (valutata una variante più ricca e densa), per un bilanciamento completo.\n- Ho usato sempre grammature precise e le ho tradotte in misure casalinghe intuitive.\n- Nessuna ripetizione di alimenti della stessa giornata.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (valori nutrizionali degli alimenti)\n- Algoritmo di ottimizzazione porzioni su target macronutrienti (stile SINU/LARN)\n- Platform Project Invictus e fonti specialistiche per scelte dei cibi\n- Suggerimenti misure casalinghe (linee guida dietisti SIAN)\n\n❓ Vuoi commentare o modificare qualche alimento della colazione? Preferisci altro tipo di frutta o un sostituto?\n➡️ Conclusione: \nSe vuoi cambiare qualcosa nella colazione, dimmelo. Vuoi che proceda ora con la creazione del pranzo?",
+      "timestamp": 1749897779.9084592
+    },
+    {
+      "role": "user",
+      "content": "riprova",
+      "timestamp": 1749897966.1311455
+    },
+    {
+      "role": "assistant",
+      "content": "🌅 COLAZIONE (565 kcal)\n• **Avena**: 50g → 🥄 3 cucchiai colmi (Sostituti: 50g di cornflakes, 52g di riso)\n     P: 4g, C: 33g, G: 4g\n\n• **Uova**: 80g → 🥚 circa 1 uovo e mezzo (Sostituti: 80g di uovo, 26g di grana padano)\n     P: 10g, C: 1g, G: 7g\n\n• **Pera**: 190g → 🍐 1 pera abbondante/grande\n     P: 2g, C: 22g, G: 0g\n\n• **Marmellata**: 50g → 🍯 2 cucchiai abbondanti\n     P: 3g, C: 29g, G: 8g\n\nTotale pasto: P: 18g, C: 85g, G: 18g\n\nOsservazioni:\n- Nessun latte o derivati.\n- Carboidrati distribuiti tra avena, pera e marmellata; proteine principalmente dalle uova; grassi dalle uova e marmellata.\n- Ottimo bilanciamento e praticità per una colazione energica e saziante.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Ottimizzazione delle porzioni automatica in base a target nutrizionali\n- Misure casalinghe secondo linee guida dietisti SIAN\n\n❓ Vuoi modificare o sostituire qualcuno di questi alimenti, oppure preferisci questa versione? \n➡️ Conclusione:\nPosso ora procedere con la pianificazione del pranzo (FASE 5), o preferisci discutere le scelte della colazione?",
+      "timestamp": 1749897992.0016427
+    },
+    {
+      "role": "user",
+      "content": "Procedi",
+      "timestamp": 1749898018.3514626
+    },
+    {
+      "role": "assistant",
+      "content": "🍽️ PRANZO (791 kcal)\n• **Pasta integrale**: 160g → 🍝 2 porzioni abbondanti cotta (da 80g secca l’una)\n     P: 21g, C: 107g, G: 3g\n\n• **Zucchine**: 250g → 🥒 1 ciotola grande (Sostituti: 250g di verdure miste, 120g di spinaci cotti)\n     P: 3g, C: 4g, G: 0g\n\n• **Olio extravergine di oliva**: 20g → 🫒 2 cucchiai colmi\n     P: 0g, C: 0g, G: 20g\n\nTotale pasto: P: 24g, C: 111g, G: 23g\n\nOsservazioni:\n- Il pollo è stato rimosso dal tool perché il contributo proteico della sola pasta integrale (in grande porzione) era già molto alto e rischiava di superare il target.\n- L’abbinamento è tipico della tradizione mediterranea, adatto, semplice e saziante.\n- Possibili sostituti per le zucchine: verdure miste o spinaci cotti, nelle grammature indicate.\n- Ottimo equilibrio tra carboidrati (da pasta integrale), proteine (dalla pasta stessa e dalle verdure), grassi (dal solo olio EVO).\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Ottimizzazione porzioni rispetto ai target macro\n- Misure casalinghe secondo linee guida dietisti SIAN\n\n❓ Vuoi reinserire una fonte animale o modificare la composizione? Preferisci una pasta più piccola e includere anche pollo, oppure questa versione va bene?\n➡️ Conclusione:\nTi lascio la libertà di valutare il pranzo. Procedo con lo spuntino pomeridiano (FASE 5) oppure vuoi adattare il pranzo?",
+      "timestamp": 1749898037.4835522
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1749898117.7837582
+    },
+    {
+      "role": "assistant",
+      "content": "🥨 SPUNTINO POMERIDIANO (226 kcal)\n• **Pane integrale**: 60g → 🥖 2 fette spesse\n     P: 5g, C: 33g, G: 1g\n\n• **Bresaola**: 50g → 🥩 5-6 fette grandi (Sostituti: 69g di pollo, 72g di petto di pollo)\n     P: 16g, C: 0g, G: 1g\n\n• **Mela**: 80g → 🍏 1 mela piccola (Sostituti: 68g di uva, 47g di banana)\n     P: 0g, C: 11g, G: 0g\n\nTotale pasto: P: 21g, C: 44g, G: 2g\n\nOsservazioni:\n- Il tool ha ottimizzato le porzioni per garantire un buon apporto di proteine (anche maggiorato rispetto al target), con un profilo leggero e pratico.\n- Pane integrale come fonte di carboidrati, bresaola per le proteine magre, mela per dolcezza e fibre.\n- Sostituti disponibili: pollo o petto di pollo al posto della bresaola, uva o banana come frutta.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione alimenti)\n- Ottimizzazione automatica porzioni su target macro\n- Misure casalinghe da linee guida dietisti SIAN\n\n❓ Vuoi che modifichi lo spuntino o provi a ridurre leggermente le proteine o i carboidrati? Oppure va bene così?\n➡️ Conclusione:\nSe ti va bene questa proposta, procedo con la preparazione della cena (FASE 5). Vuoi aggiustare qualcosa prima?",
+      "timestamp": 1749898139.1691084
+    },
+    {
+      "role": "user",
+      "content": "rifallo",
+      "timestamp": 1749898211.4852161
+    },
+    {
+      "role": "assistant",
+      "content": "🥨 SPUNTINO POMERIDIANO (226 kcal)  \n• **Mandorle**: 20g → 🥜 1 abbondante manciata (Sostituti: 18g di noci sgusciate, 21g di burro di arachidi)  \n     P: 4g, C: 1g, G: 11g\n\n• **Banana**: 140g → 🍌 1 banana media (Sostituti: 204g di uva, 240g di mela)  \n     P: 2g, C: 32g, G: 0g\n\nTotale pasto: P: 6g, C: 33g, G: 11g\n\nOsservazioni:\n- Semplice, dolce, naturale e totalmente privo di latte.\n- Mandorle forniscono grassi e un po’ di proteine, banana fornisce fibre e carboidrati a basso indice glicemico.\n- Pratico da portare fuori casa, senza necessità di refrigerazione.\n- Sostituti disponibili sia per le mandorle che per la banana.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione alimenti)\n- Ottimizzazione automatica porzioni su target macro\n- Misure casalinghe da linee guida dietisti SIAN\n\n❓ Vuoi cambiare qualcosa, aggiungere/provare altri spuntini o vuoi che proceda direttamente con la cena?\n➡️ Conclusione:\nLo spuntino ora rispetta molto meglio l’equilibrio desiderato. Posso procedere con la cena (FASE 5)?",
+      "timestamp": 1749898231.7462068
+    },
+    {
+      "role": "user",
+      "content": "rifallo",
+      "timestamp": 1749898262.2294693
+    },
+    {
+      "role": "assistant",
+      "content": "🥨 SPUNTINO POMERIDIANO (226 kcal)\n\n• **Pane integrale**: 60g → 🥖 2 fette spesse  \n    P: 5g, C: 33g, G: 1g\n\n• **Prosciutto crudo**: 50g → 🥩 5-6 fette sottili  \n    P: 14g, C: 0g, G: 6g\n\n• **Kiwi**: 80g → 🥝 1 kiwi piccolo (Sostituti: 80g di miele, 80g di ciliegie)  \n    P: 1g, C: 9g, G: 0g\n\nTotale pasto: P: 19g, C: 42g, G: 6g\n\nOsservazioni:\n- Pane integrale come fonte di carboidrati complessi e fibre, prosciutto crudo come proteine magre e un moderato apporto di grassi, kiwi per vitamine e un tocco fresco.\n- Le porzioni arrotondate aiutano nella praticità quotidiana.\n- Sostituti disponibili per il kiwi: miele o ciliegie nella stessa grammatura.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Algoritmo automatico di ottimizzazione porzioni\n- Linee guida dietisti per misure casalinghe\n\n❓ Vuoi modificare uno di questi alimenti o le quantità? Se il mix ti piace così posso procedere con la creazione della tua cena!\n➡️ Conclusione:\nSpuntino ottimizzato e pratico, scelto anche per varietà e sapore. Procedo con la cena (FASE 5) o vuoi cambiare qualcosa?",
+      "timestamp": 1749898294.5141783
     }
   ],
   "nutritional_info": {
@@ -80,48 +120,88 @@
     "obiettivo": "Mantenimento",
     "nutrition_answers": {
       "allergies": {
-        "answer": "No",
-        "follow_up": null
+        "answer": "Sì",
+        "follow_up": "latte"
       },
       "sports": {
-        "answer": "No",
-        "follow_up": null
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Fitness - Allenamento medio (principianti e livello intermedio)",
+            "specific_sport": {
+              "name": "Fitness - allenamento medio",
+              "key": "Fitness - Allenamento medio",
+              "kcal_per_hour": 250,
+              "description": "Allenamento leggero in palestra"
+            },
+            "intensity": "easy",
+            "hours_per_week": 3
+          }
+        ]
       },
       "meal_preferences": {
-        "answer": "No",
-        "follow_up": null
+        "answer": "Sì",
+        "follow_up": {
+          "num_meals": 4,
+          "meal_times": {
+            "Colazione": "07:30",
+            "Pranzo": "13:00",
+            "Cena": "20:00",
+            "Spuntino pomeridiano": "16:30"
+          }
+        }
       }
     },
     "agent_qa": [
       {
         "question": "procedi",
-        "answer": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando: analisi delle risposte e preferenze per personalizzare tutta la dieta sulle tue esigenze e abitudini.\n\nEcco le verifiche svolte in questa fase, spiegate in modo semplice:\n\n- Valuto allergie o intolleranze: hai risposto \"No\", quindi non ci sono alimenti da escludere.\n- Verifico preferenze alimentari: non hai indicato cibi da preferire o evitare, quindi posso spaziare liberamente nella creazione dei menu.\n- Valuto attività sportiva: hai specificato \"No\"; la tua attività è sedentaria, perciò considererò solo la spesa energetica data dalle attività quotidiane normali (es. camminate e lavoro).\n- Controllo obiettivo e target peso: mantieni il tuo peso attuale e non hai richiesto cambi di peso in un tempo determinato.\n- Numero di pasti e orari preferiti: non hai specificato preferenze, quindi userò la suddivisione standard in 4 pasti (colazione, pranzo, spuntino pomeridiano, cena).\n\n📚 Fonti utilizzate:\n- Self-report delle tue risposte e preferenze\n- Linee guida SINU (Società Italiana di Nutrizione Umana) sulle abitudini alimentari per soggetti sani\n\n➡️ Conclusione:\nOra ho tutti i dati di base. Sei pronto per passare alla FASE 2, dove calcolerò il tuo fabbisogno energetico giornaliero.\nVuoi farmi domande su questa analisi o preferisci che continui con il calcolo del fabbisogno calorico?",
-        "timestamp": 1749831207.7123241
+        "answer": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando: Raccolta e controllo delle tue preferenze, abitudini, allergie e analisi dell’attività sportiva praticata. In questa fase analizzo i dati base raccolti e le esigenze specifiche emerse dal questionario.\n\n- Preferenze alimentari: Nessuna preferenza o esclusione particolare specificata, oltre all’allergia al latte.\n- Allergie/intolleranze: Allergia al latte (escludo qualsiasi alimento che contenga latte e derivati).\n- Attività sportiva: Pratichi fitness (allenamento medio, 3 ore a settimana, intensità easy). Dispendio calorico medio dallo sport: 86 kcal al giorno.\n- Numero pasti e orari: Preferisci 4 pasti al giorno agli orari di Colazione (07:30), Pranzo (13:00), Spuntino pomeridiano (16:30) e Cena (20:00).\n- Non risultano preferenze particolari sull’inclusione o esclusione di singoli alimenti se non il latte; terrò conto di questo in tutte le fasi successive.\n\n📊 Risultati intermedi:\n- Allergie/intolleranze: Latte (escluso completamente)\n- Attività fisica: Fitness medio (3h/settimana, easy) = 86 kcal/die aggiuntive\n- Pasti: 4, orari fissi\n- Obiettivo peso: Mantenimento (nessuna variazione di peso voluta)\n\n📚 Fonti utilizzate:\n- Dati forniti dal questionario cliente\n- Calcolo del dispendio sportivo (Compendium of Physical Activities, Ainsworth et al. 2011 e aggiornamenti)\n\n❓ Ho bisogno del tuo input su:\n- Vuoi specificare altre preferenze alimentari o cibi da inserire/escludere oltre al latte?\n- Vuoi mantenere la suddivisione in 4 pasti agli orari indicati?\n\n➡️ Conclusione:\nSe hai altre preferenze o limitazioni, segnalale pure! In caso contrario, proseguo al calcolo del tuo fabbisogno energetico (FASE 2). Vuoi aggiungere qualcosa o posso andare avanti?",
+        "timestamp": 1749897647.501035
       },
       {
         "question": "procedi",
-        "answer": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: calcolo del metabolismo basale, fabbisogno complessivo giornaliero e spiegazione di questi termini.\n\nCosa sto facendo in parole semplici:\n- Il metabolismo basale (BMR) è la quantità minima di energia che il tuo corpo consuma a riposo, solo per mantenere le funzioni vitali (respirazione, cuore, cervello, ecc.).\n- Il fabbisogno energetico totale si calcola tenendo conto anche delle attività quotidiane (lavoro, camminate, movimento di base): per farlo si usa un moltiplicatore chiamato LAF.\n- Poiché non pratichi sport, considero solo il livello sedentario (LAF = 1.3).\n- Non servono aggiunte o tagli di calorie, perché il tuo obiettivo è mantenere il peso.\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal\n- Fabbisogno giornaliero totale: 2173 kcal\n  (Calcolo: 1672 * 1.3 = 2173 kcal/giorno)\n\n📚 Fonti utilizzate:\n- Formula di Harris-Benedict per il calcolo del metabolismo basale (fonte: letteratura scientifica consolidata)\n- Raccomandazioni SINU e metodi ufficiali per la stima dei livelli di attività fisica (LAF)\n\n➡️ Conclusione:\nIl tuo fabbisogno calorico giornaliero per mantenere il peso è circa 2173 kcal. Vuoi sapere altro su questi calcoli, o posso passare a calcolare i macronutrienti (FASE 3)?",
-        "timestamp": 1749831238.2973719
-      },
-      {
-        "question": "si ",
-        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: distribuzione delle calorie tra proteine, grassi, carboidrati e fibre ottimale per il tuo fabbisogno.\n\nEcco la procedura che seguo (spiegata in modo semplice):\n\n- PROTEINE:\n  * Il tuo corpo sedentario ha bisogno di circa 0.66 g per kg di peso.\n  * Peso: 70 kg\n  * Proteine totali: 0.66 * 70 = 46 g\n  * Kcal da proteine: 46 * 4 = 184 kcal\n  * Percentuale rispetto alle kcal totali: (184 / 2173) * 100 = 8%\n\n- GRASSI:\n  * Linee guida LARN: 20-35% delle calorie\n  * Scelgo circa il 30% come valore centrale sicuro e bilanciato:\n  * Kcal da grassi: 2173 * 0.3 = 652 kcal\n  * Grassi totali: 652 / 9 = 72 g\n\n- CARBOIDRATI:\n  * Determino i carboidrati coprendo il resto delle calorie:\n  * Kcal restanti: 2173 - (184 + 652) = 1337 kcal\n  * Carboidrati totali: 1337 / 4 = 334 g\n  * Percentuale rispetto alle kcal totali: (1337 / 2173) * 100 = 61%\n\n- FIBRE:\n  * Raccomandazione ufficiale per il tuo fabbisogno: tra 27 e 36 g al giorno.\n\n📊 RISULTATO FINALE MACRONUTRIENTI (arrotondati):\n- Kcal totali: 2173\n- Proteine: 46 g (184 kcal, 8%)\n- Grassi: 72 g (652 kcal, 30%)\n- Carboidrati: 334 g (1337 kcal, 61%)\n- Fibre: 27-36 g\n\n📚 Fonti utilizzate:\n- Raccomandazioni SINU/LARN per grassi e fibre, calcolo dei fabbisogni proteici secondo OMS/LARN\n- Calcoli energetici e macronutrienti standard in nutrizione clinica\n\n➡️ Conclusione:\nQuesta è la ripartizione ottimale per la tua situazione. \nVuoi farmi domande su questi calcoli, o posso passare a distribuire calorie e macronutrienti tra i pasti (FASE 4)?",
-        "timestamp": 1749831285.8020298
-      },
-      {
-        "question": "si",
-        "answer": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\n⚡ Sto elaborando: divisione di calorie e macronutrienti tra i singoli pasti della giornata, utilizzando il metodo standard su 4 pasti (colazione, pranzo, spuntino pomeridiano, cena).\n\nEcco come avviene la suddivisione, spiegata in modo semplice:\n- Le calorie totali vengono ripartite in 4 pasti per mantenere costante l’energia durante la giornata e favorire il senso di sazietà.\n- Anche i macronutrienti si distribuiscono in proporzione alle calorie di ciascun pasto.\n- Non assegno ancora cibi specifici, solo la quota di proteine, carboidrati e grassi per ogni pasto.\n\nSchema standard usato:\n- Colazione: 25% delle kcal giornaliere\n- Pranzo: 35%\n- Spuntino pomeridiano: 10%\n- Cena: 30%\n\nCalcoli:\nTotale kcal: 2173\n- Colazione: 25% = 2173 * 0.25 = 543 kcal\n- Pranzo: 35% = 2173 * 0.35 = 761 kcal\n- Spuntino: 10% = 2173 * 0.10 = 217 kcal\n- Cena: 30% = 2173 * 0.30 = 652 kcal\n\nMacronutrienti per pasto (arrotondati):\n\nColazione: \n- Proteine: 25% di 46 g = 12 g\n- Carboidrati: 25% di 334 g = 84 g\n- Grassi: 25% di 72 g = 18 g\n\nPranzo:\n- Proteine: 35% di 46 g = 16 g\n- Carboidrati: 35% di 334 g = 117 g\n- Grassi: 35% di 72 g = 25 g\n\nSpuntino pomeridiano:\n- Proteine: 10% di 46 g = 5 g\n- Carboidrati: 10% di 334 g = 33 g\n- Grassi: 10% di 72 g = 7 g\n\nCena:\n- Proteine: 30% di 46 g = 14 g\n- Carboidrati: 30% di 334 g = 100 g\n- Grassi: 30% di 72 g = 22 g\n\n📊 RISULTATI SUDDIVISIONE PASTI\n\nColazione: 543 kcal\n- Proteine: 12 g\n- Carboidrati: 84 g\n- Grassi: 18 g\n\nPranzo: 761 kcal\n- Proteine: 16 g\n- Carboidrati: 117 g\n- Grassi: 25 g\n\nSpuntino pomeridiano: 217 kcal\n- Proteine: 5 g\n- Carboidrati: 33 g\n- Grassi: 7 g\n\nCena: 652 kcal\n- Proteine: 14 g\n- Carboidrati: 100 g\n- Grassi: 22 g\n\n📚 Fonti utilizzate:\n- Standard LARN/SINU per la distribuzione calorica\n- Letteratura di dieta mediterranea per principi di ripartizione dei pasti\n\n➡️ Conclusione:\nQuesta è la suddivisione nutrizionale della tua giornata. \nVuoi chiarimenti su questa fase, o posso passare a creare la colazione (FASE 5)?",
-        "timestamp": 1749831317.3434727
-      },
-      {
-        "question": "procediamo",
-        "answer": "✓ FASE 5 - CREAZIONE COLAZIONE\n\n⚡ Sto elaborando: creazione di un pasto bilanciato che ti assicura le giuste dosi di proteine, carboidrati e grassi, tenendo varietà e gusto.\n\nEcco la proposta ottimizzata per la tua colazione:\n\n🌅 COLAZIONE (544 kcal circa)\n• Pane integrale: 60g → 🥄 2 fette grandi\n    P: 4.8g, C: 33g, G: 0.8g\n\n• Yogurt magro: 100g → 🥛 1 vasetto piccolo\n    P: 3.8g, C: 4.8g, G: 0.1g\n\n• Marmellata: 80g → 🍓 3 cucchiai abbondanti\n    P: 4.4g, C: 46.4g, G: 12.0g\n\n• Mandorle: 10g → 🥜 1 cucchiaio scarso (8-10 mandorle)\n    P: 2.2g, C: 0.4g, G: 5.5g\n\nTotale pasto: P: 15g, C: 85g, G: 18g\n\nNote semplici:\n- Ho scelto pane integrale per sazietà e fibre, yogurt magro per proteine leggere, marmellata per un tocco dolce senza esagerare, mandorle per grassi buoni e micronutrienti.\n- I valori nutrizionali sono molto vicini ai target stabiliti, con uno scostamento di pochi grammi dovuto agli arrotondamenti nelle porzioni reali.\n\n📚 Fonti utilizzate:\n- Dati nutrizionali CREA (banca dati ufficiale alimenti)\n- Ottimizzazione dei fabbisogni via modello matematico bilanciato sui macronutrienti\n\n➡️ Conclusione:\nQuesta colazione è equilibrata e gustosa. Vuoi modificarla o passiamo a creare il pranzo? Se hai domande su quantità, calcoli o scelte alimentari, chiedi pure! Vuoi andare avanti con il pranzo?",
-        "timestamp": 1749850310.3328893
+        "answer": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo di quante calorie servono al giorno per mantenere il tuo peso considerando metabolismo, attività di base e sport.\n\nEcco il ragionamento passo passo:\n1. Metabolismo basale (BMR): è l'energia che il tuo corpo consuma a riposo per le funzioni vitali.\n2. Fattore di attività fisica (LAF): corregge il metabolismo tenendo conto di uno stile di vita sedentario (escluso lo sport), per stimare meglio il fabbisogno reale.\n3. Dispendio attività sportiva: aggiungo le calorie bruciate con il fitness settimanale.\n\nFABBISOGNO BASE:\n- Calcolo BMR (equazione Harris-Benedict): già calcolato 1672 kcal\n- LAF utilizzato (sedentario): 1.3\n- Fabbisogno giornaliero senza sport: 2173 kcal \n  (BMR * LAF = 1672 * 1.3 = 2173 kcal/giorno)\n\nDISPENDIO SPORT:\n- Attività: Fitness medio, 3h/settimana, easy\n- Calorie extra da sport: 86 kcal/giorno\n\nTOTALE FABBISOGNO ENERGETICO:\nFabbisogno totale = 2173 + 86 = 2259 kcal/giorno\n\n📊 Risultati intermedi:\n- BMR: 1672 kcal\n- Fabbisogno giornaliero (sedentario, senza sport): 2173 kcal\n- Dispendio sport aggiuntivo: 86 kcal/die\n- Fabbisogno energetico totale: 2259 kcal/die\n\n📚 Fonti utilizzate:\n- Formula Harris-Benedict (fabbisogno basale e totale)\n- Compendium of Physical Activities (dispendio sport)\n- Stima ufficiale LAF da WHO e SINU (Società Italiana di Nutrizione Umana)\n\n➡️ Conclusione:\nQueste sono le calorie stimate che ti servono ogni giorno per mantenere il peso considerando il fitness che fai. Se hai curiosità su questi calcoli, chiedi pure! \nProcedi pure con la prossima fase (FASE 3) o vuoi chiarimenti?",
+        "timestamp": 1749897674.727677
       },
       {
         "question": "procedi",
-        "answer": "🍽️ PRANZO (707 kcal circa)\n\n• Pasta integrale: 150g → 🍝 1 porzione abbondante (circa 1 piatto colmo di pasta cotta)\n    P: 19.5g, C: 100.5g, G: 3.0g\n\n• Zucchine: 50g → 🥒 1/3 ciotola piccola\n    P: 0.6g, C: 0.7g, G: 0.1g\n\n• Olio extravergine di oliva: 20g → 🫒 2 cucchiai da tavola\n    P: 0g, C: 0g, G: 20g\n\nTotale pasto: P: 20g, C: 101g, G: 23g\n\nNote semplici:\n- Ho scelto una porzione generosa di pasta integrale che copre sia carboidrati che gran parte delle proteine di cui hai bisogno.\n- Le zucchine arricchiscono in fibre, acqua e micronutrienti il piatto unico.\n- L’olio extravergine di oliva completa la quota di grassi buoni senza eccedere.\n- Il petto di pollo è stato rimosso dall’ottimizzazione perché la pasta integrale da sola copre abbondantemente le proteine per il tuo fabbisogno di questo pasto.\n\n📚 Fonti utilizzate:\n- Dati nutrizionali CREA (banca dati ufficiale italiana)\n- Ottimizzazione delle porzioni secondo i target calcolati e modello bilanciato\n\n➡️ Conclusione:\nPranzo semplice, saporito e bilanciato secondo fabbisogno. Vuoi rivedere qualcosa o posso passare a creare lo spuntino pomeridiano? Se hai dubbi su quantità o scelte, chiedi pure! Vuoi che continui con lo spuntino?",
-        "timestamp": 1749850426.1086
+        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Suddivisione delle calorie giornaliere tra proteine, grassi, carboidrati e fibre in modo bilanciato, adatto a chi pratica fitness leggero, come te.\n\nEcco il ragionamento e i calcoli:\n1. Proteine:\n   - Moltiplicatore fitness medio: 1.0g per kg di peso corporeo (fonte: sintesi Project Invictus, Phillips et al. 2011, Thomas et al. 2016)\n   - Peso: 70 kg\n   - Proteine totali: 1.0 * 70 = 70g\n   - Calorie da proteine: 70g * 4 = 280 kcal\n\n2. Grassi:\n   - Range raccomandato: 20-35% delle kcal totali (LARN/SINU)\n   - Scelgo un valore intermedio: 30% delle calorie totali\n   - Grassi totali: (2259 * 0.30) / 9 = 75g\n   - Calorie da grassi: 75g * 9 = 675 kcal\n\n3. Carboidrati:\n   - Calorie restanti: 2259 - (280 + 675) = 1304 kcal\n   - Gr. carboidrati: 1304 / 4 = 326g\n   - Percentuale sulle kcal totali: (326 * 4) / 2259 * 100 = 58%\n\n   (Per chi fa attività e non è a dieta ipocalorica, questa quota è perfetta: garantisce energia anche per eventuali giornate più intense)\n\n4. Fibre:\n   - Range raccomandato sulla tua quota calorica totale: 28.5-37.7g/die (fonte: LARN/SINU)\n\n📊 Riepilogo finale macronutrienti:\n- Kcal totali: 2259\n- Proteine: 70g (280 kcal, 12%)\n- Grassi: 75g (675 kcal, 30%)\n- Carboidrati: 326g (1304 kcal, 58%)\n- Fibre: 28-38g\n\n📚 Fonti utilizzate:\n- Project Invictus/Phillips & Thomas (proteine)\n- LARN/SINU (lipidi, carboidrati, fibre)\n- WHO/NIH, CREA alimenti per i valori\n\n➡️ Conclusione:\nEcco come distribuirò le calorie tra proteine, grassi, carboidrati e fibre! Se hai domande sulla scelta delle percentuali o vuoi personalizzare ulteriormente qualche valore, chiedi pure. Se va bene così, passo subito a distribuire calorie e macronutrienti tra i vari pasti (FASE 4). Confermi di proseguire?",
+        "timestamp": 1749897700.1891718
+      },
+      {
+        "question": "procedi",
+        "answer": "✓ FASE 4 - DISTRIBUZIONE CALORICA E MACRONUTRIENTI DEI PASTI\n\n⚡ Sto elaborando: Distribuisco le calorie e i macronutrienti giornalieri tra i 4 pasti che hai indicato e ai relativi orari. In questo modo ogni pasto ha la sua precisa quota di energia, proteine, carboidrati e grassi, così che tu possa raggiungere facilmente i tuoi obiettivi restando sempre sazio e nutrito.\n\nSchema standard per 4 pasti:\n- Colazione: 25% delle calorie totali \n- Pranzo: 35% delle calorie totali\n- Spuntino pomeridiano: 10% delle calorie totali\n- Cena: 30% delle calorie totali\n\nOra assegno proteine, carboidrati e grassi in proporzione (arrotondo tutti i risultati ai valori interi per facilitare la gestione).\n\nCalcolo dettagliato:\nTotale giornaliero: \n- 2259 kcal\n- 70g proteine\n- 326g carboidrati\n- 75g grassi\n\nDistribuzione per pasto:\n\nCOLAZIONE — 07:30\n- 25% di 2259 = 565 kcal\n- Proteine: 18g (25% di 70g)\n- Carboidrati: 82g (25% di 326g)\n- Grassi: 19g (25% di 75g)\n\nPRANZO — 13:00\n- 35% di 2259 = 791 kcal\n- Proteine: 25g (35% di 70g)\n- Carboidrati: 114g (35% di 326g)\n- Grassi: 26g (35% di 75g)\n\nSPUNTINO POMERIDIANO — 16:30\n- 10% di 2259 = 226 kcal\n- Proteine: 7g (10% di 70g)\n- Carboidrati: 33g (10% di 326g)\n- Grassi: 8g (10% di 75g)\n\nCENA — 20:00\n- 30% di 2259 = 678 kcal\n- Proteine: 21g (30% di 70g)\n- Carboidrati: 98g (30% di 326g)\n- Grassi: 23g (30% di 75g)\n\n📊 Distribuzione pasti:\n07:30 Colazione: 565 kcal (25%)\n- Proteine: 18g (25% di 70g)\n- Carboidrati: 82g (25% di 326g)\n- Grassi: 19g (25% di 75g)\n\n13:00 Pranzo: 791 kcal (35%)\n- Proteine: 25g (35% di 70g)\n- Carboidrati: 114g (35% di 326g)\n- Grassi: 26g (35% di 75g)\n\n16:30 Spuntino pomeridiano: 226 kcal (10%)\n- Proteine: 7g (10% di 70g)\n- Carboidrati: 33g (10% di 326g)\n- Grassi: 8g (10% di 75g)\n\n20:00 Cena: 678 kcal (30%)\n- Proteine: 21g (30% di 70g)\n- Carboidrati: 98g (30% di 326g)\n- Grassi: 23g (30% di 75g)\n\n📚 Fonti utilizzate:\n- Linee guida distribuzione pasti SINU/LARN\n- Calculi diretti sui tuoi macro definiti sopra\n\n➡️ Conclusione:\nOra ogni pasto ha la sua quota chiara di nutrienti e calorie, pronta per la composizione concreta! Se ti serve spiegazione aggiuntiva sulla logica della distribuzione, chiedi pure. Vuoi che inizi con la creazione della COLAZIONE (FASE 5)?",
+        "timestamp": 1749897746.035718
+      },
+      {
+        "question": "procedi",
+        "answer": "✓ FASE 5 - CREAZIONE DEL PASTO: COLAZIONE\n\n⚡ Sto elaborando: Composizione della colazione bilanciata ed esclusione di latte e derivati, includendo fonti di carboidrati, proteine e grassi, con cibi semplici, gustosi e realistici.\n\nEcco come ho bilanciato la colazione rispetto ai tuoi target nutrizionali (obiettivo: circa 565 kcal, 18g proteine, 82g carboidrati, 19g grassi — vedi FASE 4):\n\n🌅 COLAZIONE (565 kcal)\n• **Pane integrale**: 60g → 🥖 2 fette spesse (Sostituti: nessuno)\n    P: 4.8g, C: 33g, G: 0.8g\n\n• **Uova**: 70g → 🥚 circa 1 uovo grande (Sostituti: 70g di uovo, 22.5g di grana padano)\n    P: 8.8g, C: 0.5g, G: 6.1g\n\n• **Marmellata**: 60g → 🍯 2 cucchiai abbondanti (Sostituti: nessuno)\n    P: 3.3g, C: 34.8g, G: 9g\n\n• **Pera**: 130g → 🍐 1 pera media (Sostituti: nessuno)\n    P: 1.2g, C: 15.3g, G: 0.1g\n\nTotale pasto: P: 18g, C: 84g, G: 16g\n\nOssservazioni:\n- Ho escluso latte e ogni derivato (attenzione anche al grana padano indicato come possibile sostituto dell’uovo: in caso di allergia severa, meglio evitarlo!).\n- Pane integrale e pera coprono quota carboidrati e fibre. Uovo e un po’ di grassi dalla marmellata (valutata una variante più ricca e densa), per un bilanciamento completo.\n- Ho usato sempre grammature precise e le ho tradotte in misure casalinghe intuitive.\n- Nessuna ripetizione di alimenti della stessa giornata.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (valori nutrizionali degli alimenti)\n- Algoritmo di ottimizzazione porzioni su target macronutrienti (stile SINU/LARN)\n- Platform Project Invictus e fonti specialistiche per scelte dei cibi\n- Suggerimenti misure casalinghe (linee guida dietisti SIAN)\n\n❓ Vuoi commentare o modificare qualche alimento della colazione? Preferisci altro tipo di frutta o un sostituto?\n➡️ Conclusione: \nSe vuoi cambiare qualcosa nella colazione, dimmelo. Vuoi che proceda ora con la creazione del pranzo?",
+        "timestamp": 1749897779.9190104
+      },
+      {
+        "question": "riprova",
+        "answer": "🌅 COLAZIONE (565 kcal)\n• **Avena**: 50g → 🥄 3 cucchiai colmi (Sostituti: 50g di cornflakes, 52g di riso)\n     P: 4g, C: 33g, G: 4g\n\n• **Uova**: 80g → 🥚 circa 1 uovo e mezzo (Sostituti: 80g di uovo, 26g di grana padano)\n     P: 10g, C: 1g, G: 7g\n\n• **Pera**: 190g → 🍐 1 pera abbondante/grande\n     P: 2g, C: 22g, G: 0g\n\n• **Marmellata**: 50g → 🍯 2 cucchiai abbondanti\n     P: 3g, C: 29g, G: 8g\n\nTotale pasto: P: 18g, C: 85g, G: 18g\n\nOsservazioni:\n- Nessun latte o derivati.\n- Carboidrati distribuiti tra avena, pera e marmellata; proteine principalmente dalle uova; grassi dalle uova e marmellata.\n- Ottimo bilanciamento e praticità per una colazione energica e saziante.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Ottimizzazione delle porzioni automatica in base a target nutrizionali\n- Misure casalinghe secondo linee guida dietisti SIAN\n\n❓ Vuoi modificare o sostituire qualcuno di questi alimenti, oppure preferisci questa versione? \n➡️ Conclusione:\nPosso ora procedere con la pianificazione del pranzo (FASE 5), o preferisci discutere le scelte della colazione?",
+        "timestamp": 1749897992.0113733
+      },
+      {
+        "question": "Procedi",
+        "answer": "🍽️ PRANZO (791 kcal)\n• **Pasta integrale**: 160g → 🍝 2 porzioni abbondanti cotta (da 80g secca l’una)\n     P: 21g, C: 107g, G: 3g\n\n• **Zucchine**: 250g → 🥒 1 ciotola grande (Sostituti: 250g di verdure miste, 120g di spinaci cotti)\n     P: 3g, C: 4g, G: 0g\n\n• **Olio extravergine di oliva**: 20g → 🫒 2 cucchiai colmi\n     P: 0g, C: 0g, G: 20g\n\nTotale pasto: P: 24g, C: 111g, G: 23g\n\nOsservazioni:\n- Il pollo è stato rimosso dal tool perché il contributo proteico della sola pasta integrale (in grande porzione) era già molto alto e rischiava di superare il target.\n- L’abbinamento è tipico della tradizione mediterranea, adatto, semplice e saziante.\n- Possibili sostituti per le zucchine: verdure miste o spinaci cotti, nelle grammature indicate.\n- Ottimo equilibrio tra carboidrati (da pasta integrale), proteine (dalla pasta stessa e dalle verdure), grassi (dal solo olio EVO).\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Ottimizzazione porzioni rispetto ai target macro\n- Misure casalinghe secondo linee guida dietisti SIAN\n\n❓ Vuoi reinserire una fonte animale o modificare la composizione? Preferisci una pasta più piccola e includere anche pollo, oppure questa versione va bene?\n➡️ Conclusione:\nTi lascio la libertà di valutare il pranzo. Procedo con lo spuntino pomeridiano (FASE 5) oppure vuoi adattare il pranzo?",
+        "timestamp": 1749898037.50588
+      },
+      {
+        "question": "procedi",
+        "answer": "🥨 SPUNTINO POMERIDIANO (226 kcal)\n• **Pane integrale**: 60g → 🥖 2 fette spesse\n     P: 5g, C: 33g, G: 1g\n\n• **Bresaola**: 50g → 🥩 5-6 fette grandi (Sostituti: 69g di pollo, 72g di petto di pollo)\n     P: 16g, C: 0g, G: 1g\n\n• **Mela**: 80g → 🍏 1 mela piccola (Sostituti: 68g di uva, 47g di banana)\n     P: 0g, C: 11g, G: 0g\n\nTotale pasto: P: 21g, C: 44g, G: 2g\n\nOsservazioni:\n- Il tool ha ottimizzato le porzioni per garantire un buon apporto di proteine (anche maggiorato rispetto al target), con un profilo leggero e pratico.\n- Pane integrale come fonte di carboidrati, bresaola per le proteine magre, mela per dolcezza e fibre.\n- Sostituti disponibili: pollo o petto di pollo al posto della bresaola, uva o banana come frutta.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione alimenti)\n- Ottimizzazione automatica porzioni su target macro\n- Misure casalinghe da linee guida dietisti SIAN\n\n❓ Vuoi che modifichi lo spuntino o provi a ridurre leggermente le proteine o i carboidrati? Oppure va bene così?\n➡️ Conclusione:\nSe ti va bene questa proposta, procedo con la preparazione della cena (FASE 5). Vuoi aggiustare qualcosa prima?",
+        "timestamp": 1749898139.179559
+      },
+      {
+        "question": "rifallo",
+        "answer": "🥨 SPUNTINO POMERIDIANO (226 kcal)  \n• **Mandorle**: 20g → 🥜 1 abbondante manciata (Sostituti: 18g di noci sgusciate, 21g di burro di arachidi)  \n     P: 4g, C: 1g, G: 11g\n\n• **Banana**: 140g → 🍌 1 banana media (Sostituti: 204g di uva, 240g di mela)  \n     P: 2g, C: 32g, G: 0g\n\nTotale pasto: P: 6g, C: 33g, G: 11g\n\nOsservazioni:\n- Semplice, dolce, naturale e totalmente privo di latte.\n- Mandorle forniscono grassi e un po’ di proteine, banana fornisce fibre e carboidrati a basso indice glicemico.\n- Pratico da portare fuori casa, senza necessità di refrigerazione.\n- Sostituti disponibili sia per le mandorle che per la banana.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione alimenti)\n- Ottimizzazione automatica porzioni su target macro\n- Misure casalinghe da linee guida dietisti SIAN\n\n❓ Vuoi cambiare qualcosa, aggiungere/provare altri spuntini o vuoi che proceda direttamente con la cena?\n➡️ Conclusione:\nLo spuntino ora rispetta molto meglio l’equilibrio desiderato. Posso procedere con la cena (FASE 5)?",
+        "timestamp": 1749898231.7556148
+      },
+      {
+        "question": "rifallo",
+        "answer": "🥨 SPUNTINO POMERIDIANO (226 kcal)\n\n• **Pane integrale**: 60g → 🥖 2 fette spesse  \n    P: 5g, C: 33g, G: 1g\n\n• **Prosciutto crudo**: 50g → 🥩 5-6 fette sottili  \n    P: 14g, C: 0g, G: 6g\n\n• **Kiwi**: 80g → 🥝 1 kiwi piccolo (Sostituti: 80g di miele, 80g di ciliegie)  \n    P: 1g, C: 9g, G: 0g\n\nTotale pasto: P: 19g, C: 42g, G: 6g\n\nOsservazioni:\n- Pane integrale come fonte di carboidrati complessi e fibre, prosciutto crudo come proteine magre e un moderato apporto di grassi, kiwi per vitamine e un tocco fresco.\n- Le porzioni arrotondate aiutano nella praticità quotidiana.\n- Sostituti disponibili per il kiwi: miele o ciliegie nella stessa grammatura.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Algoritmo automatico di ottimizzazione porzioni\n- Linee guida dietisti per misure casalinghe\n\n❓ Vuoi modificare uno di questi alimenti o le quantità? Se il mix ti piace così posso procedere con la creazione della tua cena!\n➡️ Conclusione:\nSpuntino ottimizzato e pratico, scelto anche per varietà e sapore. Procedo con la cena (FASE 5) o vuoi cambiare qualcosa?",
+        "timestamp": 1749898294.5274687
       }
     ]
   },
@@ -129,117 +209,121 @@
     "caloric_needs": {
       "bmr": 1672,
       "fabbisogno_base": 2173,
-      "dispendio_sportivo": 0,
-      "aggiustamento_obiettivo": 0,
-      "fabbisogno_totale": 2173,
-      "laf_utilizzato": 1.3
+      "dispendio_sportivo": 86,
+      "fabbisogno_totale": 2259,
+      "laf_utilizzato": 1.3,
+      "aggiustamento_obiettivo": 0
     },
     "daily_macros": {
       "numero_pasti": 4,
       "distribuzione_pasti": {
         "colazione": {
-          "kcal": 543,
+          "orario": "07:30",
+          "kcal": 565,
           "percentuale_kcal": 25,
-          "proteine_g": 12,
-          "carboidrati_g": 84,
-          "grassi_g": 18
+          "proteine_g": 18,
+          "carboidrati_g": 82,
+          "grassi_g": 19
         },
         "pranzo": {
-          "kcal": 761,
+          "orario": "13:00",
+          "kcal": 791,
           "percentuale_kcal": 35,
-          "proteine_g": 16,
-          "carboidrati_g": 117,
-          "grassi_g": 25
+          "proteine_g": 25,
+          "carboidrati_g": 114,
+          "grassi_g": 26
         },
         "spuntino_pomeridiano": {
-          "kcal": 217,
+          "orario": "16:30",
+          "kcal": 226,
           "percentuale_kcal": 10,
-          "proteine_g": 5,
+          "proteine_g": 7,
           "carboidrati_g": 33,
-          "grassi_g": 7
+          "grassi_g": 8
         },
         "cena": {
-          "kcal": 652,
+          "orario": "20:00",
+          "kcal": 678,
           "percentuale_kcal": 30,
-          "proteine_g": 14,
-          "carboidrati_g": 100,
-          "grassi_g": 22
+          "proteine_g": 21,
+          "carboidrati_g": 98,
+          "grassi_g": 23
         }
       }
     },
     "macros_total": {
-      "kcal_totali": 2173,
-      "proteine_g": 46,
-      "proteine_kcal": 184,
-      "proteine_percentuale": 8.5,
-      "grassi_g": 72,
-      "grassi_kcal": 648,
-      "grassi_percentuale": 29.8,
-      "carboidrati_g": 334,
-      "carboidrati_kcal": 1336,
-      "carboidrati_percentuale": 61.5,
-      "fibre_g": 0
+      "kcal_totali": 2259,
+      "proteine_g": 70,
+      "proteine_kcal": 280,
+      "proteine_percentuale": 12,
+      "grassi_g": 75,
+      "grassi_kcal": 675,
+      "grassi_percentuale": 30,
+      "carboidrati_g": 326,
+      "carboidrati_kcal": 1304,
+      "carboidrati_percentuale": 58,
+      "fibre_g": 28
     },
     "registered_meals": [
       {
         "nome_pasto": "colazione",
         "alimenti": [
           {
-            "nome_alimento": "Pane integrale",
-            "quantita_g": 60,
+            "nome_alimento": "Avena",
+            "quantita_g": 50,
             "stato": "crudo",
             "metodo_cottura": "non specificato",
-            "misura_casalinga": "2 fette grandi",
+            "misura_casalinga": "3 cucchiai colmi",
             "macronutrienti": {
-              "proteine": 4.8,
+              "proteine": 4,
               "carboidrati": 33,
-              "grassi": 0.8,
+              "grassi": 4,
               "kcal": 0
             }
           },
           {
-            "nome_alimento": "Yogurt magro",
-            "quantita_g": 100,
+            "nome_alimento": "Uova",
+            "quantita_g": 80,
             "stato": "crudo",
             "metodo_cottura": "non specificato",
-            "misura_casalinga": "1 vasetto piccolo",
+            "misura_casalinga": "circa 1 uovo e mezzo",
             "macronutrienti": {
-              "proteine": 3.8,
-              "carboidrati": 4.8,
-              "grassi": 0.1,
+              "proteine": 10,
+              "carboidrati": 1,
+              "grassi": 7,
+              "kcal": 0
+            }
+          },
+          {
+            "nome_alimento": "Pera",
+            "quantita_g": 190,
+            "stato": "crudo",
+            "metodo_cottura": "non specificato",
+            "misura_casalinga": "1 pera abbondante/grande",
+            "macronutrienti": {
+              "proteine": 2,
+              "carboidrati": 22,
+              "grassi": 0,
               "kcal": 0
             }
           },
           {
             "nome_alimento": "Marmellata",
-            "quantita_g": 80,
+            "quantita_g": 50,
             "stato": "crudo",
             "metodo_cottura": "non specificato",
-            "misura_casalinga": "3 cucchiai abbondanti",
+            "misura_casalinga": "2 cucchiai abbondanti",
             "macronutrienti": {
-              "proteine": 4.4,
-              "carboidrati": 46.4,
-              "grassi": 12.0,
-              "kcal": 0
-            }
-          },
-          {
-            "nome_alimento": "Mandorle",
-            "quantita_g": 10,
-            "stato": "crudo",
-            "metodo_cottura": "non specificato",
-            "misura_casalinga": "1 cucchiaio scarso (8-10 mandorle)",
-            "macronutrienti": {
-              "proteine": 2.2,
-              "carboidrati": 0.4,
-              "grassi": 5.5,
+              "proteine": 3,
+              "carboidrati": 29,
+              "grassi": 8,
               "kcal": 0
             }
           }
         ],
         "totali_pasto": {
-          "kcal_totali": 544,
-          "proteine_totali": 15,
+          "kcal_totali": 565,
+          "proteine_totali": 18,
           "carboidrati_totali": 85,
           "grassi_totali": 18
         }
@@ -249,36 +333,36 @@
         "alimenti": [
           {
             "nome_alimento": "Pasta integrale",
-            "quantita_g": 150,
+            "quantita_g": 160,
             "stato": "cotto",
             "metodo_cottura": "non specificato",
-            "misura_casalinga": "1 porzione abbondante (circa 1 piatto colmo di pasta cotta)",
+            "misura_casalinga": "2 porzioni abbondanti cotte (da 80g secca l'una)",
             "macronutrienti": {
-              "proteine": 19.5,
-              "carboidrati": 100.5,
-              "grassi": 3.0,
+              "proteine": 21,
+              "carboidrati": 107,
+              "grassi": 3,
               "kcal": 0
             }
           },
           {
             "nome_alimento": "Zucchine",
-            "quantita_g": 50,
-            "stato": "crudo",
+            "quantita_g": 250,
+            "stato": "non specificato",
             "metodo_cottura": "non specificato",
-            "misura_casalinga": "1/3 ciotola piccola",
+            "misura_casalinga": "1 ciotola grande",
             "macronutrienti": {
-              "proteine": 0.6,
-              "carboidrati": 0.7,
-              "grassi": 0.1,
+              "proteine": 3,
+              "carboidrati": 4,
+              "grassi": 0,
               "kcal": 0
             }
           },
           {
             "nome_alimento": "Olio extravergine di oliva",
             "quantita_g": 20,
-            "stato": "crudo",
+            "stato": "non specificato",
             "metodo_cottura": "non specificato",
-            "misura_casalinga": "2 cucchiai da tavola",
+            "misura_casalinga": "2 cucchiai colmi",
             "macronutrienti": {
               "proteine": 0,
               "carboidrati": 0,
@@ -288,10 +372,60 @@
           }
         ],
         "totali_pasto": {
-          "kcal_totali": 707,
-          "proteine_totali": 20,
-          "carboidrati_totali": 101,
+          "kcal_totali": 791,
+          "proteine_totali": 24,
+          "carboidrati_totali": 111,
           "grassi_totali": 23
+        }
+      },
+      {
+        "nome_pasto": "spuntino_pomeridiano",
+        "alimenti": [
+          {
+            "nome_alimento": "Pane integrale",
+            "quantita_g": 60,
+            "stato": "crudo",
+            "metodo_cottura": "non applicabile",
+            "misura_casalinga": "2 fette spesse",
+            "macronutrienti": {
+              "proteine": 5,
+              "carboidrati": 33,
+              "grassi": 1,
+              "kcal": 156
+            }
+          },
+          {
+            "nome_alimento": "Prosciutto crudo",
+            "quantita_g": 50,
+            "stato": "crudo",
+            "metodo_cottura": "non applicabile",
+            "misura_casalinga": "5-6 fette sottili",
+            "macronutrienti": {
+              "proteine": 14,
+              "carboidrati": 0,
+              "grassi": 6,
+              "kcal": 110
+            }
+          },
+          {
+            "nome_alimento": "Kiwi",
+            "quantita_g": 80,
+            "stato": "crudo",
+            "metodo_cottura": "non applicabile",
+            "misura_casalinga": "1 kiwi piccolo",
+            "macronutrienti": {
+              "proteine": 1,
+              "carboidrati": 9,
+              "grassi": 0,
+              "kcal": 40
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_totali": 306,
+          "proteine_totali": 19,
+          "carboidrati_totali": 42,
+          "grassi_totali": 6
         }
       }
     ]

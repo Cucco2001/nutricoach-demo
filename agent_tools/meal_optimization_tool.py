@@ -468,15 +468,11 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
         - portions: dict con alimento -> grammi ottimizzati e arrotondati
         - target_nutrients: target nutrizionali del pasto
         - actual_nutrients: valori nutrizionali effettivi (calcolati sulle porzioni arrotondate)
-        - macro_single_foods: dict con il contributo nutrizionale di ogni alimento
-        - error_message: messaggio di errore se fallisce
+        - errors: dict con errori percentuali per ogni macronutriente
         - optimization_summary: messaggio di riepilogo delle modifiche apportate
-        - oil_added: bool se è stato aggiunto automaticamente l'olio
-        - fat_added: bool se sono state aggiunte mandorle per deficit di grassi
-        - fat_adjustment_food: alimento aggiunto per i grassi (es: "mandorle")
-        - protein_added/protein_removed: bool per aggiustamenti proteici
-        - carb_added/carb_substituted: bool per aggiustamenti dei carboidrati
-        - carb_substitution_type: tipo di sostituzione effettuata (es: "pasta→riso")
+        - macro_single_foods: dict con il contributo nutrizionale di ogni alimento
+        - substitutes: dict con i sostituti per ogni alimento e relative grammature
+        - error_message: messaggio di errore se fallisce (solo in caso di errore)
         
     Raises:
         ValueError: Se alimenti non sono nel database o dati utente mancanti
@@ -497,8 +493,10 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
                 "portions": {},
                 "target_nutrients": {},
                 "actual_nutrients": {},
-                "foods_not_found": foods_not_found,
-                "oil_added": False
+                "errors": {},
+                "optimization_summary": "",
+                "macro_single_foods": {},
+                "substitutes": {}
             }
         
         # 3. Estrai i dati nutrizionali degli alimenti originali
@@ -960,7 +958,10 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             else:
                 errors[f"{nutrient}_error_pct"] = 0.0
         
-        # 13. Prepara il messaggio di summary con tutte le ottimizzazioni
+        # 13. Calcola i sostituti per ogni alimento
+        food_substitutes = calculate_food_substitutes(optimized_portions_rounded)
+        
+        # 14. Prepara il messaggio di summary con tutte le ottimizzazioni
         summary_parts = [f"Ottimizzazione completata per {meal_name} con {len(final_food_list)} alimenti"]
         
         if oil_added:
@@ -989,20 +990,9 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             "target_nutrients": target_nutrients,
             "actual_nutrients": final_actual_nutrients_rounded,
             "errors": errors,
-            "meal_name": meal_name,
-            "foods_included": final_food_list,
-            "oil_added": oil_added,
-            "fat_added": fat_added,
-            "fat_adjustment_food": fat_adjustment_food,
-            "protein_added": protein_added,
-            "protein_removed": protein_removed,
-            "protein_adjustment_food": protein_adjustment_food,
-            "carb_added": carb_added,
-            "carb_substituted": carb_substituted,
-            "carb_adjustment_food": carb_adjustment_food,
-            "carb_substitution_type": carb_substitution_type,
             "optimization_summary": optimization_summary,
-            "macro_single_foods": individual_contributions
+            "macro_single_foods": individual_contributions,
+            "substitutes": food_substitutes
         }
         
     except Exception as e:
@@ -1013,9 +1003,94 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             "portions": {},
             "target_nutrients": {},
             "actual_nutrients": {},
-            "oil_added": False,
-            "fat_added": False
+            "errors": {},
+            "optimization_summary": "",
+            "macro_single_foods": {},
+            "substitutes": {}
         }
+
+
+def load_substitutes_data() -> Dict[str, Any]:
+    """
+    Carica i dati dei sostituti alimentari dal file alimenti_sostitutivi.json.
+    
+    Returns:
+        Dict contenente i dati dei sostituti
+        
+    Raises:
+        FileNotFoundError: Se il file non esiste
+        ValueError: Se il file non è un JSON valido
+    """
+    substitutes_file = "Dati_processed/alimenti_sostitutivi.json"
+    
+    if not os.path.exists(substitutes_file):
+        raise FileNotFoundError(f"File sostituti non trovato: {substitutes_file}")
+    
+    try:
+        with open(substitutes_file, 'r', encoding='utf-8') as f:
+            substitutes_data = json.load(f)
+        return substitutes_data
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Errore nella lettura del file sostituti: {str(e)}")
+
+
+def calculate_food_substitutes(optimized_portions: Dict[str, float]) -> Dict[str, Dict[str, Dict[str, float]]]:
+    """
+    Calcola i sostituti per ogni alimento con le grammature corrette.
+    
+    Args:
+        optimized_portions: Dizionario con alimento -> grammi ottimizzati
+        
+    Returns:
+        Dict con struttura: {
+            "alimento": {
+                "substitute1": {"grams": X, "similarity_score": Y},
+                "substitute2": {"grams": X, "similarity_score": Y}
+            }
+        }
+    """
+    try:
+        substitutes_data = load_substitutes_data()
+        substitutes_db = substitutes_data.get("substitutes", {})
+        
+        result = {}
+        
+        for food, portion_grams in optimized_portions.items():
+            food_substitutes = {}
+            
+            # Cerca i sostituti per questo alimento nel database
+            if food in substitutes_db:
+                available_substitutes = substitutes_db[food]
+                
+                # Ordina i sostituti per similarity_score (decrescente) e prendi i primi 2
+                sorted_substitutes = sorted(
+                    available_substitutes.items(),
+                    key=lambda x: x[1]['similarity_score'],
+                    reverse=True
+                )[:2]
+                
+                for substitute_name, substitute_data in sorted_substitutes:
+                    # Calcola i grammi del sostituto basati sulla porzione ottimizzata
+                    # La formula è: grammi_sostituto = (porzione_originale / 100) * grammi_equivalenti_per_100g
+                    substitute_grams = (portion_grams / 100.0) * substitute_data['grams']
+                    
+                    # Arrotonda i grammi del sostituto alla decina più vicina
+                    substitute_grams_rounded = float(10 * np.floor(substitute_grams / 10 + 0.5))
+                    
+                    food_substitutes[substitute_name] = {
+                        "grams": substitute_grams_rounded,
+                        "similarity_score": float(substitute_data['similarity_score'])
+                    }
+            
+            # Aggiungi i sostituti solo se ne abbiamo trovati
+            if food_substitutes:
+                result[food] = food_substitutes
+        
+        return result
+        
+    except Exception as e:
+        logger.warning(f"Errore nel calcolo dei sostituti: {str(e)}")
+        return {}
 
 
 
