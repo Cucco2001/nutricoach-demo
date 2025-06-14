@@ -477,7 +477,8 @@ def optimize_day_portions(day_meals: Dict[str, List[str]], user_id: str) -> Dict
                     "target_nutrients": optimization_result.get("target_nutrients", {}),
                     "actual_nutrients": optimization_result.get("actual_nutrients", {}),
                     "macro_single_foods": optimization_result.get("macro_single_foods", {}),
-                    "optimization_summary": optimization_result.get("optimization_summary", "")
+                    "optimization_summary": optimization_result.get("optimization_summary", ""),
+                    "substitutes": optimization_result.get("substitutes", {})
                 }
                 logger.info(f"Ottimizzato con successo {meal_name}")
             else:

@@ -189,6 +189,37 @@ class PDFGenerator:
         
         return cleaned_text if cleaned_text else 'N/A'
     
+    def _clean_sostituti(self, sostituti_text: str) -> str:
+        """
+        Rimuove tutto il contenuto tra parentesi dai sostituti alimentari.
+        
+        Args:
+            sostituti_text: Testo dei sostituti alimentari
+            
+        Returns:
+            Testo pulito senza contenuto tra parentesi
+            
+        Examples:
+            "100g di riso basmati (integrale), 90g di pasta (di grano duro)" → "100g di riso basmati, 90g di pasta"
+            "80g di pollo (petto), 70g di tacchino (fesa)" → "80g di pollo, 70g di tacchino"
+            "N/A" → "N/A"
+        """
+        if not sostituti_text or sostituti_text == 'N/A':
+            return sostituti_text
+        
+        import re
+        # Rimuove tutto il contenuto tra parentesi tonde, incluse le parentesi
+        # e gestisce gli spazi prima delle parentesi per evitare spazi doppi
+        cleaned_text = re.sub(r'\s*\([^)]*\)\s*', ' ', sostituti_text)
+        
+        # Rimuove spazi multipli e spazi all'inizio/fine
+        cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
+        
+        # Pulisce spazi prima delle virgole
+        cleaned_text = re.sub(r'\s+,', ',', cleaned_text)
+        
+        return cleaned_text if cleaned_text else 'N/A'
+    
     def generate_nutritional_plan_pdf(self, user_id: str, user_info: Dict[str, Any]) -> bytes:
         """
         Genera un PDF completo del piano nutrizionale.
@@ -767,7 +798,8 @@ class PDFGenerator:
                     quantita = alimento.get('quantita_g', 'N/A')
                     misura_raw = alimento.get('misura_casalinga', 'N/A')
                     misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
-                    sostituti = alimento.get('sostituti', 'N/A')
+                    sostituti_raw = alimento.get('sostituti', 'N/A')
+                    sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
                     ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
                 
                 if len(ingredients_data) > 1:
@@ -880,7 +912,8 @@ class PDFGenerator:
                 quantita = alimento.get('quantita_g', 'N/A')
                 misura_raw = alimento.get('misura_casalinga', 'N/A')
                 misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
-                sostituti = alimento.get('sostituti', 'N/A')
+                sostituti_raw = alimento.get('sostituti', 'N/A')
+                sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
                 ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
         
         elif isinstance(alimenti, dict):

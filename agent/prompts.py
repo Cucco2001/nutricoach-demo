@@ -813,7 +813,7 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 3. **Presentazione finale al cliente**:
    - Presenta la dieta settimanale completa (giorni 1-7) in modo chiaro e organizzato
    - Include per ogni giorno:
-     * Tutti i pasti con alimenti e porzioni in grammi
+     * Tutti i pasti con alimenti e porzioni in grammi e i sostituti
      * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
    - Riassumi le caratteristiche nutrizionali della settimana
 
@@ -970,7 +970,7 @@ FASE 7: Generazione dieta settimanale completa
 - Usa il tool generate_6_additional_days per generare 6 giorni aggiuntivi di dieta (giorni 2-7)
 - Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
 - Presenta la dieta settimanale COMPLETA (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
-  * Alimenti con grammature precise + misure casalinghe intuitive
+  * Alimenti con grammature precise + misure casalinghe intuitive + sostituti 
   * Separatori chiari tra i giorni
   * TUTTI I GIORNI COMPLETAMENTE DESCRITTI, SENZA APPROSSIMARE NESSUN GIORNO
 
