@@ -97,17 +97,7 @@
     "fibra_g": 1.2,
     "nova_group": 1,
     "categoria": "verdure"
-  },
-  "olio_oliva": {
-    "energia_kcal": 899,
-    "proteine_g": 0.0,
-    "carboidrati_g": 0.0,
-    "zuccheri_g": 0.0,
-    "grassi_g": 99.9,
-    "grassi_saturi_g": 14.5,
-    "fibra_g": 0.0,
-    "nova_group": 2,
-    "categoria": "grassi_aggiunti"
+ 
     },
   "olio_oliva": {
     "energia_kcal": 899,
@@ -152,6 +142,17 @@
     "fibra_g": 3.8,
     "nova_group": 3,
     "categoria": "cereali"
+      },
+  "pane_integrale": {
+    "energia_kcal": 224,
+    "proteine_g": 8.5,
+    "carboidrati_g": 44.1,
+    "zuccheri_g": 2.0,
+    "grassi_g": 1.3,
+    "grassi_saturi_g": 0.3,
+    "fibra_g": 6.5,
+    "nova_group": 3,
+    "categoria": "cereali"
   },
   "mela": {
     "energia_kcal": 46,
@@ -193,6 +194,28 @@
     "zuccheri_g": 0,
     "grassi_g": 29.7,
     "grassi_saturi_g": 15,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "formaggi"
+      },
+  "pecorino": {
+    "energia_kcal": 404,
+    "proteine_g": 28.8,
+    "carboidrati_g": 0.2,
+    "zuccheri_g": 0.2,
+    "grassi_g": 32.0,
+    "grassi_saturi_g": 15,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "formaggi"
+          },
+  "asiago": {
+    "energia_kcal": 381,
+    "proteine_g": 22.0,
+    "carboidrati_g": 1.3,
+    "zuccheri_g": 0.0,
+    "grassi_g": 32.0,
+    "grassi_saturi_g": 23,
     "fibra_g": 0.0,
     "nova_group": 1,
     "categoria": "formaggi"
@@ -261,7 +284,7 @@
     "grassi_saturi_g": 0.0,
     "fibra_g": 0.0,
     "nova_group": 2,
-    "categoria": "dolci"
+    "categoria": "frutta"
   },
   "cioccolato_fondente": {
     "energia_kcal": 531,
@@ -272,7 +295,7 @@
     "grassi_saturi_g": 21.7,
     "fibra_g": 8.0,
     "nova_group": 4,
-    "categoria": "dolci"
+    "categoria": "grassi_aggiunti"
   },
   "lenticchie": {
     "energia_kcal": 319,
@@ -371,6 +394,17 @@
     "grassi_g": 10.9,
     "grassi_saturi_g": 8.3,
     "fibra_g": 0.0,
+    "nova_group": 3,
+    "categoria": "formaggi"
+      },
+  "fiocchi_latte": {
+    "energia_kcal": 100,
+    "proteine_g": 10.0,
+    "carboidrati_g": 3.5,
+    "zuccheri_g": 3.4,
+    "grassi_g": 4.5,
+    "grassi_saturi_g": 3.3,
+    "fibra_g": 0.2,
     "nova_group": 3,
     "categoria": "formaggi"
   },
@@ -625,7 +659,7 @@
     "grassi_saturi_g": 0.01,
     "fibra_g": 0.0,
     "nova_group": 1,
-    "categoria": "dolci"
+    "categoria": "creme_spalmabili"
   },
   "kiwi": {
     "energia_kcal": 48,
@@ -669,7 +703,7 @@
     "grassi_saturi_g": 0.0,
     "fibra_g": 2.2,
     "nova_group": 4,
-    "categoria": "dolci"
+    "categoria": "creme_spalmabili"
       },
   "marmellata_hero_light": {
     "energia_kcal": 48,
@@ -680,7 +714,7 @@
     "grassi_saturi_g": 0.0,
     "fibra_g": 2.0,
     "nova_group": 4,
-    "categoria": "dolci"
+    "categoria": "creme_spalmabili"
   },
   "cracker_integrali": {
     "energia_kcal": 402,
@@ -737,17 +771,6 @@
     "nova_group": 2,
     "categoria": "grassi_aggiunti"
   },
-  "margarina": {
-    "energia_kcal": 760,
-    "proteine_g": 0.6,
-    "carboidrati_g": 0.4,
-    "zuccheri_g": 0.4,
-    "grassi_g": 84.0,
-    "grassi_saturi_g": 20.0,
-    "fibra_g": 0.0,
-    "nova_group": 4,
-    "categoria": "grassi_aggiunti"
-  },
   "yogurt_greco_0percento": {
     "energia_kcal": 51,
     "proteine_g": 9.0,
@@ -789,6 +812,17 @@
     "grassi_g": 7.5,
     "grassi_saturi_g": 1.5,
     "fibra_g": 8.3,
+    "nova_group": 4,
+    "categoria": "cereali_colazione"
+     },
+  "muesli": {
+    "energia_kcal": 374,
+    "proteine_g": 9.7,
+    "carboidrati_g": 71.7,
+    "zuccheri_g": 26.2,
+    "grassi_g": 6.0,
+    "grassi_saturi_g": 0.6,
+    "fibra_g": 6.4,
     "nova_group": 4,
     "categoria": "cereali_colazione"
   },

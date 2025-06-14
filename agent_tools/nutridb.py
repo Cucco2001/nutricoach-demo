@@ -118,12 +118,11 @@ class NutriDB:
             "fiocchi di riso": "riso",
             "fiocchi di avena": "avena",
             "fiocchi d'avena": "avena",
-            "granola": "avena", ##########################
-            "pecorino": "parmigiano_reggiano",   ##########################
+            "granola": "muesli",
             "parmigiano reggiano": "parmigiano_reggiano",
             "parmigiano": "parmigiano_reggiano",    
             "formaggio parmigiano": "parmigiano_reggiano",
-            "formaggio": "parmigiano_reggiano",  ###############
+            "formaggio": "asiago",  
             "mozzarella di bufala": "mozzarella",
             "integrale riso": "riso_integrale",     
             "pasta": "pasta_secca",
@@ -139,7 +138,6 @@ class NutriDB:
             "tonno sgocciolato": "tonno_sottolio_sgocciolato",
             "tonno sottolio": "tonno_sottolio_sgocciolato",
             "tonno sott'olio": "tonno_sottolio_sgocciolato",
-            "marmellata": "ciliegie",   ##########
             "marmellata di ciliegie": "ciliegie",   #############  
             "marmellata_senza_zucchero": "ciliegie",  ##########################
             "tonno fresco": "tonno_naturale",      ##################
@@ -153,6 +151,7 @@ class NutriDB:
             "proteine del siero del latte": "iso_fuji_yamamoto",
             "proteine del latte": "iso_fuji_yamamoto",
             "proteine del latte di mandorle": "iso_fuji_yamamoto",
+            "gelato": "gelato_cioccolato",
             "iso": "iso_fuji_yamamoto",
             "pro milk 20g": "pro_milk_20g_proteine",
             "pro milk": "pro_milk_20g_proteine",  
@@ -174,18 +173,24 @@ class NutriDB:
             "latte": "latte_intero",
             "latte parzialmente scremato": "latte_scremato",
             "latte intero": "latte_intero",
-            "crostata di marmellata": "crostata_di_marmellata", #####################
-            "crostata marmellata": "crostata_di_marmellata",   ##############
-            "crostata": "crostata_di_marmellata",     ################
-            "marmellata": "crostata_di_marmellata",   #################
-            "pera": "ciliegie",        ############
-            "crostata alla marmellata": "crostata_di_marmellata",     ############
+            "crostata di marmellata": "marmellata",
+            "crostata alla marmellata": "marmellata",
+            "crostata marmellata": "marmellata",   
+            "crostata": "marmellata",     
+            "marmellata senza zucchero": "marmellata_hero_light",
+            "marmellata senza zuccheri": "marmellata_hero_light",
+            "marmellata zero zuccheri": "marmellata_hero_light",
+            "marmellata senza zuccheri aggiunti": "marmellata_hero_light",
+            "pera": "pere",       
+            "ciliegia": "ciliegie"
             "noci sgusciate": "noci_sgusciate",
             "noci": "noci_sgusciate",
             "mandorle tostate": "mandorle",
-            "frutti di bosco": "frutti_di_bosco",
+            "frutti di bosco": "lamponi",
             "carota": "carote",
             "uovo": "uova",
+            "uova strapazzate": "uova",
+            "uovo strapazzato": "uova",
             "albume uova": "albume_uova",
             "albume": "albume_uova",
             "albume d'uovo": "albume_uova",
@@ -211,8 +216,10 @@ class NutriDB:
             "olio extravergine di oliva": "olio_oliva",
             "olio d'oliva": "olio_oliva",
             "olio di semi": "olio_oliva",
+            "olive nere": "olive_verdi",
+            "olive": "olive_verdi"
             "pane": "pane_bianco",
-            "pane integrale": "pane_bianco",      ##############
+            "pane ai cereali": "pane integrale",   
             "pane bianco": "pane_bianco",
             "pane al latte": "pane_bianco",
             "pan bauletto": "pane_bianco",
@@ -235,7 +242,7 @@ class NutriDB:
             "crackers integrali": "cracker",
             "crackers": "cracker",
             "grana": "grana_padano",  
-            "fiocchi di latte": "latte_scremato",
+            "fiocchi di latte": "fiocchi_latte",
             "frutta mista": "frutti_di_bosco",
             "hamburger_manzo": "carne_manzo",   
             "hamburger": "carne_manzo",
@@ -251,7 +258,6 @@ class NutriDB:
             "petto di tacchino": "pollo_petto",       #############
             "basilico": "verdure_miste",
             "scaglie di parmigiano": "parmigiano_reggiano",
-            "avocado": "olio_oliva",         #####################
             "gnocchi": "pasta_secca"        ################
         })
         

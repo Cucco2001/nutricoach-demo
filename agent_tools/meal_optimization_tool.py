@@ -298,6 +298,7 @@ def get_portion_constraints():
         "frutta": {"min": 80, "max": 300},
         "frutta_secca": {"min": 5, "max": 40},
         "grassi_aggiunti": {"min": 5, "max": 30},
+        "creme_spalmabili": {"min": 10, "max": 40}
         "uova": {"min": 60, "max": 200},  # ~1-2 uova
         "dolci": {"min": 10, "max": 80},   # Porzioni piccole per dolci
         "integratori": {"min": 10, "max": 50},  # Maggiore flessibilità per integratori        
