@@ -19,19 +19,19 @@
       "spuntino_mattutino": ["pera", "noci_sgusciate"],
       "pranzo": ["pasta_integrale", "tonno", "pomodorini", "olio_oliva"],
       "spuntino_pomeridiano": ["prosciutto crudo", "grissini"],
-      "cena": ["bistecca_manzo", "patate_lesse", "insalata_mista"]
+      "cena": ["hamburger_manzo", "patate_lesse", "insalata_mista"]
     },
     "giorno_5": {
       "colazione": ["pane_integrale", "burro_arachidi", "marmellata_senza_zucchero"],
       "spuntino_mattutino": ["proteine_polvere", "latte_mandorla"],
       "pranzo": ["riso_basmati", "gamberi", "zucchine", "olio_oliva"],
       "spuntino_pomeridiano": ["pane_integrale", "fesa_tacchino"],
-      "cena": ["petto_tacchino", "carote", "piselli", "olio_oliva"]
+      "cena": ["petto_pollo", "carote", "piselli", "olio_oliva"]
     },
     "giorno_6": {
       "colazione": ["uova", "pane_integrale"],
       "spuntino_mattutino": ["banana", "mandorle"],
-      "pranzo": ["pasta_integrale", "funghi", "parmigiano", "carne_manzo"],
+      "pranzo": ["pasta_integrale", "funghi", "parmigiano", "hamburger_pollo"],
       "spuntino_pomeridiano": ["shake_proteico", "mela"],
       "cena": ["spigola", "riso_integrale", "broccoli"]
     },
@@ -40,21 +40,21 @@
       "spuntino_mattutino": ["parmigiano", "crackers_integrali"],
       "pranzo": ["gnocchi", "ragù_magro_manzo", "grana"],
       "spuntino_pomeridiano": ["fiocchi_latte", "frutta_mista"],
-      "cena": ["hamburger_manzo", "pane_integrale", "insalata"]
+      "cena": ["bistecca_manzo", "pane_integrale", "insalata"]
     }
   },
   "predefined_days_no_pro": {
     "giorno_2": {
       "colazione": ["pane_integrale", "burro_arachidi", "marmellata"],
       "spuntino_mattutino": ["yogurt_greco", "mirtilli", "noci"],
-      "pranzo": ["riso_basmati", "pollo_petto", "zucchine", "olio_oliva"],
+      "pranzo": ["riso_basmati", "gamberi", "zucchine", "olio_oliva"],
       "spuntino_pomeridiano": ["grissini", "parmigiano"],
-      "cena": ["salmone", "patate_dolci", "broccoli"]
+      "cena": ["petto di tacchino", "patate", "fagiolini", "olio_oliva"]
     },
     "giorno_3": {
       "colazione": ["pane_integrale", "burro_arachidi", "marmellata"],
       "spuntino_mattutino": ["crackers_integrali", "prosciutto"],
-      "pranzo": ["pasta_integrale", "pomodorini", "basilico", "olio_oliva"],
+      "pranzo": ["pasta_integrale", "pomodorini", "olio_oliva"],
       "spuntino_pomeridiano": ["mela", "mandorle"],
       "cena": ["pesce_spada", "pane_bianco", "asparagi", "olio_oliva"]
     },
@@ -63,28 +63,28 @@
       "spuntino_mattutino": ["yogurt_naturale", "avena"],
       "pranzo": ["farro", "lenticchie", "carote", "sedano", "avocado"],
       "spuntino_pomeridiano": ["pan bauletto", "fesa di tacchino"],
-      "cena": ["orata", "riso_integrale", "spinaci", "olio_oliva"]
+      "cena": ["bistecca_manzo", "insalata_mista", "pane_bianco"]
     },
     "giorno_5": {
-      "colazione": ["cornflakes", "latte_scremato", "kiwi", "mandorle"],
-      "spuntino_mattutino": ["pera", "noci sgusciate"],
-      "pranzo": ["riso_basmati", "gamberi", "zucchine", "olio_oliva"],
-      "spuntino_pomeridiano": ["banana", "burro_arachidi"],
-      "cena": ["petto di tacchino", "patate", "fagiolini", "olio_oliva"]
-    },
-    "giorno_6": {
       "colazione": ["uova", "pane_integrale"],
       "spuntino_mattutino": ["banana", "noci sgusciate"],
       "pranzo": ["pasta", "funghi", "parmigiano", "olio_oliva"],
       "spuntino_pomeridiano": ["pane_bianco", "bresaola"],
       "cena": ["merluzzo", "riso_integrale", "melanzane", "olio_oliva"]
     },
+    "giorno_6": {
+      "colazione": ["cornflakes", "latte_scremato", "kiwi", "mandorle"],
+      "spuntino_mattutino": ["pera", "noci sgusciate"],
+      "pranzo": ["riso_basmati", "pollo_petto", "zucchine", "olio_oliva"],
+      "spuntino_pomeridiano": ["banana", "burro_arachidi"],
+      "cena": ["piselli", "pasta_secca", "prosciutto_crudo"]
+    },
     "giorno_7": {
       "colazione": ["uova", "pane_integrale"],
       "spuntino_mattutino": ["parmigiano", "pane_bianco"],
-      "pranzo": ["gnocchi", "pomodoro", "basilico", "mozzarella"],
+      "pranzo": ["gnocchi", "pomodoro", "mozzarella"],
       "spuntino_pomeridiano": ["macedonia", "mandorle"],
-      "cena": ["bistecca_manzo", "insalata_mista", "pane_bianco"]
+      "cena": ["orata", "riso_integrale", "spinaci", "olio_oliva"]
     }
   },
   "description": "6 giorni di dieta predefiniti per la generazione automatica della settimana",

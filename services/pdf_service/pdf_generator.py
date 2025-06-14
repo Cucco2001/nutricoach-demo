@@ -752,7 +752,7 @@ class PDFGenerator:
                         col_widths = [2.7*inch, 1.2*inch, 2.7*inch]  # Standard
                         header_font = 11  # Aumentato da 8 a 9
                         content_font = 10  # Aumentato da 7 a 8
-                        padding = 5
+                        padding = 4
                     
                     ingredients_table = Table(ingredients_data, colWidths=col_widths)
                     ingredients_table.setStyle(TableStyle([
@@ -870,7 +870,7 @@ class PDFGenerator:
                 col_widths = [2.7*inch, 1.2*inch, 2.7*inch]  # Standard
                 header_font = 11  # Aumentato da 8 a 9
                 content_font = 10  # Aumentato da 7 a 8
-                padding = 5
+                padding = 4
             
             ingredients_table = Table(ingredients_data, colWidths=col_widths)
             ingredients_table.setStyle(TableStyle([
@@ -1061,12 +1061,13 @@ class PDFGenerator:
         # Sezione Basi Scientifiche
         story.append(Paragraph("🔬 Basi Scientifiche e Metodologie", self.styles['CustomSubTitle']))
         scientific_notes = [
-            "• <b>Fabbisogno energetico:</b> Calcolato secondo l'equazione di Harris-Benedict validata da studi internazionali.",
-            "• <b>Dispendio sportivo:</b> Basato su ricerche dell'International Centre for Sport Studies (ICSS).",
-            "• <b>Fabbisogno proteico:</b> Determinato secondo le linee guida Project Invictus e letteratura scientifica specifica.",
-            "• <b>Distribuzione macronutrienti:</b> Conforme ai LARN (Livelli di Assunzione di Riferimento di Nutrienti) italiani.",
-            "• <b>Valutazione ultraprocessati:</b> Classificazione secondo il sistema NOVA dell'Università di San Paolo.",
-            "• <b>Database nutrizionale:</b> Valori CREA (Consiglio per la ricerca in agricoltura) - tabelle ufficiali italiane."
+            "• <b>Calcolo BMI:</b> Segue la definizione dell'Organizzazione Mondiale della Sanità (WHO, 2000). Per un'analisi più completa, Nutricoach integra anche valutazioni di composizione corporea, come raccomandato da NIH (1998) e Kyle et al. (2003).",
+            "• <b>Dispendio energetico attività fisica:</b> Il calcolo si basa sui valori MET (Metabolic Equivalent of Task) standardizzati dal Compendium of Physical Activities (Ainsworth et al., 2011; aggiornamenti successivi).",
+            "• <b>Fabbisogno energetico:</b> Calcolato utilizzando la formula di Harris e Benedict, una delle equazioni più consolidate e validate nella letteratura scientifica per la stima del dispendio energetico a riposo.",
+            "• <b>Fabbisogno proteico:</b> Determinato in base al tipo di attività fisica svolta, all'intensità degli allenamenti e alla presenza di regimi alimentari particolari (es. dieta vegana). I valori di riferimento sono in linea con quanto riportato nella letteratura scientifica internazionale (Phillips et al., 2011; Thomas et al., 2016) e con il lavoro di sintesi divulgativa condotto dal team Project Invictus.",
+            "• <b>Fabbisogno lipidico, carboidrati e fibre:</b> Il calcolo giornaliero si basa sui valori di riferimento indicati dai LARN (Livelli di Assunzione di Riferimento di Nutrienti ed energia per la popolazione italiana), elaborati dalla Società Italiana di Nutrizione Umana (SINU).",
+            "• <b>Valutazione ultraprocessati:</b> Per il check degli alimenti ultraprocessati la fonte è lo studio NOVA dell'Università di San Paolo.",
+            "• <b>Database nutrizionale:</b> I dati nutrizionali degli alimenti provengono dalla Banca Dati CREA, la fonte ufficiale italiana per la composizione degli alimenti."
         ]
         
         for note in scientific_notes:

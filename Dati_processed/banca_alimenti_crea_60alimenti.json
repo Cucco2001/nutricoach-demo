@@ -889,5 +889,16 @@
     "fibra_g": 0.0,
     "nova_group": 3,
     "categoria": "proteine_animali"
+  },
+  "insalata": {
+    "energia_kcal": 125,
+    "proteine_g": 0.0,
+    "carboidrati_g": 5.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 0.0,
+    "grassi_saturi_g": 2.0,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "insalata"
   }
 }

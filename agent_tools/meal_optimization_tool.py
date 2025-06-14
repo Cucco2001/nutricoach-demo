@@ -284,23 +284,23 @@ def get_portion_constraints():
     """
     return {
         # CATEGORIE PRINCIPALI DALLA BANCA ALIMENTI
-        "proteine_animali": {"min": 50, "max": 300},
+        "proteine_animali": {"min": 100, "max": 300},
         "latte": {"min": 100, "max": 500},
         "affettati": {"min": 50, "max": 150},
         "formaggi": {"min": 30, "max": 300},
         "latticini": {"min": 100, "max": 300},  # Per yogurt e altri latticini
-        "cereali": {"min": 60, "max": 150},
+        "cereali": {"min": 60, "max": 170},
         "cereali_colazione": {"min": 20, "max": 60},
-        "tuberi": {"min": 80, "max": 500},  # Aumentato max per patate
+        "tuberi": {"min": 100, "max": 500},  # Aumentato max per patate
         "legumi": {"min": 40, "max": 200},
-        "verdure": {"min": 50, "max": 400},
+        "verdure": {"min": 100, "max": 400},
+        "insalata": {"min": 50, "max": 150},
         "frutta": {"min": 80, "max": 300},
-        "frutta_secca": {"min": 5, "max": 50},
+        "frutta_secca": {"min": 5, "max": 40},
         "grassi_aggiunti": {"min": 5, "max": 30},
-        "uova": {"min": 50, "max": 200},  # ~1-2 uova
+        "uova": {"min": 60, "max": 200},  # ~1-2 uova
         "dolci": {"min": 10, "max": 80},   # Porzioni piccole per dolci
-        "integratori": {"min": 10, "max": 50},  # Maggiore flessibilità per integratori
-        
+        "integratori": {"min": 10, "max": 50},  # Maggiore flessibilità per integratori        
         # CATEGORIA FALLBACK
         "alimento_misto": {"min": 10, "max": 200}
     }
