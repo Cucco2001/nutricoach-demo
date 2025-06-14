@@ -1058,9 +1058,15 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float]) -> Dict[str
         for food, portion_grams in optimized_portions.items():
             food_substitutes = {}
             
-            # Cerca i sostituti per questo alimento nel database
-            if food in substitutes_db:
-                available_substitutes = substitutes_db[food]
+            # Usa la mappatura degli alias dal database per trovare il nome principale
+            # Normalizza il nome dell'alimento usando la stessa logica di NutriDB
+            normalized_food_name = db.alias.get(food.lower().replace("_", " "))
+            if not normalized_food_name:
+                normalized_food_name = food
+            
+            # Cerca i sostituti usando il nome principale mappato
+            if normalized_food_name in substitutes_db:
+                available_substitutes = substitutes_db[normalized_food_name]
                 
                 # Ordina i sostituti per similarity_score (decrescente) e prendi i primi 2
                 sorted_substitutes = sorted(
