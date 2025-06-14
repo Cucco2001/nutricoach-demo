@@ -193,6 +193,7 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
                     "stato": "crudo/cotto",
                     "metodo_cottura": "se_applicabile",
                     "misura_casalinga": "equivalenza_descrittiva_es_2_uova_1_tazza",
+                    "sostituti": "100g di riso basmati, 90g di pasta integrale",
                     "macronutrienti": {
                         "proteine": numero,
                         "carboidrati": numero, 
@@ -212,7 +213,7 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
     "weekly_diet": {
         "giorno_2": {
             "colazione": {
-                "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga}
+                "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga, "sostituti": "100g di riso basmati, 90g di pasta integrale"}
             },
             "pranzo": {"...simile..."},
             "cena": {"...simile..."},
@@ -229,7 +230,7 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
         "day": "giorno_X",
         "meal": "nome_pasto",
         "data": {
-            "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga}
+            "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga, "sostituti": "100g di riso basmati, 90g di pasta integrale"}
         }
     }
 }
@@ -269,7 +270,7 @@ IMPORTANTE PER I TIPI DI PASTO:
 IMPORTANTE PER LA DIETA SETTIMANALE:
 - Se nella conversazione è presente una dieta settimanale completa (giorni 2-7), estrai TUTTI i dati
 - La sezione "weekly_diet" deve contenere SOLO i giorni 2-7 (il giorno 1 è già nei "registered_meals")
-- Per ogni giorno, estrai tutti i pasti con i loro alimenti e grammature
+- Per ogni giorno, estrai tutti i pasti con i loro alimenti e grammature con sostituti se specificati nella conversazione
 - Se ci sono informazioni sui target nutrizionali e valori effettivi, includili
 - Se l'agente ha fornito dettagli sui macronutrienti per pasto, estraili accuratamente
 - Cerca pattern come "GIORNO 2:", "GIORNO 3:", etc. nella conversazione
@@ -277,7 +278,7 @@ IMPORTANTE PER LA DIETA SETTIMANALE:
 
 ESEMPI DI ESTRAZIONE DIETA SETTIMANALE:
 - "GIORNO 2 - Colazione: Avena 45g, Banana 120g" → 
-  "giorno_2": {"colazione": {"alimenti": [{"nome_alimento": "Avena", "quantita_g": 45, "misura_casalinga": "due pugni di avena"}, {"nome_alimento": "Banana", "quantita_g": 120, "misura_casalinga": ""1 banana piccola}]}}
+  "giorno_2": {"colazione": {"alimenti": [{"nome_alimento": "Avena", "quantita_g": 45, "misura_casalinga": "due pugni di avena", "sostituti": "50g di fiocchi di cereali, 40g di muesli"}, {"nome_alimento": "Banana", "quantita_g": 120, "misura_casalinga": "1 banana piccola", "sostituti": "150g di mela, 100g di pera"}]}}
 - "Target: 400 kcal, 15g proteine" → 
   "target_nutrients": {"kcal": 400, "proteine": 15}
 
@@ -288,7 +289,7 @@ MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
     "day": "giorno_2",
     "meal": "pranzo", 
     "data": {
-      "alimenti": [{"nome_alimento": "Petto di tacchino", "quantita_g": 90, "misura_casalinga": "1 filetto medio"}, {"nome_alimento": "Riso integrale", "quantita_g": 100, "misura_casalinga": "1 porzione media"}, {"nome_alimento": "Lenticchie", "quantita_g": 90, "misura_casalinga": "1 ciotola"}, {"nome_alimento": "Carote", "quantita_g": 150, "misura_casalinga": "1 ciotola"}, {"nome_alimento": "Olio extravergine di oliva", "quantita_g": 20, "misura_casalinga": "1 cucchiaio"}]
+      "alimenti": [{"nome_alimento": "Petto di tacchino", "quantita_g": 90, "misura_casalinga": "1 filetto medio", "sostituti": "100g di petto di pollo, 80g di bresaola"}, {"nome_alimento": "Riso integrale", "quantita_g": 100, "misura_casalinga": "1 porzione media", "sostituti": "120g di quinoa, 90g di farro"}, {"nome_alimento": "Lenticchie", "quantita_g": 90, "misura_casalinga": "1 ciotola", "sostituti": "100g di ceci, 80g di fagioli"}, {"nome_alimento": "Carote", "quantita_g": 150, "misura_casalinga": "1 ciotola", "sostituti": "200g di zucchine, 180g di peperoni"}, {"nome_alimento": "Olio extravergine di oliva", "quantita_g": 20, "misura_casalinga": "1 cucchiaio", "sostituti": "25g di olio di semi, 20g di burro"}]
     }
   }
 - Non usare "weekly_diet_partial" per diete settimanali complete
