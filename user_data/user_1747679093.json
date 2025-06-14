@@ -109,6 +109,16 @@
       "role": "assistant",
       "content": "🥨 SPUNTINO POMERIDIANO (226 kcal)\n\n• **Pane integrale**: 60g → 🥖 2 fette spesse  \n    P: 5g, C: 33g, G: 1g\n\n• **Prosciutto crudo**: 50g → 🥩 5-6 fette sottili  \n    P: 14g, C: 0g, G: 6g\n\n• **Kiwi**: 80g → 🥝 1 kiwi piccolo (Sostituti: 80g di miele, 80g di ciliegie)  \n    P: 1g, C: 9g, G: 0g\n\nTotale pasto: P: 19g, C: 42g, G: 6g\n\nOsservazioni:\n- Pane integrale come fonte di carboidrati complessi e fibre, prosciutto crudo come proteine magre e un moderato apporto di grassi, kiwi per vitamine e un tocco fresco.\n- Le porzioni arrotondate aiutano nella praticità quotidiana.\n- Sostituti disponibili per il kiwi: miele o ciliegie nella stessa grammatura.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Algoritmo automatico di ottimizzazione porzioni\n- Linee guida dietisti per misure casalinghe\n\n❓ Vuoi modificare uno di questi alimenti o le quantità? Se il mix ti piace così posso procedere con la creazione della tua cena!\n➡️ Conclusione:\nSpuntino ottimizzato e pratico, scelto anche per varietà e sapore. Procedo con la cena (FASE 5) o vuoi cambiare qualcosa?",
       "timestamp": 1749898294.5141783
+    },
+    {
+      "role": "user",
+      "content": "Procedi",
+      "timestamp": 1749900031.7158995
+    },
+    {
+      "role": "assistant",
+      "content": "🌙 CENA (678 kcal)\n\n• **Riso basmati**: 90g → 🍚 1 tazza cotto (Sostituti: 90g di riso integrale, 120g di pane bianco)  \n  P: 6g, C: 72g, G: 1g\n\n• **Petto di pollo**: 100g → 🍗 1 fetta media (Sostituti: 100g di tonno naturale, 90g di pesce spada)  \n  P: 23g, C: 0g, G: 1g\n\n• **Carote**: 100g → 🥕 2 carote medie (Sostituti: 160g di melanzane, 230g di pomodoro)  \n  P: 1g, C: 10g, G: 0g\n\n• **Olio extravergine di oliva**: 20g → 🫒 2 cucchiai  \n  P: 0g, C: 0g, G: 20g\n\nTotale pasto: P: 30g, C: 82g, G: 22g\n\nOsservazioni:\n- Pasto completo e bilanciato con quota proteica robusta, cereali, verdura e grassi sani.\n- Sostituti proposti sia per fonte proteica che per il contorno e per la base carbo.\n- Nessuna presenza di latte o derivati.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Algoritmo automatico di ottimizzazione porzioni\n- Linee guida dietisti per misure casalinghe\n\n❓ Vuoi modificare la composizione di questa cena o vuoi suggerimenti su altre verdure/proteine/grassi? Posso anche proporre varianti in base ai sostituti elencati.\n➡️ Conclusione:\nSe la cena va bene, passerò al controllo totale della giornata rispetto agli alimenti ultraprocessati (FASE 6). Vuoi modificare qualcosa prima di andare avanti?",
+      "timestamp": 1749900058.4209487
     }
   ],
   "nutritional_info": {
@@ -202,6 +212,11 @@
         "question": "rifallo",
         "answer": "🥨 SPUNTINO POMERIDIANO (226 kcal)\n\n• **Pane integrale**: 60g → 🥖 2 fette spesse  \n    P: 5g, C: 33g, G: 1g\n\n• **Prosciutto crudo**: 50g → 🥩 5-6 fette sottili  \n    P: 14g, C: 0g, G: 6g\n\n• **Kiwi**: 80g → 🥝 1 kiwi piccolo (Sostituti: 80g di miele, 80g di ciliegie)  \n    P: 1g, C: 9g, G: 0g\n\nTotale pasto: P: 19g, C: 42g, G: 6g\n\nOsservazioni:\n- Pane integrale come fonte di carboidrati complessi e fibre, prosciutto crudo come proteine magre e un moderato apporto di grassi, kiwi per vitamine e un tocco fresco.\n- Le porzioni arrotondate aiutano nella praticità quotidiana.\n- Sostituti disponibili per il kiwi: miele o ciliegie nella stessa grammatura.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Algoritmo automatico di ottimizzazione porzioni\n- Linee guida dietisti per misure casalinghe\n\n❓ Vuoi modificare uno di questi alimenti o le quantità? Se il mix ti piace così posso procedere con la creazione della tua cena!\n➡️ Conclusione:\nSpuntino ottimizzato e pratico, scelto anche per varietà e sapore. Procedo con la cena (FASE 5) o vuoi cambiare qualcosa?",
         "timestamp": 1749898294.5274687
+      },
+      {
+        "question": "Procedi",
+        "answer": "🌙 CENA (678 kcal)\n\n• **Riso basmati**: 90g → 🍚 1 tazza cotto (Sostituti: 90g di riso integrale, 120g di pane bianco)  \n  P: 6g, C: 72g, G: 1g\n\n• **Petto di pollo**: 100g → 🍗 1 fetta media (Sostituti: 100g di tonno naturale, 90g di pesce spada)  \n  P: 23g, C: 0g, G: 1g\n\n• **Carote**: 100g → 🥕 2 carote medie (Sostituti: 160g di melanzane, 230g di pomodoro)  \n  P: 1g, C: 10g, G: 0g\n\n• **Olio extravergine di oliva**: 20g → 🫒 2 cucchiai  \n  P: 0g, C: 0g, G: 20g\n\nTotale pasto: P: 30g, C: 82g, G: 22g\n\nOsservazioni:\n- Pasto completo e bilanciato con quota proteica robusta, cereali, verdura e grassi sani.\n- Sostituti proposti sia per fonte proteica che per il contorno e per la base carbo.\n- Nessuna presenza di latte o derivati.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (composizione degli alimenti)\n- Algoritmo automatico di ottimizzazione porzioni\n- Linee guida dietisti per misure casalinghe\n\n❓ Vuoi modificare la composizione di questa cena o vuoi suggerimenti su altre verdure/proteine/grassi? Posso anche proporre varianti in base ai sostituti elencati.\n➡️ Conclusione:\nSe la cena va bene, passerò al controllo totale della giornata rispetto agli alimenti ultraprocessati (FASE 6). Vuoi modificare qualcosa prima di andare avanti?",
+        "timestamp": 1749900058.4362016
       }
     ]
   },
@@ -385,47 +400,117 @@
             "nome_alimento": "Pane integrale",
             "quantita_g": 60,
             "stato": "crudo",
-            "metodo_cottura": "non applicabile",
+            "metodo_cottura": "non specificato",
             "misura_casalinga": "2 fette spesse",
+            "sostituti": "non specificato",
             "macronutrienti": {
               "proteine": 5,
               "carboidrati": 33,
               "grassi": 1,
-              "kcal": 156
+              "kcal": 0
             }
           },
           {
             "nome_alimento": "Prosciutto crudo",
             "quantita_g": 50,
             "stato": "crudo",
-            "metodo_cottura": "non applicabile",
+            "metodo_cottura": "non specificato",
             "misura_casalinga": "5-6 fette sottili",
+            "sostituti": "non specificato",
             "macronutrienti": {
               "proteine": 14,
               "carboidrati": 0,
               "grassi": 6,
-              "kcal": 110
+              "kcal": 0
             }
           },
           {
             "nome_alimento": "Kiwi",
             "quantita_g": 80,
             "stato": "crudo",
-            "metodo_cottura": "non applicabile",
+            "metodo_cottura": "non specificato",
             "misura_casalinga": "1 kiwi piccolo",
+            "sostituti": "80g di miele, 80g di ciliegie",
             "macronutrienti": {
               "proteine": 1,
               "carboidrati": 9,
               "grassi": 0,
-              "kcal": 40
+              "kcal": 0
             }
           }
         ],
         "totali_pasto": {
-          "kcal_totali": 306,
+          "kcal_totali": 226,
           "proteine_totali": 19,
           "carboidrati_totali": 42,
           "grassi_totali": 6
+        }
+      },
+      {
+        "nome_pasto": "cena",
+        "alimenti": [
+          {
+            "nome_alimento": "Riso basmati",
+            "quantita_g": 90,
+            "stato": "cotto",
+            "metodo_cottura": "non specificato",
+            "misura_casalinga": "1 tazza cotto",
+            "sostituti": "90g di riso integrale, 120g di pane bianco",
+            "macronutrienti": {
+              "proteine": 6,
+              "carboidrati": 72,
+              "grassi": 1,
+              "kcal": 0
+            }
+          },
+          {
+            "nome_alimento": "Petto di pollo",
+            "quantita_g": 100,
+            "stato": "crudo",
+            "metodo_cottura": "non specificato",
+            "misura_casalinga": "1 fetta media",
+            "sostituti": "100g di tonno naturale, 90g di pesce spada",
+            "macronutrienti": {
+              "proteine": 23,
+              "carboidrati": 0,
+              "grassi": 1,
+              "kcal": 0
+            }
+          },
+          {
+            "nome_alimento": "Carote",
+            "quantita_g": 100,
+            "stato": "crudo",
+            "metodo_cottura": "non specificato",
+            "misura_casalinga": "2 carote medie",
+            "sostituti": "160g di melanzane, 230g di pomodoro",
+            "macronutrienti": {
+              "proteine": 1,
+              "carboidrati": 10,
+              "grassi": 0,
+              "kcal": 0
+            }
+          },
+          {
+            "nome_alimento": "Olio extravergine di oliva",
+            "quantita_g": 20,
+            "stato": "crudo",
+            "metodo_cottura": "non specificato",
+            "misura_casalinga": "2 cucchiai",
+            "sostituti": "non specificato",
+            "macronutrienti": {
+              "proteine": 0,
+              "carboidrati": 0,
+              "grassi": 20,
+              "kcal": 0
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_totali": 678,
+          "proteine_totali": 30,
+          "carboidrati_totali": 82,
+          "grassi_totali": 22
         }
       }
     ]

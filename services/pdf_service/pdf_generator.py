@@ -162,6 +162,33 @@ class PDFGenerator:
             spaceAfter=15
         ))
     
+    def _clean_misura_casalinga(self, misura_text: str) -> str:
+        """
+        Rimuove tutto il contenuto tra parentesi dalle misure casalinghe.
+        
+        Args:
+            misura_text: Testo della misura casalinga
+            
+        Returns:
+            Testo pulito senza contenuto tra parentesi
+            
+        Examples:
+            "2 porzioni abbondanti cotte (da 80g secca l'una)" → "2 porzioni abbondanti cotte"
+            "1 tazza media (250ml)" → "1 tazza media"
+            "3 fette (spesse)" → "3 fette"
+        """
+        if not misura_text or misura_text == 'N/A':
+            return misura_text
+        
+        import re
+        # Rimuove tutto il contenuto tra parentesi tonde, incluse le parentesi
+        cleaned_text = re.sub(r'\([^)]*\)', '', misura_text)
+        
+        # Rimuove spazi multipli e spazi all'inizio/fine
+        cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
+        
+        return cleaned_text if cleaned_text else 'N/A'
+    
     def generate_nutritional_plan_pdf(self, user_id: str, user_info: Dict[str, Any]) -> bytes:
         """
         Genera un PDF completo del piano nutrizionale.
@@ -731,25 +758,27 @@ class PDFGenerator:
             
             # Ingredienti
             if "alimenti" in meal and meal["alimenti"]:
-                ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga']]
+                ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga', 'Sostituti Validi']]
                 
                 for alimento in meal["alimenti"]:
                     if not alimento:
                         continue
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
-                    misura = alimento.get('misura_casalinga', 'N/A')
-                    ingredients_data.append([nome, f"{quantita}g", misura])
+                    misura_raw = alimento.get('misura_casalinga', 'N/A')
+                    misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
+                    sostituti = alimento.get('sostituti', 'N/A')
+                    ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
                 
                 if len(ingredients_data) > 1:
                     # Usa dimensioni compatte se ci sono più di 4 pasti
                     if is_compact:
-                        col_widths = [2.2*inch, 1.0*inch, 2.3*inch]  # Ridotte
+                        col_widths = [1.6*inch, 0.8*inch, 1.8*inch, 2.3*inch]  # Sostituti più larghi
                         header_font = 10  # Aumentato da 7 a 8
                         content_font = 9  # Aumentato da 6 a 7
                         padding = 3
                     else:
-                        col_widths = [2.7*inch, 1.2*inch, 2.7*inch]  # Standard
+                        col_widths = [1.8*inch, 1.0*inch, 2.0*inch, 2.8*inch]  # Sostituti più larghi
                         header_font = 11  # Aumentato da 8 a 9
                         content_font = 10  # Aumentato da 7 a 8
                         padding = 4
@@ -839,7 +868,7 @@ class PDFGenerator:
             return
         
         alimenti = meal_data["alimenti"]
-        ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga']]
+        ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga', 'Sostituti Validi']]
         
         # Gestisce sia formato lista che formato dizionario
         if isinstance(alimenti, list):
@@ -849,25 +878,27 @@ class PDFGenerator:
                     continue
                 nome = alimento.get('nome_alimento', 'N/A')
                 quantita = alimento.get('quantita_g', 'N/A')
-                misura = alimento.get('misura_casalinga', 'N/A')
-                ingredients_data.append([nome, f"{quantita}g", misura])
+                misura_raw = alimento.get('misura_casalinga', 'N/A')
+                misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
+                sostituti = alimento.get('sostituti', 'N/A')
+                ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
         
         elif isinstance(alimenti, dict):
             # Formato dizionario: {"alimento": quantita}
             for nome_alimento, quantita in alimenti.items():
                 if quantita and quantita > 0:
-                    ingredients_data.append([nome_alimento, f"{quantita}g", "N/A"])
+                    ingredients_data.append([nome_alimento, f"{quantita}g", "N/A", "N/A"])
         
         # Se ci sono ingredienti, crea la tabella
         if len(ingredients_data) > 1:
             # Usa dimensioni compatte se ci sono più di 4 pasti
             if is_compact:
-                col_widths = [2.2*inch, 1.0*inch, 2.3*inch]  # Ridotte
+                col_widths = [1.6*inch, 0.8*inch, 1.8*inch, 2.3*inch]  # Sostituti più larghi
                 header_font = 10  # Aumentato da 7 a 8
                 content_font = 9  # Aumentato da 6 a 7
                 padding = 3
             else:
-                col_widths = [2.7*inch, 1.2*inch, 2.7*inch]  # Standard
+                col_widths = [1.8*inch, 1.0*inch, 2.0*inch, 2.8*inch]  # Sostituti più larghi
                 header_font = 11  # Aumentato da 8 a 9
                 content_font = 10  # Aumentato da 7 a 8
                 padding = 4
