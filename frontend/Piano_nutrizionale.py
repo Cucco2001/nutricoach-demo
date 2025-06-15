@@ -572,7 +572,7 @@ class PianoNutrizionale:
         if not has_day1_data and not has_weekly_data:
             return
             
-        with st.expander("📅 Piano Settimanale - Ricette e Pasti Creati", expanded=True):
+        with st.expander("📅 Piano Settimanale - Ricette e Pasti Creati", expanded=False):
             # Mostra i giorni disponibili
             self._display_weekly_plan_overview(extracted_data)
             
@@ -787,9 +787,6 @@ class PianoNutrizionale:
                             📏 Quantità da definire
                         </div>
                         ''', unsafe_allow_html=True)
-        
-        # Valori nutrizionali target e effettivi (se presenti)
-        self._display_weekly_diet_nutrition(meal_data)
         
         # Separatore
         st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
