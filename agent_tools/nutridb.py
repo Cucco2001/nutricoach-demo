@@ -171,7 +171,7 @@ class NutriDB:
             "verdura": "verdure_miste",       ######################
             "latte scremato": "latte_scremato",
             "latte": "latte_intero",
-            "latte parzialmente scremato": "latte_scremato",
+            "latte parzialmente scremato": "latte_parzialmente_scremato",
             "latte intero": "latte_intero",
             "crostata di marmellata": "marmellata",
             "crostata alla marmellata": "marmellata",

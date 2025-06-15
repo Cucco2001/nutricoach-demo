@@ -231,6 +231,17 @@
     "nova_group": 1,
     "categoria": "latte"
   },
+  "latte_parzialmente_scremato": {
+    "energia_kcal": 46,
+    "proteine_g": 3.5,
+    "carboidrati_g": 5.0,
+    "zuccheri_g": 5.0,
+    "grassi_g": 1.5,
+    "grassi_saturi_g": 0.9,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "latte"
+  },
   "fagioli_cannellini": {
     "energia_kcal": 314,
     "proteine_g": 23.4,
