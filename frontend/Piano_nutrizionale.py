@@ -240,7 +240,12 @@ class PianoNutrizionale:
                 # Genera PDF e crea download button diretto
                 try:
                     # Ottieni le informazioni dell'utente da session_state
-                    user_info = st.session_state.get('user_info', {})
+                    user_info = st.session_state.get('user_info', {}).copy()
+                    
+                    # Aggiungi nutrition_answers se disponibile
+                    nutrition_answers = st.session_state.get('nutrition_answers', {})
+                    if nutrition_answers:
+                        user_info['nutrition_answers'] = nutrition_answers
                     
                     # Genera il PDF usando il servizio
                     pdf_bytes = self.pdf_generator.generate_nutritional_plan_pdf(user_id, user_info)
@@ -340,7 +345,7 @@ class PianoNutrizionale:
                 ("⚡ Metabolismo Basale", caloric_data.get('bmr', 0), "Energia per le funzioni vitali"),
                 ("🏃 Fabbisogno Base", caloric_data.get('fabbisogno_base', 0), "Con attività quotidiana"),
                 ("💪 Dispendio Sportivo", caloric_data.get('dispendio_sportivo', 0), "Calorie dall'attività sportiva"),
-                ("🎯 Fabbisogno Totale", caloric_data.get('fabbisogno_totale', 0), "Calorie totali giornaliere")
+                ("🎯 Fabbisogno Finale", caloric_data.get('fabbisogno_finale', 0), "Calorie totali giornaliere")
             ]
             
             for col, (title, value, description) in zip([col1, col2, col3, col4], metrics):

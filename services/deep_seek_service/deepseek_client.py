@@ -154,8 +154,9 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
         "bmr": numero_metabolismo_basale,
         "fabbisogno_base": numero_fabbisogno_senza_sport,
         "dispendio_sportivo": numero_calorie_da_sport,
+        "fabbisogno_totale": numero_fabbisogno_totale,
         "aggiustamento_obiettivo": numero_deficit_o_surplus,
-        "fabbisogno_totale": numero_calorie_finali,
+        "fabbisogno_finale": numero_calorie_finali,
         "laf_utilizzato": numero_fattore_attivita
     },
     "macros_total": {
@@ -235,17 +236,17 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
     }
 }
 
+IMPORTANTE PER CALORIC_NEEDS:
+- Il "fabbisogno_totale" = "fabbisogno_base"*"laf_utilizzato"+"dispendio_sportivo"
+- "aggiustamento_obiettivo" è la quantità di calorie da aggiungere al fabbisogno totale per raggiungere l'obiettivo
+- "fabbisogno_finale" = "fabbisogno_totale" + "aggiustamento_obiettivo"
+- Cerca di estrarre sempre questi campi nella conversazione
+
 IMPORTANTE PER LE QUANTITÀ:
 - "quantita_g": Inserisci il peso in grammi SOLO se menzionato esplicitamente in grammi
 - Se sono menzionate unità diverse (es: "2 uova", "1 tazza", "3 fette"), NON convertire a grammi arbitrariamente
 - Per unità non in grammi, metti 0 in "quantita_g" e spiega nella "misura_casalinga"
 - "misura_casalinga": Descrivi sempre l'unità originale (es: "2 uova grandi", "1 tazza", "1 fetta di pane")
-
-ESEMPI:
-- "2 uova grandi" → quantita_g: 0, misura_casalinga: "2 uova grandi"
-- "100g di pasta" → quantita_g: 100, misura_casalinga: "100g"
-- "1 tazza di latte" → quantita_g: 0, misura_casalinga: "1 tazza"
-- "3 fette di pane" → quantita_g: 0, misura_casalinga: "3 fette"
 
 **FONDAMENTALE**:
 - I CAMPI SOTTO REGISTERED_MEALS CORRISPONDONO AI PASTI DEL GIORNO 1, MENTRE IN WEEKLY_DIET SONO I PASTI DEL GIORNO 2-7
@@ -265,7 +266,6 @@ IMPORTANTE PER I TIPI DI PASTO:
 - NON usare "spuntino" generico - specifica sempre se è mattutino o pomeridiano
 - Se il testo parla di "merenda" senza specificare, considera "spuntino_pomeridiano"
 - Analizza il contesto temporale per determinare il tipo di spuntino
-
 
 IMPORTANTE PER LA DIETA SETTIMANALE:
 - Se nella conversazione è presente una dieta settimanale completa (giorni 2-7), estrai TUTTI i dati

@@ -1,32 +1,76 @@
 {
+  "predefined_days_lactose_free": {
+    "giorno_2": {
+      "colazione": ["uova strapazzate", "pane integrale", "avocado"],
+      "spuntino_mattutino": ["yogurt greco senza lattosio", "noci", "mirtilli"], 
+      "pranzo": ["riso basmati", "petto di pollo", "zucchine grigliate","olio extravergine oliva"],
+      "spuntino_pomeridiano": ["bresaola", "crackers integrali"],
+      "cena": ["filetto di tonno", "patate dolci", "broccoli"]
+    },
+    "giorno_3": {
+      "colazione": ["uova strapazzate", "pane integrale", "avocado"],
+      "spuntino_mattutino": ["fiocchi di latte senza lattosio", "crackers integrali"],
+      "pranzo": ["quinoa", "bistecca di manzo", "peperoni", "olio extravergine oliva"],
+      "spuntino_pomeridiano": ["fesa di tacchino", "pane integrale"],
+      "cena": ["merluzzo", "riso integrale", "melanzane grigliate"]
+    },
+    "giorno_4": {
+      "colazione": ["pane integrale", "burro di arachidi", "marmellata senza zucchero"],
+      "spuntino_mattutino": ["yogurt senza lattosio", "granola"],
+      "pranzo": ["farro", "lenticchie", "carote", "olio extravergine oliva"],
+      "spuntino_pomeridiano": ["shake proteico", "banana"],
+      "cena": ["filetto di salmone", "couscous integrale", "zucchine"]
+    },
+    "giorno_5": {
+      "colazione": ["pane integrale", "burro di arachidi", "marmellata senza zucchero"],
+      "spuntino_mattutino": ["pera", "noci sgusciate"],
+      "pranzo": ["pasta integrale", "tonno", "pomodorini", "olio extravergine oliva"],
+      "spuntino_pomeridiano": ["fesa di tacchino", "grissini integrali"],
+      "cena": ["bistecca di manzo", "patate lesse", "insalata mista"]
+    },
+    "giorno_6": {
+      "colazione": ["uova strapazzate", "pane integrale", "avocado"],
+      "spuntino_mattutino": ["pane integrale", "fesa di tacchino"],
+      "pranzo": ["orzo", "gamberi", "zucchine", "olio extravergine oliva"],
+      "spuntino_pomeridiano": ["proteine in polvere senza lattosio", "latte vegetale"],
+      "cena": ["petto di tacchino", "carote", "piselli", "olio extravergine oliva"]
+    },
+    "giorno_7": {
+      "colazione": ["uova strapazzate", "pane integrale", "avocado"],
+      "spuntino_mattutino": ["banana", "mandorle"],
+      "pranzo": ["pasta integrale", "funghi", "olio extravergine oliva"],
+      "spuntino_pomeridiano": ["shake proteico senza lattosio", "mela"],
+      "cena": ["spigola", "riso integrale", "broccoli"]
+    }
+  },
   "predefined_days_pro": {
     "giorno_2": {
       "colazione": ["uova", "pane_integrale"],
       "spuntino_mattutino": ["yogurt_greco", "mirtilli", "noci"],
-      "pranzo": ["quinoa", "bistecca_manzo", "zucchine"],
+      "pranzo": ["quinoa", "tonno al naturale", "zucchine"],
       "spuntino_pomeridiano": ["shake_proteico", "banana"],
-      "cena": ["salmone", "patate_dolci", "broccoli"]
+      "cena": ["petto di tacchino", "patate_dolci", "broccoli"]
     },
     "giorno_3": {
       "colazione": ["uova", "pane_integrale"],
       "spuntino_mattutino": ["yogurt_naturale", "granola"],
       "pranzo": ["farro", "lenticchie", "carote", "olio_oliva"],
       "spuntino_pomeridiano": ["shake_proteico", "mandorle"],
-      "cena": ["filetto_tonno", "riso_integrale", "zucchine"]
+      "cena": ["bistecca_manzo", "riso_integrale", "zucchine"]
     },
     "giorno_4": {
       "colazione": ["pane_integrale", "burro_arachidi", "marmellata_senza_zucchero"],
       "spuntino_mattutino": ["pera", "noci_sgusciate"],
-      "pranzo": ["pasta_integrale", "tonno", "pomodorini", "olio_oliva"],
+      "pranzo": ["pasta_integrale", "salmone", "pomodorini", "olio_oliva"],
       "spuntino_pomeridiano": ["prosciutto crudo", "grissini"],
-      "cena": ["hamburger_manzo", "patate_lesse", "insalata_mista"]
+      "cena": ["hamburger_pollo", "patate_lesse", "insalata_mista"]
     },
     "giorno_5": {
       "colazione": ["pane_integrale", "burro_arachidi", "marmellata_senza_zucchero"],
       "spuntino_mattutino": ["proteine_polvere", "latte_mandorla"],
       "pranzo": ["riso_basmati", "gamberi", "zucchine", "olio_oliva"],
       "spuntino_pomeridiano": ["pane_integrale", "fesa_tacchino"],
-      "cena": ["petto_pollo", "carote", "piselli", "olio_oliva"]
+      "cena": ["bistecca_manzo", "carote", "piselli", "olio_oliva"]
     },
     "giorno_6": {
       "colazione": ["uova", "pane_integrale"],
@@ -40,7 +84,7 @@
       "spuntino_mattutino": ["parmigiano", "crackers_integrali"],
       "pranzo": ["gnocchi", "ragù_magro_manzo", "grana"],
       "spuntino_pomeridiano": ["fiocchi_latte", "frutta_mista"],
-      "cena": ["bistecca_manzo", "pane_integrale", "insalata"]
+      "cena": ["tonno al naturale", "pane_integrale", "insalata"]
     }
   },
   "predefined_days_no_pro": {

@@ -351,13 +351,26 @@ class PDFGenerator:
         
         # Informazioni personali se disponibili
         if user_info.get('età'):
+            # Costruzione della riga obiettivo con weight_goal se disponibile
+            obiettivo_text = user_info.get('obiettivo', 'N/A')
+            
+            # Aggiunge weight_goal se presente (solo per "Perdita di peso" e "Aumento di peso")
+            try:
+                kg = user_info.get('nutrition_answers', {}).get('weight_goal', {}).get('answer', {}).get('kg')
+                months = user_info.get('nutrition_answers', {}).get('weight_goal', {}).get('answer', {}).get('months')
+                
+                if kg and months:
+                    obiettivo_text += f" ({kg} kg in {months} mesi)"
+            except:
+                pass  # Se mancano i dati, procede senza weight_goal
+            
             personal_info = [
                 ['Età:', f"{user_info.get('età', 'N/A')} anni"],
                 ['Sesso:', user_info.get('sesso', 'N/A')],
                 ['Peso:', f"{user_info.get('peso', 'N/A')} kg"],
                 ['Altezza:', f"{user_info.get('altezza', 'N/A')} cm"],
                 ['Attività:', user_info.get('attività', 'N/A')],
-                ['Obiettivo:', user_info.get('obiettivo', 'N/A')]
+                ['Obiettivo:', obiettivo_text]
             ]
             
             personal_table = Table(personal_info, colWidths=[1.5*inch, 2*inch])
@@ -405,7 +418,7 @@ class PDFGenerator:
             ['Metabolismo Basale (BMR)', f"{caloric_data.get('bmr', 0)} kcal", 'Energia per le funzioni vitali'],
             ['Fabbisogno Base', f"{caloric_data.get('fabbisogno_base', 0)} kcal", 'Con attività quotidiana'],
             ['Dispendio Sportivo', f"{caloric_data.get('dispendio_sportivo', 0)} kcal", 'Calorie dall\'attività sportiva'],
-            ['Fabbisogno Totale', f"{caloric_data.get('fabbisogno_totale', 0)} kcal", 'Calorie totali giornaliere']
+            ['Fabbisogno Totale', f"{caloric_data.get('fabbisogno_finale', 0)} kcal", 'Calorie totali giornaliere']
         ]
         
         caloric_table = Table(caloric_table_data, colWidths=[2.0*inch, 1.3*inch, 1.5*inch, 1.2*inch])
@@ -424,8 +437,8 @@ class PDFGenerator:
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('LEFTPADDING', (0, 0), (-1, -1), 6),  # Padding ridotto
             ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 4),  # Padding ridotto
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+            ('TOPPADDING', (0, 0), (-1, -1), 3),  # Padding ridotto
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
         ]))
         
         story.append(caloric_table)
@@ -489,8 +502,8 @@ class PDFGenerator:
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('LEFTPADDING', (0, 0), (-1, -1), 6),  # Padding ridotto
             ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 4),  # Padding ridotto
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4)
+            ('TOPPADDING', (0, 0), (-1, -1), 3),  # Padding ridotto
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 3)
         ]))
         
         story.append(macros_table)

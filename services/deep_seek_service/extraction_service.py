@@ -315,7 +315,7 @@ class NutritionalDataExtractor:
         missing_fields = []
         
         if section_name == "caloric_needs":
-            required_fields = ["bmr", "fabbisogno_base", "fabbisogno_totale", "dispendio_sportivo", "aggiustamento_obiettivo"]
+            required_fields = ["bmr", "fabbisogno_base", "fabbisogno_finale", "dispendio_sportivo", "aggiustamento_obiettivo"]
             for field in required_fields:
                 if field not in section_data or section_data[field] is None:
                     missing_fields.append(field)
@@ -490,7 +490,7 @@ class NutritionalDataExtractor:
         # Se mancano kcal, prova da caloric_needs
         if not totali.get("kcal_totali") and "caloric_needs" in all_extracted_data:
             caloric_needs = all_extracted_data["caloric_needs"]
-            totali["kcal_totali"] = caloric_needs.get("fabbisogno_totale")
+            totali["kcal_totali"] = caloric_needs.get("fabbisogno_finale")
         
         # Verifica che abbiamo almeno le kcal totali
         if not totali.get("kcal_totali"):

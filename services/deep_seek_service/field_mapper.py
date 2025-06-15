@@ -99,8 +99,8 @@ class FieldMapper:
         ],
         
         # Fabbisogno Totale
-        'fabbisogno_totale': [
-            'fabbisogno_totale', 'fabbisogno totale', 'fabbisogno-totale',
+        'fabbisogno_finale': [
+            'fabbisogno_finale', 'fabbisogno totale', 'fabbisogno-totale',
             'calorie_totali', 'calorie totali', 'calorie-totali',
             'kcal_totali', 'kcal totali', 'kcal-totali',
             'total_calories', 'total calories',

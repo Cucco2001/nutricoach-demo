@@ -106,12 +106,12 @@ class CaloricDataCompleter:
         fabbisogno_base = get_field(caloric_data, 'fabbisogno_base', 0)
         dispendio_sportivo = get_field(caloric_data, 'dispendio_sportivo', 0)
         
-        if not has_field(caloric_data, 'fabbisogno_totale') and fabbisogno_base:
-            fabbisogno_totale = fabbisogno_base + dispendio_sportivo
-            set_field(caloric_data, 'fabbisogno_totale', fabbisogno_totale)
-            print(f"[CALORIC_COMPLETER] Fabbisogno totale calcolato: {fabbisogno_totale} kcal")
+        if not has_field(caloric_data, 'fabbisogno_finale') and fabbisogno_base:
+            fabbisogno_finale = fabbisogno_base + dispendio_sportivo
+            set_field(caloric_data, 'fabbisogno_finale', fabbisogno_finale)
+            print(f"[CALORIC_COMPLETER] Fabbisogno totale calcolato: {fabbisogno_finale} kcal")
         else:
-            existing_totale = get_field(caloric_data, 'fabbisogno_totale')
+            existing_totale = get_field(caloric_data, 'fabbisogno_finale')
             if existing_totale:
                 print(f"[CALORIC_COMPLETER] Fabbisogno totale già presente: {existing_totale} kcal")
         

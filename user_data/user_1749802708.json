@@ -270,8 +270,8 @@
       "bmr": 1742,
       "fabbisogno_base": 2527,
       "dispendio_sportivo": 141,
-      "aggiustamento_obiettivo": 0,
-      "fabbisogno_totale": 2668,
+      "aggiustamento_obiettivo": -256,
+      "fabbisogno_finale": 2412,
       "laf_utilizzato": 1.45
     },
     "macros_total": {

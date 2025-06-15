@@ -182,7 +182,7 @@ class NutriDB:
             "marmellata zero zuccheri": "marmellata_hero_light",
             "marmellata senza zuccheri aggiunti": "marmellata_hero_light",
             "pera": "pere",       
-            "ciliegia": "ciliegie"
+            "ciliegia": "ciliegie",
             "noci sgusciate": "noci_sgusciate",
             "noci": "noci_sgusciate",
             "mandorle tostate": "mandorle",
@@ -217,9 +217,9 @@ class NutriDB:
             "olio d'oliva": "olio_oliva",
             "olio di semi": "olio_oliva",
             "olive nere": "olive_verdi",
-            "olive": "olive_verdi"
+            "olive": "olive_verdi",
             "pane": "pane_bianco",
-            "pane ai cereali": "pane integrale",   
+            "pane ai cereali": "pane_integrale",   
             "pane bianco": "pane_bianco",
             "pane al latte": "pane_bianco",
             "pan bauletto": "pane_bianco",
