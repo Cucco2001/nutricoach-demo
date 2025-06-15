@@ -431,8 +431,8 @@ Scrivi SEMPRE unità di misura nel testo normale:
 - Sbagliato: 33.6 \\ g o 2595 \\ kcal
 
 Esempio: 
-Fabbisogno totale = MB * LAF
-Fabbisogno totale = 1695 * 1.75 = 2967 kcal/giorno
+Fabbisogno totale = MB * LAF + dispendio_sportivo
+Fabbisogno totale = 1695 * 1.75 + 100 = 3067 kcal/giorno
 
 Per altri calcoli usa lo stesso formato:
 Esempio proteine:
@@ -587,7 +587,7 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
    - Usa compute_Harris_Benedict_Equation per calcolare il metabolismo basale e il fabbisogno energetico totale
         - La funzione restituirà:
             * bmr: metabolismo basale in kcal
-            * fabbisogno_giornaliero: fabbisogno totale in kcal
+            * fabbisogno_giornaliero: fabbisogno giornaliero in kcal
             * laf_utilizzato: il LAF effettivamente applicato
    - Aggiusta il fabbisogno in base all'obiettivo:
         - Calcola il deficit/surplus calorico giornaliero usando calculate_weight_goal_calories, poi procedi con:

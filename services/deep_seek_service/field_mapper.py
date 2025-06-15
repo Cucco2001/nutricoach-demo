@@ -98,11 +98,11 @@ class FieldMapper:
             'consumo_sportivo', 'consumo sportivo'
         ],
         
-        # Fabbisogno Totale
+        # Fabbisogno Finale
         'fabbisogno_finale': [
-            'fabbisogno_finale', 'fabbisogno totale', 'fabbisogno-totale',
-            'calorie_totali', 'calorie totali', 'calorie-totali',
-            'kcal_totali', 'kcal totali', 'kcal-totali',
+            'fabbisogno_finale', 'fabbisogno finale', 'fabbisogno-finale',
+            'calorie_finale', 'calorie finale', 'calorie-finale',
+            'kcal_finale', 'kcal finale', 'kcal-finale',
             'total_calories', 'total calories',
             'total_needs', 'total needs',
             'fabbisogno_complessivo', 'fabbisogno complessivo',

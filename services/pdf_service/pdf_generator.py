@@ -418,7 +418,7 @@ class PDFGenerator:
             ['Metabolismo Basale (BMR)', f"{caloric_data.get('bmr', 0)} kcal", 'Energia per le funzioni vitali'],
             ['Fabbisogno Base', f"{caloric_data.get('fabbisogno_base', 0)} kcal", 'Con attività quotidiana'],
             ['Dispendio Sportivo', f"{caloric_data.get('dispendio_sportivo', 0)} kcal", 'Calorie dall\'attività sportiva'],
-            ['Fabbisogno Totale', f"{caloric_data.get('fabbisogno_finale', 0)} kcal", 'Calorie totali giornaliere']
+            ['Fabbisogno Finale', f"{caloric_data.get('fabbisogno_finale', 0)} kcal", 'Calorie totali giornaliere']
         ]
         
         caloric_table = Table(caloric_table_data, colWidths=[2.0*inch, 1.3*inch, 1.5*inch, 1.2*inch])
