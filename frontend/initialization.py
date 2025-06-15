@@ -36,7 +36,16 @@ def initialize_app():
     if "diet_plan" not in st.session_state:
         st.session_state.diet_plan = None
     if "openai_client" not in st.session_state:
-        st.session_state.openai_client = OpenAI()
+        # Per Streamlit Cloud, usa st.secrets, altrimenti usa variabile d'ambiente
+        try:
+            api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+            if api_key:
+                st.session_state.openai_client = OpenAI(api_key=api_key)
+            else:
+                st.session_state.openai_client = OpenAI()  # Fallback per sviluppo locale
+        except:
+            # Fallback se st.secrets non è disponibile (sviluppo locale)
+            st.session_state.openai_client = OpenAI()
     if "current_run_id" not in st.session_state:
         st.session_state.current_run_id = None
     if "current_question" not in st.session_state:
@@ -91,9 +100,15 @@ def initialize_app():
     # che potrebbe ancora usare il client DeepSeek direttamente
     if "deepseek_client" not in st.session_state:
         try:
-            deepseek_api_key = os.getenv("DEEPSEEK_API_KEY")
+            # Per Streamlit Cloud, usa st.secrets, altrimenti usa variabile d'ambiente
+            deepseek_api_key = None
+            try:
+                deepseek_api_key = st.secrets.get("DEEPSEEK_API_KEY") or os.getenv("DEEPSEEK_API_KEY")
+            except:
+                deepseek_api_key = os.getenv("DEEPSEEK_API_KEY")
+                
             if not deepseek_api_key:
-                st.warning("⚠️ DEEPSEEK_API_KEY non trovata nel file .env. Il sistema di estrazione automatica dei dati nutrizionali sarà disabilitato.")
+                st.warning("⚠️ DEEPSEEK_API_KEY non trovata. Il sistema di estrazione automatica dei dati nutrizionali sarà disabilitato.")
                 st.session_state.deepseek_client = None
             else:
                 st.session_state.deepseek_client = OpenAI(
