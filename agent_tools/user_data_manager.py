@@ -4,6 +4,19 @@ import hashlib
 from pathlib import Path
 from typing import Dict, List, Set, Union, Optional, Tuple
 from dataclasses import dataclass, asdict
+import logging
+
+# Import del servizio Supabase (con import protetto per evitare errori circolari)
+try:
+    from services.supabase_service import auto_sync_user_data
+except ImportError:
+    # Fallback se il servizio non è disponibile
+    def auto_sync_user_data(user_id: str, user_data: Dict[str, Any]) -> None:
+        pass
+
+# Configurazione logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @dataclass
 class User:
@@ -70,6 +83,10 @@ class UserDataManager:
         self._user_preferences: Dict[str, UserPreferences] = {}
         self._chat_history: Dict[str, List[ChatMessage]] = {}
         self._nutritional_info: Dict[str, UserNutritionalInfo] = {}
+        
+        # Sincronizzazione iniziale con Supabase
+        self._sync_from_supabase_on_startup()
+        
         self._load_users()
 
     def _hash_password(self, password: str) -> str:
@@ -88,7 +105,7 @@ class UserDataManager:
                 }
 
     def _save_users(self) -> None:
-        """Salva la lista degli utenti su file"""
+        """Salva la lista degli utenti su file e sincronizza con Supabase"""
         users_file = self.data_dir / "users.json"
         users_data = {
             username: asdict(user)
@@ -96,6 +113,16 @@ class UserDataManager:
         }
         with open(users_file, 'w', encoding='utf-8') as f:
             json.dump(users_data, f, ensure_ascii=False, indent=2)
+        
+        # Sincronizzazione automatica con Supabase
+        try:
+            from services.supabase_service import get_supabase_service
+            supabase_service = get_supabase_service()
+            if supabase_service.is_available():
+                supabase_service.sync_users_to_supabase(users_data)
+                logger.info("✅ Utenti sincronizzati automaticamente con Supabase")
+        except Exception as e:
+            logger.warning(f"⚠️ Errore nella sincronizzazione automatica utenti: {str(e)}")
 
     def register_user(self, username: str, password: str) -> Tuple[bool, str]:
         """
@@ -339,7 +366,7 @@ class UserDataManager:
         return self._nutritional_info.get(user_id)
 
     def _save_user_data(self, user_id: str) -> None:
-        """Salva i dati dell'utente su file preservando sempre i dati DeepSeek"""
+        """Salva i dati dell'utente su file preservando sempre i dati DeepSeek e sincronizza con Supabase"""
         user_file = self.data_dir / f"{user_id}.json"
         
         # PRESERVA i dati DeepSeek esistenti se presenti
@@ -379,6 +406,61 @@ class UserDataManager:
         
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        # Sincronizzazione automatica con Supabase
+        auto_sync_user_data(user_id, data)
+
+    def _sync_from_supabase_on_startup(self) -> None:
+        """Sincronizza i dati da Supabase all'avvio dell'applicazione"""
+        try:
+            from services.supabase_service import get_supabase_service
+            supabase_service = get_supabase_service()
+            
+            if supabase_service.is_available():
+                logger.info("🔄 Sincronizzazione iniziale da Supabase...")
+                
+                # Scarica solo se non ci sono dati locali o se i dati Supabase sono più recenti
+                should_download = self._should_download_from_supabase()
+                
+                if should_download:
+                    success = supabase_service.download_all_data_from_supabase()
+                    if success:
+                        logger.info("✅ Dati sincronizzati da Supabase all'avvio")
+                    else:
+                        logger.warning("⚠️ Sincronizzazione da Supabase parzialmente fallita")
+                else:
+                    logger.info("📋 Dati locali aggiornati, sincronizzazione saltata")
+            else:
+                logger.info("📴 Supabase non disponibile, uso dati locali")
+                
+        except Exception as e:
+            logger.warning(f"⚠️ Errore nella sincronizzazione iniziale da Supabase: {str(e)}")
+            logger.info("📁 Continuando con i dati locali disponibili")
+
+    def _should_download_from_supabase(self) -> bool:
+        """
+        Determina se scaricare i dati da Supabase basandosi sulla presenza e freshness dei dati locali.
+        
+        Returns:
+            bool: True se dovrebbe scaricare da Supabase
+        """
+        users_file = self.data_dir / "users.json"
+        
+        # Se non ci sono utenti locali, scarica sempre
+        if not users_file.exists():
+            logger.info("📥 Nessun file utenti locale trovato, scaricando da Supabase")
+            return True
+        
+        # Se ci sono pochi file utente, potrebbe esserci uno stato incompleto
+        user_files = list(self.data_dir.glob("*.json"))
+        if len(user_files) <= 1:  # Solo users.json o nessun file
+            logger.info("📥 Pochi dati locali trovati, scaricando da Supabase")
+            return True
+        
+        # Per ora, scarichiamo sempre per essere sicuri
+        # In futuro si potrebbe aggiungere un controllo del timestamp
+        logger.info("📥 Verifica aggiornamenti da Supabase")
+        return True
 
     def _load_user_data(self, user_id: str) -> None:
         """Carica i dati dell'utente da file"""

@@ -185,6 +185,13 @@ class NutritionalDataExtractor:
                 # Salva il file aggiornato
                 with open(user_file_path, 'w', encoding='utf-8') as f:
                     json.dump(user_data, f, indent=2, ensure_ascii=False)
+                
+                # Sincronizzazione automatica con Supabase
+                try:
+                    from services.supabase_service import auto_sync_user_data
+                    auto_sync_user_data(user_id, user_data)
+                except Exception as e:
+                    print(f"[EXTRACTION_SERVICE] Errore sincronizzazione Supabase per {user_id}: {str(e)}")
                     
                 return True
                 

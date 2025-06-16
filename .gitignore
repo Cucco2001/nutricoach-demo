@@ -5,3 +5,4 @@ requirements.txt
 *.pyd
 *.pyw
 *.pyz
+.streamlit
