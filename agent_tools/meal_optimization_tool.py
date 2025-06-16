@@ -297,7 +297,7 @@ def get_portion_constraints():
         "insalata": {"min": 50, "max": 150},
         "frutta": {"min": 80, "max": 300},
         "frutta_secca": {"min": 5, "max": 40},
-        "grassi_aggiunti": {"min": 5, "max": 30},
+        "grassi_aggiunti": {"min": 5, "max": 120},
         "creme_spalmabili": {"min": 10, "max": 40},
         "uova": {"min": 60, "max": 200},  # ~1-2 uova
         "dolci": {"min": 10, "max": 80},   # Porzioni piccole per dolci

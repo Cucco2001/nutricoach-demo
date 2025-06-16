@@ -114,6 +114,8 @@ class PreferencesUI:
                         success = self.food_preferences.add_preferred_food(food_name)
                     
                     if success:
+                        # Clear the text input by setting its value to empty string
+                        st.session_state[f"{food_type}_foods"] = ""
                         st.rerun()
                     else:
                         st.warning(f"L'alimento '{food_name}' è già nella lista")

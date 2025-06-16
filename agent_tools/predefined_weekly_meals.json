@@ -105,7 +105,7 @@
     "giorno_4": {
       "colazione": ["cornflakes", "latte_scremato", "kiwi", "mandorle"],
       "spuntino_mattutino": ["yogurt_naturale", "avena"],
-      "pranzo": ["farro", "lenticchie", "carote", "sedano", "avocado"],
+      "pranzo": ["farro", "lenticchie", "carote", "avocado"],
       "spuntino_pomeridiano": ["pan bauletto", "fesa di tacchino"],
       "cena": ["bistecca_manzo", "insalata_mista", "pane_bianco"]
     },
