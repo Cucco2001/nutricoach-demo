@@ -144,13 +144,13 @@ class FoodPreferences:
         """
         return st.session_state.get('preferred_foods_list', [])
     
-    def save_preferences(self, user_id: str, user_notes: str) -> bool:
+    def save_preferences(self, user_id: str, user_notes: str = "") -> bool:
         """
         Salva tutte le preferenze dell'utente.
         
         Args:
             user_id: ID dell'utente
-            user_notes: Note aggiuntive dell'utente
+            user_notes: Note aggiuntive dell'utente (deprecato, mantenuto per compatibilità)
             
         Returns:
             bool: True se salvato con successo, False altrimenti
@@ -159,7 +159,6 @@ class FoodPreferences:
             preferences = {
                 "excluded_foods": self.get_excluded_foods(),
                 "preferred_foods": self.get_preferred_foods(),
-                "user_notes": user_notes.strip() if user_notes else "",
             }
             
             self.user_data_manager.update_user_preferences(
@@ -174,15 +173,15 @@ class FoodPreferences:
     def get_user_notes(self, user_id: str) -> str:
         """
         Ottiene le note utente dalle preferenze salvate.
+        DEPRECATO: Le note utente sono state rimosse.
         
         Args:
             user_id: ID dell'utente
             
         Returns:
-            str: Note dell'utente
+            str: Stringa vuota (le note sono state rimosse)
         """
-        user_preferences = self.load_user_preferences(user_id)
-        return user_preferences.get("notes", "") or user_preferences.get("user_notes", "")
+        return ""
     
     def validate_food_name(self, food_name: str) -> Tuple[bool, str]:
         """

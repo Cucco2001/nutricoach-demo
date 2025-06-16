@@ -39,12 +39,9 @@ class PreferencesUI:
             # Sezione alimenti preferiti  
             self._display_preferred_foods_section()
             
-            # Sezione note utente
-            user_notes = self._display_user_notes_section(user_id)
-            
             # Bottone di salvataggio
             if st.button("Salva preferenze"):
-                if self.food_preferences.save_preferences(user_id, user_notes):
+                if self.food_preferences.save_preferences(user_id, ""):
                     st.success("Preferenze salvate con successo!")
                     st.rerun()
     
@@ -124,30 +121,6 @@ class PreferencesUI:
                     else:
                         st.warning(f"L'alimento '{food_name}' è già nella lista")
     
-    def _display_user_notes_section(self, user_id: str) -> str:
-        """
-        Mostra la sezione delle note utente.
-        
-        Args:
-            user_id: ID dell'utente
-            
-        Returns:
-            str: Contenuto delle note utente
-        """
-        st.subheader("Necessità particolari o preferenze:")
-        
-        # Ottieni le note esistenti
-        note_default = self.food_preferences.get_user_notes(user_id)
-        
-        user_notes = st.text_area(
-            "Scrivi qualsiasi informazione aggiuntiva da tenere a mente (es. vegetariano, pranzi al lavoro, ecc.)",
-            value=note_default,
-            height=120,
-            help="Inserisci qui informazioni come restrizioni dietetiche, orari particolari, allergie specifiche o altre necessità che il nutrizionista dovrebbe considerare."
-        )
-        
-        return user_notes
-    
     def display_preferences_summary(self, user_id: str):
         """
         Mostra un riassunto delle preferenze dell'utente.
@@ -174,12 +147,6 @@ class PreferencesUI:
             st.write("**❤️ Alimenti preferiti:**")
             for food in preferred_foods:
                 st.write(f"• {food}")
-        
-        # Mostra note
-        user_notes = user_preferences.get("user_notes") or user_preferences.get("notes", "")
-        if user_notes:
-            st.write("**📝 Note aggiuntive:**")
-            st.write(user_notes)
     
     def display_compact_preferences(self, user_id: str):
         """
@@ -196,16 +163,12 @@ class PreferencesUI:
         
         excluded_count = len(user_preferences.get("excluded_foods", []))
         preferred_count = len(user_preferences.get("preferred_foods", []))
-        has_notes = bool(user_preferences.get("user_notes") or user_preferences.get("notes", ""))
         
         if excluded_count > 0:
             st.caption(f"🚫 {excluded_count} alimenti esclusi")
         
         if preferred_count > 0:
             st.caption(f"❤️ {preferred_count} alimenti preferiti")
-        
-        if has_notes:
-            st.caption("📝 Note aggiuntive presenti")
     
     def display_preferences_for_agent(self, user_id: str) -> Optional[str]:
         """
@@ -233,10 +196,5 @@ class PreferencesUI:
         preferred_foods = user_preferences.get("preferred_foods", [])
         if preferred_foods:
             preferences_text.append(f"ALIMENTI PREFERITI: {', '.join(preferred_foods)}")
-        
-        # Aggiungi note
-        user_notes = user_preferences.get("user_notes") or user_preferences.get("notes", "")
-        if user_notes:
-            preferences_text.append(f"NOTE AGGIUNTIVE: {user_notes}")
         
         return "\n".join(preferences_text) if preferences_text else None 

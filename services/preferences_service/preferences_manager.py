@@ -126,13 +126,13 @@ class PreferencesManager:
         """
         return self.food_preferences.remove_preferred_food(index)
     
-    def save_preferences(self, user_id: str, user_notes: str) -> bool:
+    def save_preferences(self, user_id: str, user_notes: str = "") -> bool:
         """
         Salva tutte le preferenze dell'utente.
         
         Args:
             user_id: ID dell'utente
-            user_notes: Note aggiuntive dell'utente
+            user_notes: Note aggiuntive dell'utente (deprecato, mantenuto per compatibilità)
             
         Returns:
             bool: True se salvato con successo
@@ -160,14 +160,15 @@ class PreferencesManager:
     def get_user_notes(self, user_id: str) -> str:
         """
         Ottiene le note utente.
+        DEPRECATO: Le note utente sono state rimosse.
         
         Args:
             user_id: ID dell'utente
             
         Returns:
-            str: Note dell'utente
+            str: Stringa vuota (le note sono state rimosse)
         """
-        return self.food_preferences.get_user_notes(user_id)
+        return ""
     
     def clear_all_preferences(self, user_id: str):
         """
