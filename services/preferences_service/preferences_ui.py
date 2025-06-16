@@ -91,27 +91,20 @@ class PreferencesUI:
         Args:
             food_type: Tipo di alimento ("excluded" o "preferred")
         """
-        col1, col2 = st.columns([0.8, 0.2])
-        
         label = "Inserisci un alimento da escludere" if food_type == "excluded" else "Inserisci un alimento preferito"
-        button_text = "Aggiungi"
         
-        # Inizializza il valore nel session state se non esiste
-        input_key = f"{food_type}_foods"
-        if input_key not in st.session_state:
-            st.session_state[input_key] = ""
-        
-        with col1:
-            food_name = st.text_input(
-                label, 
-                value=st.session_state[input_key],
-                key=f"{food_type}_foods_input"
-            )
-            # Aggiorna il session state con il valore corrente
-            st.session_state[input_key] = food_name
+        # Utilizzo un form che si resetta automaticamente dopo il submit
+        with st.form(key=f"add_{food_type}_form", clear_on_submit=True):
+            col1, col2 = st.columns([0.8, 0.2])
             
-        with col2:
-            if st.button(button_text, key=f"add_{food_type}"):
+            with col1:
+                food_name = st.text_input(label, key=f"{food_type}_foods_input")
+            
+            with col2:
+                st.write("")  # Spacer per allineare il bottone
+                submitted = st.form_submit_button("Aggiungi")
+            
+            if submitted and food_name:
                 # Valida il nome dell'alimento
                 is_valid, error_message = self.food_preferences.validate_food_name(food_name)
                 
@@ -126,8 +119,7 @@ class PreferencesUI:
                         success = self.food_preferences.add_preferred_food(food_name)
                     
                     if success:
-                        # Clear the text input by setting its value to empty string
-                        st.session_state[input_key] = ""
+                        st.success(f"Alimento '{food_name}' aggiunto!")
                         st.rerun()
                     else:
                         st.warning(f"L'alimento '{food_name}' è già nella lista")
