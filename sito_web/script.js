@@ -1,5 +1,6 @@
 // Variabili globali
 const STREAMLIT_URL = "https://nutricoach.streamlit.app/"; // Inserisci qui l'URL della tua app Streamlit
+const GOOGLE_SCRIPT_URL = "IL_TUO_URL_GOOGLE_APPS_SCRIPT_QUI"; // Sostituisci con l'URL ottenuto dal deployment
 
 // Gestione smooth scroll per i link di navigazione
 document.addEventListener('DOMContentLoaded', function() {
@@ -75,7 +76,7 @@ function hideEmailForm() {
 }
 
 // Gestione submit form email
-function handleEmailSubmit(event) {
+async function handleEmailSubmit(event) {
     event.preventDefault();
     
     const email = document.getElementById('userEmail').value;
@@ -85,21 +86,58 @@ function handleEmailSubmit(event) {
         return;
     }
 
-    // Salva l'email nel localStorage per eventuale uso futuro
-    localStorage.setItem('nutricoach_beta_email', email);
+    // Mostra messaggio di caricamento
+    showNotification('Registrando la tua email...', 'info');
     
-    // Mostra messaggio di successo
-    showNotification('Perfetto! Ti stiamo reindirizzando all\'app...', 'success');
+    try {
+        // Salva l'email in Google Sheets
+        await saveEmailToGoogleSheets(email);
+        
+        // Salva l'email nel localStorage per eventuale uso futuro
+        localStorage.setItem('nutricoach_beta_email', email);
+        
+        // Mostra messaggio di successo
+        showNotification('Perfetto! Ti stiamo reindirizzando all\'app...', 'success');
+        
+        // Reindirizza dopo 2 secondi
+        setTimeout(() => {
+            window.open(STREAMLIT_URL, '_blank');
+            hideEmailForm();
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Errore nel salvare email:', error);
+        showNotification('Errore nel registrare l\'email. Riprova tra poco.', 'error');
+    }
+}
+
+// Funzione per salvare email in Google Sheets
+async function saveEmailToGoogleSheets(email) {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: email
+        })
+    });
     
-    // Reindirizza dopo 2 secondi
-    setTimeout(() => {
-        window.open(STREAMLIT_URL, '_blank');
-        hideEmailForm();
-    }, 2000);
+    if (!response.ok) {
+        throw new Error('Errore nella richiesta HTTP');
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+        throw new Error(result.message || 'Errore sconosciuto');
+    }
+    
+    return result;
 }
 
 // Gestione submit newsletter
-function handleNewsletterSubmit(event) {
+async function handleNewsletterSubmit(event) {
     event.preventDefault();
     
     const email = event.target.querySelector('input[type="email"]').value;
@@ -109,12 +147,43 @@ function handleNewsletterSubmit(event) {
         return;
     }
 
-    // Simula iscrizione newsletter
-    showNotification('Grazie! Ti sei iscritto alla newsletter con successo!', 'success');
-    event.target.reset();
+    try {
+        // Salva l'email della newsletter in Google Sheets
+        await saveNewsletterToGoogleSheets(email);
+        
+        showNotification('Grazie! Ti sei iscritto alla newsletter con successo!', 'success');
+        event.target.reset();
+        
+    } catch (error) {
+        console.error('Errore nel salvare newsletter:', error);
+        showNotification('Errore nell\'iscrizione. Riprova tra poco.', 'error');
+    }
+}
+
+// Funzione per salvare newsletter in Google Sheets
+async function saveNewsletterToGoogleSheets(email) {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: email,
+            type: 'newsletter'
+        })
+    });
     
-    // In un'implementazione reale, qui invieresti l'email al tuo servizio di newsletter
-    console.log('Newsletter signup:', email);
+    if (!response.ok) {
+        throw new Error('Errore nella richiesta HTTP');
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+        throw new Error(result.message || 'Errore sconosciuto');
+    }
+    
+    return result;
 }
 
 // Validazione email

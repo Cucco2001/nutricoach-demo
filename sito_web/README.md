@@ -158,6 +158,112 @@ Per migliorare la SEO, aggiungi nell'`<head>`:
 
 Per domande o personalizzazioni, contatta il team di sviluppo.
 
----
+## Setup Google Sheets per Email Collection
 
-**NutriCoach** - Il futuro della nutrizione personalizzata 
+### 1. Crea il Google Apps Script
+
+. Crea un nuovo Google Sheet
+Vai su sheets.google.com
+Crea un nuovo foglio di calcolo
+Chiamalo "NutriCoach Email Database" o simile
+2. Imposta le colonne nel foglio
+Nella prima riga, aggiungi queste intestazioni:
+Colonna A: Email
+Colonna B: Tipo (beta/newsletter)
+Colonna C: Data
+Colonna D: Ora
+3. Crea il Google Apps Script
+Nel tuo Google Sheet, vai su Estensioni > Apps Script
+Cancella il codice esistente e incolla questo:
+function doPost(e) {
+  try {
+    // Ottieni il foglio di calcolo
+    const sheet = SpreadsheetApp.getActiveSheet();
+    
+    // Parsing dei dati JSON
+    const data = JSON.parse(e.postData.contents);
+    const email = data.email;
+    const type = data.type || 'beta'; // 'beta' o 'newsletter'
+    
+    // Validazione email
+    if (!email || !isValidEmail(email)) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          success: false,
+          message: 'Email non valida'
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // Controlla se l'email esiste già per questo tipo
+    const existingData = sheet.getDataRange().getValues();
+    for (let i = 1; i < existingData.length; i++) {
+      if (existingData[i][0] === email && existingData[i][1] === type) {
+        return ContentService
+          .createTextOutput(JSON.stringify({
+            success: true,
+            message: 'Email già presente',
+            duplicate: true
+          }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    
+    // Aggiungi i dati al foglio
+    const now = new Date();
+    const dateString = Utilities.formatDate(now, Session.getScriptTimeZone(), 'dd/MM/yyyy');
+    const timeString = Utilities.formatDate(now, Session.getScriptTimeZone(), 'HH:mm:ss');
+    
+    sheet.appendRow([email, type, dateString, timeString]);
+    
+    // Risposta di successo
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: true,
+        message: 'Email salvata con successo'
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (error) {
+    // Gestione errori
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: false,
+        message: 'Errore interno: ' + error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Funzione per validare l'email
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Funzione per testare lo script (opzionale)
+function testScript() {
+  const testEvent = {
+    postData: {
+      contents: JSON.stringify({
+        email: 'test@example.com',
+        type: 'beta'
+      })
+    }
+  };
+  
+  const result = doPost(testEvent);
+  Logger.log(result.getContent());
+} 
+4. Pubblica il Google Apps Script
+Salva il progetto (Ctrl+S)
+Clicca su Implementa in alto a destra
+Scegli Nuova implementazione
+In "Tipo", seleziona App web
+Imposta:
+Esegui come: Me (il tuo account)
+Chi ha accesso: Chiunque
+Clicca Implementa
+COPIA L'URL che ti viene fornito - questo è quello che dovrai mettere nel GOOGLE_SCRIPT_URL
+5. Aggiorna l'URL nel tuo script.js
+L'URL che hai messo sembra molto lungo e con caratteri duplicati. Sostituiscilo con l'URL corretto che ottieni dal passaggio 4.

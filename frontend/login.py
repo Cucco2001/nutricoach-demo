@@ -79,7 +79,7 @@ def handle_registration_form(user_data_manager):
         new_email = st.text_input("Email")
         new_password = st.text_input("Password", type="password")
         confirm_password = st.text_input("Conferma password", type="password")
-        
+        st.write("I dati inseriti non saranno mai condivisi con terze parti.")
         if st.form_submit_button("Registrati"):
             if new_password != confirm_password:
                 st.error("Le password non coincidono")
