@@ -6,16 +6,16 @@
     "categories": {
       "cereali": 10,
       "tuberi": 1,
-      "proteine_animali": 10,
-      "verdure": 11,
+      "proteine_animali": 11,
+      "verdure": 12,
       "grassi_aggiunti": 6,
       "frutta": 11,
       "uova": 2,
-      "latte": 2,
+      "latte": 3,
       "formaggi": 8,
       "legumi": 4,
       "cereali_colazione": 6,
-      "affettati": 2,
+      "affettati": 3,
       "latticini": 3,
       "creme_spalmabili": 3,
       "dolci": 2,
@@ -143,6 +143,10 @@
       }
     },
     "pollo_coscia": {
+      "tonno_fresco": {
+        "grams": 78.6,
+        "similarity_score": 126.1
+      },
       "carne_manzo": {
         "grams": 93.3,
         "similarity_score": 125.0
@@ -158,10 +162,6 @@
       "pesce_spada": {
         "grams": 86.8,
         "similarity_score": 122.0
-      },
-      "salmone_affumicato": {
-        "grams": 85.0,
-        "similarity_score": 120.0
       }
     },
     "pollo_ali": {
@@ -177,19 +177,23 @@
         "grams": 102.1,
         "similarity_score": 115.0
       },
+      "tonno_fresco": {
+        "grams": 123.3,
+        "similarity_score": 113.7
+      },
       "pollo_coscia": {
         "grams": 156.8,
         "similarity_score": 109.8
-      },
-      "carne_manzo": {
-        "grams": 146.3,
-        "similarity_score": 104.8
       }
     },
     "zucchine": {
       "cavolfiore": {
         "grams": 56.7,
         "similarity_score": 128.6
+      },
+      "asparagi": {
+        "grams": 42.5,
+        "similarity_score": 127.6
       },
       "fagiolini": {
         "grams": 70.8,
@@ -202,9 +206,27 @@
       "verdure_miste": {
         "grams": 154.5,
         "similarity_score": 123.2
+      }
+    },
+    "asparagi": {
+      "zucchine": {
+        "grams": 235.3,
+        "similarity_score": 127.6
       },
-      "bieta": {
-        "grams": 113.3,
+      "cavolfiore": {
+        "grams": 133.3,
+        "similarity_score": 126.8
+      },
+      "fagiolini": {
+        "grams": 166.7,
+        "similarity_score": 123.0
+      },
+      "broccoli": {
+        "grams": 121.2,
+        "similarity_score": 122.0
+      },
+      "verdure_miste": {
+        "grams": 363.6,
         "similarity_score": 121.7
       }
     },
@@ -385,6 +407,10 @@
       }
     },
     "latte_intero": {
+      "latte_parzialmente_scremato": {
+        "grams": 139.1,
+        "similarity_score": 114.9
+      },
       "latte_scremato": {
         "grams": 177.8,
         "similarity_score": 98.1
@@ -457,9 +483,23 @@
       }
     },
     "latte_scremato": {
+      "latte_parzialmente_scremato": {
+        "grams": 78.3,
+        "similarity_score": 113.2
+      },
       "latte_intero": {
         "grams": 56.2,
         "similarity_score": 98.1
+      }
+    },
+    "latte_parzialmente_scremato": {
+      "latte_intero": {
+        "grams": 71.9,
+        "similarity_score": 114.9
+      },
+      "latte_scremato": {
+        "grams": 127.8,
+        "similarity_score": 113.2
       }
     },
     "fagioli_cannellini": {
@@ -623,6 +663,10 @@
       }
     },
     "tonno_sottolio_sgocciolato": {
+      "tonno_fresco": {
+        "grams": 120.8,
+        "similarity_score": 128.7
+      },
       "salmone_al_naturale": {
         "grams": 107.9,
         "similarity_score": 127.4
@@ -638,10 +682,28 @@
       "pesce_spada": {
         "grams": 133.3,
         "similarity_score": 116.8
+      }
+    },
+    "tonno_fresco": {
+      "tonno_sottolio_sgocciolato": {
+        "grams": 82.8,
+        "similarity_score": 128.7
       },
-      "pollo_ali": {
-        "grams": 98.0,
-        "similarity_score": 115.0
+      "salmone_al_naturale": {
+        "grams": 89.3,
+        "similarity_score": 126.2
+      },
+      "pollo_coscia": {
+        "grams": 127.2,
+        "similarity_score": 126.1
+      },
+      "carne_manzo": {
+        "grams": 118.7,
+        "similarity_score": 121.1
+      },
+      "pesce_spada": {
+        "grams": 110.4,
+        "similarity_score": 118.1
       }
     },
     "biscotti_secchi": {
@@ -689,9 +751,23 @@
       }
     },
     "bresaola": {
+      "fesa_tacchino": {
+        "grams": 142.1,
+        "similarity_score": 128.6
+      },
       "prosciutto_crudo": {
         "grams": 64.7,
         "similarity_score": 97.2
+      }
+    },
+    "fesa_tacchino": {
+      "bresaola": {
+        "grams": 70.4,
+        "similarity_score": 128.6
+      },
+      "prosciutto_crudo": {
+        "grams": 45.5,
+        "similarity_score": 95.8
       }
     },
     "pomodoro": {
@@ -808,6 +884,10 @@
       "bresaola": {
         "grams": 154.6,
         "similarity_score": 97.2
+      },
+      "fesa_tacchino": {
+        "grams": 219.6,
+        "similarity_score": 95.8
       }
     },
     "wurstel": {
@@ -823,13 +903,13 @@
         "grams": 130.2,
         "similarity_score": 105.7
       },
+      "tonno_fresco": {
+        "grams": 157.2,
+        "similarity_score": 104.5
+      },
       "pollo_coscia": {
         "grams": 200.0,
         "similarity_score": 100.6
-      },
-      "carne_manzo": {
-        "grams": 186.6,
-        "similarity_score": 95.6
       }
     },
     "tonno_naturale": {
@@ -1089,13 +1169,13 @@
         "grams": 115.2,
         "similarity_score": 122.0
       },
+      "tonno_fresco": {
+        "grams": 90.6,
+        "similarity_score": 118.1
+      },
       "tonno_sottolio_sgocciolato": {
         "grams": 75.0,
         "similarity_score": 116.8
-      },
-      "salmone_al_naturale": {
-        "grams": 80.9,
-        "similarity_score": 114.2
       }
     },
     "salmone_affumicato": {
@@ -1111,13 +1191,13 @@
         "grams": 117.6,
         "similarity_score": 120.0
       },
+      "tonno_fresco": {
+        "grams": 92.5,
+        "similarity_score": 116.2
+      },
       "tonno_sottolio_sgocciolato": {
         "grams": 76.6,
         "similarity_score": 114.9
-      },
-      "salmone_al_naturale": {
-        "grams": 82.6,
-        "similarity_score": 112.4
       }
     },
     "fagiolini": {
@@ -1169,6 +1249,10 @@
         "grams": 176.5,
         "similarity_score": 128.6
       },
+      "asparagi": {
+        "grams": 75.0,
+        "similarity_score": 126.8
+      },
       "broccoli": {
         "grams": 90.9,
         "similarity_score": 124.4
@@ -1180,10 +1264,6 @@
       "verdure_miste": {
         "grams": 272.7,
         "similarity_score": 122.2
-      },
-      "spinaci": {
-        "grams": 85.7,
-        "similarity_score": 120.8
       }
     },
     "piselli": {
@@ -1507,13 +1587,13 @@
         "grams": 12.4,
         "similarity_score": 94.1
       },
+      "fesa_tacchino": {
+        "grams": 40.2,
+        "similarity_score": 91.2
+      },
       "bresaola": {
         "grams": 28.3,
         "similarity_score": 89.9
-      },
-      "uova": {
-        "grams": 33.6,
-        "similarity_score": 80.0
       }
     },
     "burro_arachidi": {
@@ -1633,6 +1713,10 @@
         "grams": 92.7,
         "similarity_score": 127.4
       },
+      "tonno_fresco": {
+        "grams": 111.9,
+        "similarity_score": 126.2
+      },
       "pollo_coscia": {
         "grams": 142.4,
         "similarity_score": 122.3
@@ -1644,10 +1728,6 @@
       "carne_manzo": {
         "grams": 132.8,
         "similarity_score": 117.2
-      },
-      "pesce_spada": {
-        "grams": 123.6,
-        "similarity_score": 114.2
       }
     },
     "broccoli": {
@@ -1707,13 +1787,13 @@
         "grams": 91.2,
         "similarity_score": 124.8
       },
+      "tonno_fresco": {
+        "grams": 84.3,
+        "similarity_score": 121.1
+      },
       "tonno_sottolio_sgocciolato": {
         "grams": 69.8,
         "similarity_score": 119.8
-      },
-      "salmone_al_naturale": {
-        "grams": 75.3,
-        "similarity_score": 117.2
       }
     }
   }

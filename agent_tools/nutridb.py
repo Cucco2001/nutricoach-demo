@@ -128,19 +128,19 @@ class NutriDB:
             "pasta": "pasta_secca",
             "pasta secca": "pasta_secca",
             "pasta integrale": "pasta_integrale",
-            "tonno": "tonno_naturale",
+            "tonno": "tonno_fresco",
             "tonno naturale": "tonno_naturale",
             "tonno al naturale": "tonno_naturale",
-            "filetto di tonno": "tonno_naturale",
-            "filetto tonno": "tonno_naturale",
-            "tonno filetto": "tonno_naturale",
+            "filetto di tonno": "tonno_fresco",
+            "filetto tonno": "tonno_fresco",
+            "tonno filetto": "tonno_fresco",
             "tonno sottolio sgocciolato": "tonno_sottolio_sgocciolato",
             "tonno sgocciolato": "tonno_sottolio_sgocciolato",
             "tonno sottolio": "tonno_sottolio_sgocciolato",
             "tonno sott'olio": "tonno_sottolio_sgocciolato",
-            "marmellata di ciliegie": "ciliegie",   #############  
-            "marmellata_senza_zucchero": "ciliegie",  ##########################
-            "tonno fresco": "tonno_naturale",      ##################
+            "marmellata di ciliegie": "marmellata",     
+            "marmellata_senza_zucchero": "marmellata_hero_light",  
+            "tonno fresco": "tonno_fresco",      
             "yogurt greco": "yogurt_greco_2percento",
             "yogurt greco 0%": "yogurt_greco_0percento",
             "yogurt greco 0 percento": "yogurt_greco_0percento",
@@ -158,17 +158,17 @@ class NutriDB:
             "iso fuji yamamoto": "iso_fuji_yamamoto",
             "shake proteico": "iso_fuji_yamamoto",
             "burro arachidi": "burro_arachidi",
-            "cereali integrali": "cornflakes",     ###################
+            "cereali integrali": "cornflakes",     
             "burro di arachidi": "burro_arachidi",
-            "verdure miste": "verdure_miste",  ####################
-            "verdure": "verdure_miste",  ####################
+            "verdure miste": "verdure_miste",  
+            "verdure": "verdure_miste",  
             "pomodori": "pomodoro",
             "pomodori secchi": "pomodoro",
             "pomodoro": "pomodoro",
             "pomodorini": "pomodoro",
             "pomodorini secchi": "pomodoro",
             "pomodorino": "pomodoro",
-            "verdura": "verdure_miste",       ######################
+            "verdura": "verdure_miste",       
             "latte scremato": "latte_scremato",
             "latte": "latte_intero",
             "latte parzialmente scremato": "latte_parzialmente_scremato",
@@ -227,8 +227,8 @@ class NutriDB:
             "prosciutto crudo": "prosciutto_crudo",
             "prosciutto cotto": "prosciutto_crudo",
             "prosciutto": "prosciutto_crudo",
-            "fesa di tacchino": "prosciutto_crudo",    ##############
-            "fesa tacchino": "prosciutto_crudo",     #############
+            "fesa di tacchino": "fesa_tacchino",    
+            "fesa tacchino": "fesa_tacchino",     
             "insalata mista": "insalata",   
             "lattuga": "insalata",
             "rucola": "insalata",
@@ -247,18 +247,17 @@ class NutriDB:
             "hamburger_manzo": "carne_manzo",   
             "hamburger": "carne_manzo",
             "hamburger di manzo": "carne_manzo",
-            "asparagi": "verdure_miste", ###################
-            "sedano": "verdure_miste",  ###################
+            "sedano": "insalata",  
             "bistecca": "carne_manzo",
             "bistecca manzo": "carne_manzo",
             "bistecca_manzo": "carne_manzo",
             "hamburger_pollo": "pollo_petto",
             "bistecca di manzo": "carne_manzo",
-            "bistecca di tacchino": "prosciutto_crudo", ##################
-            "petto di tacchino": "pollo_petto",       #############
+            "bistecca di tacchino": "fesa_tacchino", 
+            "petto di tacchino": "fesa_tacchino",       
             "basilico": "verdure_miste",
             "scaglie di parmigiano": "parmigiano_reggiano",
-            "gnocchi": "pasta_secca"        ################
+            "gnocchi": "pasta_secca"        
         })
         
         # Ritorna il dizionario intelligente che implementa ricerca a 3 step

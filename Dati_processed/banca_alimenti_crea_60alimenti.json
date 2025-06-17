@@ -87,6 +87,17 @@
     "nova_group": 1,
     "categoria": "verdure"
   },
+  "asparagi": {
+    "energia_kcal": 40,
+    "proteine_g": 4.6,
+    "carboidrati_g": 4.0,
+    "zuccheri_g": 4.0,
+    "grassi_g": 0.1,
+    "grassi_saturi_g": 0.03,
+    "fibra_g": 2.2,
+    "nova_group": 1,
+    "categoria": "verdure"
+  },
   "verdure_miste": {
     "energia_kcal": 11,
     "proteine_g": 1.1,
@@ -341,6 +352,17 @@
     "nova_group": 3,
     "categoria": "proteine_animali"
   },
+  "tonno_fresco": {
+    "energia_kcal": 159,
+    "proteine_g": 21.5,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 8.1,
+    "grassi_saturi_g": 1.3,
+    "fibra_g": 0.0,
+    "nova_group": 3,
+    "categoria": "proteine_animali"
+  },
   "biscotti_secchi": {
     "energia_kcal": 404,
     "proteine_g": 6.6,
@@ -371,6 +393,17 @@
     "zuccheri_g": 0.0,
     "grassi_g": 2.0,
     "grassi_saturi_g": 1.0,
+    "fibra_g": 0.0,
+    "nova_group": 3,
+    "categoria": "affettati"
+  },
+  "fesa_tacchino": {
+    "energia_kcal": 107,
+    "proteine_g": 24.0,
+    "carboidrati_g": 0.4,
+    "zuccheri_g": 0.0,
+    "grassi_g": 1.2,
+    "grassi_saturi_g": 0.4,
     "fibra_g": 0.0,
     "nova_group": 3,
     "categoria": "affettati"
