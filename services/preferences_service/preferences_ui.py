@@ -29,34 +29,46 @@ class PreferencesUI:
         Args:
             user_id: ID dell'utente
         """
-        with st.expander("Gestisci le tue preferenze alimentari"):
-            # Inizializza le preferenze nella sessione
-            self.food_preferences.initialize_session_preferences(user_id)
-            
-            # Sezione alimenti esclusi
+        st.markdown("""
+            <div class="welcome-header">
+                <h1>Le Tue <span class="gradient-text">Preferenze</span></h1>
+                <p class="section-subtitle">Aggiungi cibi che ami o che vuoi evitare. L'AI adatterà il piano nutrizionale per te.</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # Inizializza le preferenze nella sessione
+        self.food_preferences.initialize_session_preferences(user_id)
+        
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
             self._display_excluded_foods_section()
-            
-            # Sezione alimenti preferiti  
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        with col2:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
             self._display_preferred_foods_section()
-            
-            # Bottone di salvataggio
-            if st.button("Salva preferenze"):
-                if self.food_preferences.save_preferences(user_id, ""):
-                    st.success("Preferenze salvate con successo!")
-                    st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Bottone di salvataggio
+        if st.button("Salva preferenze"):
+            if self.food_preferences.save_preferences(user_id, ""):
+                st.success("Preferenze salvate con successo!")
+                st.rerun()
     
     def _display_excluded_foods_section(self):
         """Mostra la sezione degli alimenti esclusi"""
-        st.subheader("Alimenti da escludere")
+        st.markdown("<h3>🚫 Alimenti da Escludere</h3>", unsafe_allow_html=True)
         
         # Mostra gli alimenti esclusi esistenti
         excluded_foods = self.food_preferences.get_excluded_foods()
         for i, food in enumerate(excluded_foods):
             col1, col2 = st.columns([0.9, 0.1])
             with col1:
-                st.text(food)
+                st.markdown(f"- {food}")
             with col2:
-                if st.button("🗑️", key=f"del_excluded_{i}"):
+                if st.button("🗑️", key=f"del_excluded_{i}", help="Rimuovi alimento"):
                     if self.food_preferences.remove_excluded_food(i):
                         st.rerun()
         
@@ -65,16 +77,16 @@ class PreferencesUI:
     
     def _display_preferred_foods_section(self):
         """Mostra la sezione degli alimenti preferiti"""
-        st.subheader("Alimenti preferiti")
+        st.markdown("<h3>❤️ Alimenti Preferiti</h3>", unsafe_allow_html=True)
         
         # Mostra gli alimenti preferiti esistenti
         preferred_foods = self.food_preferences.get_preferred_foods()
         for i, food in enumerate(preferred_foods):
             col1, col2 = st.columns([0.9, 0.1])
             with col1:
-                st.text(food)
+                st.markdown(f"- {food}")
             with col2:
-                if st.button("🗑️", key=f"del_preferred_{i}"):
+                if st.button("🗑️", key=f"del_preferred_{i}", help="Rimuovi alimento"):
                     if self.food_preferences.remove_preferred_food(i):
                         st.rerun()
         

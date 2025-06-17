@@ -23,7 +23,8 @@ def render_user_sidebar():
     mostra le informazioni esistenti con il pulsante ricomincia.
     """
     with st.sidebar:
-        st.subheader("Le tue informazioni")
+        st.markdown("## 👤 Le Tue Info", unsafe_allow_html=True)
+        
         if not st.session_state.user_info.get("età"):
             # Usa il modulo frontend per gestire il form delle informazioni utente
             handle_user_info_form(
@@ -228,7 +229,13 @@ def render_chat_area():
                 return  # Tutorial in corso, non mostrare altro
         
         # Mostra il messaggio per inserire le informazioni
-        st.info("👈 Per iniziare, inserisci le tue informazioni nella barra laterale")
+        st.markdown("""
+            <div class="card">
+                <h3>👈 Inizia da qui!</h3>
+                <p>Per avviare la tua consulenza nutrizionale personalizzata con NutriCoach, inserisci le tue informazioni di base nel pannello a sinistra.</p>
+                <p>Una volta completato, l'assistente AI ti guiderà attraverso il resto del processo.</p>
+            </div>
+        """, unsafe_allow_html=True)
 
 
 def chat_interface():

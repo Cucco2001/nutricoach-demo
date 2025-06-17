@@ -79,7 +79,7 @@
                             <li><i class="fas fa-check"></i> Piano nutrizionale personalizzato</li>
                             <li><i class="fas fa-check"></i> PDF scaricabile</li>
                         </ul>
-                        <button class="btn-primary" onclick="showEmailForm()">
+                        <button class="btn-primary" onclick="window.open('https://nutricoach.streamlit.app/', '_blank')">
                             Accedi alla Beta <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
@@ -131,20 +131,7 @@
         </div>
     </section>
 
-    <!-- Email Form Modal -->
-    <div id="emailModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="hideEmailForm()">&times;</span>
-            <h2>Accedi alla Beta Gratuita</h2>
-            <p>Inserisci la tua email per accedere subito a NutriCoach Beta</p>
-            <form id="emailForm" onsubmit="handleEmailSubmit(event)">
-                <input type="email" id="userEmail" placeholder="La tua email" required>
-                <button type="submit" class="btn-primary">
-                    Accedi Ora <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
+
 
     <!-- Come Funziona Section -->
     <section id="come-funziona" class="how-it-works compact-section">

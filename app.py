@@ -46,6 +46,9 @@ from agent.prompts import get_initial_prompt
 # Import dei nuovi moduli chat - includendo l'interfaccia modulare
 from chat import ChatManager, AssistantManager, chat_interface
 
+# Import dello stile custom
+from frontend.style import load_css
+
 import threading
 import queue
 
@@ -71,7 +74,11 @@ deepseek_results_queue, deepseek_lock, file_access_lock = initialize_global_vari
 
 
 def main():
-    st.title("NutriCoach - Il tuo assistente nutrizionale personale 🥗")
+    # Carica lo stile CSS custom
+    load_css()
+    
+    # Rimuovi il titolo principale di Streamlit, lo gestiremo con HTML custom
+    # st.title("NutriCoach - Il tuo assistente nutrizionale personale 🥗")
     
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione

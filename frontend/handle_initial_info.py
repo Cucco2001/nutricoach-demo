@@ -102,12 +102,34 @@ class InitialInfoHandler:
         Args:
             user_info: Dizionario con le informazioni dell'utente
         """
-        st.write("Dati inseriti:")
+        st.markdown("""
+            <style>
+                .user-info-sidebar {
+                    font-size: 0.95rem;
+                }
+                .user-info-sidebar strong {
+                    color: var(--primary-color);
+                }
+            </style>
+        """, unsafe_allow_html=True)
+
+        info_html = "<div class='user-info-sidebar'>"
+        info_map = {
+            "età": "🎂 <strong>Età:</strong>",
+            "sesso": "⚧️ <strong>Sesso:</strong>",
+            "peso": "⚖️ <strong>Peso:</strong>",
+            "altezza": "📏 <strong>Altezza:</strong>",
+            "attività": "🏃 <strong>Attività:</strong>",
+            "obiettivo": "🎯 <strong>Obiettivo:</strong>"
+        }
+
         for key, value in user_info.items():
-            if key == "peso":
-                st.write(f"Peso: {int(value)} kg")
-            elif key not in ["id", "username", "preferences"]:
-                st.write(f"{key.capitalize()}: {value}")
+            if key in info_map:
+                unit = " kg" if key == "peso" else " cm" if key == "altezza" else ""
+                info_html += f"<p>{info_map[key]} {value}{unit}</p>"
+        
+        info_html += "</div>"
+        st.markdown(info_html, unsafe_allow_html=True)
     
     def _get_activity_index(self, nutritional_info):
         """

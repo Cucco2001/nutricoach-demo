@@ -48,9 +48,10 @@ class NutritionQuestionHandler:
         Returns:
             tuple: (answer, follow_up_answer) se completata, (None, None) altrimenti
         """
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         # Mostra la domanda principale
-        st.markdown(f"### {question['question']}")
-        answer = st.radio("", question["options"])
+        st.markdown(f"<h3>{question['question']}</h3>", unsafe_allow_html=True)
+        answer = st.radio("", question["options"], label_visibility="collapsed")
         
         # Gestisce eventuali follow-up
         follow_up_answer = None
@@ -58,8 +59,10 @@ class NutritionQuestionHandler:
             follow_up_answer = self._handle_follow_up(question, answer)
         
         if st.button("Avanti"):
+            st.markdown('</div>', unsafe_allow_html=True)
             return answer, follow_up_answer
         
+        st.markdown('</div>', unsafe_allow_html=True)
         return None, None
     
     def handle_number_input_question(self, question, user_info):
@@ -73,23 +76,27 @@ class NutritionQuestionHandler:
         Returns:
             dict: Valori dei campi se completata, None altrimenti
         """
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         question_text = question["question"](user_info) if callable(question["question"]) else question["question"]
-        st.markdown(f"### {question_text}")
+        st.markdown(f"<h3>{question_text}</h3>", unsafe_allow_html=True)
         
         field_values = {}
         for field in question["fields"]:
             label = field["label"](user_info) if callable(field["label"]) else field["label"]
-            st.markdown(f"### {label}")
+            st.markdown(f"<h4>{label}</h4>", unsafe_allow_html=True)
             field_values[field["id"]] = st.number_input(
                 "",
                 min_value=field["min"],
                 max_value=field["max"],
-                value=field["default"]
+                value=field["default"],
+                label_visibility="collapsed"
             )
         
         if st.button("Avanti"):
+            st.markdown('</div>', unsafe_allow_html=True)
             return field_values
         
+        st.markdown('</div>', unsafe_allow_html=True)
         return None
     
     def _handle_follow_up(self, question, main_answer):
@@ -105,8 +112,8 @@ class NutritionQuestionHandler:
         """
         if isinstance(question["follow_up"], str):
             # Gestione vecchio formato stringa
-            st.markdown(f"### {question['follow_up']}")
-            return st.text_input("")
+            st.markdown(f"<h4>{question['follow_up']}</h4>", unsafe_allow_html=True)
+            return st.text_input("", label_visibility="collapsed")
         
         elif isinstance(question["follow_up"], dict):
             if question["follow_up"].get("type") == "multiple_sports":
