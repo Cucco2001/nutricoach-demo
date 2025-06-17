@@ -1,0 +1,768 @@
+/* Reset e Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #2c3e50; /* Verde Scuro per testo */
+    background-color: #f7fcf9; /* Sfondo verdognolo chiaro */
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    height: 60px; /* Logo più grande */
+    width: auto;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #27ae60; /* Verde Primario */
+}
+
+/* Hero Section */
+.hero {
+    padding: 150px 0 100px;
+    background-color: #f7fcf9; /* Sfondo verdognolo chiaro */
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.main-title-line {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 4rem;
+}
+
+.main-title-line.main-title-large {
+    font-size: 5rem;
+    justify-content: center;
+}
+
+.main-title-line .logo {
+    height: 70px;
+}
+
+.subtitle {
+    font-size: 2.2rem;
+    font-weight: 500;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); /* Gradiente Verde */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-description {
+    font-size: 1.15rem;
+    margin-bottom: 2.5rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #27ae60;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Pricing Section */
+.pricing {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 4rem;
+}
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.pricing-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    border: 1px solid #e0e0e0; /* Bordo per tutte le card */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card.featured {
+    border: 2px solid #27ae60; /* Bordo verde per la beta */
+    transform: scale(1.02);
+    box-shadow: 0 15px 40px rgba(39, 174, 96, 0.2);
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.plan-badge {
+    background: #27ae60;
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.plan-name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #2c3e50;
+}
+
+.plan-price {
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.period {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.plan-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+    min-height: 140px;
+}
+
+.plan-features li {
+    padding: 0.6rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.plan-features i {
+    color: #27ae60;
+    width: 20px;
+}
+
+.plan-features i.fa-star {
+    color: #f39c12;
+}
+
+.btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 0.9rem 1.8rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2ecc71;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+}
+
+.btn-secondary {
+    background: #e9ecef;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.wip-badge {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #333;
+}
+
+#emailForm {
+    margin-top: 2rem;
+}
+
+#emailForm input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+#emailForm input:focus {
+    outline: none;
+    border-color: #27ae60;
+}
+
+/* How It Works */
+.how-it-works {
+    padding: 100px 0;
+    background: #f8f9fa;
+}
+
+.steps-container {
+    display: grid;
+    gap: 3rem;
+    margin-top: 4rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 2.5rem;
+    background: #ffffff;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
+.step-icon {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.step-content p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+}
+
+.step-details {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.step-details span {
+    background: #eafaf1;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #27ae60;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Benefits */
+.benefits {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.benefit-card {
+    background: #f8f9fa;
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
+.benefit-icon {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 2rem;
+}
+
+.benefit-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.benefit-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Newsletter */
+.newsletter {
+    padding: 100px 0;
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+}
+
+.newsletter-content h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.newsletter-content p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-bottom: 2.5rem;
+}
+
+.newsletter-form {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 1rem;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.newsletter-form button {
+    padding: 1rem 2rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.newsletter-form button:hover {
+    background: #2ecc71;
+    transform: translateY(-2px);
+}
+
+/* Footer */
+.footer {
+    background: #ffffff;
+    color: #555;
+    padding: 3rem 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.footer-links a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #27ae60;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+    color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .pricing-card.featured {
+        transform: scale(1); /* Rimuove lo scale su tablet per evitare problemi di layout */
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .nav-menu {
+        display: none; /* Semplificazione per il tutorial, si può implementare un menu hamburger qui */
+    }
+    
+    .pricing-cards, .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .step {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .main-title-line {
+        font-size: 3rem;
+    }
+    .main-title-line.main-title-large {
+        font-size: 3.5rem;
+    }
+    .main-title-line .logo {
+        height: 50px;
+    }
+    .subtitle {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero {
+        padding: 120px 0 60px;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .pricing-card, .step, .benefit-card {
+        padding: 2rem;
+    }
+}
+
+/* Sezioni Compatte */
+.compact-section {
+    padding: 60px 0;
+}
+
+/* Sovrascritture per sezioni specifiche */
+#piani {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+#piani .section-title {
+    font-size: 2rem;
+}
+#piani .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+}
+#piani .pricing-card {
+    padding: 1.5rem;
+}
+#piani .plan-name {
+    font-size: 1.4rem;
+}
+#piani .price {
+    font-size: 2.5rem;
+}
+#piani .plan-features {
+    min-height: auto;
+    margin-bottom: 1rem;
+}
+#piani .plan-features li {
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+}
+#piani .btn-primary, #piani .btn-secondary {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+#vantaggi {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+#vantaggi .section-title {
+    font-size: 2.2rem;
+}
+#vantaggi .benefit-card {
+    padding: 1.5rem;
+}
+#vantaggi .benefit-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+}
+#vantaggi .benefit-card h3 {
+    font-size: 1.1rem;
+}
+#vantaggi .benefit-card p {
+    font-size: 0.85rem;
+}
+
+.compact-section .section-title {
+    font-size: 2rem;
+}
+
+.compact-section .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.compact-section .step, .compact-section .benefit-card {
+    padding: 1.8rem;
+}
+
+.compact-section .step-icon, .compact-section .benefit-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+}
+
+.compact-section h3 {
+    font-size: 1.2rem;
+}
+
+.compact-section p {
+    font-size: 0.9rem;
+} 

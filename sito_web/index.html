@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCoach - Il Tuo Nutrizionista Digitale Intelligente</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="NutriCoach" class="logo">
+                <span class="logo-text">NutriCoach</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#come-funziona" class="nav-link">Come Funziona</a>
+                <a href="#vantaggi" class="nav-link">Vantaggi</a>
+                <a href="#piani" class="nav-link">Piani</a>
+                <a href="#newsletter" class="nav-link">Newsletter</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="main-title-line main-title-large">
+                        NutriCoach
+                    </span>
+                    <span class="subtitle gradient-text">Dialoga con la Scienza</span>
+                </h1>
+                <p class="hero-description">
+                    NutriCoach non ti dà solo una dieta, ti guida in un percorso. Attraverso un dialogo interattivo con il nostro AI, basato sulle più recenti ricerche scientifiche, costruirai un piano nutrizionale che funziona davvero per te. Inizia oggi il tuo viaggio verso il benessere.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Basato su Evidenze Scientifiche</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Sempre Disponibile</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Processo Guidato</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Piani Section -->
+    <section id="piani" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Scegli il Tuo Percorso</h2>
+            <p class="section-subtitle">Inizia il tuo viaggio verso il benessere</p>
+            
+            <div class="pricing-cards">
+                <!-- Beta Plan -->
+                <div class="pricing-card featured">
+                    <div class="card-header">
+                        <div class="plan-badge">BETA GRATUITA</div>
+                        <h3 class="plan-name">Tester Esclusivo</h3>
+                        <div class="plan-price">
+                            <span class="price">Gratis</span>
+                            <span class="period">Solo per tester</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Accesso completo alla piattaforma</li>
+                            <li><i class="fas fa-check"></i> Piano nutrizionale personalizzato</li>
+                            <li><i class="fas fa-check"></i> PDF scaricabile</li>
+                        </ul>
+                        <button class="btn-primary" onclick="showEmailForm()">
+                            Accedi alla Beta <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Plan -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <h3 class="plan-name">Dieta AI</h3>
+                        <div class="plan-price">
+                            <span class="price">$2</span>
+                            <span class="period">per piano nutrizionale</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Accesso completo alla piattaforma</li>
+                            <li><i class="fas fa-check"></i> Piano nutrizionale personalizzato</li>
+                            <li><i class="fas fa-check"></i> PDF scaricabile</li>
+                        </ul>
+                        <button class="btn-secondary" disabled>
+                            Work in Progress
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Expert Plan -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <h3 class="plan-name">Dieta AI + Revisione Esperto</h3>
+                        <div class="plan-price">
+                            <span class="price">$5</span>
+                            <span class="period">per piano revisionato</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Accesso completo alla piattaforma</li>
+                            <li><i class="fas fa-check"></i> Piano nutrizionale personalizzato</li>
+                            <li><i class="fas fa-check"></i> PDF scaricabile</li>
+                            <li><i class="fas fa-star"></i> Revisione da biologo nutrizionista certificato</li>
+                        </ul>
+                        <button class="btn-secondary" disabled>
+                            Work in Progress
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Email Form Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideEmailForm()">&times;</span>
+            <h2>Accedi alla Beta Gratuita</h2>
+            <p>Inserisci la tua email per accedere subito a NutriCoach Beta</p>
+            <form id="emailForm" onsubmit="handleEmailSubmit(event)">
+                <input type="email" id="userEmail" placeholder="La tua email" required>
+                <button type="submit" class="btn-primary">
+                    Accedi Ora <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Come Funziona Section -->
+    <section id="come-funziona" class="how-it-works compact-section">
+        <div class="container">
+            <h2 class="section-title">Come Funziona NutriCoach</h2>
+            <p class="section-subtitle">Il percorso completo in 3 semplici fasi</p>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>1. Chat Interattiva</h3>
+                        <p>Il nostro agente AI ti guiderà attraverso domande intelligenti per comprendere le tue esigenze, preferenze alimentari e obiettivi nutrizionali. Come in una vera consulenza!</p>
+                        <div class="step-details">
+                            <span><i class="fas fa-clock"></i> ~15 minuti</span>
+                            <span><i class="fas fa-brain"></i> Analisi completa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>2. Definisci le Preferenze</h3>
+                        <p>Aggiungi facilmente cibi che ami o che vuoi evitare. L'AI adatterà completamente il piano alle tue esigenze personali e restrizioni alimentari.</p>
+                        <div class="step-details">
+                            <span><i class="fas fa-clock"></i> ~1 minuto</span>
+                            <span><i class="fas fa-utensils"></i> Personalizzazione totale</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-file-download"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>3. Piano Nutrizionale Completo</h3>
+                        <p>Ricevi il tuo piano nutrizionale settimanale personalizzato con macro, ricette e fonti scientifiche. Scarica tutto in PDF per portarlo sempre con te!</p>
+                        <div class="step-details">
+                            <span><i class="fas fa-clock"></i> ~1 minuto</span>
+                            <span><i class="fas fa-download"></i> PDF completo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vantaggi Section -->
+    <section id="vantaggi" class="benefits compact-section">
+        <div class="container">
+            <h2 class="section-title">Perché Scegliere NutriCoach</h2>
+            <p class="section-subtitle">I vantaggi che ci rendono unici</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3>Fonti Scientifiche Moderne</h3>
+                    <p>Ogni raccomandazione è basata sulle più recenti ricerche nutrizionali. L'AI ti mostra sempre le fonti utilizzate per totale trasparenza.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Semplicità Rivoluzionaria</h3>
+                    <p>Non servono conoscenze tecniche. L'agente ti guida passo dopo passo come farebbe un nutrizionista esperto, ma in modo digitale e intuitivo.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Economico e Accessibile</h3>
+                    <p>Una frazione del costo di una consulenza privata. Ottieni la stessa qualità professionale a un prezzo che tutti possono permettersi.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Veloce ma Completo</h3>
+                    <p>In soli 20 minuti ottieni quello che normalmente richiederebbe settimane. Senza compromessi sulla qualità e personalizzazione.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Affidabile e Professionale</h3>
+                    <p>Algoritmi testati e fonti verificate. La stessa metodologia usata dai nutrizionisti professionisti, potenziata dall'AI.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Sempre con Te</h3>
+                    <p>Accesso 24/7 da qualsiasi dispositivo. Il tuo nutrizionista digitale è sempre disponibile quando ne hai bisogno.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section id="newsletter" class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Resta Aggiornato</h2>
+                <p>Ricevi consigli nutrizionali esclusivi e aggiornamenti sui nuovi piani</p>
+                <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" placeholder="La tua email" required>
+                    <button type="submit" class="btn-primary">Iscriviti</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="NutriCoach" class="logo">
+                    <span class="logo-text">NutriCoach</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#privacy">Privacy</a>
+                    <a href="#termini">Termini</a>
+                    <a href="#contatti">Contatti</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NutriCoach. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
