@@ -49,6 +49,9 @@ from chat import ChatManager, AssistantManager, chat_interface
 # Import dello stile custom
 from frontend.style import load_css
 
+# Import per la gestione delle immagini
+from utils.image_utils import get_image_html
+
 import threading
 import queue
 
@@ -86,6 +89,20 @@ def main():
     
     # Se l'utente è autenticato, mostra l'interfaccia principale
     if is_authenticated:
+        # Header personalizzato dell'app con logo base64
+        logo_html = get_image_html("sito_web/logo.png", height=50, alt="NutriCoach")
+        st.markdown(
+            f'''
+            <div class="app-header">
+                <div class="app-header-content">
+                    {logo_html}
+                    <h1 class="app-title">NutriCoach</h1>
+                </div>
+            </div>
+            ''',
+            unsafe_allow_html=True
+        )
+        
         # Sidebar per le funzionalità utente
         with st.sidebar:
             st.header("Menu")

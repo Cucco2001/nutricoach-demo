@@ -29,6 +29,31 @@ def load_css():
     
     .main .block-container {
         padding: 2rem;
+        padding-top: 1rem !important;
+    }
+    
+    /* --- Header App --- */
+    .app-header {
+        background: transparent;
+        border-bottom: 1px solid rgba(39, 174, 96, 0.2);
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .app-header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .app-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-color-dark);
+        margin: 0;
     }
     
     /* --- Card di Contenuto --- */
@@ -41,7 +66,27 @@ def load_css():
         border: 1px solid var(--border-color);
         margin-bottom: 2rem;
     }
-
+    
+    /* Card più piccole per elementi secondari */
+    .card {
+        background-color: var(--card-background-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Info card speciale */
+    .info-card {
+        background: linear-gradient(135deg, #eafaf1 0%, #d4f1de 100%);
+        border: 1px solid #c3e6cd;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        font-size: 0.95rem;
+    }
+    
     /* --- Pagina di Login --- */
     .login-wrapper {
         max-width: 450px;
@@ -51,12 +96,15 @@ def load_css():
     .login-wrapper .content-card {
         padding: 2.5rem;
         text-align: center;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
     }
 
     /* --- Bottoni --- */
     .stButton > button {
         background-color: var(--primary-color);
-        color: var(--card-background-color);
+        color: white;
         border-radius: var(--border-radius);
         padding: 0.8rem 1.5rem;
         border: none;
@@ -83,6 +131,51 @@ def load_css():
     /* Titoli */
     h1, h2, h3 {
         color: var(--text-color-dark);
+    }
+    
+    /* --- Stili per titoli speciali --- */
+    .welcome-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        background: transparent !important;
+    }
+    
+    .welcome-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color-dark);
+        margin-bottom: 0.5rem;
+    }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+    }
+    
+    .section-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+    
+    /* Rimuovi background bianco dalle content-card nelle sezioni interne */
+    .content-card:has(.welcome-header) {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    
+    /* Fix per le tabs di Streamlit - rimuove sfondo bianco */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: transparent;
+    }
+    
+    .stTabs [data-baseweb="tab-panel"] {
+        padding-top: 1rem;
     }
     """
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True) 

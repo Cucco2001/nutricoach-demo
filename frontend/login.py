@@ -7,6 +7,7 @@ logout e caricamento delle informazioni utente salvate.
 
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
+from utils.image_utils import get_image_html
 
 
 def handle_login_form(user_data_manager):
@@ -114,16 +115,24 @@ def handle_login_registration(user_data_manager):
     if not st.session_state.user_info:
         
         st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
-        st.markdown('<div class="content-card">', unsafe_allow_html=True)
 
-        st.image("sito_web/logo.png", width=100)
+        # Logo e titolo sulla stessa riga
+        logo_html = get_image_html("sito_web/logo.png", height=100, alt="NutriCoach")
         st.markdown(
-            '<h1 style="font-size: 1.8rem; margin-top: 1rem; margin-bottom: 2rem;">Benvenuto in NutriCoach</h1>',
+            f'''
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                {logo_html}
+                <h1 style="font-size: 3rem; margin: 0;">NutriCoach</h1>
+            </div>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+                Il tuo assistente nutrizionale personale basato su AI
+            </p>
+            ''',
             unsafe_allow_html=True
         )
         
-        # Tabs per Login/Registrazione
-        tab1, tab2 = st.tabs(["Login", "Registrazione"])
+        # Tabs per Login/Registrazione con stile migliorato
+        tab1, tab2 = st.tabs(["🔐 Accedi", "✨ Registrati"])
         
         with tab1:
             handle_login_form(user_data_manager)
@@ -131,7 +140,6 @@ def handle_login_registration(user_data_manager):
         with tab2:
             handle_registration_form(user_data_manager)
             
-        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
         return False

@@ -1,30 +1,10 @@
 {
   "user_preferences": {
-    "excluded_foods": [
-      "Latte"
-    ],
-    "preferred_foods": [
-      "Formaggio"
-    ],
+    "excluded_foods": [],
+    "preferred_foods": [],
     "user_notes": []
   },
-  "chat_history": [
-    {
-      "role": "assistant",
-      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI\n\n⚡ Sto elaborando: analisi del BMI (Indice di Massa Corporea) e valutazione se l’obiettivo indicato (mantenimento del peso) è coerente con la tua attuale situazione fisica.\n\nChe cosa sto facendo, in parole semplici?\nCalcolo il tuo BMI per capire se il tuo peso è nella norma e verifico se il tuo obiettivo nutrizionale ha senso per la tua salute. Il BMI (Indice di Massa Corporea) è un numero che ci dice se il peso di una persona è nella fascia “salutare” rispetto all’altezza.\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (categoria: Normopeso)\n- Peso forma ideale secondo standard internazionali: tra 53.5 e 72.0 kg\n- Obiettivo dichiarato: mantenimento\n\n✔️ L’obiettivo di mantenere il peso è pienamente coerente con il tuo stato di salute attuale: sei già in fascia di normopeso, quindi la scelta di mantenere i tuoi attuali risultati è corretta dal punto di vista nutrizionale.\n\n📚 Fonti utilizzate:\n- Definizione e classificazione BMI: OMS (World Health Organization, 2000)\n- Range di peso ideale e valutazione: NIH, Kyle et al. (2003)\n\n➡️ Conclusione: Sei pronto per passare alla FASE 1 (analisi dettagliata delle risposte, delle abitudini e delle preferenze alimentari)? Se hai dubbi sui calcoli del BMI o vuoi approfondire qualche aspetto della valutazione appena fatta, chiedi pure! Vuoi proseguire?",
-      "timestamp": 1750192313.4499629
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750192454.1559098
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando: analisi delle tue risposte iniziali, valutazione preferenze alimentari, allergie/intolleranze, obiettivi e abitudini sui pasti.\n\nCosa sto facendo in parole semplici?\nIn questa fase riassumo tutto ciò che hai comunicato: dati fisici, presenza/assenza di allergie o intolleranze, preferenze alimentari, obiettivi nutrizionali e abitudini sui pasti. Questo mi permette di creare un piano nutrizionale personalizzato che tenga conto della tua quotidianità e dei tuoi gusti.\n\n📊 Risultati intermedi:\n\n- Dati anagrafici: \n  • Età: 30 anni\n  • Sesso: Maschio\n  • Peso: 70 kg\n  • Altezza: 170 cm\n- Livello attività quotidiana: sedentario (no sport attualmente)\n- Obiettivo: mantenimento del peso\n\nPreferenze/Allergie/Intolleranze:\n- Allergie: assenti\n- Intolleranze: assenti\n- Cibi esclusi: nessuno\n- Cibi preferiti: nessuna segnalazione specifica\n\nStruttura pasti preferita:\n- Numero pasti al giorno: 4\n- Orari pasti dichiarati:\n  • Colazione: 07:30\n  • Pranzo: 13:00\n  • Spuntino pomeridiano: 16:30\n  • Cena: 20:00\n\nOsservazioni:\n- Non sono presenti restrizioni alimentari o preferenze particolari\n- Il piano che creerò sarà vario e in stile mediterraneo, con attenzione al bilanciamento di tutti i macronutrienti\n\n📚 Fonti utilizzate:\n- Informazioni personali fornite dall’utente\n- Linee guida SINU e principi della pianificazione alimentare personalizzata\n\n❓ Ho bisogno del tuo input su:\nVuoi aggiungere qualche dettaglio sulle tue preferenze alimentari (es: cibi che non ti piacciono, desideri provare ricette particolari, preferisci carne o pesce, etc.) oppure posso proseguire con i dati che mi hai fornito?\n\n➡️ Conclusione: Pronto a procedere con il calcolo del tuo fabbisogno energetico (FASE 2) oppure vuoi aggiungere o modificare qualche informazione sulle tue abitudini alimentari?",
-      "timestamp": 1750192474.6830804
-    }
-  ],
+  "chat_history": [],
   "nutritional_info": {
     "età": 30,
     "sesso": "Maschio",
@@ -32,34 +12,7 @@
     "altezza": 170,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {
-      "allergies": {
-        "answer": "No",
-        "follow_up": null
-      },
-      "sports": {
-        "answer": "No",
-        "follow_up": null
-      },
-      "meal_preferences": {
-        "answer": "Sì",
-        "follow_up": {
-          "num_meals": 4,
-          "meal_times": {
-            "Colazione": "07:30",
-            "Pranzo": "13:00",
-            "Cena": "20:00",
-            "Spuntino pomeridiano": "16:30"
-          }
-        }
-      }
-    },
-    "agent_qa": [
-      {
-        "question": "procedi",
-        "answer": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto elaborando: analisi delle tue risposte iniziali, valutazione preferenze alimentari, allergie/intolleranze, obiettivi e abitudini sui pasti.\n\nCosa sto facendo in parole semplici?\nIn questa fase riassumo tutto ciò che hai comunicato: dati fisici, presenza/assenza di allergie o intolleranze, preferenze alimentari, obiettivi nutrizionali e abitudini sui pasti. Questo mi permette di creare un piano nutrizionale personalizzato che tenga conto della tua quotidianità e dei tuoi gusti.\n\n📊 Risultati intermedi:\n\n- Dati anagrafici: \n  • Età: 30 anni\n  • Sesso: Maschio\n  • Peso: 70 kg\n  • Altezza: 170 cm\n- Livello attività quotidiana: sedentario (no sport attualmente)\n- Obiettivo: mantenimento del peso\n\nPreferenze/Allergie/Intolleranze:\n- Allergie: assenti\n- Intolleranze: assenti\n- Cibi esclusi: nessuno\n- Cibi preferiti: nessuna segnalazione specifica\n\nStruttura pasti preferita:\n- Numero pasti al giorno: 4\n- Orari pasti dichiarati:\n  • Colazione: 07:30\n  • Pranzo: 13:00\n  • Spuntino pomeridiano: 16:30\n  • Cena: 20:00\n\nOsservazioni:\n- Non sono presenti restrizioni alimentari o preferenze particolari\n- Il piano che creerò sarà vario e in stile mediterraneo, con attenzione al bilanciamento di tutti i macronutrienti\n\n📚 Fonti utilizzate:\n- Informazioni personali fornite dall’utente\n- Linee guida SINU e principi della pianificazione alimentare personalizzata\n\n❓ Ho bisogno del tuo input su:\nVuoi aggiungere qualche dettaglio sulle tue preferenze alimentari (es: cibi che non ti piacciono, desideri provare ricette particolari, preferisci carne o pesce, etc.) oppure posso proseguire con i dati che mi hai fornito?\n\n➡️ Conclusione: Pronto a procedere con il calcolo del tuo fabbisogno energetico (FASE 2) oppure vuoi aggiungere o modificare qualche informazione sulle tue abitudini alimentari?",
-        "timestamp": 1750192474.967969
-      }
-    ]
+    "nutrition_answers": {},
+    "agent_qa": []
   }
 }

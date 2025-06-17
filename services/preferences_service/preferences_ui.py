@@ -29,11 +29,9 @@ class PreferencesUI:
         Args:
             user_id: ID dell'utente
         """
-        st.markdown('<div class="content-card">', unsafe_allow_html=True)
-        
         st.markdown("""
             <div class="welcome-header">
-                <h1>Le Tue <span class="gradient-text">Preferenze</span></h1>
+                <h1>🥗 Le Tue <span class="gradient-text">Preferenze</span></h1>
                 <p class="section-subtitle">Aggiungi cibi che ami o che vuoi evitare. L'AI adatterà il piano nutrizionale per te.</p>
             </div>
         """, unsafe_allow_html=True)
@@ -44,22 +42,16 @@ class PreferencesUI:
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown('<div class="card">', unsafe_allow_html=True)
             self._display_excluded_foods_section()
-            st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
-            st.markdown('<div class="card">', unsafe_allow_html=True)
             self._display_preferred_foods_section()
-            st.markdown('</div>', unsafe_allow_html=True)
         
         # Bottone di salvataggio
         if st.button("Salva preferenze"):
             if self.food_preferences.save_preferences(user_id, ""):
                 st.success("Preferenze salvate con successo!")
                 st.rerun()
-        
-        st.markdown('</div>', unsafe_allow_html=True)
     
     def _display_excluded_foods_section(self):
         """Mostra la sezione degli alimenti esclusi"""
