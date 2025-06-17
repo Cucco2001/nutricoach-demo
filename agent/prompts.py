@@ -13,22 +13,6 @@ available_tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_fattore_cottura",
-            "description": "Ottiene il fattore di conversione per la cottura di un alimento.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "categoria": {"type": "string", "description": "Categoria dell'alimento"},
-                    "metodo_cottura": {"type": "string", "description": "Metodo di cottura"},
-                    "sotto_categoria": {"type": "string", "description": "Sottocategoria dell'alimento"}
-                },
-                "required": ["categoria", "metodo_cottura", "sotto_categoria"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_LARN_fibre",
             "description": "Ottiene il fabbisogno di fibre in base alle calorie totali.",
             "parameters": {

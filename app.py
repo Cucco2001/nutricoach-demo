@@ -10,7 +10,7 @@ from agent_tools.user_data_manager import UserDataManager
 from datetime import datetime
 from agent_tools.nutridb_tool import (
     get_macros, get_LARN_protein, get_standard_portion, 
-    get_weight_from_volume, get_fattore_cottura, get_LARN_fibre, 
+    get_weight_from_volume, get_LARN_fibre, 
     get_LARN_lipidi_percentuali, get_LARN_vitamine, 
     compute_Harris_Benedict_Equation, get_protein_multiplier,
     calculate_sport_expenditure, calculate_weight_goal_calories, 

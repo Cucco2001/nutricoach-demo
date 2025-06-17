@@ -8,7 +8,7 @@ inclusi tool per database nutrizionale e dati utente.
 import json
 import streamlit as st
 from agent_tools.nutridb_tool import (
-    get_LARN_protein, get_fattore_cottura, get_LARN_fibre, 
+    get_LARN_protein, get_LARN_fibre, 
     get_LARN_lipidi_percentuali, get_LARN_vitamine, 
     compute_Harris_Benedict_Equation, get_protein_multiplier,
     calculate_sport_expenditure, calculate_weight_goal_calories, 
@@ -34,7 +34,6 @@ class ToolHandler:
         self.function_map = {
             # Funzioni per accedere al database nutrizionale
             "get_LARN_protein": get_LARN_protein,
-            "get_fattore_cottura": get_fattore_cottura,
             "get_LARN_fibre": get_LARN_fibre,
             "get_LARN_lipidi_percentuali": get_LARN_lipidi_percentuali,
             "get_LARN_vitamine": get_LARN_vitamine,
