@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class User:
     username: str
+    email: str
     password_hash: str
     user_id: str
     created_at: float
@@ -124,12 +125,13 @@ class UserDataManager:
         except Exception as e:
             logger.warning(f"⚠️ Errore nella sincronizzazione automatica utenti: {str(e)}")
 
-    def register_user(self, username: str, password: str) -> Tuple[bool, str]:
+    def register_user(self, username: str, email: str, password: str) -> Tuple[bool, str]:
         """
         Registra un nuovo utente
         
         Args:
             username: Nome utente
+            email: Email dell'utente
             password: Password
             
         Returns:
@@ -138,12 +140,22 @@ class UserDataManager:
         if username in self._users:
             return False, "Username già in uso"
         
+        # Validazione email
+        if not email or "@" not in email or "." not in email.split("@")[-1]:
+            return False, "Email non valida"
+        
+        # Verifica unicità email
+        for user in self._users.values():
+            if hasattr(user, 'email') and user.email == email:
+                return False, "Email già in uso"
+        
         if len(password) < 8:
             return False, "La password deve essere di almeno 8 caratteri"
         
         user_id = f"user_{int(time.time())}"
         user = User(
             username=username,
+            email=email,
             password_hash=self._hash_password(password),
             user_id=user_id,
             created_at=time.time()

@@ -76,6 +76,7 @@ class SupabaseUserService:
             for username, user_data in local_users_data.items():
                 users_for_supabase.append({
                     "username": username,
+                    "email": user_data.get("email", ""),
                     "password_hash": user_data["password_hash"],
                     "user_id": user_data["user_id"],
                     "created_at": datetime.fromtimestamp(user_data["created_at"]).isoformat()
@@ -144,6 +145,7 @@ class SupabaseUserService:
                 
                 users_data[user["username"]] = {
                     "username": user["username"],
+                    "email": user.get("email", ""),
                     "password_hash": user["password_hash"],
                     "user_id": user["user_id"],
                     "created_at": created_timestamp
@@ -295,6 +297,7 @@ class SupabaseUserService:
             CREATE TABLE users (
                 id SERIAL PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
+                email TEXT UNIQUE NOT NULL,
                 password_hash TEXT NOT NULL,
                 user_id TEXT UNIQUE NOT NULL,
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

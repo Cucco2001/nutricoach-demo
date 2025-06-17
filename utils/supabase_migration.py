@@ -207,7 +207,7 @@ class SupabaseMigrationManager:
             supabase_user = supabase[username]
             
             diff = {}
-            for key in ["password_hash", "user_id", "created_at"]:
+            for key in ["email", "password_hash", "user_id", "created_at"]:
                 if key in local_user and key in supabase_user:
                     if local_user[key] != supabase_user[key]:
                         diff[key] = {
@@ -281,6 +281,7 @@ class SupabaseMigrationManager:
             for _, row in df.iterrows():
                 csv_users[row['username']] = {
                     "username": row['username'],
+                    "email": row.get('email', ''),
                     "password_hash": row['password_hash'],
                     "user_id": row['user_id'],
                     "created_at": row['created_at']

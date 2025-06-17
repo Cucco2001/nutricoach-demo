@@ -76,6 +76,7 @@ def handle_registration_form(user_data_manager):
     with st.form("register_form"):
         st.write("Crea un nuovo account")
         new_username = st.text_input("Username")
+        new_email = st.text_input("Email")
         new_password = st.text_input("Password", type="password")
         confirm_password = st.text_input("Conferma password", type="password")
         
@@ -84,7 +85,7 @@ def handle_registration_form(user_data_manager):
                 st.error("Le password non coincidono")
                 return False
             else:
-                success, result = user_data_manager.register_user(new_username, new_password)
+                success, result = user_data_manager.register_user(new_username, new_email, new_password)
                 if success:
                     st.success("Registrazione completata! Ora puoi accedere.")
                     return True
