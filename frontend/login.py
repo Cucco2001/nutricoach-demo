@@ -112,18 +112,17 @@ def handle_login_registration(user_data_manager):
     
     # Se l'utente non è autenticato, mostra form di login/registrazione
     if not st.session_state.user_info:
-        # --- Nuovo Header Stile Web ---
-        st.markdown("""
-            <div class="welcome-header">
-                <img src="https://raw.githubusercontent.com/NutriCoach/NutriCoach/main/sito_web/logo.png" alt="NutriCoach Logo">
-                <h1>Benvenuto in <span class="gradient-text">NutriCoach</span></h1>
-                <p class="section-subtitle">Il tuo assistente nutrizionale personale. Accedi o registrati per iniziare.</p>
-            </div>
-        """, unsafe_allow_html=True)
         
-        # --- Contenitore Stile Card ---
-        st.markdown('<div class="login-container">', unsafe_allow_html=True)
+        st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
+        st.markdown('<div class="content-card">', unsafe_allow_html=True)
+
+        st.image("sito_web/logo.png", width=100)
+        st.markdown(
+            '<h1 style="font-size: 1.8rem; margin-top: 1rem; margin-bottom: 2rem;">Benvenuto in NutriCoach</h1>',
+            unsafe_allow_html=True
+        )
         
+        # Tabs per Login/Registrazione
         tab1, tab2 = st.tabs(["Login", "Registrazione"])
         
         with tab1:
@@ -133,7 +132,8 @@ def handle_login_registration(user_data_manager):
             handle_registration_form(user_data_manager)
             
         st.markdown('</div>', unsafe_allow_html=True)
-        
+        st.markdown('</div>', unsafe_allow_html=True)
+
         return False
     
     return True

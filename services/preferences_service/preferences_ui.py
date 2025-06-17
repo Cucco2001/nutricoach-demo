@@ -29,6 +29,8 @@ class PreferencesUI:
         Args:
             user_id: ID dell'utente
         """
+        st.markdown('<div class="content-card">', unsafe_allow_html=True)
+        
         st.markdown("""
             <div class="welcome-header">
                 <h1>Le Tue <span class="gradient-text">Preferenze</span></h1>
@@ -56,6 +58,8 @@ class PreferencesUI:
             if self.food_preferences.save_preferences(user_id, ""):
                 st.success("Preferenze salvate con successo!")
                 st.rerun()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
     
     def _display_excluded_foods_section(self):
         """Mostra la sezione degli alimenti esclusi"""

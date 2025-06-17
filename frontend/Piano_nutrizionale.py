@@ -119,14 +119,23 @@ class PianoNutrizionale:
             # Sezioni principali del piano nutrizionale in un layout a due colonne
             col1, col2 = st.columns(2)
             with col1:
+                st.markdown('<div class="content-card">', unsafe_allow_html=True)
                 self._display_caloric_needs_section(extracted_data)
+                st.markdown('</div>', unsafe_allow_html=True)
             with col2:
+                st.markdown('<div class="content-card">', unsafe_allow_html=True)
                 self._display_macros_section(extracted_data)
+                st.markdown('</div>', unsafe_allow_html=True)
 
             st.divider()
             
+            st.markdown('<div class="content-card">', unsafe_allow_html=True)
             self._display_daily_plan_section(extracted_data)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+            st.markdown('<div class="content-card">', unsafe_allow_html=True)
             self._display_registered_meals_section(extracted_data)
+            st.markdown('</div>', unsafe_allow_html=True)
             
         except Exception as e:
             st.error(f"❌ Errore nel caricamento dei dati: {str(e)}")
@@ -258,7 +267,6 @@ class PianoNutrizionale:
         if not extracted_data or "caloric_needs" not in extracted_data:
             return
             
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("<h3>🔥 Fabbisogno Energetico</h3>", unsafe_allow_html=True)
 
         caloric_data = extracted_data["caloric_needs"]
@@ -272,7 +280,7 @@ class PianoNutrizionale:
             st.metric(label="Fabbisogno Base (con LAF)", value=f"{caloric_data.get('fabbisogno_base', 0)} kcal")
             st.metric(label="Obiettivo Finale", value=f"{caloric_data.get('fabbisogno_finale', 0)} kcal", delta=f"{caloric_data.get('aggiustamento_obiettivo', 0)} kcal")
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        self._display_caloric_additional_info(caloric_data)
     
     def _display_caloric_additional_info(self, caloric_data):
         """
@@ -305,7 +313,6 @@ class PianoNutrizionale:
         if not extracted_data or "macros_total" not in extracted_data:
             return
             
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("<h3>🥗 Distribuzione Macronutrienti</h3>", unsafe_allow_html=True)
 
         macros_data = extracted_data["macros_total"]
@@ -331,7 +338,6 @@ class PianoNutrizionale:
         })
         
         self._display_macros_chart_and_cards(macro_df, macros_data)
-        st.markdown('</div>', unsafe_allow_html=True)
     
     def _display_macros_chart_and_cards(self, macro_df, macros_data):
         """
@@ -393,7 +399,6 @@ class PianoNutrizionale:
         if not extracted_data or "daily_macros" not in extracted_data:
             return
             
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("<h3>🍽️ Piano Pasti Giornaliero</h3>", unsafe_allow_html=True)
 
         daily_data = extracted_data["daily_macros"]
@@ -403,8 +408,6 @@ class PianoNutrizionale:
         
         if "distribuzione_pasti" in daily_data:
             self._display_meal_distribution(daily_data["distribuzione_pasti"])
-        
-        st.markdown('</div>', unsafe_allow_html=True)
     
     def _display_meal_distribution(self, distribuzione_pasti):
         """
@@ -465,7 +468,6 @@ class PianoNutrizionale:
         if not has_day1_data and not has_weekly_data:
             return
             
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown("<h3>📅 Piano Settimanale - Ricette e Pasti</h3>", unsafe_allow_html=True)
         
         # Mostra i giorni disponibili
@@ -473,8 +475,6 @@ class PianoNutrizionale:
         
         # Crea il menu a tendina per selezionare il giorno
         self._display_day_selector_and_content(extracted_data, has_day1_data, has_weekly_data)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
     
     def _display_weekly_plan_overview(self, extracted_data):
         """

@@ -2,213 +2,87 @@ import streamlit as st
 
 def load_css():
     """
-    Carica e inietta il CSS personalizzato basato sullo stile di sito_web.
+    Carica e inietta il CSS personalizzato per un'esperienza elegante, semplice e a tema.
     """
     css = """
     /* --- Google Font Import --- */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     /* --- Variabili Colore e Stile --- */
     :root {
-        --primary-color: #27ae60;
-        --primary-color-light: #2ecc71;
+        --primary-color: #27ae60;      /* Verde Scuro Nutricoach */
+        --background-color: #f7fcf9;   /* Sfondo Verde Molto Chiaro */
+        --card-background-color: #ffffff;
         --text-color-dark: #2c3e50;
-        --background-color-light: #f7fcf9;
-        --white: #ffffff;
-        --light-gray: #f8f9fa;
-        --medium-gray: #e9ecef;
-        --dark-gray: #666;
-        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        --box-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.08);
-        --border-radius: 20px;
-        --gradient: linear-gradient(135deg, var(--primary-color-light) 0%, var(--primary-color) 100%);
+        --text-color-light: #555;
+        --border-color: #e0e0e0;
+        --box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        --border-radius: 12px;
     }
 
-    /* --- Stili Globali --- */
-    body {
+    /* --- Stili Globali e Sfondo a Tema --- */
+    body, .stApp {
         font-family: 'Inter', sans-serif;
         color: var(--text-color-dark);
-        background-color: var(--background-color-light);
-    }
-
-    /* --- Contenitore Principale dell'App --- */
-    .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-
-    /* --- Sidebar --- */
-    .st-emotion-cache-1jicfl2 {
-        background-color: var(--white);
-        border-right: 1px solid var(--medium-gray);
+        background-color: var(--background-color) !important;
     }
     
-    /* Titolo Sidebar */
-    .st-emotion-cache-1jicfl2 .st-emotion-cache-16txtl3 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--text-color-dark);
+    .main .block-container {
+        padding: 2rem;
+    }
+    
+    /* --- Card di Contenuto --- */
+    /* Usato per raggruppare sezioni di contenuto */
+    .content-card {
+        background-color: var(--card-background-color);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--border-color);
+        margin-bottom: 2rem;
     }
 
-    /* Radio buttons nella Sidebar */
-    .st-emotion-cache-1jicfl2 .st-radio label {
-        padding: 0.75rem 1.25rem;
-        margin-bottom: 0.5rem;
-        border-radius: 10px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        font-weight: 500;
+    /* --- Pagina di Login --- */
+    .login-wrapper {
+        max-width: 450px;
+        margin: 4rem auto;
     }
-    .st-emotion-cache-1jicfl2 .st-radio [aria-selected="true"] label {
-        background-color: var(--primary-color);
-        color: var(--white);
-    }
-    .st-emotion-cache-1jicfl2 .st-radio label:hover {
-        background-color: var(--medium-gray);
+    
+    .login-wrapper .content-card {
+        padding: 2.5rem;
+        text-align: center;
     }
 
     /* --- Bottoni --- */
     .stButton > button {
-        width: 100%;
-        padding: 0.9rem 1.8rem;
-        border: none;
-        border-radius: 10px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
         background-color: var(--primary-color);
-        color: var(--white);
+        color: var(--card-background-color);
+        border-radius: var(--border-radius);
+        padding: 0.8rem 1.5rem;
+        border: none;
+        font-weight: 600;
+        transition: opacity 0.3s ease;
     }
     .stButton > button:hover {
-        background-color: var(--primary-color-light);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
-    }
-    .stButton > button:disabled {
-        background-color: #e9ecef;
-        color: #666;
-        cursor: not-allowed;
+        opacity: 0.85;
     }
 
-    /* --- Titoli e Testi --- */
-    h1 {
-        font-size: 2.8rem;
-        font-weight: 700;
-        color: var(--text-color-dark);
-        text-align: center;
-        margin-bottom: 1rem;
+    /* --- Chat --- */
+    /* Messaggio Assistente */
+    div[data-testid="stChatMessage"]:has([aria-label="assistant avatar"]) [data-testid="stChatMessageContent"] {
+        background-color: #f0f2f6;
+        border-radius: var(--border-radius) var(--border-radius) var(--border-radius) 5px;
+    }
+
+    /* Messaggio Utente */
+    div[data-testid="stChatMessage"]:has([aria-label="user avatar"]) [data-testid="stChatMessageContent"] {
+        background-color: #e1ffc7;
+        border-radius: var(--border-radius) var(--border-radius) 5px var(--border-radius);
     }
     
-    h2 {
-        font-size: 2.2rem;
-        font-weight: 600;
-        color: var(--text-color-dark);
-        border-bottom: 2px solid var(--primary-color);
-        padding-bottom: 0.5rem;
-        margin-top: 2rem;
-        margin-bottom: 1.5rem;
-    }
-
-    h3 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--text-color-dark);
-        margin-bottom: 1rem;
-    }
-
-    /* --- Stili per i Componenti Custom --- */
-
-    /* Card generica */
-    .card {
-        background: var(--white);
-        border-radius: var(--border-radius);
-        padding: 2.5rem;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid var(--medium-gray);
-        box-shadow: var(--box-shadow);
-        margin-bottom: 2rem;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--box-shadow-hover);
-    }
-
-    .section-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 1rem;
+    /* Titoli */
+    h1, h2, h3 {
         color: var(--text-color-dark);
     }
-
-    .section-subtitle {
-        text-align: center;
-        font-size: 1.2rem;
-        color: var(--dark-gray);
-        margin-bottom: 3rem;
-    }
-    
-    .gradient-text {
-        background: var(--gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    /* Stile per i messaggi della chat */
-    [data-testid="chat-message-container"] {
-        border-radius: 15px;
-        padding: 1.2rem;
-        margin-bottom: 1rem;
-    }
-    
-    /* Messaggio dell'assistente */
-     [data-testid="chat-message-container"] [data-testid="stChatMessageContent"] {
-        background-color: var(--white);
-        box-shadow: var(--box-shadow);
-    }
-
-    /* Messaggio dell'utente */
-    [data-testid="chat-message-container"] [data-testid="stChatMessageContent"] {
-        background-color: #eafaf1; /* Verde molto chiaro */
-    }
-
-    /* Input della chat */
-    .st-emotion-cache-1c7y2kd {
-        border-top: 1px solid var(--medium-gray);
-    }
-    
-    /* --- Stili specifici per l'app --- */
-    
-    /* Form di login */
-    .login-container {
-        max-width: 450px;
-        margin: 4rem auto;
-        padding: 3rem;
-        background: var(--white);
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        text-align: center;
-    }
-
-    /* Messaggio di benvenuto */
-    .welcome-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    
-    /* Logo nel header */
-    .welcome-header img {
-        height: 80px;
-        margin-bottom: 1rem;
-    }
-
-    .welcome-header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-
     """
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True) 
