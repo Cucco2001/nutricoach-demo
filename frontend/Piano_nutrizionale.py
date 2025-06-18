@@ -272,14 +272,25 @@ class PianoNutrizionale:
 
         caloric_data = extracted_data["caloric_needs"]
         
-        # Metrics principali
-        col1, col2 = st.columns(2)
-        with col1:
-            st.metric(label="Metabolismo Basale (BMR)", value=f"{caloric_data.get('bmr', 0)} kcal")
-            st.metric(label="Dispendio Sportivo", value=f"{caloric_data.get('dispendio_sportivo', 0)} kcal")
-        with col2:
-            st.metric(label="Fabbisogno Base (con LAF)", value=f"{caloric_data.get('fabbisogno_base', 0)} kcal")
-            st.metric(label="Obiettivo Finale", value=f"{caloric_data.get('fabbisogno_finale', 0)} kcal", delta=f"{caloric_data.get('aggiustamento_obiettivo', 0)} kcal")
+        # Metrics principali con stile colorato
+        col1, col2, col3, col4 = st.columns(4)
+        
+        metrics = [
+            ("⚡ Metabolismo Basale", caloric_data.get('bmr', 0), "Energia per le funzioni vitali"),
+            ("🏃 Fabbisogno Base", caloric_data.get('fabbisogno_base', 0), "Con attività quotidiana"),
+            ("💪 Dispendio Sportivo", caloric_data.get('dispendio_sportivo', 0), "Calorie dall'attività sportiva"),
+            ("🎯 Fabbisogno Finale", caloric_data.get('fabbisogno_finale', 0), "Calorie totali giornaliere")
+        ]
+        
+        for col, (title, value, description) in zip([col1, col2, col3, col4], metrics):
+            with col:
+                st.markdown(f'''
+                <div class="metric-container">
+                    <h4>{title}</h4>
+                    <h2>{value} kcal</h2>
+                    <small>{description}</small>
+                </div>
+                ''', unsafe_allow_html=True)
         
         self._display_caloric_additional_info(caloric_data)
     
@@ -354,10 +365,23 @@ class PianoNutrizionale:
             st.bar_chart(macro_df.set_index('Macronutriente')['Kcal'])
             
         with col2:
-            # Cards dei macronutrienti
-            st.metric(label="🥩 Proteine", value=f"{macro_df.iloc[0]['Grammi']}g", delta=f"{macro_df.iloc[0]['Percentuale']}%")
-            st.metric(label="🍞 Carboidrati", value=f"{macro_df.iloc[1]['Grammi']}g", delta=f"{macro_df.iloc[1]['Percentuale']}%")
-            st.metric(label="🥑 Grassi", value=f"{macro_df.iloc[2]['Grammi']}g", delta=f"{macro_df.iloc[2]['Percentuale']}%")
+            # Cards dei macronutrienti colorate
+            macros_info = [
+                ('Proteine', '🥩', '#FF6B6B'),
+                ('Carboidrati', '🍞', '#4ECDC4'), 
+                ('Grassi', '🥑', '#45B7D1')
+            ]
+            
+            for i, (macro, emoji, color) in enumerate(macros_info):
+                row = macro_df.iloc[i]
+                st.markdown(f'''
+                <div style="background: linear-gradient(135deg, {color} 0%, {color}88 100%); 
+                            padding: 12px; border-radius: 10px; margin: 8px 0; color: white;">
+                    <h4>{emoji} {macro}</h4>
+                    <p><strong>{row['Grammi']}g</strong> ({row['Kcal']} kcal)</p>
+                    <p style="font-size: 12px; opacity: 0.9;">{row['Percentuale']}% del totale</p>
+                </div>
+                ''', unsafe_allow_html=True)
         
         # Fibre e calorie totali
         self._display_macros_totals(macros_data)
@@ -401,7 +425,8 @@ class PianoNutrizionale:
         daily_data = extracted_data["daily_macros"]
         
         num_pasti = daily_data.get('numero_pasti', 0)
-        st.metric(label="Numero di Pasti Previsti", value=num_pasti)
+        st.markdown(f'<div class="info-card"><strong>📅 Piano giornaliero:</strong> {num_pasti} pasti</div>', 
+                   unsafe_allow_html=True)
         
         if "distribuzione_pasti" in daily_data:
             self._display_meal_distribution(daily_data["distribuzione_pasti"])
@@ -413,20 +438,28 @@ class PianoNutrizionale:
         Args:
             distribuzione_pasti: Dati della distribuzione dei pasti
         """
-        for pasto_nome, pasto_data in distribuzione_pasti.items():
+        # Timeline dei pasti colorata
+        meal_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD']
+        
+        for i, (pasto_nome, pasto_data) in enumerate(distribuzione_pasti.items()):
+            # Controllo di sicurezza per pasto_data
             if not pasto_data:
                 continue
-            
-            with st.container():
-                st.subheader(pasto_nome.title())
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.metric(label="Kcal", value=pasto_data.get('kcal', 0))
-                with col2:
-                    st.metric(label="% sul totale", value=f"{pasto_data.get('percentuale_kcal', 0)}%")
                 
-                # Macros del pasto in cards piccole
-                self._display_meal_macros(pasto_data)
+            color = meal_colors[i % len(meal_colors)]
+            kcal = pasto_data.get('kcal', 0)
+            percentuale = pasto_data.get('percentuale_kcal', 0)
+            
+            st.markdown(f'''
+            <div style="background: linear-gradient(135deg, {color} 0%, {color}88 100%); 
+                        padding: 15px; border-radius: 12px; margin: 10px 0; color: white;">
+                <h3>🍽️ {pasto_nome.title()}</h3>
+                <p style="font-size: 16px;"><strong>{kcal} kcal</strong> ({percentuale}% del totale)</p>
+            </div>
+            ''', unsafe_allow_html=True)
+            
+            # Macros del pasto in cards piccole
+            self._display_meal_macros(pasto_data)
     
     def _display_meal_macros(self, pasto_data):
         """
@@ -435,17 +468,22 @@ class PianoNutrizionale:
         Args:
             pasto_data: Dati del pasto
         """
+        # Controllo di sicurezza per pasto_data
         if not pasto_data:
             return
             
         col1, col2, col3 = st.columns(3)
         
-        with col1:
-            st.metric(label="Proteine", value=f"{pasto_data.get('proteine_g', 0)}g")
-        with col2:
-            st.metric(label="Carboidrati", value=f"{pasto_data.get('carboidrati_g', 0)}g")
-        with col3:
-            st.metric(label="Grassi", value=f"{pasto_data.get('grassi_g', 0)}g")
+        macro_info = [
+            ("🥩 Proteine", pasto_data.get('proteine_g', 0), "g"),
+            ("🍞 Carboidrati", pasto_data.get('carboidrati_g', 0), "g"),
+            ("🥑 Grassi", pasto_data.get('grassi_g', 0), "g")
+        ]
+        
+        for col, (label, value, unit) in zip([col1, col2, col3], macro_info):
+            with col:
+                st.markdown(f'<div class="ingredient-card"><strong>{label}:</strong> {value}{unit}</div>', 
+                           unsafe_allow_html=True)
     
     def _display_registered_meals_section(self, extracted_data):
         """
@@ -494,7 +532,14 @@ class PianoNutrizionale:
                 available_days.append(f"Giorno {day_num}")
         
         if available_days:
-            st.markdown(f"**Giorni con dati:** {' • '.join(available_days)}")
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
+                        padding: 15px; border-radius: 12px; margin: 10px 0; color: white; text-align: center;">
+                <h4>📊 Piano Settimanale Disponibile</h4>
+                <p><strong>Giorni con dati:</strong> {' • '.join(available_days)}</p>
+                <p><em>Totale giorni pianificati: {len(available_days)}/7</em></p>
+            </div>
+            """, unsafe_allow_html=True)
     
     def _display_day_selector_and_content(self, extracted_data, has_day1_data, has_weekly_data):
         """
@@ -566,7 +611,13 @@ class PianoNutrizionale:
         day_name = day_names.get(day_num, f"Giorno {day_num}")
         
         # Header del giorno
-        st.subheader(f"📅 {day_name} (Giorno {day_num})")
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); 
+                    padding: 20px; border-radius: 15px; margin: 20px 0; color: white; text-align: center;">
+            <h2>📅 {day_name} (Giorno {day_num})</h2>
+            <p><em>{'Piano base creato' if is_registered_meals else 'Piano settimanale generato'}</em></p>
+        </div>
+        """, unsafe_allow_html=True)
         
         if is_registered_meals:
             # Giorno 1: registered_meals (lista di pasti)
@@ -648,6 +699,88 @@ class PianoNutrizionale:
             # Separatore
             st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
     
+    def _sort_meals_by_time(self, meals_data):
+        """
+        Ordina i pasti in base all'ordine cronologico corretto: colazione, spuntino mattutino, 
+        pranzo, spuntino pomeridiano, cena, spuntino serale.
+        
+        Args:
+            meals_data: Lista dei pasti non ordinati
+            
+        Returns:
+            list: Lista dei pasti ordinati cronologicamente
+        """
+        if not meals_data:
+            return []
+        
+        # Definisce l'ordine cronologico dei pasti
+        meal_order = {
+            'colazione': 1,
+            'breakfast': 1,
+            'prima_colazione': 1,
+            
+            'spuntino_mattutino': 2,
+            'spuntino_mattina': 2,
+            'spuntino_del_mattino': 2,
+            'merenda_mattutina': 2,
+            'snack_mattutino': 2,
+            'break_mattutino': 2,
+            
+            'pranzo': 3,
+            'lunch': 3,
+            'pasto_principale': 3,
+            
+            'spuntino_pomeridiano': 4,
+            'spuntino_pomeriggio': 4,
+            'spuntino_del_pomeriggio': 4,
+            'merenda': 4,
+            'merenda_pomeridiana': 4,
+            'snack_pomeridiano': 4,
+            'break_pomeridiano': 4,
+            
+            'cena': 5,
+            'dinner': 5,
+            'secondo_pasto': 5,
+            
+            'spuntino_serale': 6,
+            'merenda_serale': 6,
+            'snack_serale': 6,
+        }
+        
+        def get_meal_priority(meal):
+            """Calcola la priorità di ordinamento per un pasto"""
+            nome_pasto = meal.get('nome_pasto', '').lower().strip()
+            
+            # Normalizza il nome rimuovendo spazi e caratteri speciali
+            nome_normalizzato = nome_pasto.replace(' ', '_').replace('-', '_')
+            
+            # Cerca corrispondenza diretta
+            if nome_normalizzato in meal_order:
+                return meal_order[nome_normalizzato]
+            
+            # Ricerca parziale con parole chiave
+            if 'colazione' in nome_pasto or 'breakfast' in nome_pasto:
+                return 1
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('mattut' in nome_pasto or 'mattina' in nome_pasto):
+                return 2
+            elif 'pranzo' in nome_pasto or 'lunch' in nome_pasto:
+                return 3
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('pomer' in nome_pasto or 'pomeriggio' in nome_pasto):
+                return 4
+            elif 'cena' in nome_pasto or 'dinner' in nome_pasto:
+                return 5
+            elif ('spuntino' in nome_pasto or 'merenda' in nome_pasto or 'snack' in nome_pasto) and \
+                 ('seral' in nome_pasto or 'sera' in nome_pasto):
+                return 6
+            else:
+                # Pasti non riconosciuti vanno alla fine
+                return 999
+        
+        # Ordina i pasti in base alla priorità cronologica
+        return sorted(meals_data, key=get_meal_priority)
+    
     def _display_single_meal(self, meal, index, total_meals):
         """
         Mostra un singolo pasto registrato.
@@ -659,12 +792,23 @@ class PianoNutrizionale:
         """
         nome_pasto = meal.get('nome_pasto', 'Pasto').title()
         
-        with st.expander(f"🍽️ {nome_pasto}"):
-            # Lista ingredienti
-            self._display_meal_ingredients(meal)
-            
-            # Totali nutrizionali
-            self._display_meal_nutritional_totals(meal)
+        # Header del pasto
+        st.markdown(f'''
+        <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
+                    padding: 15px; border-radius: 12px; margin: 15px 0; color: white;">
+            <h3>🍽️ {nome_pasto}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # Lista ingredienti
+        self._display_meal_ingredients(meal)
+        
+        # Totali nutrizionali
+        self._display_meal_nutritional_totals(meal)
+        
+        # Separatore tra i pasti
+        if index < total_meals - 1:
+            st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
     
     def _display_meal_ingredients(self, meal):
         """
@@ -685,7 +829,14 @@ class PianoNutrizionale:
             misura = alimento.get('misura_casalinga', 'N/A')
             metodo = alimento.get('metodo_cottura', '')
             
-            st.markdown(f"- **{nome}**: {quantita}g ({stato}, {misura}) {metodo if metodo else ''}")
+            st.markdown(f'''
+            <div class="ingredient-card">
+                <strong>{nome}</strong><br>
+                📏 {quantita}g ({stato})<br>
+                🥄 {misura}
+                {f'<br>🔥 {metodo}' if metodo else ''}
+            </div>
+            ''', unsafe_allow_html=True)
     
     def _display_meal_nutritional_totals(self, meal):
         """
@@ -705,13 +856,25 @@ class PianoNutrizionale:
         
         st.markdown("**📊 Valori Nutrizionali Totali:**")
         
-        col1, col2 = st.columns(2)
-        with col1:
-            st.metric(label="Calorie", value=f"{totali.get('kcal_totali', 0)} kcal")
-            st.metric(label="Carboidrati", value=f"{totali.get('carboidrati_totali', 0)}g")
-        with col2:
-            st.metric(label="Proteine", value=f"{totali.get('proteine_totali', 0)}g")
-            st.metric(label="Grassi", value=f"{totali.get('grassi_totali', 0)}g")
+        col1, col2, col3, col4 = st.columns(4)
+        nutrition_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
+        nutrition_data = [
+            ('🔥 Calorie', f"{totali.get('kcal_totali', 0)} kcal"),
+            ('🥩 Proteine', f"{totali.get('proteine_totali', 0)}g"),
+            ('🍞 Carboidrati', f"{totali.get('carboidrati_totali', 0)}g"),
+            ('🥑 Grassi', f"{totali.get('grassi_totali', 0)}g")
+        ]
+        
+        for k, (col, (label, value)) in enumerate(zip([col1, col2, col3, col4], nutrition_data)):
+            with col:
+                color = nutrition_colors[k]
+                st.markdown(f'''
+                <div style="background: {color}; padding: 10px; border-radius: 8px; 
+                            text-align: center; color: white; margin: 2px;">
+                    <div style="font-size: 12px;">{label}</div>
+                    <div style="font-size: 14px; font-weight: bold;">{value}</div>
+                </div>
+                ''', unsafe_allow_html=True)
 
 
 # Funzione di utilità per mantenere compatibilità con app.py
