@@ -2,7 +2,7 @@ import json
 import time
 import hashlib
 from pathlib import Path
-from typing import Dict, List, Set, Union, Optional, Tuple
+from typing import Dict, List, Set, Union, Optional, Tuple, Any
 from dataclasses import dataclass, asdict
 import logging
 
@@ -381,15 +381,21 @@ class UserDataManager:
         """Salva i dati dell'utente su file preservando sempre i dati DeepSeek e sincronizza con Supabase"""
         user_file = self.data_dir / f"{user_id}.json"
         
-        # PRESERVA i dati DeepSeek esistenti se presenti
+        # PRESERVA i dati DeepSeek e costi esistenti se presenti
         existing_deepseek_data = None
+        existing_cost_data = None
+        existing_total_cost = None
         if user_file.exists():
             try:
                 with open(user_file, 'r', encoding='utf-8') as f:
                     existing_data = json.load(f)
                     existing_deepseek_data = existing_data.get("nutritional_info_extracted")
+                    existing_cost_data = existing_data.get("conversation_costs")
+                    existing_total_cost = existing_data.get("total_cost_eur_all_sessions")
                     if existing_deepseek_data:
                         print(f"[USER_DATA_MANAGER] Preservando dati DeepSeek per user {user_id}: {list(existing_deepseek_data.keys())}")
+                    if existing_cost_data:
+                        print(f"[USER_DATA_MANAGER] Preservando {len(existing_cost_data)} sessioni di costi per user {user_id}")
             except Exception as e:
                 print(f"[USER_DATA_MANAGER] Errore nel leggere dati esistenti: {str(e)}")
         
@@ -415,6 +421,12 @@ class UserDataManager:
         if existing_deepseek_data:
             data["nutritional_info_extracted"] = existing_deepseek_data
             print(f"[USER_DATA_MANAGER] Dati DeepSeek restaurati per user {user_id}")
+        
+        # RESTAURA i dati dei costi se esistevano
+        if existing_cost_data:
+            data["conversation_costs"] = existing_cost_data
+            data["total_cost_eur_all_sessions"] = existing_total_cost
+            print(f"[USER_DATA_MANAGER] Dati costi restaurati per user {user_id}")
         
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
@@ -522,4 +534,40 @@ class UserDataManager:
         )
         
         # Forza il salvataggio su file
-        self._save_user_data(user_id) 
+        self._save_user_data(user_id)
+    
+    def save_cost_stats(self, user_id: str, stats: Dict) -> None:
+        """
+        Salva le statistiche dei costi della conversazione per l'utente
+        
+        Args:
+            user_id: ID dell'utente
+            stats: Dizionario con le statistiche dei token e costi
+        """
+        user_file = self.data_dir / f"{user_id}.json"
+        
+        # Carica i dati esistenti
+        data = {}
+        if user_file.exists():
+            with open(user_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        
+        # Aggiorna o crea la sezione conversation_costs
+        if "conversation_costs" not in data:
+            data["conversation_costs"] = []
+        
+        # Aggiungi le nuove statistiche
+        data["conversation_costs"].append(stats)
+        
+        # Calcola anche il costo totale aggregato
+        total_cost_eur = sum(
+            session.get("costs", {}).get("total_cost_eur", 0) 
+            for session in data["conversation_costs"]
+        )
+        data["total_cost_eur_all_sessions"] = round(total_cost_eur, 4)
+        
+        # Salva i dati aggiornati
+        with open(user_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        print(f"[COST_TRACKER] Salvate statistiche costi per {user_id}: €{stats['costs']['total_cost_eur']:.4f}") 

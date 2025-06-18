@@ -13,6 +13,7 @@ from frontend.handle_initial_info import handle_user_info_form, handle_user_info
 from frontend.buttons import handle_restart_button
 from frontend.tutorial import show_app_tutorial, check_tutorial_in_chat
 from agent.prompts import get_initial_prompt
+from services.token_cost_service import TokenCostTracker
 
 
 def render_user_sidebar():
@@ -42,6 +43,33 @@ def render_user_sidebar():
                 deepseek_manager=st.session_state.deepseek_manager,
                 create_new_thread_func=st.session_state.chat_manager.create_new_thread
             )
+            
+        # Mostra statistiche costi se disponibili
+        if 'token_tracker' in st.session_state:
+            st.markdown("---")
+            st.markdown("### 💰 Costi Conversazione", unsafe_allow_html=True)
+            stats = st.session_state.token_tracker.get_conversation_stats()
+            
+            # Mostra metriche principali
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric(
+                    label="Token Totali",
+                    value=f"{stats['tokens']['total']:,}"
+                )
+            with col2:
+                st.metric(
+                    label="Costo",
+                    value=f"€{stats['costs']['total_cost_eur']:.3f}"
+                )
+            
+            # Mostra dettagli in un expander
+            with st.expander("📊 Dettagli", expanded=False):
+                st.text(f"Messaggi: {stats['usage']['message_count']}")
+                st.text(f"Durata: {stats['usage']['duration_minutes']:.1f} min")
+                st.text(f"Token Input: {stats['tokens']['input']:,}")
+                st.text(f"Token Output: {stats['tokens']['output']:,}")
+                st.text(f"Media token/msg: {stats['usage']['avg_tokens_per_message']:.0f}")
 
 
 def handle_nutrition_questions_flow():
@@ -72,6 +100,10 @@ def initialize_chat_history():
     """
     Inizializza la chat history caricando messaggi esistenti o creando il prompt iniziale.
     """
+    # Inizializza il token tracker se non esiste
+    if 'token_tracker' not in st.session_state:
+        st.session_state.token_tracker = TokenCostTracker(model="gpt-4")
+    
     if not st.session_state.messages:
         chat_history = st.session_state.user_data_manager.get_chat_history(st.session_state.user_info["id"])
         if chat_history:
@@ -79,6 +111,9 @@ def initialize_chat_history():
                 {"role": msg.role, "content": msg.content}
                 for msg in chat_history
             ]
+            # Traccia i messaggi esistenti per avere statistiche accurate
+            for msg in st.session_state.messages:
+                st.session_state.token_tracker.track_message(msg["role"], msg["content"])
         else:
             # Se non c'è history, invia il prompt iniziale
             initial_prompt = get_initial_prompt(
@@ -86,6 +121,9 @@ def initialize_chat_history():
                 nutrition_answers=st.session_state.nutrition_answers,
                 user_preferences=st.session_state.user_info['preferences']
             )
+            
+            # Traccia il prompt iniziale come input
+            st.session_state.token_tracker.track_message("user", initial_prompt)
             
             # Crea un nuovo thread solo se non esiste già
             if not hasattr(st.session_state, 'thread_id'):
@@ -98,6 +136,9 @@ def initialize_chat_history():
                 # Invia il prompt iniziale usando il manager
                 response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
                 st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # Traccia la risposta dell'assistente
+                st.session_state.token_tracker.track_message("assistant", response)
                 
                 # Salva il messaggio nella history
                 st.session_state.user_data_manager.save_chat_message(
@@ -137,6 +178,10 @@ def handle_user_input():
             # Aggiungi il messaggio dell'utente
             st.session_state.messages.append({"role": "user", "content": user_input})
             
+            # Traccia il messaggio dell'utente
+            if 'token_tracker' in st.session_state:
+                st.session_state.token_tracker.track_message("user", user_input)
+            
             # Salva il messaggio dell'utente nella history
             st.session_state.user_data_manager.save_chat_message(
                 st.session_state.user_info["id"],
@@ -164,6 +209,17 @@ def handle_user_input():
                 # Usa il chat manager per la conversazione
                 response = st.session_state.chat_manager.chat_with_assistant(user_input)
                 st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # Traccia la risposta dell'assistente
+                if 'token_tracker' in st.session_state:
+                    st.session_state.token_tracker.track_message("assistant", response)
+                    
+                    # Salva le statistiche dei costi nel file utente
+                    stats = st.session_state.token_tracker.get_conversation_stats()
+                    st.session_state.user_data_manager.save_cost_stats(
+                        st.session_state.user_info["id"],
+                        stats
+                    )
                 
                 # Salva la risposta dell'assistente nella history
                 st.session_state.user_data_manager.save_chat_message(

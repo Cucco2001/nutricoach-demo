@@ -81,6 +81,11 @@ class ButtonHandler:
         # Resetta le preferenze utente
         self.user_data_manager.clear_user_preferences(user_id)
         
+        # Resetta il token tracker se esiste
+        if 'token_tracker' in st.session_state:
+            from services.token_cost_service import TokenCostTracker
+            st.session_state.token_tracker = TokenCostTracker(model="gpt-4")
+        
         # Crea un nuovo thread
         self.create_new_thread_func()
 
