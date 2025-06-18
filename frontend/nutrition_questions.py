@@ -2,7 +2,7 @@
 Definizione delle domande nutrizionali iniziali per l'onboarding utente.
 
 Questo modulo contiene la configurazione completa delle domande che vengono
-poste agli utenti durante la fase di registrazione iniziale nel sistema NutriCoach.
+poste agli utenti durante la fase di registrazione iniziale nel sistema NutrAICoach.
 """
 
 # Definizione delle domande nutrizionali iniziali

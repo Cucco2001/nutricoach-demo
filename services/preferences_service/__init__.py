@@ -2,7 +2,7 @@
 Servizio per la gestione delle preferenze utente.
 
 Questo modulo fornisce un'interfaccia completa per la gestione delle preferenze
-alimentari dell'utente nel sistema NutriCoach, inclusi alimenti esclusi, preferiti e note speciali.
+alimentari dell'utente nel sistema NutrAICoach, inclusi alimenti esclusi, preferiti e note speciali.
 """
 
 from .preferences_manager import PreferencesManager

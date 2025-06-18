@@ -2,7 +2,7 @@
 Modulo per la gestione dell'agente nutrizionale.
 
 Questo modulo contiene tutti i componenti relativi all'agente AI:
-- Configurazione dell'agente (nutricoach_agent.py)
+- Configurazione dell'agente (nutraicoach_agent.py)
 - Gestione dei tool calls
 - Prompt e template
 - Script di esecuzione

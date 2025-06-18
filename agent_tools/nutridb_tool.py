@@ -486,7 +486,7 @@ def get_user_id() -> str:
         logger.error(f"Errore nel fallback search: {e}")
     
     # Strategia 4: Cerca da variabili ambiente (per testing)
-    env_user_id = os.environ.get("NUTRICOACH_USER_ID")
+    env_user_id = os.environ.get("NUTRAICOACH_USER_ID")
     if env_user_id:
         logger.warning(f"FALLBACK: Usando user_id da environment: {env_user_id}")
         return env_user_id

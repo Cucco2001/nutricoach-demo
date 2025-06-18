@@ -117,12 +117,12 @@ def handle_login_registration(user_data_manager):
         st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
 
         # Logo e titolo sulla stessa riga
-        logo_html = get_image_html("sito_web/logo.png", height=100, alt="NutriCoach")
+        logo_html = get_image_html("sito_web/logo.png", height=100, alt="NutrAICoach")
         st.markdown(
             f'''
             <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem;">
                 {logo_html}
-                <h1 style="font-size: 3rem; margin: 0;">NutriCoach</h1>
+                <h1 style="font-size: 3rem; margin: 0;">NutrAICoach</h1>
             </div>
             <p style="text-align: center; color: #666; margin-bottom: 2rem;">
                 Il tuo assistente nutrizionale personale basato su AI

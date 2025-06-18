@@ -10,7 +10,7 @@ def load_css():
 
     /* --- Variabili Colore e Stile --- */
     :root {
-        --primary-color: #27ae60;      /* Verde Scuro Nutricoach */
+        --primary-color: #27ae60;      /* Verde Scuro NutrAICoach */
         --background-color: #f7fcf9;   /* Sfondo Verde Molto Chiaro */
         --card-background-color: #ffffff;
         --text-color-dark: #2c3e50;

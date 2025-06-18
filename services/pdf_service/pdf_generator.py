@@ -338,7 +338,7 @@ class PDFGenerator:
             extracted_data: Dati nutrizionali estratti
         """
         # Titolo principale
-        title = Paragraph("🥗 NutriCoach - Piano Nutrizionale Personalizzato", self.styles['CustomMainTitle'])
+        title = Paragraph("🥗 NutrAICoach - Piano Nutrizionale Personalizzato", self.styles['CustomMainTitle'])
         story.append(title)
         story.append(Spacer(1, 12))
         
@@ -1138,7 +1138,7 @@ class PDFGenerator:
         # Sezione Basi Scientifiche
         story.append(Paragraph("🔬 Basi Scientifiche e Metodologie", self.styles['CustomSubTitle']))
         scientific_notes = [
-            "• <b>Calcolo BMI:</b> Segue la definizione dell'Organizzazione Mondiale della Sanità (WHO, 2000). Per un'analisi più completa, Nutricoach integra anche valutazioni di composizione corporea, come raccomandato da NIH (1998) e Kyle et al. (2003).",
+            "• <b>Calcolo BMI:</b> Segue la definizione dell'Organizzazione Mondiale della Sanità (WHO, 2000). Per un'analisi più completa, NutrAICoach integra anche valutazioni di composizione corporea, come raccomandato da NIH (1998) e Kyle et al. (2003).",
             "• <b>Dispendio energetico attività fisica:</b> Il calcolo si basa sui valori MET (Metabolic Equivalent of Task) standardizzati dal Compendium of Physical Activities (Ainsworth et al., 2011; aggiornamenti successivi).",
             "• <b>Fabbisogno energetico:</b> Calcolato utilizzando la formula di Harris e Benedict, una delle equazioni più consolidate e validate nella letteratura scientifica per la stima del dispendio energetico a riposo.",
             "• <b>Fabbisogno proteico:</b> Determinato in base al tipo di attività fisica svolta, all'intensità degli allenamenti e alla presenza di regimi alimentari particolari (es. dieta vegana). I valori di riferimento sono in linea con quanto riportato nella letteratura scientifica internazionale (Phillips et al., 2011; Thomas et al., 2016) e con il lavoro di sintesi divulgativa condotto dal team Project Invictus.",
@@ -1156,7 +1156,7 @@ class PDFGenerator:
         # Sezione Sistema e Personalizzazione
         story.append(Paragraph("🤖 Sistema e Personalizzazione", self.styles['CustomSubTitle']))
         system_notes = [
-            "• I dati nutrizionali sono estratti automaticamente dalle conversazioni con l'assistente NutriCoach usando tecnologia AI avanzata.",
+            "• I dati nutrizionali sono estratti automaticamente dalle conversazioni con l'assistente NutrAICoach usando tecnologia AI avanzata.",
             "• Il piano è personalizzato in base alle tue caratteristiche fisiche, livello di attività e obiettivi.",
             "• Per modifiche o aggiornamenti, continua la conversazione con l'assistente nutrizionale.",
             "• Questo documento è stato generato automaticamente e riflette le informazioni disponibili al momento della creazione."
@@ -1168,5 +1168,5 @@ class PDFGenerator:
         
         # Footer finale
         story.append(Spacer(1, 20))
-        footer_text = f"Documento generato da NutriCoach il {datetime.now().strftime('%d/%m/%Y alle %H:%M')}"
+        footer_text = f"Documento generato da NutrAICoach il {datetime.now().strftime('%d/%m/%Y alle %H:%M')}"
         story.append(Paragraph(footer_text, self.styles['CustomCenteredText'])) 

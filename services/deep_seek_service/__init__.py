@@ -3,7 +3,7 @@ Servizio DeepSeek per l'estrazione automatica di dati nutrizionali.
 
 Questo modulo fornisce un'interfaccia completa per l'integrazione con DeepSeek AI
 per l'estrazione automatica e asincrona di dati nutrizionali dalle conversazioni
-del sistema NutriCoach.
+del sistema NutrAICoach.
 """
 
 from .deepseek_client import DeepSeekClient

@@ -1,5 +1,5 @@
 // Variabili globali
-const STREAMLIT_URL = "https://nutricoach.streamlit.app/";
+const STREAMLIT_URL = "https://nutraicoach.streamlit.app/";
 
 // Gestione smooth scroll per i link di navigazione
 document.addEventListener('DOMContentLoaded', function() {
@@ -205,5 +205,5 @@ function toggleMobileMenu() {
 }
 
 // Debug info
-console.log('NutriCoach Landing Page loaded successfully!');
+console.log('NutrAICoach Landing Page loaded successfully!');
 console.log('Streamlit URL:', STREAMLIT_URL); 

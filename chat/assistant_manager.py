@@ -31,7 +31,7 @@ class AssistantManager:
         if "assistant" not in st.session_state:
             try:
                 st.session_state.assistant = self.openai_client.beta.assistants.create(
-                    name="Nutricoach Assistant",
+                    name="NutrAICoach Assistant",
                     instructions=system_prompt,
                     tools=available_tools,
                     model="gpt-4.1"

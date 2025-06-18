@@ -2,7 +2,7 @@
 Servizio per il completamento dei dati nutrizionali mancanti.
 
 Questo modulo completa i dati che DeepSeek non è riuscito ad estrarre,
-utilizzando gli stessi algoritmi e funzioni dell'agente NutriCoach.
+utilizzando gli stessi algoritmi e funzioni dell'agente NutrAICoach.
 """
 
 import json

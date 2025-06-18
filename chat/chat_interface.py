@@ -232,7 +232,7 @@ def render_chat_area():
         st.markdown("""
             <div class="content-card">
                 <h3>👈 Inizia da qui!</h3>
-                <p>Per avviare la tua consulenza nutrizionale personalizzata con NutriCoach, inserisci le tue informazioni di base nel pannello a sinistra.</p>
+                <p>Per avviare la tua consulenza nutrizionale personalizzata con NutrAICoach, inserisci le tue informazioni di base nel pannello a sinistra.</p>
                 <p>Una volta completato, l'assistente AI ti guiderà attraverso il resto del processo.</p>
             </div>
         """, unsafe_allow_html=True)

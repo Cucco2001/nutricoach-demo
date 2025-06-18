@@ -1,5 +1,5 @@
 """
-Modulo per il tutorial introduttivo di NutriCoach.
+Modulo per il tutorial introduttivo di NutrAICoach.
 
 Contiene le funzioni per mostrare un tutorial interattivo che spiega
 le quattro sezioni principali dell'applicazione.
@@ -35,7 +35,7 @@ def show_app_tutorial():
     
     # Header del tutorial
     st.markdown("---")
-    st.markdown("## 🎯 Benvenuto in NutriCoach!")
+    st.markdown("## 🎯 Benvenuto in NutrAICoach!")
     st.markdown("### Scopri le funzionalità dell'app visitando ogni sezione")
     
     # Barra di progresso
@@ -51,7 +51,7 @@ def show_app_tutorial():
     with tutorial_container:
         # Introduzione
         st.markdown("""
-        **NutriCoach** è il tuo assistente nutrizionale personale! 🥗  
+        **NutrAICoach** è il tuo assistente nutrizionale personale! 🥗  
         Per completare il tutorial, **esplora tutte e 3 le sezioni** cliccando sui pulsanti qui sotto.
         Ogni sezione si aprirà con informazioni dettagliate.
         """)
@@ -102,7 +102,7 @@ def show_app_tutorial():
         
         # Sezione con suggerimenti di utilizzo
         st.markdown("---")
-        st.markdown("### 🚀 **Come utilizzare NutriCoach:**")
+        st.markdown("### 🚀 **Come utilizzare NutrAICoach:**")
         
         step_cols = st.columns(3)
         with step_cols[0]:
@@ -128,7 +128,7 @@ def show_app_tutorial():
         
         if completed_sections == total_sections:
             # Tutte le sezioni sono state visitate
-            st.success("🎉 Ottimo! Hai esplorato tutte le sezioni di NutriCoach!")
+            st.success("🎉 Ottimo! Hai esplorato tutte le sezioni di NutrAICoach!")
             
             col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
             with col_btn2:

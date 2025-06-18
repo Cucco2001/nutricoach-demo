@@ -2,7 +2,7 @@
 Modulo per la gestione della chat con l'assistente AI.
 
 Fornisce funzionalità per creare assistenti, gestire thread di conversazione,
-mantenere le chat con l'agente NutriCoach e gestire l'interfaccia utente.
+mantenere le chat con l'agente NutrAICoach e gestire l'interfaccia utente.
 """
 
 from .chat_manager import ChatManager

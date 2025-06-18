@@ -1,5 +1,5 @@
 """
-Funzioni per la gestione del frontend degli sport nel sistema NutriCoach.
+Funzioni per la gestione del frontend degli sport nel sistema NutrAICoach.
 
 Questo modulo contiene tutte le funzioni necessarie per gestire la selezione
 e configurazione degli sport durante l'onboarding e la gestione profilo utente.

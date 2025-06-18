@@ -1,5 +1,5 @@
 """
-Modulo frontend per NutriCoach.
+Modulo frontend per NutrAICoach.
 
 Contiene tutti i componenti dell'interfaccia utente e l'inizializzazione
 dell'applicazione organizzati in moduli separati.
