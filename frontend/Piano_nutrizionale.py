@@ -671,33 +671,40 @@ class PianoNutrizionale:
         
         display_name = meal_display_names.get(meal_name, f'🍽️ {meal_name.title()}')
         
-        with st.expander(display_name):
-            # Alimenti del pasto
-            if "alimenti" in meal_data and meal_data["alimenti"]:
-                st.markdown("**🛒 Ingredienti:**")
-                
-                alimenti = meal_data["alimenti"]
-                
-                # Gestisce sia formato lista che formato dizionario
-                if isinstance(alimenti, list):
-                    # Formato lista: [{"nome_alimento": "...", "quantita_g": ..., "misura_casalinga": "..."}]
-                    for alimento in alimenti:
-                        nome = alimento.get('nome_alimento', 'N/A')
-                        quantita = alimento.get('quantita_g', 'N/A')
-                        misura = alimento.get('misura_casalinga', '')
-                        
-                        st.markdown(f"- **{nome}**: {quantita}g ({misura})" if misura else f"- **{nome}**: {quantita}g")
-
-                elif isinstance(alimenti, dict):
-                    # Formato dizionario: {"nome_alimento": quantita_g}
-                    for nome_alimento, quantita in alimenti.items():
-                        if isinstance(quantita, (int, float)) and quantita > 0:
-                            st.markdown(f"- **{nome_alimento}**: {quantita}g")
-                        else:
-                            st.markdown(f"- **{nome_alimento}**: Quantità da definire")
+        # Header del pasto con stile colorato (senza expander per evitare nesting)
+        st.markdown(f'''
+        <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
+                    padding: 15px; border-radius: 12px; margin: 15px 0; color: white;">
+            <h3>{display_name}</h3>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # Alimenti del pasto
+        if "alimenti" in meal_data and meal_data["alimenti"]:
+            st.markdown("**🛒 Ingredienti:**")
             
-            # Separatore
-            st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
+            alimenti = meal_data["alimenti"]
+            
+            # Gestisce sia formato lista che formato dizionario
+            if isinstance(alimenti, list):
+                # Formato lista: [{"nome_alimento": "...", "quantita_g": ..., "misura_casalinga": "..."}]
+                for alimento in alimenti:
+                    nome = alimento.get('nome_alimento', 'N/A')
+                    quantita = alimento.get('quantita_g', 'N/A')
+                    misura = alimento.get('misura_casalinga', '')
+                    
+                    st.markdown(f"- **{nome}**: {quantita}g ({misura})" if misura else f"- **{nome}**: {quantita}g")
+
+            elif isinstance(alimenti, dict):
+                # Formato dizionario: {"nome_alimento": quantita_g}
+                for nome_alimento, quantita in alimenti.items():
+                    if isinstance(quantita, (int, float)) and quantita > 0:
+                        st.markdown(f"- **{nome_alimento}**: {quantita}g")
+                    else:
+                        st.markdown(f"- **{nome_alimento}**: Quantità da definire")
+        
+        # Separatore
+        st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
     
     def _sort_meals_by_time(self, meals_data):
         """
@@ -802,9 +809,6 @@ class PianoNutrizionale:
         
         # Lista ingredienti
         self._display_meal_ingredients(meal)
-        
-        # Totali nutrizionali
-        self._display_meal_nutritional_totals(meal)
         
         # Separatore tra i pasti
         if index < total_meals - 1:
