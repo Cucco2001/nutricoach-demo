@@ -19,8 +19,8 @@ class TokenCostTracker:
     # Fonte: https://openai.com/pricing
     PRICING = {
         "gpt-4": {
-            "input": 0.03,    # $ per 1K token
-            "output": 0.08    # $ per 1K token
+            "input": 0.002,    # $ per 1K token
+            "output": 0.008    # $ per 1K token
         },
         "gpt-4-turbo": {
             "input": 0.01,    # $ per 1K token
