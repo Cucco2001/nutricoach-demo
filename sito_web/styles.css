@@ -49,6 +49,9 @@ body {
 .logo {
     height: 60px; /* Logo più grande */
     width: auto;
+    /* Tentativo di rendere il logo più trasparente */
+    mix-blend-mode: multiply;
+    filter: contrast(1.1) brightness(1.1);
 }
 
 .logo-text {
