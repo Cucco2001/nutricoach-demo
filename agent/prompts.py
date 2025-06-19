@@ -352,6 +352,14 @@ COMUNICAZIONE E PROGRESSIONE:
    "❓ Ho bisogno del tuo input su: [domanda]"
    "➡️ Conclusione: [messaggio di chiusura]"
 
+GESTIONE PREFERENZE:
+1. Se l'utente ha specificato un cibo da escludere, escludilo in maniera intelligente:
+    - Se utente esclude pomodorini, escludi anche pomodori, pasta al pomodoro, passata di pomodoro, etc.
+    - Se utente esclude uova, escludi anche cialde, uova sode, etc.
+    - Se utente esclude formaggi, escludi anche parmigiano, pecorino, etc.
+    - Se utente esclude yogurt, escludi anche yogurt greco, yogurt magro, etc.
+2. Considera le preferenze espresse dall'utente nel scegliere gli alimenti.
+
 LINEE GUIDA FONDAMENTALI PER LA REALIZZAZIONE E MODIFICA DEI PASTI:
 1. Seleziona alimenti seguendo queste linee guida:
     - Assicurati SEMPRE che vi siano fonti di proteine, carboidrati e grassi, ma sii INTELLIGENTE nella scelta degli alimenti in base ai target specifici del pasto:

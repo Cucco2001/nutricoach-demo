@@ -144,6 +144,25 @@ class FoodPreferences:
         """
         return st.session_state.get('preferred_foods_list', [])
     
+    def generate_preferences_prompt(self) -> str:
+        """
+        Genera un prompt testuale basato sulle preferenze dell'utente.
+        Il prompt è del tipo "A me piacciono xxx e non mi piacciono xxx".
+        
+        Returns:
+            str: Il prompt generato.
+        """
+        preferred = self.get_preferred_foods()
+        excluded = self.get_excluded_foods()
+        
+        parts = []
+        if preferred:
+            parts.append(f"A me piacciono {', '.join(preferred)}")
+        if excluded:
+            parts.append(f"non mi piacciono {', '.join(excluded)}")
+            
+        return " e ".join(parts) if parts else ""
+
     def save_preferences(self, user_id: str, user_notes: str = "") -> bool:
         """
         Salva tutte le preferenze dell'utente.
@@ -165,6 +184,13 @@ class FoodPreferences:
                 user_id=user_id,
                 preferences=preferences
             )
+            
+            # Genera e salva il prompt per il prossimo messaggio
+            prompt = self.generate_preferences_prompt()
+            if prompt:
+                st.session_state.preferences_prompt = prompt
+                st.session_state.prompt_to_add_at_next_message = True
+
             return True
         except Exception as e:
             st.error(f"Errore nel salvataggio delle preferenze: {str(e)}")

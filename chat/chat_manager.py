@@ -148,6 +148,16 @@ class ChatManager:
             # Verifica e cancella eventuali run bloccate
             self.check_and_cancel_run()
             
+            # Controlla se è necessario aggiungere il prompt delle preferenze
+            if st.session_state.get('prompt_to_add_at_next_message', False):
+                preferences_prompt = st.session_state.get('preferences_prompt', '')
+                if preferences_prompt:
+                    user_input = f"{preferences_prompt}. {user_input}"
+                
+                # Resetta il flag
+                st.session_state.prompt_to_add_at_next_message = False
+                st.session_state.preferences_prompt = ''
+
             # Aggiungi il messaggio dell'utente al thread
             try:
                 self.openai_client.beta.threads.messages.create(
