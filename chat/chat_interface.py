@@ -293,8 +293,7 @@ def chat_interface():
     st.session_state.deepseek_manager.check_and_process_results()
     st.session_state.deepseek_manager.show_notifications()
     
-    # Crea l'assistente
-    st.session_state.assistant_manager.create_assistant()
+    # L'assistente è ora creato in initialization.py
     
     # Renderizza la sidebar delle informazioni utente
     render_user_sidebar()

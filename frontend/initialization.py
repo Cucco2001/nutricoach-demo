@@ -61,6 +61,7 @@ def initialize_app():
     
     if "assistant_manager" not in st.session_state:
         st.session_state.assistant_manager = AssistantManager(st.session_state.openai_client)
+        st.session_state.assistant_manager.create_assistant()
     if "chat_manager" not in st.session_state:
         st.session_state.chat_manager = ChatManager(
             st.session_state.openai_client,
