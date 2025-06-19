@@ -129,19 +129,8 @@ def show_app_tutorial():
         if completed_sections == total_sections:
             # Tutte le sezioni sono state visitate
             st.success("🎉 Ottimo! Hai esplorato tutte le sezioni di NutrAICoach!")
+            st.info("👈 Ora puoi compilare i tuoi dati nella barra laterale e cliccare su **Inizia** per cominciare!")
             
-            col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
-            with col_btn2:
-                if st.button("🎯 Perfetto. Clicca qui per iniziare!", type="primary", use_container_width=True):
-                    # Segna il tutorial come completato e resetta i flag di visita
-                    st.session_state[tutorial_key] = True
-                    if chat_visited_key in st.session_state:
-                        del st.session_state[chat_visited_key]
-                    if preferences_visited_key in st.session_state:
-                        del st.session_state[preferences_visited_key]
-                    if plan_visited_key in st.session_state:
-                        del st.session_state[plan_visited_key]
-                    st.rerun()
         else:
             # Non tutte le sezioni sono state visitate
             missing_sections = []
@@ -203,6 +192,25 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
                 st.markdown(f"• {feature}")
 
 
+def are_all_sections_visited(user_id: str) -> bool:
+    """
+    Controlla se tutte le sezioni del tutorial sono state visitate.
+    
+    Args:
+        user_id: ID dell'utente
+        
+    Returns:
+        bool: True se tutte le sezioni sono state visitate, False altrimenti
+    """
+    chat_visited_key = f"tutorial_chat_visited_{user_id}"
+    preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
+    plan_visited_key = f"tutorial_plan_visited_{user_id}"
+    
+    return (st.session_state.get(chat_visited_key, False) and
+            st.session_state.get(preferences_visited_key, False) and
+            st.session_state.get(plan_visited_key, False))
+
+
 def is_tutorial_completed(user_id: str) -> bool:
     """
     Controlla se il tutorial è stato completato per un utente specifico.
@@ -227,9 +235,6 @@ def reset_tutorial(user_id: str):
     tutorial_key = f"tutorial_completed_{user_id}"
     if tutorial_key in st.session_state:
         del st.session_state[tutorial_key]
-
-
-
 
 
 def check_tutorial_in_chat():

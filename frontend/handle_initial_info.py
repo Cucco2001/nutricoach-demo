@@ -7,7 +7,7 @@ e la visualizzazione delle informazioni già inserite.
 
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
-from frontend.tutorial import is_tutorial_completed
+from frontend.tutorial import are_all_sections_visited, is_tutorial_completed
 
 
 class InitialInfoHandler:
@@ -78,17 +78,21 @@ class InitialInfoHandler:
                 index=self._get_objective_index(nutritional_info)
             )
             
-            # Controlla se il tutorial è completato
-            tutorial_completed = is_tutorial_completed(user_id)
+            # Controlla se le sezioni del tutorial sono state visitate per abilitare il bottone
+            all_sections_visited = are_all_sections_visited(user_id)
             
             # Disabilita il pulsante se il tutorial non è completato
-            if not tutorial_completed:
-                st.warning("⚠️ Completa il tutorial visitando tutte le sezioni (Chat, Preferenze, Piano Nutrizionale) prima di iniziare!")
+            if not all_sections_visited:
+                st.warning("⚠️ Completa il tutorial visitando tutte le sezioni prima di iniziare!")
             
-            button_disabled = not tutorial_completed
-            button_label = "Inizia" if tutorial_completed else "Inizia (Completa prima il tutorial)"
+            button_disabled = not all_sections_visited
+            button_label = "Inizia" if all_sections_visited else "Inizia (Completa prima il tutorial)"
             
-            if st.form_submit_button(button_label, disabled=button_disabled):
+            if st.form_submit_button(button_label, disabled=button_disabled, type="primary"):
+                # Segna il tutorial come completato definitivamente
+                tutorial_key = f"tutorial_completed_{user_id}"
+                st.session_state[tutorial_key] = True
+
                 self._save_user_info(
                     user_id, età, sesso, peso, altezza, attività, obiettivo, 
                     user_preferences, nutritional_info
