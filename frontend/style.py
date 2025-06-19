@@ -177,5 +177,30 @@ def load_css():
     .stTabs [data-baseweb="tab-panel"] {
         padding-top: 1rem;
     }
+    
+    /* --- Fix per rimuovere blocchi bianchi --- */
+    /* Rimuove sfondo bianco dalle card dentro gli expander del Piano Nutrizionale */
+    div[data-testid="stExpander"] .content-card {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    
+    /* Rimuove sfondo bianco dalle card nelle domande nutrizionali */
+    .stApp .card:has(h3) {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    
+    /* Mantiene lo stile per le ingredient-card (quelle piccole con info nutrizionali) */
+    .ingredient-card {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin: 4px 0;
+        font-size: 0.9rem;
+    }
     """
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True) 

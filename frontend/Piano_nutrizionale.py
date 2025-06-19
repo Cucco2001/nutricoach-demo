@@ -118,27 +118,19 @@ class PianoNutrizionale:
             
             # === SEZIONE FABBISOGNO ENERGETICO ===
             with st.expander("🔥 Fabbisogno Energetico Giornaliero", expanded=False):
-                st.markdown('<div class="content-card">', unsafe_allow_html=True)
                 self._display_caloric_needs_section(extracted_data)
-                st.markdown('</div>', unsafe_allow_html=True)
             
             # === SEZIONE DISTRIBUZIONE MACROS ===
             with st.expander("🥗 Distribuzione Calorica Giornaliera", expanded=False):
-                st.markdown('<div class="content-card">', unsafe_allow_html=True)
                 self._display_macros_section(extracted_data)
-                st.markdown('</div>', unsafe_allow_html=True)
 
             # === SEZIONE PIANO PASTI ===
             with st.expander("🍽️ Piano Pasti Giornaliero", expanded=False):
-                st.markdown('<div class="content-card">', unsafe_allow_html=True)
                 self._display_daily_plan_section(extracted_data)
-                st.markdown('</div>', unsafe_allow_html=True)
 
             # === SEZIONE PIANO SETTIMANALE ===
             with st.expander("📅 Piano Settimanale - Ricette e Pasti Creati", expanded=False):
-                st.markdown('<div class="content-card">', unsafe_allow_html=True)
                 self._display_registered_meals_section(extracted_data)
-                st.markdown('</div>', unsafe_allow_html=True)
             
         except Exception as e:
             st.error(f"❌ Errore nel caricamento dei dati: {str(e)}")

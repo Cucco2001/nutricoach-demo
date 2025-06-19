@@ -48,7 +48,6 @@ class NutritionQuestionHandler:
         Returns:
             tuple: (answer, follow_up_answer) se completata, (None, None) altrimenti
         """
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         # Mostra la domanda principale
         st.markdown(f"<h3>{question['question']}</h3>", unsafe_allow_html=True)
         answer = st.radio("", question["options"], label_visibility="collapsed")
@@ -59,10 +58,8 @@ class NutritionQuestionHandler:
             follow_up_answer = self._handle_follow_up(question, answer)
         
         if st.button("Avanti"):
-            st.markdown('</div>', unsafe_allow_html=True)
             return answer, follow_up_answer
         
-        st.markdown('</div>', unsafe_allow_html=True)
         return None, None
     
     def handle_number_input_question(self, question, user_info):
@@ -76,7 +73,6 @@ class NutritionQuestionHandler:
         Returns:
             dict: Valori dei campi se completata, None altrimenti
         """
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         question_text = question["question"](user_info) if callable(question["question"]) else question["question"]
         st.markdown(f"<h3>{question_text}</h3>", unsafe_allow_html=True)
         
@@ -93,10 +89,8 @@ class NutritionQuestionHandler:
             )
         
         if st.button("Avanti"):
-            st.markdown('</div>', unsafe_allow_html=True)
             return field_values
         
-        st.markdown('</div>', unsafe_allow_html=True)
         return None
     
     def _handle_follow_up(self, question, main_answer):

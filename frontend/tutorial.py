@@ -132,7 +132,7 @@ def show_app_tutorial():
             
             col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
             with col_btn2:
-                if st.button("🎯 Perfetto, iniziamo!", type="primary", use_container_width=True):
+                if st.button("🎯 Perfetto. Clicca qui per iniziare!", type="primary", use_container_width=True):
                     # Segna il tutorial come completato e resetta i flag di visita
                     st.session_state[tutorial_key] = True
                     if chat_visited_key in st.session_state:
