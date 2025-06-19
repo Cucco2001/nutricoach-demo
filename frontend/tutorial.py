@@ -233,8 +233,18 @@ def reset_tutorial(user_id: str):
         user_id: ID dell'utente
     """
     tutorial_key = f"tutorial_completed_{user_id}"
+    chat_visited_key = f"tutorial_chat_visited_{user_id}"
+    preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
+    plan_visited_key = f"tutorial_plan_visited_{user_id}"
+
     if tutorial_key in st.session_state:
         del st.session_state[tutorial_key]
+    if chat_visited_key in st.session_state:
+        del st.session_state[chat_visited_key]
+    if preferences_visited_key in st.session_state:
+        del st.session_state[preferences_visited_key]
+    if plan_visited_key in st.session_state:
+        del st.session_state[plan_visited_key]
 
 
 def check_tutorial_in_chat():

@@ -11,7 +11,7 @@ from frontend.nutrition_questions import NUTRITION_QUESTIONS
 from frontend.handle_nutrition_questions import handle_nutrition_questions
 from frontend.handle_initial_info import handle_user_info_form, handle_user_info_display
 from frontend.buttons import handle_restart_button
-from frontend.tutorial import show_app_tutorial, check_tutorial_in_chat
+from frontend.tutorial import show_app_tutorial, is_tutorial_completed, are_all_sections_visited
 from agent.prompts import get_initial_prompt
 from services.token_cost_service import TokenCostTracker
 
@@ -253,14 +253,23 @@ def render_chat_area():
         # Gestisci l'input dell'utente
         handle_user_input()
     else:
-        # Controlla se mostrare il tutorial
-        if check_tutorial_in_chat():
-            # Mostra il tutorial se non è stato completato
-            tutorial_completed = show_app_tutorial()
-            if not tutorial_completed:
-                return  # Tutorial in corso, non mostrare altro
-        
-        # Mostra il messaggio per inserire le informazioni
+        # Se il tutorial non è ancora stato formalmente completato (premendo "Inizia")
+        if not is_tutorial_completed(st.session_state.user_info['id']):
+            # Mostra il tutorial (o il suo messaggio di completamento)
+            show_app_tutorial()
+            
+            # Se tutte le sezioni sono state visitate, mostra anche il messaggio di default
+            if not are_all_sections_visited(st.session_state.user_info['id']):
+                 st.markdown("""
+                    <div class="content-card">
+                        <h3>👈 Inizia da qui!</h3>
+                        <p>Per avviare la tua consulenza nutrizionale personalizzata con NutrAICoach, inserisci le tue informazioni di base nel pannello a sinistra.</p>
+                        <p>Una volta completato, l'assistente AI ti guiderà attraverso il resto del processo.</p>
+                    </div>
+                """, unsafe_allow_html=True)
+            return
+
+        # Se il tutorial è completato, ma mancano i dati, mostra solo il messaggio
         st.markdown("""
             <div class="content-card">
                 <h3>👈 Inizia da qui!</h3>

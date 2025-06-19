@@ -7,6 +7,7 @@ inclusi reset, riavvii e altre azioni utente.
 
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
+from frontend.tutorial import reset_tutorial
 
 
 class ButtonHandler:
@@ -46,6 +47,9 @@ class ButtonHandler:
         """
         user_id = st.session_state.user_info["id"]
         username = st.session_state.user_info["username"]
+        
+        # Resetta il tutorial
+        reset_tutorial(user_id)
         
         # Resetta le informazioni di sessione
         st.session_state.user_info = {
