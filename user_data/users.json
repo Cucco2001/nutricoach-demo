@@ -18,7 +18,7 @@
     "email": "c.messuri@temp.local",
     "password_hash": "c74e8a44cdf2d248fd646073de1765356f84263483a1ddb5f4de5a92712d156d",
     "user_id": "user_1749309652",
-    "created_at": 1750196787.499573
+    "created_at": 1750352840.531764
   },
   "claudio": {
     "username": "claudio",
@@ -26,5 +26,12 @@
     "password_hash": "9109257b0b0081ed1167582606b966e791cf34c9cc2f0adfd12936e33ffa9580",
     "user_id": "user_1749802708",
     "created_at": 1749809908.554163
+  },
+  "gadeluca": {
+    "username": "gadeluca",
+    "email": "dlgabriele6789@gmail.com",
+    "password_hash": "a50c48d90a7d4c4428656fec8102fdf9f5c1bd9a3a8c663c47685e0fdb31f5e3",
+    "user_id": "user_1750338063",
+    "created_at": 1750338063.686275
   }
 }
