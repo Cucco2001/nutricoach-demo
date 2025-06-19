@@ -63,9 +63,11 @@ class DeepSeekClient:
         while retry_count < max_retries:
             try:
                 # Prepara il contesto della conversazione
+                # NOTA: La cronologia passata qui contiene GIA' solo le nuove interazioni
+                # grazie alla logica nel DeepSeekManager.
                 conversation_text = "\n\n".join([
                     f"UTENTE: {qa.question}\nAGENTE: {qa.answer}" 
-                    for qa in conversation_history[-2:]  # Ultimi 3 scambi
+                    for qa in conversation_history
                 ])
                 
                 # Costruisci il prompt
