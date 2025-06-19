@@ -295,12 +295,28 @@ MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
 - Non usare "weekly_diet_partial" per diete settimanali complete
 - weekly_diet_partial preserva tutti gli altri pasti del giorno invariati
 
+REGOLE FONDAMENTALI PER GLI AGGIORNAMENTI - MOLTO IMPORTANTE:
+- **NON AZZERARE MAI CAMPI CHE NON SONO MENZIONATI NELLA CONVERSAZIONE CORRENTE**
+- **ESTRAI E AGGIORNA SOLO I CAMPI EFFETTIVAMENTE DISCUSSI NELL'ULTIMA CONVERSAZIONE**
+- Se nella conversazione si parla solo di "caloric_needs", NON restituire campi vuoti per "macros_total", "registered_meals", etc.
+- Se si modifica solo un pasto specifico, usa "weekly_diet_partial" e NON modificare altri pasti
+- Se si aggiorna solo la distribuzione calorica, NON azzerare i pasti registrati
+- **PRINCIPIO DI INCREMENTALITÀ**: Ogni estrazione deve aggiungere o modificare solo ciò che è esplicitamente discusso
+- **MAI RIMUOVERE DATI**: Se un campo esisteva prima e non è menzionato ora, NON includerlo nel JSON di output
+
+ESEMPI DI COMPORTAMENTO CORRETTO:
+- Se la conversazione parla solo di BMR e fabbisogno calorico → estrai SOLO "caloric_needs"
+- Se si discute solo della modifica del pranzo del giorno 3 → restituisci SOLO "weekly_diet_partial" per quel pasto
+- Se si parla solo di macronutrienti totali → estrai SOLO "macros_total"
+- NON restituire mai campi vuoti o azzerati che non sono stati discussi
+
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo
-- Se un dato non è presente, ometti quella sezione
+- Se un dato non è presente nella conversazione corrente, ometti completamente quella sezione
 - I numeri devono essere numerici, non stringhe
 - Cerca con attenzione i calcoli numerici nella conversazione
 - La sezione "weekly_diet" è OPZIONALE: includila solo se presente nella conversazione
+- **RICORDA**: È meglio restituire meno campi (solo quelli discussi) che restituire campi vuoti o azzerati
 """
         
         return prompt

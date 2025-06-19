@@ -70,7 +70,7 @@ class DeepSeekManager:
             # Ottieni la storia delle conversazioni
             conversation_history = user_data_manager.get_agent_qa(user_id)
             
-            if conversation_history and len(conversation_history) >= 2:
+            if conversation_history and len(conversation_history) >= 1:
                 # Avvia l'estrazione asincrona
                 self.extractor.extract_data_async(
                     user_id=user_id,
