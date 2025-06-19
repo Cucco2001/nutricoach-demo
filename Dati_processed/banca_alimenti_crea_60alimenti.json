@@ -1012,5 +1012,16 @@
     "fibra_g": 0.0,
     "nova_group": 3,
     "categoria": "proteine_animali"
+  },
+  "caffè": {
+    "energia_kcal": 0,
+    "proteine_g": 0,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 0,
+    "grassi_saturi_g": 0,
+    "fibra_g": 0,
+    "nova_group": 0,
+    "categoria": "caffè"
   }
 }
