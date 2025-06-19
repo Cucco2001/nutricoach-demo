@@ -16,6 +16,7 @@ from agent.prompts import get_initial_prompt
 from services.token_cost_service import TokenCostTracker
 
 
+
 def render_user_sidebar():
     """
     Renderizza la sidebar con le informazioni dell'utente.
@@ -44,32 +45,7 @@ def render_user_sidebar():
                 create_new_thread_func=st.session_state.chat_manager.create_new_thread
             )
             
-        # Mostra statistiche costi se disponibili
-        if 'token_tracker' in st.session_state:
-            st.markdown("---")
-            st.markdown("### 💰 Costi Conversazione", unsafe_allow_html=True)
-            stats = st.session_state.token_tracker.get_conversation_stats()
-            
-            # Mostra metriche principali
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric(
-                    label="Token Totali",
-                    value=f"{stats['tokens']['total']:,}"
-                )
-            with col2:
-                st.metric(
-                    label="Costo",
-                    value=f"€{stats['costs']['total_cost_eur']:.3f}"
-                )
-            
-            # Mostra dettagli in un expander
-            with st.expander("📊 Dettagli", expanded=False):
-                st.text(f"Messaggi: {stats['usage']['message_count']}")
-                st.text(f"Durata: {stats['usage']['duration_minutes']:.1f} min")
-                st.text(f"Token Input: {stats['tokens']['input']:,}")
-                st.text(f"Token Output: {stats['tokens']['output']:,}")
-                st.text(f"Media token/msg: {stats['usage']['avg_tokens_per_message']:.0f}")
+
 
 
 def handle_nutrition_questions_flow():

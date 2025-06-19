@@ -384,18 +384,18 @@ class UserDataManager:
         # PRESERVA i dati DeepSeek e costi esistenti se presenti
         existing_deepseek_data = None
         existing_cost_data = None
-        existing_total_cost = None
+        existing_last_cost_update = None
         if user_file.exists():
             try:
                 with open(user_file, 'r', encoding='utf-8') as f:
                     existing_data = json.load(f)
                     existing_deepseek_data = existing_data.get("nutritional_info_extracted")
                     existing_cost_data = existing_data.get("conversation_costs")
-                    existing_total_cost = existing_data.get("total_cost_eur_all_sessions")
+                    existing_last_cost_update = existing_data.get("last_cost_update")
                     if existing_deepseek_data:
                         print(f"[USER_DATA_MANAGER] Preservando dati DeepSeek per user {user_id}: {list(existing_deepseek_data.keys())}")
                     if existing_cost_data:
-                        print(f"[USER_DATA_MANAGER] Preservando {len(existing_cost_data)} sessioni di costi per user {user_id}")
+                        print(f"[USER_DATA_MANAGER] Preservando dati costi più recenti per user {user_id}")
             except Exception as e:
                 print(f"[USER_DATA_MANAGER] Errore nel leggere dati esistenti: {str(e)}")
         
@@ -425,7 +425,7 @@ class UserDataManager:
         # RESTAURA i dati dei costi se esistevano
         if existing_cost_data:
             data["conversation_costs"] = existing_cost_data
-            data["total_cost_eur_all_sessions"] = existing_total_cost
+            data["last_cost_update"] = existing_last_cost_update
             print(f"[USER_DATA_MANAGER] Dati costi restaurati per user {user_id}")
         
         with open(user_file, 'w', encoding='utf-8') as f:
@@ -552,19 +552,9 @@ class UserDataManager:
             with open(user_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
         
-        # Aggiorna o crea la sezione conversation_costs
-        if "conversation_costs" not in data:
-            data["conversation_costs"] = []
-        
-        # Aggiungi le nuove statistiche
-        data["conversation_costs"].append(stats)
-        
-        # Calcola anche il costo totale aggregato
-        total_cost_eur = sum(
-            session.get("costs", {}).get("total_cost_eur", 0) 
-            for session in data["conversation_costs"]
-        )
-        data["total_cost_eur_all_sessions"] = round(total_cost_eur, 4)
+        # Sovrascrivi con le statistiche più recenti (non accumulare)
+        data["conversation_costs"] = stats
+        data["last_cost_update"] = stats.get("timestamp", "")
         
         # Salva i dati aggiornati
         with open(user_file, 'w', encoding='utf-8') as f:
