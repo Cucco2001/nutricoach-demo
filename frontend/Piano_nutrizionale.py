@@ -441,7 +441,75 @@ class PianoNutrizionale:
         # Timeline dei pasti colorata
         meal_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD']
         
-        for i, (pasto_nome, pasto_data) in enumerate(distribuzione_pasti.items()):
+        # Definisce l'ordine cronologico dei pasti con tutte le varianti possibili
+        meal_order = {
+            'colazione': 1,
+            'breakfast': 1,
+            'prima_colazione': 1,
+            
+            'spuntino_mattutino': 2,
+            'spuntino_mattina': 2,
+            'spuntino_del_mattino': 2,
+            'merenda_mattutina': 2,
+            'snack_mattutino': 2,
+            'break_mattutino': 2,
+            
+            'pranzo': 3,
+            'lunch': 3,
+            'pasto_principale': 3,
+            
+            'spuntino_pomeridiano': 4,
+            'spuntino_pomeriggio': 4,
+            'spuntino_del_pomeriggio': 4,
+            'merenda': 4,
+            'merenda_pomeridiana': 4,
+            'snack_pomeridiano': 4,
+            'break_pomeridiano': 4,
+            
+            'cena': 5,
+            'dinner': 5,
+            'secondo_pasto': 5,
+            
+            'spuntino_serale': 6,
+            'merenda_serale': 6,
+            'snack_serale': 6,
+        }
+        
+        def get_meal_priority(meal_item):
+            """Calcola la priorità di ordinamento per un pasto"""
+            pasto_nome = meal_item[0].lower().strip()
+            
+            # Normalizza il nome rimuovendo spazi e caratteri speciali
+            nome_normalizzato = pasto_nome.replace(' ', '_').replace('-', '_')
+            
+            # Cerca corrispondenza diretta
+            if nome_normalizzato in meal_order:
+                return meal_order[nome_normalizzato]
+            
+            # Ricerca parziale con parole chiave
+            if 'colazione' in pasto_nome or 'breakfast' in pasto_nome:
+                return 1
+            elif ('spuntino' in pasto_nome or 'merenda' in pasto_nome or 'snack' in pasto_nome) and \
+                 ('mattut' in pasto_nome or 'mattina' in pasto_nome):
+                return 2
+            elif 'pranzo' in pasto_nome or 'lunch' in pasto_nome:
+                return 3
+            elif ('spuntino' in pasto_nome or 'merenda' in pasto_nome or 'snack' in pasto_nome) and \
+                 ('pomer' in pasto_nome or 'pomeriggio' in pasto_nome):
+                return 4
+            elif 'cena' in pasto_nome or 'dinner' in pasto_nome:
+                return 5
+            elif ('spuntino' in pasto_nome or 'merenda' in pasto_nome or 'snack' in pasto_nome) and \
+                 ('seral' in pasto_nome or 'sera' in pasto_nome):
+                return 6
+            else:
+                # Pasti non riconosciuti vanno alla fine
+                return 999
+        
+        # Ordina i pasti secondo l'ordine cronologico usando la funzione avanzata
+        sorted_meals = sorted(distribuzione_pasti.items(), key=get_meal_priority)
+        
+        for i, (pasto_nome, pasto_data) in enumerate(sorted_meals):
             # Controllo di sicurezza per pasto_data
             if not pasto_data:
                 continue

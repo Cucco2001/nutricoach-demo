@@ -284,7 +284,7 @@ def get_portion_constraints():
     """
     return {
         # CATEGORIE PRINCIPALI DALLA BANCA ALIMENTI
-        "proteine_animali": {"min": 100, "max": 300},
+        "proteine_animali": {"min": 70, "max": 300},
         "latte": {"min": 100, "max": 500},
         "affettati": {"min": 50, "max": 150},
         "formaggi": {"min": 30, "max": 300},
