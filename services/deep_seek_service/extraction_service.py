@@ -236,10 +236,12 @@ class NutritionalDataExtractor:
                 else:
                     # Merge normale per caloric_needs e macros_total
                     for field_name, field_value in new_data[key].items():
-                        if field_value is not None:
+                        if field_value is not None and field_value != 0:
                             existing_data[key][field_name] = field_value
                             changes_made = True
                             print(f"[EXTRACTION_SERVICE] Sovrascritto {field_name} in {key} per utente {user_id}")
+                        elif field_value == 0:
+                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 per {field_name} in {key} per utente {user_id}")
                 
                 # 2. Completa campi mancanti per caloric_needs e daily_macros
                 if key == "caloric_needs":
@@ -607,10 +609,12 @@ class NutritionalDataExtractor:
             new_daily_macros: Nuovi dati daily_macros da DeepSeek
             user_id: ID utente
         """
-        # 1. Merge numero_pasti (sovrascrive se presente)
-        if "numero_pasti" in new_daily_macros and new_daily_macros["numero_pasti"] is not None:
+        # 1. Merge numero_pasti (sovrascrive se presente e diverso da 0)
+        if "numero_pasti" in new_daily_macros and new_daily_macros["numero_pasti"] is not None and new_daily_macros["numero_pasti"] != 0:
             existing_daily_macros["numero_pasti"] = new_daily_macros["numero_pasti"]
             print(f"[EXTRACTION_SERVICE] Sovrascritto numero_pasti in daily_macros per utente {user_id}")
+        elif "numero_pasti" in new_daily_macros and new_daily_macros["numero_pasti"] == 0:
+            print(f"[EXTRACTION_SERVICE] Ignorato numero_pasti=0 in daily_macros per utente {user_id}")
         
         # 2. Merge distribuzione_pasti (preserva dati esistenti)
         if "distribuzione_pasti" in new_daily_macros and isinstance(new_daily_macros["distribuzione_pasti"], dict):
@@ -631,11 +635,13 @@ class NutritionalDataExtractor:
                     
                     existing_meal = existing_distribuzione[meal_name]
                     
-                    # Merge campi del pasto (sovrascrive sempre i campi DeepSeek)
+                    # Merge campi del pasto (sovrascrive sempre i campi DeepSeek, esclusi gli zeri)
                     for field_name, field_value in new_meal_data.items():
-                        if field_value is not None:
+                        if field_value is not None and field_value != 0:
                             existing_meal[field_name] = field_value
                             print(f"[EXTRACTION_SERVICE] Sovrascritto {meal_name}.{field_name} = {field_value} per utente {user_id}")
+                        elif field_value == 0:
+                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 per {meal_name}.{field_name} per utente {user_id}")
                 else:
                     print(f"[EXTRACTION_SERVICE] ATTENZIONE: Pasto malformato in DeepSeek per {meal_name}, ignorato")
     
