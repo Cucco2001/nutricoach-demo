@@ -516,8 +516,8 @@ class PDFGenerator:
         if fibre > 0:
             totals_info.append(f"<b>Fibre giornaliere:</b> {fibre}g")
         
-        kcal_totali = macros_data.get('kcal_totali', 0)
-        totals_info.append(f"<b>Calorie Totali:</b> {kcal_totali} kcal")
+        kcal_finali = macros_data.get('kcal_finali', 0)
+        totals_info.append(f"<b>Calorie Totali:</b> {kcal_finali} kcal")
         
         for info in totals_info:
             story.append(Paragraph(info, self.styles['CustomBodyText']))
@@ -676,7 +676,7 @@ class PDFGenerator:
                     totals_data = [
                         ['Calorie Totali', 'Proteine Totali', 'Carboidrati Totali', 'Grassi Totali'],
                         [
-                            f"{totali.get('kcal_totali', 0)} kcal",
+                            f"{totali.get('kcal_finali', 0)} kcal",
                             f"{totali.get('proteine_totali', 0)}g",
                             f"{totali.get('carboidrati_totali', 0)}g",
                             f"{totali.get('grassi_totali', 0)}g"
@@ -992,7 +992,7 @@ class PDFGenerator:
             return
         
         # Estrai i valori nutrizionali con diverse possibili chiavi
-        kcal = nutrients.get('kcal', nutrients.get('kcal_totali', 0))
+        kcal = nutrients.get('kcal', nutrients.get('kcal_finali', 0))
         proteine = nutrients.get('proteine', nutrients.get('proteine_g', 0))
         carboidrati = nutrients.get('carboidrati', nutrients.get('carboidrati_g', 0))
         grassi = nutrients.get('grassi', nutrients.get('grassi_g', 0))

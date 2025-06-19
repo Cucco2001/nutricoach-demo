@@ -235,8 +235,8 @@ class FieldMapper:
         ],
         
         # Kcal totali dai macros
-        'kcal_totali_macros': [
-            'kcal_totali_macros', 'kcal totali macros', 'kcal-totali-macros',
+        'kcal_finali_macros': [
+            'kcal_finali_macros', 'kcal totali macros', 'kcal-totali-macros',
             'kcal_macros', 'kcal macros', 'kcal-macros',
             'calorie_macros', 'calorie macros', 'calorie-macros',
             'total_kcal_macros', 'total kcal macros',
@@ -353,8 +353,8 @@ class FieldMapper:
         ],
         
         # Kcal totali dai macros
-        'kcal_totali_macros': [
-            'kcal_totali_macros', 'kcal totali macros', 'kcal-totali-macros',
+        'kcal_finali_macros': [
+            'kcal_finali_macros', 'kcal totali macros', 'kcal-totali-macros',
             'kcal_macros', 'kcal macros', 'kcal-macros',
             'calorie_macros', 'calorie macros', 'calorie-macros',
             'total_kcal_macros', 'total kcal macros',

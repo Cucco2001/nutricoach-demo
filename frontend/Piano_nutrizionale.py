@@ -397,10 +397,10 @@ class PianoNutrizionale:
                 ''', unsafe_allow_html=True)
         
         with col2:
-            kcal_totali = macros_data.get('kcal_totali', 0)
+            kcal_finali = macros_data.get('kcal_finali', 0)
             st.markdown(f'''
             <div class="info-card">
-                <strong>🔥 Calorie Totali:</strong> {kcal_totali} kcal
+                <strong>🔥 Calorie Totali:</strong> {kcal_finali} kcal
             </div>
             ''', unsafe_allow_html=True)
     
@@ -923,7 +923,7 @@ class PianoNutrizionale:
         col1, col2, col3, col4 = st.columns(4)
         nutrition_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
         nutrition_data = [
-            ('🔥 Calorie', f"{totali.get('kcal_totali', 0)} kcal"),
+            ('🔥 Calorie', f"{totali.get('kcal_finali', 0)} kcal"),
             ('🥩 Proteine', f"{totali.get('proteine_totali', 0)}g"),
             ('🍞 Carboidrati', f"{totali.get('carboidrati_totali', 0)}g"),
             ('🥑 Grassi', f"{totali.get('grassi_totali', 0)}g")

@@ -330,7 +330,7 @@ class NutritionalDataExtractor:
                     missing_fields.append(field)
 
         elif section_name == "macros_total":
-            required_fields = ["proteine_g", "carboidrati_g", "grassi_g", "kcal_totali", "proteine_kcal", "grassi_kcal", "carboidrati_kcal", "proteine_percentuale", "grassi_percentuale", "carboidrati_percentuale"]
+            required_fields = ["proteine_g", "carboidrati_g", "grassi_g", "kcal_finali", "proteine_kcal", "grassi_kcal", "carboidrati_kcal", "proteine_percentuale", "grassi_percentuale", "carboidrati_percentuale"]
             for field in required_fields:
                 if field not in section_data or section_data[field] is None:
                     missing_fields.append(field)
@@ -490,19 +490,19 @@ class NutritionalDataExtractor:
         if "macros_total" in all_extracted_data:
             macros_total = all_extracted_data["macros_total"]
             totali.update({
-                "kcal_totali": macros_total.get("kcal_totali"),
+                "kcal_finali": macros_total.get("kcal_finali"),
                 "proteine_g": macros_total.get("proteine_g"),
                 "carboidrati_g": macros_total.get("carboidrati_g"),
                 "grassi_g": macros_total.get("grassi_g")
             })
         
         # Se mancano kcal, prova da caloric_needs
-        if not totali.get("kcal_totali") and "caloric_needs" in all_extracted_data:
+        if not totali.get("kcal_finali") and "caloric_needs" in all_extracted_data:
             caloric_needs = all_extracted_data["caloric_needs"]
-            totali["kcal_totali"] = caloric_needs.get("fabbisogno_finale")
+            totali["kcal_finali"] = caloric_needs.get("fabbisogno_finale")
         
         # Verifica che abbiamo almeno le kcal totali
-        if not totali.get("kcal_totali"):
+        if not totali.get("kcal_finali"):
             return None
             
         return totali
@@ -530,8 +530,8 @@ class NutritionalDataExtractor:
         
         # Kcal del pasto - PRESERVA se già presente
         if "kcal" not in meal_data or meal_data["kcal"] is None:
-            kcal_totali = totali_giornalieri.get("kcal_totali", 0)
-            meal_data["kcal"] = round(kcal_totali * percentuale_frazione)
+            kcal_finali = totali_giornalieri.get("kcal_finali", 0)
+            meal_data["kcal"] = round(kcal_finali * percentuale_frazione)
         
         # Percentuale kcal - PRESERVA se già presente
         if "percentuale_kcal" not in meal_data or meal_data["percentuale_kcal"] is None:

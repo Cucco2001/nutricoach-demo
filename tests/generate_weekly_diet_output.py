@@ -119,7 +119,7 @@ def format_day1_from_user_data(user_id):
         total_macros = daily_macros.get("totali_giornalieri", {})
         if total_macros:
             output.append(f"\n   📈 TOTALI GIORNALIERI:")
-            output.append(f"      • Calorie totali: {total_macros.get('kcal_totali', 0)}")
+            output.append(f"      • Calorie totali: {total_macros.get('kcal_finali', 0)}")
             output.append(f"      • Proteine totali: {total_macros.get('proteine_totali', 0)}g")
             output.append(f"      • Carboidrati totali: {total_macros.get('carboidrati_totali', 0)}g")
             output.append(f"      • Grassi totali: {total_macros.get('grassi_totali', 0)}g")

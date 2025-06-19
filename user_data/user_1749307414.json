@@ -276,7 +276,7 @@
       "grassi_g": 80,
       "proteine_g": 112,
       "grassi_kcal": 720,
-      "kcal_totali": 2396,
+      "kcal_finali": 2396,
       "carboidrati_g": 307,
       "proteine_kcal": 448,
       "carboidrati_kcal": 1228,
@@ -342,7 +342,7 @@
         ],
         "nome_pasto": "colazione",
         "totali_pasto": {
-          "kcal_totali": 595,
+          "kcal_finali": 595,
           "grassi_totali": 25,
           "proteine_totali": 19,
           "carboidrati_totali": 79

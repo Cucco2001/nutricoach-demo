@@ -406,7 +406,7 @@ def create_alternative_meal(original_meal: Dict[str, Any], substitutes_db: Dict[
             
             # Aggiorna i totali del pasto
             alternative_meal["totali_pasto"] = {
-                "kcal_totali": optimization_result["actual_nutrients"]["kcal"],
+                "kcal_finali": optimization_result["actual_nutrients"]["kcal"],
                 "proteine_totali": optimization_result["actual_nutrients"]["proteine_g"],
                 "carboidrati_totali": optimization_result["actual_nutrients"]["carboidrati_g"],
                 "grassi_totali": optimization_result["actual_nutrients"]["grassi_g"]

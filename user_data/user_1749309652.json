@@ -845,7 +845,7 @@
       "grassi_g": 70,
       "proteine_g": 80,
       "grassi_kcal": 630,
-      "kcal_totali": 2087,
+      "kcal_finali": 2087,
       "carboidrati_g": 285,
       "proteine_kcal": 320,
       "carboidrati_kcal": 1140,
@@ -919,7 +919,7 @@
         ],
         "nome_pasto": "colazione",
         "totali_pasto": {
-          "kcal_totali": 0,
+          "kcal_finali": 0,
           "grassi_totali": 0,
           "proteine_totali": 0,
           "carboidrati_totali": 0
@@ -982,7 +982,7 @@
         ],
         "nome_pasto": "pranzo",
         "totali_pasto": {
-          "kcal_totali": 0,
+          "kcal_finali": 0,
           "grassi_totali": 0,
           "proteine_totali": 0,
           "carboidrati_totali": 0
@@ -1045,7 +1045,7 @@
         ],
         "nome_pasto": "spuntino_pomeridiano",
         "totali_pasto": {
-          "kcal_totali": 0,
+          "kcal_finali": 0,
           "grassi_totali": 0,
           "proteine_totali": 0,
           "carboidrati_totali": 0
@@ -1121,7 +1121,7 @@
         ],
         "nome_pasto": "cena",
         "totali_pasto": {
-          "kcal_totali": 0,
+          "kcal_finali": 0,
           "grassi_totali": 0,
           "proteine_totali": 0,
           "carboidrati_totali": 0
