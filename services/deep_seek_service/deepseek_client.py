@@ -160,7 +160,7 @@ ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella convers
         "laf_utilizzato": numero_fattore_attivita
     },
     "macros_total": {
-        "kcal_totali": numero,
+        "kcal_totali": numero, (uguali al fabbisogno_finale)
         "proteine_g": numero,
         "proteine_kcal": numero,
         "proteine_percentuale": numero,
