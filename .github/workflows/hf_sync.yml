@@ -19,24 +19,19 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git lfs install
+          
+          # Create a new orphan branch to start with clean history
+          git checkout --orphan clean-main
+          
+          # Set up LFS tracking
           git lfs track "*.pdf"
           git lfs track "*.png"
           git lfs track "*.jpg"
           git lfs track "*.jpeg"
-          git add .gitattributes
-          git commit -m "Add LFS tracking" || echo "No changes to commit"
           
-          # Remove binary files from Git history and re-add as LFS
-          git rm --cached "Dati_raw/Dossier LG 2017_CAP10.pdf" || true
-          git rm --cached "Dati_raw/Standard-Quantitativi-delle-Porzioni.pdf" || true
-          git rm --cached "Dati_raw/Ultra-processed foods.pdf" || true
-          git rm --cached "sito_web/logo.png" || true
+          # Add all files (binary files will now be tracked by LFS)
+          git add .
+          git commit -m "Initial commit with LFS support"
           
-          # Re-add files (they will now be tracked by LFS)
-          git add "Dati_raw/Dossier LG 2017_CAP10.pdf" || true
-          git add "Dati_raw/Standard-Quantitativi-delle-Porzioni.pdf" || true
-          git add "Dati_raw/Ultra-processed foods.pdf" || true
-          git add "sito_web/logo.png" || true
-          
-          git commit -m "Migrate binary files to LFS" || echo "No changes to commit"
-          git push --force https://Cucco2001:$HF_TOKEN@huggingface.co/spaces/Cucco2001/nutraicoach main
+          # Force push the clean branch as main to HuggingFace
+          git push --force https://Cucco2001:$HF_TOKEN@huggingface.co/spaces/Cucco2001/nutraicoach clean-main:main
