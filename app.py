@@ -12,6 +12,10 @@ import time
 import json
 import pandas as pd
 from dotenv import load_dotenv
+
+# Carica le variabili d'ambiente PRIMA di importare i moduli che ne hanno bisogno
+load_dotenv()
+
 from openai import OpenAI
 from agent import available_tools, system_prompt
 from agent_tools.user_data_manager import UserDataManager
@@ -62,9 +66,6 @@ from utils.image_utils import get_image_html
 
 import threading
 import queue
-
-# Carica le variabili d'ambiente
-load_dotenv()
 
 # === INIZIALIZZAZIONE MODULARE DELL'APPLICAZIONE ===
 # Tutte le inizializzazioni sono ora centralizzate nel modulo frontend
