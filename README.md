@@ -3,8 +3,8 @@ title: NutrAICoach
 emoji: 🥗
 colorFrom: green
 colorTo: blue
-sdk: docker
-sdk_version: "20.10.17"
+sdk: streamlit
+sdk_version: "1.31.0"
 app_file: app.py
 pinned: false
 ---
