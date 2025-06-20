@@ -1,0 +1,19 @@
+name: Sync to Hugging Face Space
+
+on:
+  push:
+    branches: [main]  # Cambia se il tuo branch principale ha nome diverso
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - name: Push to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git remote add space https://huggingface.co/spaces/Cucco2001/nutraicoach
+          git push --force https://Cucco2001:$HF_TOKEN@huggingface.co/spaces/Cucco2001/nutraicoach main
