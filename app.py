@@ -91,20 +91,6 @@ def main():
     
     # Se l'utente è autenticato, mostra l'interfaccia principale
     if is_authenticated:
-        # Header personalizzato dell'app con logo base64
-        logo_html = get_image_html("sito_web/logo.png", height=50, alt="NutrAICoach")
-        st.markdown(
-            f'''
-            <div class="app-header">
-                <div class="app-header-content">
-                    {logo_html}
-                    <h1 class="app-title">NutrAICoach</h1>
-                </div>
-            </div>
-            ''',
-            unsafe_allow_html=True
-        )
-        
         # Sidebar per le funzionalità utente
         with st.sidebar:
             st.header("Menu")

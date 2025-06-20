@@ -160,11 +160,7 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
     if is_visited:
         label += " ✅"
 
-    # Determina se l'expander deve essere mostrato come aperto.
-    # Questo accade se è stato l'ultimo ad essere cliccato, per mantenerlo aperto dopo il rerun.
-    is_expanded = st.session_state.get('last_opened_tutorial_section') == session_key
-
-    with st.expander(label, expanded=is_expanded):
+    with st.expander(label):
         st.markdown(f"**{subtitle}**")
         
         # Mostra le caratteristiche in colonne
@@ -175,16 +171,10 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
                 st.markdown(f"• {feature}")
 
         # Se la sezione viene aperta per la prima volta, la marchiamo come visitata
-        # e attiviamo un rerun per aggiornare la UI (es. la barra di progresso).
+        # e attiviamo un rerun per aggiornare la UI.
         if not is_visited:
             st.session_state[session_key] = True
-            st.session_state['last_opened_tutorial_section'] = session_key
             st.rerun()
-
-    # Pulisce lo stato per evitare che l'expander rimanga aperto in modo indesiderato
-    # in seguito a rerun non correlati.
-    if is_expanded:
-        st.session_state['last_opened_tutorial_section'] = None
 
 
 def are_all_sections_visited(user_id: str) -> bool:
