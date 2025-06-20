@@ -27,7 +27,10 @@ def render_user_sidebar():
     with st.sidebar:
         st.markdown("## 👤 Le Tue Info", unsafe_allow_html=True)
         
-        if not st.session_state.user_info.get("età"):
+        # Se il tutorial non è completato, mostra sempre il form anche se ci sono dati salvati
+        tutorial_completed = is_tutorial_completed(st.session_state.user_info['id'])
+        
+        if not st.session_state.user_info.get("età") or not tutorial_completed:
             # Usa il modulo frontend per gestire il form delle informazioni utente
             handle_user_info_form(
                 user_id=st.session_state.user_info["id"],
@@ -236,6 +239,12 @@ def render_chat_area():
     
     Gestisce il flusso tra tutorial, domande nutrizionali e chat vera e propria.
     """
+    # Prima controlla se il tutorial è stato completato, indipendentemente dai dati salvati
+    if not is_tutorial_completed(st.session_state.user_info['id']):
+        # Mostra il tutorial se non è stato completato
+        show_app_tutorial()
+        return
+    
     if st.session_state.user_info.get("età"):
         # Se ci sono ancora domande nutrizionali da gestire
         if handle_nutrition_questions_flow():
@@ -253,31 +262,10 @@ def render_chat_area():
         # Gestisci l'input dell'utente
         handle_user_input()
     else:
-        # Se il tutorial non è ancora stato formalmente completato (premendo "Inizia")
-        if not is_tutorial_completed(st.session_state.user_info['id']):
-            # Mostra il tutorial (o il suo messaggio di completamento)
-            show_app_tutorial()
-            
-            # Se tutte le sezioni sono state visitate, mostra anche il messaggio di default
-            if not are_all_sections_visited(st.session_state.user_info['id']):
-                 st.markdown("""
-                    <div class="content-card">
-                        <h3>👈 Inizia da qui!</h3>
-                        <p>Per avviare la tua consulenza nutrizionale personalizzata con NutrAICoach, inserisci le tue informazioni di base nel pannello a sinistra.</p>
-                        <p>Una volta completato, l'assistente AI ti guiderà attraverso il resto del processo.</p>
-                    </div>
-                """, unsafe_allow_html=True)
-            return
-
-        # Se il tutorial è completato, ma mancano i dati, mostra solo il messaggio
-        st.markdown("""
-            <div class="content-card">
-                <h3>👈 Inizia da qui!</h3>
-                <p>Per avviare la tua consulenza nutrizionale personalizzata con NutrAICoach, inserisci le tue informazioni di base nel pannello a sinistra.</p>
-                <p>Una volta completato, l'assistente AI ti guiderà attraverso il resto del processo.</p>
-            </div>
-        """, unsafe_allow_html=True)
-
+        # Se non ci sono dati età, significa che l'utente deve ancora compilare il form
+        # ma il tutorial è già stato completato, quindi non mostriamo nulla
+        # (il form sarà visibile nella sidebar)
+        pass
 
 def chat_interface():
     """

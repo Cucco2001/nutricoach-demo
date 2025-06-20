@@ -14,5 +14,26 @@
     "obiettivo": "Mantenimento",
     "nutrition_answers": {},
     "agent_qa": []
-  }
+  },
+  "conversation_costs": {
+    "tokens": {
+      "input": 1620,
+      "output": 1003,
+      "total": 2623
+    },
+    "costs": {
+      "input_cost_usd": 0.0032,
+      "output_cost_usd": 0.008,
+      "total_cost_usd": 0.0113,
+      "total_cost_eur": 0.0104
+    },
+    "usage": {
+      "message_count": 4,
+      "duration_minutes": 0.59,
+      "avg_tokens_per_message": 655.75
+    },
+    "model": "gpt-4",
+    "timestamp": "2025-06-19T16:09:06.372242"
+  },
+  "last_cost_update": "2025-06-19T16:09:06.372242"
 }
