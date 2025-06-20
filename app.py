@@ -1,4 +1,12 @@
 import streamlit as st
+
+# Configurazione della pagina Streamlit - DEVE essere la prima chiamata Streamlit
+st.set_page_config(
+    page_title="NutrAICoach - Il tuo assistente nutrizionale personale",
+    page_icon="🥗",
+    layout="wide"
+)
+
 import os
 import time
 import json
@@ -57,13 +65,6 @@ import queue
 
 # Carica le variabili d'ambiente
 load_dotenv()
-
-# Configurazione della pagina Streamlit
-st.set_page_config(
-    page_title="NutrAICoach - Il tuo assistente nutrizionale personale",
-    page_icon="🥗",
-    layout="wide"
-)
 
 # === INIZIALIZZAZIONE MODULARE DELL'APPLICAZIONE ===
 # Tutte le inizializzazioni sono ora centralizzate nel modulo frontend
