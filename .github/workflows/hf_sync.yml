@@ -18,4 +18,12 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+          git lfs install
+          git lfs track "*.pdf"
+          git lfs track "*.png"
+          git lfs track "*.jpg"
+          git lfs track "*.jpeg"
+          git add .gitattributes
+          git add .
+          git commit -m "Convert binary files to LFS" || echo "No changes to commit"
           git push --force https://Cucco2001:$HF_TOKEN@huggingface.co/spaces/Cucco2001/nutraicoach main
