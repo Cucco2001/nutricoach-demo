@@ -147,7 +147,28 @@ def handle_login_registration(user_data_manager):
 def handle_logout():
     """
     Gestisce il logout dell'utente resettando tutte le variabili di sessione.
+    Se l'utente stava ancora rispondendo alle domande iniziali, effettua prima un "Ricomincia".
     """
+    # Controlla se l'utente era ancora nel mezzo delle domande iniziali
+    # (se non aveva ancora iniziato la conversazione con l'agente)
+    user_was_in_questions = (
+        st.session_state.get("current_question", 0) < len(NUTRITION_QUESTIONS) and
+        len(st.session_state.get("messages", [])) == 0
+    )
+    
+    # Se era ancora nelle domande, effettua prima un "Ricomincia"
+    if user_was_in_questions and st.session_state.get("user_info"):
+        from frontend.buttons import ButtonHandler
+        
+        # Crea un handler dei bottoni e chiama la funzione di reset
+        handler = ButtonHandler(
+            st.session_state.user_data_manager,
+            st.session_state.deepseek_manager,
+            st.session_state.chat_manager.create_new_thread
+        )
+        handler._reset_user_session()
+    
+    # Poi effettua il logout normale
     st.session_state.user_info = None
     st.session_state.messages = []
     st.session_state.current_question = 0
