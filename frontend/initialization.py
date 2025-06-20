@@ -28,6 +28,7 @@ def initialize_app():
     # Carica le variabili d'ambiente
     load_dotenv()
     
+    
     # === INIZIALIZZAZIONE VARIABILI BASE ===
     if "messages" not in st.session_state:
         st.session_state.messages = []
