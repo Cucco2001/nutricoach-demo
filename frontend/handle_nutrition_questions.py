@@ -480,5 +480,8 @@ def handle_nutrition_questions(user_info, user_id, user_data_manager):
     Returns:
         bool: True se ci sono ancora domande, False se completate
     """
+    st.title("NutrAICoach")
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
     handler = NutritionQuestionHandler(user_data_manager)
     return handler.handle_current_question(user_info, user_id) 
