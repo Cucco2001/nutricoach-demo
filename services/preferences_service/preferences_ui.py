@@ -100,14 +100,14 @@ class PreferencesUI:
         
         # Utilizzo un form che si resetta automaticamente dopo il submit
         with st.form(key=f"add_{food_type}_form", clear_on_submit=True):
-            col1, col2 = st.columns([0.8, 0.2])
+            col1, col2 = st.columns([0.7, 0.3])
             
             with col1:
                 food_name = st.text_input(label, key=f"{food_type}_foods_input")
             
             with col2:
                 st.write("")  # Spacer per allineare il bottone
-                submitted = st.form_submit_button("Aggiungi")
+                submitted = st.form_submit_button("➕ Aggiungi", use_container_width=True)
             
             if submitted and food_name:
                 # Valida il nome dell'alimento
