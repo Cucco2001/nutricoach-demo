@@ -38,12 +38,9 @@ def show_app_tutorial():
     st.markdown("## 🎯 Benvenuto in NutrAICoach!")
     st.markdown("### Scopri le funzionalità dell'app visitando ogni sezione")
     
-    # Barra di progresso
+    # Calcola le sezioni completate per la logica di fine tutorial
     total_sections = 3
     completed_sections = sum([chat_visited, preferences_visited, plan_visited])
-    progress = completed_sections / total_sections
-    
-    st.progress(progress, text=f"Progresso tutorial: {completed_sections}/{total_sections} sezioni visitate")
     
     # Container principale del tutorial
     tutorial_container = st.container()
@@ -128,7 +125,6 @@ def show_app_tutorial():
         
         if completed_sections == total_sections:
             # Tutte le sezioni sono state visitate
-            st.success("🎉 Ottimo! Hai esplorato tutte le sezioni di NutrAICoach!")
             st.info("👈 Ora puoi compilare i tuoi dati nella barra laterale e cliccare su **Inizia** per cominciare!")
             
         else:
@@ -149,7 +145,8 @@ def show_app_tutorial():
 
 def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_visited):
     """
-    Mostra una singola sezione del tutorial in formato interattivo.
+    Mostra una singola sezione del tutorial in formato interattivo e semplificato.
+    Utilizza un expander per un'esperienza più fluida, preservando la logica di completamento.
     
     Args:
         emoji: Emoji della sezione
@@ -159,37 +156,35 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
         session_key: Chiave per salvare lo stato nella sessione
         is_visited: Se la sezione è già stata visitata
     """
-    # Colore del contenitore basato sullo stato
-    border_color = "#00b894" if is_visited else "#74b9ff"
-    bg_color = "#f1f8f6" if is_visited else "#f8fbff"
-    
-    # Pulsante per espandere la sezione
-    button_text = f"{emoji} {title}"
+    label = f"{emoji} {title}"
     if is_visited:
-        button_text += " ✅"
-    
-    if st.button(button_text, key=f"btn_{session_key}", use_container_width=True):
-        # Segna come visitata
-        st.session_state[session_key] = True
-        st.rerun()
-    
-    # Se è stata visitata, mostra i dettagli espansi
-    if is_visited:
-        st.markdown(f"""
-        <div style="border: 2px solid {border_color}; border-radius: 10px; padding: 20px; 
-                    background-color: {bg_color}; margin: 10px 0;">
-            <h3 style="color: {border_color}; margin-top: 0;">{emoji} {title}</h3>
-            <p style="font-weight: bold; color: #2d3436;">{subtitle}</p>
-        </div>
-        """, unsafe_allow_html=True)
+        label += " ✅"
+
+    # Determina se l'expander deve essere mostrato come aperto.
+    # Questo accade se è stato l'ultimo ad essere cliccato, per mantenerlo aperto dopo il rerun.
+    is_expanded = st.session_state.get('last_opened_tutorial_section') == session_key
+
+    with st.expander(label, expanded=is_expanded):
+        st.markdown(f"**{subtitle}**")
         
         # Mostra le caratteristiche in colonne
         feature_cols = st.columns(2) if len(features) > 2 else [st.container()]
-        
         for i, feature in enumerate(features):
             col_index = i % len(feature_cols) if len(feature_cols) > 1 else 0
             with feature_cols[col_index]:
                 st.markdown(f"• {feature}")
+
+        # Se la sezione viene aperta per la prima volta, la marchiamo come visitata
+        # e attiviamo un rerun per aggiornare la UI (es. la barra di progresso).
+        if not is_visited:
+            st.session_state[session_key] = True
+            st.session_state['last_opened_tutorial_section'] = session_key
+            st.rerun()
+
+    # Pulisce lo stato per evitare che l'expander rimanga aperto in modo indesiderato
+    # in seguito a rerun non correlati.
+    if is_expanded:
+        st.session_state['last_opened_tutorial_section'] = None
 
 
 def are_all_sections_visited(user_id: str) -> bool:
