@@ -268,7 +268,7 @@ class PianoNutrizionale:
         col1, col2, col3, col4 = st.columns(4)
         
         metrics = [
-            ("⚡ Metabolismo Basale", caloric_data.get('bmr', 0), "Energia per le funzioni vitali"),
+            ("⚡ Metabolismo", caloric_data.get('bmr', 0), "Energia per le funzioni vitali"),
             ("🏃 Fabbisogno Base", caloric_data.get('fabbisogno_base', 0), "Con attività quotidiana"),
             ("💪 Dispendio Sportivo", caloric_data.get('dispendio_sportivo', 0), "Calorie dall'attività sportiva"),
             ("🎯 Fabbisogno Finale", caloric_data.get('fabbisogno_finale', 0), "Calorie totali giornaliere")
