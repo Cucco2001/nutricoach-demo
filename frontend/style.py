@@ -2,48 +2,38 @@ import streamlit as st
 
 def load_css():
     """
-    Carica e inietta il CSS personalizzato per un'esperienza elegante, semplice e a tema.
+    Carica CSS ottimizzato per performance veloci.
     """
     css = """
-    /* --- Google Font Import --- */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-    /* --- Variabili Colore e Stile --- */
+    /* --- Variabili Colore --- */
     :root {
-        --primary-color: #27ae60;      /* Verde Scuro NutrAICoach */
-        --background-color: #f7fcf9;   /* Sfondo Verde Molto Chiaro */
+        --primary-color: #27ae60;
+        --background-color: #f7fcf9;
         --card-background-color: #ffffff;
         --text-color-dark: #2c3e50;
-        --text-color-light: #555;
         --border-color: #e0e0e0;
-        --box-shadow: 0 4px 6px rgba(0,0,0,0.04);
         --border-radius: 12px;
     }
 
-    /* --- Stili Globali e Sfondo a Tema --- */
+    /* --- Stili Base --- */
     body, .stApp {
-        font-family: 'Inter', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         color: var(--text-color-dark);
         background-color: var(--background-color) !important;
     }
     
     .main .block-container {
-        padding: 2rem;
-        padding-top: 1rem !important;
+        padding: 2rem 2rem 1rem !important;
     }
     
     /* --- Header App --- */
     .app-header {
-        background: transparent;
         border-bottom: 1px solid rgba(39, 174, 96, 0.2);
         padding: 1.5rem 0;
         margin-bottom: 2rem;
     }
 
     .app-header-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -56,49 +46,10 @@ def load_css():
         margin: 0;
     }
     
-    /* --- Card di Contenuto --- */
-    /* Usato per raggruppare sezioni di contenuto */
-    .content-card {
-        background-color: var(--card-background-color);
-        border-radius: var(--border-radius);
-        padding: 2rem;
-        box-shadow: var(--box-shadow);
-        border: 1px solid var(--border-color);
-        margin-bottom: 2rem;
-    }
-    
-    /* Card più piccole per elementi secondari */
-    .card {
-        background-color: var(--card-background-color);
-        border-radius: var(--border-radius);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: var(--box-shadow);
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Info card speciale */
-    .info-card {
-        background: linear-gradient(135deg, #eafaf1 0%, #d4f1de 100%);
-        border: 1px solid #c3e6cd;
-        border-radius: var(--border-radius);
-        padding: 1.5rem;
-        margin: 1rem 0;
-        font-size: 0.95rem;
-    }
-    
-    /* --- Pagina di Login --- */
+    /* --- Login --- */
     .login-wrapper {
         max-width: 450px;
         margin: 4rem auto;
-    }
-    
-    .login-wrapper .content-card {
-        padding: 2.5rem;
-        text-align: center;
-        background-color: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
     }
 
     /* --- Bottoni --- */
@@ -106,38 +57,32 @@ def load_css():
         background-color: var(--primary-color);
         color: white;
         border-radius: var(--border-radius);
-        padding: 0.8rem 1.5rem;
         border: none;
         font-weight: 600;
-        transition: opacity 0.3s ease;
     }
     .stButton > button:hover {
         opacity: 0.85;
     }
 
     /* --- Chat --- */
-    /* Messaggio Assistente */
     div[data-testid="stChatMessage"]:has([aria-label="assistant avatar"]) [data-testid="stChatMessageContent"] {
         background-color: #f0f2f6;
-        border-radius: var(--border-radius) var(--border-radius) var(--border-radius) 5px;
+        border-radius: var(--border-radius);
     }
 
-    /* Messaggio Utente */
     div[data-testid="stChatMessage"]:has([aria-label="user avatar"]) [data-testid="stChatMessageContent"] {
         background-color: #e1ffc7;
-        border-radius: var(--border-radius) var(--border-radius) 5px var(--border-radius);
+        border-radius: var(--border-radius);
     }
     
-    /* Titoli */
+    /* --- Titoli --- */
     h1, h2, h3 {
         color: var(--text-color-dark);
     }
     
-    /* --- Stili per titoli speciali --- */
     .welcome-header {
         text-align: center;
         margin-bottom: 2rem;
-        background: transparent !important;
     }
     
     .welcome-header h1 {
@@ -159,48 +104,6 @@ def load_css():
         color: #666;
         font-size: 1.1rem;
         margin-bottom: 0;
-    }
-    
-    /* Rimuovi background bianco dalle content-card nelle sezioni interne */
-    .content-card:has(.welcome-header) {
-        background-color: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-    
-    /* Fix per le tabs di Streamlit - rimuove sfondo bianco */
-    .stTabs [data-baseweb="tab-list"] {
-        background-color: transparent;
-    }
-    
-    .stTabs [data-baseweb="tab-panel"] {
-        padding-top: 1rem;
-    }
-    
-    /* --- Fix per rimuovere blocchi bianchi --- */
-    /* Rimuove sfondo bianco dalle card dentro gli expander del Piano Nutrizionale */
-    div[data-testid="stExpander"] .content-card {
-        background-color: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-    
-    /* Rimuove sfondo bianco dalle card nelle domande nutrizionali */
-    .stApp .card:has(h3) {
-        background-color: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
-    
-    /* Mantiene lo stile per le ingredient-card (quelle piccole con info nutrizionali) */
-    .ingredient-card {
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 8px 12px;
-        border-radius: 8px;
-        margin: 4px 0;
-        font-size: 0.9rem;
     }
     """
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True) 

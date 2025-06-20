@@ -7,7 +7,6 @@ logout e caricamento delle informazioni utente salvate.
 
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
-from utils.image_utils import get_image_html
 
 
 def handle_login_form(user_data_manager):
@@ -116,17 +115,15 @@ def handle_login_registration(user_data_manager):
         
         st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
 
-        # Logo e titolo sulla stessa riga
-        logo_html = get_image_html("sito_web/logo.png", height=100, alt="NutrAICoach")
+        # Titolo veloce senza logo
         st.markdown(
-            f'''
-            <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem;">
-                {logo_html}
-                <h1 style="font-size: 3rem; margin: 0;">NutrAICoach</h1>
+            '''
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 3rem; margin: 0; color: #27ae60;">🥗 NutrAICoach</h1>
+                <p style="color: #666; margin-top: 1rem;">
+                    Il tuo assistente nutrizionale personale basato su AI
+                </p>
             </div>
-            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
-                Il tuo assistente nutrizionale personale basato su AI
-            </p>
             ''',
             unsafe_allow_html=True
         )
