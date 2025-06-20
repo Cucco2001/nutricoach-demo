@@ -1,4 +1,4 @@
-name: Sync to Hugging Face Space
+name: Sync to Hugging Face
 
 on:
   push:
@@ -16,5 +16,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git remote add space https://huggingface.co/spaces/Cucco2001/nutraicoach
+          git fetch --unshallow
           git push --force https://Cucco2001:$HF_TOKEN@huggingface.co/spaces/Cucco2001/nutraicoach main
