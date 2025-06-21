@@ -30,6 +30,10 @@ def handle_login_form(user_data_manager):
                 # Carica le informazioni nutrizionali salvate
                 nutritional_info = user_data_manager.get_nutritional_info(result)
                 
+                # Carica la chat history per verificare se ci sono messaggi salvati
+                chat_history = user_data_manager.get_chat_history(result)
+                has_chat_messages = len(chat_history) > 0
+                
                 # Imposta le informazioni dell'utente
                 st.session_state.user_info = {
                     "id": result,
@@ -49,10 +53,59 @@ def handle_login_form(user_data_manager):
                         "preferences": user_data_manager.get_user_preferences(result)
                     })
                     
-                    # Carica le risposte nutrizionali
-                    if nutritional_info.nutrition_answers:
-                        st.session_state.nutrition_answers = nutritional_info.nutrition_answers
-                        st.session_state.current_question = len(NUTRITION_QUESTIONS)
+                    # Se ha messaggi in chat, carica normalmente e salta il tutorial
+                    if has_chat_messages:
+                        # Carica le risposte nutrizionali se presenti
+                        if nutritional_info.nutrition_answers:
+                            st.session_state.nutrition_answers = nutritional_info.nutrition_answers
+                            st.session_state.current_question = len(NUTRITION_QUESTIONS)
+                        
+                        # Salta il tutorial perché l'utente ha già una conversazione
+                        tutorial_key = f"tutorial_completed_{result}"
+                        st.session_state[tutorial_key] = True
+                    else:
+                        # Se non ha messaggi in chat ma ha nutrition_answers,
+                        # significa che era nelle domande iniziali, quindi resetta
+                        if nutritional_info.nutrition_answers and len(nutritional_info.nutrition_answers) > 0:
+                            # Resetta solo i dati utente relativi alle domande
+                            st.session_state.current_question = 0
+                            st.session_state.nutrition_answers = {}
+                            
+                            # Resetta le informazioni nutrizionali ai valori di default
+                            user_data_manager.save_nutritional_info(
+                                result,
+                                {
+                                    "età": 30,
+                                    "sesso": "Maschio", 
+                                    "peso": 70,
+                                    "altezza": 170,
+                                    "attività": "Sedentario",
+                                    "obiettivo": "Mantenimento",
+                                    "nutrition_answers": {},
+                                    "agent_qa": []
+                                }
+                            )
+                            
+                            # Cancella la chat history e le domande/risposte dell'agente
+                            user_data_manager.clear_chat_history(result)
+                            user_data_manager.clear_agent_qa(result)
+                            
+                            # Resetta le preferenze utente
+                            user_data_manager.clear_user_preferences(result)
+                            
+                            # Cancella eventuali variabili di sessione delle preferenze
+                            if 'excluded_foods_list' in st.session_state:
+                                del st.session_state.excluded_foods_list
+                            if 'preferred_foods_list' in st.session_state:
+                                del st.session_state.preferred_foods_list
+                            if 'preferences_prompt' in st.session_state:
+                                del st.session_state.preferences_prompt
+                            if 'prompt_to_add_at_next_message' in st.session_state:
+                                del st.session_state.prompt_to_add_at_next_message
+                            
+                            # Resetta il tutorial per farlo ripartire
+                            from frontend.tutorial import reset_tutorial
+                            reset_tutorial(result)
                 
                 st.rerun()
                 return True
