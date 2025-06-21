@@ -21,6 +21,7 @@ class PreferencesUI:
             food_preferences: Gestore della logica delle preferenze alimentari
         """
         self.food_preferences = food_preferences
+        self.current_user_id = None  # Memorizza l'ID dell'utente corrente
     
     def display_preferences_interface(self, user_id: str):
         """
@@ -29,6 +30,8 @@ class PreferencesUI:
         Args:
             user_id: ID dell'utente
         """
+        self.current_user_id = user_id  # Salva l'user_id per utilizzo nei metodi interni
+        
         st.markdown("""
             <div class="welcome-header">
                 <h1>🥗 Le Tue <span class="gradient-text">Preferenze</span></h1>
@@ -47,11 +50,12 @@ class PreferencesUI:
         with col2:
             self._display_preferred_foods_section()
         
-        # Bottone di salvataggio
-        if st.button("Salva preferenze"):
-            if self.food_preferences.save_preferences(user_id, ""):
-                st.success("Preferenze salvate con successo!")
-                st.rerun()
+        # Il bottone di salvataggio non è più necessario poiché salviamo automaticamente
+        # Lo lascio commentato nel caso si voglia ripristinarlo in futuro
+        # if st.button("Salva preferenze"):
+        #     if self.food_preferences.save_preferences(user_id, ""):
+        #         st.success("Preferenze salvate con successo!")
+        #         st.rerun()
     
     def _display_excluded_foods_section(self):
         """Mostra la sezione degli alimenti esclusi"""
@@ -66,6 +70,9 @@ class PreferencesUI:
             with col2:
                 if st.button("🗑️", key=f"del_excluded_{i}", help="Rimuovi alimento"):
                     if self.food_preferences.remove_excluded_food(i):
+                        # Salva automaticamente le preferenze dopo la rimozione
+                        if self.current_user_id:
+                            self.food_preferences.save_preferences(self.current_user_id, "")
                         st.rerun()
         
         # Form per aggiungere nuovo alimento escluso
@@ -84,6 +91,9 @@ class PreferencesUI:
             with col2:
                 if st.button("🗑️", key=f"del_preferred_{i}", help="Rimuovi alimento"):
                     if self.food_preferences.remove_preferred_food(i):
+                        # Salva automaticamente le preferenze dopo la rimozione
+                        if self.current_user_id:
+                            self.food_preferences.save_preferences(self.current_user_id, "")
                         st.rerun()
         
         # Form per aggiungere nuovo alimento preferito
@@ -124,7 +134,10 @@ class PreferencesUI:
                         success = self.food_preferences.add_preferred_food(food_name)
                     
                     if success:
-                        st.success(f"Alimento '{food_name}' aggiunto!")
+                        # Salva automaticamente le preferenze
+                        if self.current_user_id:
+                            self.food_preferences.save_preferences(self.current_user_id, "")
+                        st.success(f"Alimento '{food_name}' aggiunto e salvato!")
                         st.rerun()
                     else:
                         st.warning(f"L'alimento '{food_name}' è già nella lista")

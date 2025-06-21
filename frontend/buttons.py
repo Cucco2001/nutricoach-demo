@@ -85,6 +85,16 @@ class ButtonHandler:
         # Resetta le preferenze utente
         self.user_data_manager.clear_user_preferences(user_id)
         
+        # Cancella anche le variabili di sessione delle preferenze
+        if 'excluded_foods_list' in st.session_state:
+            del st.session_state.excluded_foods_list
+        if 'preferred_foods_list' in st.session_state:
+            del st.session_state.preferred_foods_list
+        if 'preferences_prompt' in st.session_state:
+            del st.session_state.preferences_prompt
+        if 'prompt_to_add_at_next_message' in st.session_state:
+            del st.session_state.prompt_to_add_at_next_message
+        
         # Resetta il token tracker se esiste
         if 'token_tracker' in st.session_state:
             from services.token_cost_service import TokenCostTracker
