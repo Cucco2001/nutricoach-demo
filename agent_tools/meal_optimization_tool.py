@@ -285,6 +285,7 @@ def get_portion_constraints():
     return {
         # CATEGORIE PRINCIPALI DALLA BANCA ALIMENTI
         "caffè": {"min": 5, "max": 5},
+        "zucchero": {"min": 5, "max": 10},
         "proteine_animali": {"min": 70, "max": 300},
         "latte": {"min": 100, "max": 500},
         "affettati": {"min": 50, "max": 150},

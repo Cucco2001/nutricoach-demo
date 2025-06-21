@@ -88,7 +88,7 @@ class NutriDB:
             "affumicato", "affumicati", "affumicata", "affumicate", "arrosto", "arrostito", "brasato",
             "stufato", "stufati", "al naturale", "naturale", "sott'olio", "sottolio", "sgocciolato",
             "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
-            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche"
+            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di"
         ]
         
         # Base mapping dalle chiavi del database
@@ -238,11 +238,13 @@ class NutriDB:
             "spigola": "pesce_spada",     ################
             "merluzzo": "pesce_spada",    ################
             "funghi":"verdure_miste",     ################
-            "cracker integrali": "cracker",
-            "crackers integrali": "cracker",
+            "fetta biscottata": "fette_biscottate",
+            "cracker integrali": "cracker_integrali",
+            "crackers integrali": "cracker_integrali",
             "crackers": "cracker",
             "grana": "grana_padano",  
             "fiocchi di latte": "fiocchi_latte",
+            "frutta": "frutti_di_bosco",
             "frutta mista": "frutti_di_bosco",
             "hamburger_manzo": "carne_manzo",   
             "hamburger": "carne_manzo",

@@ -21,7 +21,7 @@
     "nova_group": 1,
     "categoria": "tuberi"
   },
-  "riso_basmati": {
+  "riso": {
     "energia_kcal": 367,
     "proteine_g": 9.0,
     "carboidrati_g": 82.9,
@@ -306,7 +306,7 @@
     "grassi_saturi_g": 0.0,
     "fibra_g": 0.0,
     "nova_group": 2,
-    "categoria": "frutta"
+    "categoria": "zucchero"
   },
   "cioccolato_fondente": {
     "energia_kcal": 531,
@@ -760,6 +760,28 @@
     "nova_group": 4,
     "categoria": "creme_spalmabili"
   },
+  "fette_biscottate": {
+    "energia_kcal": 387,
+    "proteine_g": 11.3,
+    "carboidrati_g": 75,
+    "zuccheri_g": 2.2,
+    "grassi_g": 6,
+    "grassi_saturi_g": 1.0,
+    "fibra_g": 3.5,
+    "nova_group": 4,
+    "categoria": "cereali_colazione"
+  },
+  "cracker": {
+    "energia_kcal": 386,
+    "proteine_g": 9.4,
+    "carboidrati_g": 67.5,
+    "zuccheri_g": 2.1,
+    "grassi_g": 10.4,
+    "grassi_saturi_g": 1.0,
+    "fibra_g": 2.8,
+    "nova_group": 4,
+    "categoria": "cereali_colazione"
+  },
   "cracker_integrali": {
     "energia_kcal": 402,
     "proteine_g": 12.0,
@@ -769,7 +791,7 @@
     "grassi_saturi_g": 2.0,
     "fibra_g": 10.0,
     "nova_group": 4,
-    "categoria": "cereali"
+    "categoria": "cereali_colazione"
   },
   "grissini": {
     "energia_kcal": 421,
