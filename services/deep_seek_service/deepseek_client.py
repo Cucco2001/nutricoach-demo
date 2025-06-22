@@ -137,104 +137,101 @@ class DeepSeekClient:
         obiettivo = user_info.get('obiettivo', 'N/A')
         
         prompt = """
-Analizza questa conversazione tra un nutrizionista AI e un utente per estrarre i dati nutrizionali calcolati.
+Stai per analizzare una singola interazione alla volta, parte di una conversazione più ampia tra un nutrizionista AI e un utente.
+Il tuo compito è quello di estrarre solamente i dati nutrizionali calcolati o forniti in questa specifica interazione, senza cercare di completare o immaginare dati mancanti e senza restituire l’intero schema JSON completo.
 
-INFORMAZIONI UTENTE:
-- Età: """ + str(eta) + """ anni
-- Sesso: """ + str(sesso) + """
-- Peso: """ + str(peso) + """ kg
-- Altezza: """ + str(altezza) + """ cm
-- Obiettivo: """ + str(obiettivo) + """
-
+Se nell’interazione sono presenti uno o più dei seguenti campi, restituiscili nel formato JSON riportato sotto, includendo solo i campi effettivamente rilevati.
 CONVERSAZIONE:
 """ + conversation_text + """
 
-ESTRAI E RESTITUISCI SOLO UN JSON CON I SEGUENTI DATI (se presenti nella conversazione):
+ESTRAI E RESTITUISCI UN JSON NEL SEGUENTE FORMATO OUTPUT CITANDO SOLO I CAMPI PRESENTI NELL'INTERAZIONE ED ESCLUDENDO GLI ALTRI:
 
-{
-    "caloric_needs": {
-        "bmr": numero_metabolismo_basale,
-        "fabbisogno_base": numero_fabbisogno_senza_sport,
-        "dispendio_sportivo": numero_calorie_da_sport,
-        "fabbisogno_totale": numero_fabbisogno_totale,
-        "aggiustamento_obiettivo": numero_deficit_o_surplus,
-        "fabbisogno_finale": numero_calorie_finali,
-        "laf_utilizzato": numero_fattore_attivita
-    },
-    "macros_total": {
-        "kcal_finali": numero, (uguali al fabbisogno_finale)
-        "proteine_g": numero,
-        "proteine_kcal": numero,
-        "proteine_percentuale": numero,
-        "grassi_g": numero,
-        "grassi_kcal": numero, 
-        "grassi_percentuale": numero,
-        "carboidrati_g": numero,
-        "carboidrati_kcal": numero,
-        "carboidrati_percentuale": numero,
-        "fibre_g": numero
-    },
-    "daily_macros": {
-        "numero_pasti": numero,
-        "distribuzione_pasti": {
-            "nome_pasto": {
-                "kcal": numero,
-                "percentuale_kcal": numero,
-                "proteine_g": numero,
-                "carboidrati_g": numero,
-                "grassi_g": numero
-            }
+"caloric_needs": {
+    "bmr": numero_metabolismo_basale,
+    "fabbisogno_base": numero_fabbisogno_senza_sport,
+    "dispendio_sportivo": numero_calorie_da_sport,
+    "fabbisogno_totale": numero_fabbisogno_totale,
+    "aggiustamento_obiettivo": numero_deficit_o_surplus,
+    "fabbisogno_finale": numero_calorie_finali,
+    "laf_utilizzato": numero_fattore_attivita
+}
+
+"macros_total": {
+    "kcal_finali": numero, (uguali al fabbisogno_finale)
+    "proteine_g": numero,
+    "proteine_kcal": numero,
+    "proteine_percentuale": numero,
+    "grassi_g": numero,
+    "grassi_kcal": numero, 
+    "grassi_percentuale": numero,
+    "carboidrati_g": numero,
+    "carboidrati_kcal": numero,
+    "carboidrati_percentuale": numero,
+    "fibre_g": numero
+}
+
+"daily_macros": {
+    "numero_pasti": numero,
+    "distribuzione_pasti": {
+        "nome_pasto": {
+            "kcal": numero,
+            "percentuale_kcal": numero,
+            "proteine_g": numero,
+            "carboidrati_g": numero,
+            "grassi_g": numero
         }
-    },
-    "registered_meals": [
-        {
-            "nome_pasto": "colazione/pranzo/cena/spuntino_mattutino/spuntino_pomeridiano o altri se specificati",
-            "alimenti": [
-                {
-                    "nome_alimento": "nome",
-                    "quantita_g": numero_grammi_quando_possibile,
-                    "stato": "crudo/cotto",
-                    "metodo_cottura": "se_applicabile",
-                    "misura_casalinga": "equivalenza_descrittiva_es_2_uova_1_tazza",
-                    "sostituti": "100g di riso basmati, 90g di pasta integrale",
-                    "macronutrienti": {
-                        "proteine": numero,
-                        "carboidrati": numero, 
-                        "grassi": numero,
-                        "kcal": numero
-                    }
+    }
+}
+
+"registered_meals": [
+    {
+        "nome_pasto": "colazione/pranzo/cena/spuntino_mattutino/spuntino_pomeridiano o altri se specificati",
+        "alimenti": [
+            {
+                "nome_alimento": "nome",
+                "quantita_g": numero_grammi_quando_possibile,
+                "stato": "crudo/cotto",
+                "metodo_cottura": "se_applicabile",
+                "misura_casalinga": "equivalenza_descrittiva_es_2_uova_1_tazza",
+                "sostituti": "100g di riso basmati, 90g di pasta integrale",
+                "macronutrienti": {
+                    "proteine": numero,
+                    "carboidrati": numero, 
+                    "grassi": numero,
+                    "kcal": numero
                 }
-            ],
-            "totali_pasto": {
-                "kcal_finali": numero,
-                "proteine_totali": numero,
-                "carboidrati_totali": numero,
-                "grassi_totali": numero
             }
+        ],
+        "totali_pasto": {
+            "kcal_finali": numero,
+            "proteine_totali": numero,
+            "carboidrati_totali": numero,
+            "grassi_totali": numero
         }
-    ],
-    "weekly_diet": {
-        "giorno_2": {
-            "colazione": {
-                "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga, "sostituti": "100g di riso basmati, 90g di pasta integrale"}
-            },
-            "pranzo": {"...simile..."},
-            "cena": {"...simile..."},
-            "spuntino_mattutino": {"...simile..."},
-            "spuntino_pomeridiano": {"...simile..."}
-        },
-        "giorno_3": {"...struttura identica..."},
-        "giorno_4": {"...struttura identica..."},
-        "giorno_5": {"...struttura identica..."},
-        "giorno_6": {"...struttura identica..."},
-        "giorno_7": {"...struttura identica..."}
-    },
-    "weekly_diet_partial": {
-        "day": "giorno_X",
-        "meal": "nome_pasto",
-        "data": {
+    }
+]
+"weekly_diet": {
+    "giorno_2": {
+        "colazione": {
             "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga, "sostituti": "100g di riso basmati, 90g di pasta integrale"}
-        }
+        },
+        "pranzo": {"...simile..."},
+        "cena": {"...simile..."},
+        "spuntino_mattutino": {"...simile..."},
+        "spuntino_pomeridiano": {"...simile..."}
+    },
+    "giorno_3": {"...struttura identica..."},
+    "giorno_4": {"...struttura identica..."},
+    "giorno_5": {"...struttura identica..."},
+    "giorno_6": {"...struttura identica..."},
+    "giorno_7": {"...struttura identica..."}
+}
+
+"weekly_diet_partial": {
+    "day": "giorno_X",
+    "meal": "nome_pasto",
+    "data": {
+        "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga, "sostituti": "100g di riso basmati, 90g di pasta integrale"}
     }
 }
 
@@ -246,15 +243,12 @@ IMPORTANTE PER CALORIC_NEEDS:
 
 IMPORTANTE PER LE QUANTITÀ:
 - "quantita_g": Inserisci il peso in grammi SOLO se menzionato esplicitamente in grammi
-- Se sono menzionate unità diverse (es: "2 uova", "1 tazza", "3 fette"), NON convertire a grammi arbitrariamente
-- Per unità non in grammi, metti 0 in "quantita_g" e spiega nella "misura_casalinga"
+- Se sono menzionate unità diverse (es: "2 uova", "1 tazza", "3 fette"), OMETTI il campo "quantita_g" completamente
 - "misura_casalinga": Descrivi sempre l'unità originale (es: "2 uova grandi", "1 tazza", "1 fetta di pane")
 
 **FONDAMENTALE**:
 - I CAMPI SOTTO REGISTERED_MEALS CORRISPONDONO AI PASTI DEL GIORNO 1, MENTRE IN WEEKLY_DIET SONO I PASTI DEL GIORNO 2-7
-- Rileggi SEMPRE la conversazione e cerca di estrarre SEMPRE tutti i campi del JSON
 - Le informazioni sono SEMPRE nella conversazione, quindi non inventare informazioni
-- Particolare attenzione ai pasti e a macros_total
 
 
 IMPORTANTE PER I TIPI DI PASTO:
@@ -300,17 +294,13 @@ MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
 REGOLE FONDAMENTALI PER GLI AGGIORNAMENTI - MOLTO IMPORTANTE:
 - **NON AZZERARE MAI CAMPI CHE NON SONO MENZIONATI NELLA CONVERSAZIONE CORRENTE**
 - **ESTRAI E AGGIORNA SOLO I CAMPI EFFETTIVAMENTE DISCUSSI NELL'ULTIMA CONVERSAZIONE**
+- **NON INSERIRE MAI 0 COME VALORE PREDEFINITO**: Se un valore non è presente, OMETTI il campo
+- **PER I VALORI NUMERICI**: Inserisci solo i valori esplicitamente menzionati o calcolabili dalla conversazione
 - Se nella conversazione si parla solo di "caloric_needs", NON restituire campi vuoti per "macros_total", "registered_meals", etc.
 - Se si modifica solo un pasto specifico, usa "weekly_diet_partial" e NON modificare altri pasti
 - Se si aggiorna solo la distribuzione calorica, NON azzerare i pasti registrati
 - **PRINCIPIO DI INCREMENTALITÀ**: Ogni estrazione deve aggiungere o modificare solo ciò che è esplicitamente discusso
 - **MAI RIMUOVERE DATI**: Se un campo esisteva prima e non è menzionato ora, NON includerlo nel JSON di output
-
-ESEMPI DI COMPORTAMENTO CORRETTO:
-- Se la conversazione parla solo di BMR e fabbisogno calorico → estrai SOLO "caloric_needs"
-- Se si discute solo della modifica del pranzo del giorno 3 → restituisci SOLO "weekly_diet_partial" per quel pasto
-- Se si parla solo di macronutrienti totali → estrai SOLO "macros_total"
-- NON restituire mai campi vuoti o azzerati che non sono stati discussi
 
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo

@@ -28,7 +28,8 @@ class NutritionalDataExtractor:
         user_id: str, 
         conversation_history: List[Any], 
         user_info: Dict[str, Any],
-        interaction_count: int
+        interaction_count: int,
+        deepseek_manager: Any = None
     ) -> None:
         """
         Avvia l'estrazione asincrona dei dati nutrizionali.
@@ -38,6 +39,7 @@ class NutritionalDataExtractor:
             conversation_history: Storia delle conversazioni
             user_info: Informazioni dell'utente
             interaction_count: Numero di interazioni
+            deepseek_manager: Riferimento al manager per processare la coda
         """
         if not self.is_available():
             print("[EXTRACTION_SERVICE] DeepSeek non disponibile, estrazione saltata")
@@ -79,6 +81,11 @@ class NutritionalDataExtractor:
                     
             except Exception as e:
                 print(f"[EXTRACTION_SERVICE] Errore nell'estrazione per utente {user_id}: {str(e)}")
+            finally:
+                # Processa la coda quando l'estrazione finisce
+                if deepseek_manager:
+                    print(f"[EXTRACTION_SERVICE] Estrazione completata, controllo coda...")
+                    deepseek_manager.process_queue()
         
         # Avvia in background thread
         extraction_thread = threading.Thread(
@@ -236,12 +243,12 @@ class NutritionalDataExtractor:
                 else:
                     # Merge normale per caloric_needs e macros_total
                     for field_name, field_value in new_data[key].items():
-                        if field_value is not None and field_value != 0:
+                        if field_value is not None and not self._is_invalid_zero(field_name, field_value, key):
                             existing_data[key][field_name] = field_value
                             changes_made = True
                             print(f"[EXTRACTION_SERVICE] Sovrascritto {field_name} in {key} per utente {user_id}")
-                        elif field_value == 0:
-                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 per {field_name} in {key} per utente {user_id}")
+                        elif self._is_invalid_zero(field_name, field_value, key):
+                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 invalido per {field_name} in {key} per utente {user_id}")
                 
                 # 2. Completa campi mancanti per caloric_needs e daily_macros
                 if key == "caloric_needs":
@@ -249,6 +256,18 @@ class NutritionalDataExtractor:
                     if missing_fields:
                         print(f"[EXTRACTION_SERVICE] Campi mancanti in caloric_needs: {missing_fields}")
                         completed_section = self._complete_missing_caloric_fields(user_id, existing_data[key])
+                        if completed_section:
+                            # Sostituisce i missing fields con quelli del completer
+                            for field_name in missing_fields:
+                                if field_name in completed_section and completed_section[field_name] is not None:
+                                    existing_data[key][field_name] = completed_section[field_name]
+                                    print(f"[EXTRACTION_SERVICE] Sostituito campo mancante {field_name} = {completed_section[field_name]}")
+                            changes_made = True
+                elif key == "macros_total":
+                    missing_fields = self._get_missing_fields(key, existing_data[key])
+                    if missing_fields:
+                        print(f"[EXTRACTION_SERVICE] Campi mancanti in macros_total: {missing_fields}")
+                        completed_section = self._complete_missing_macros_fields(user_id, existing_data[key])
                         if completed_section:
                             # Sostituisce i missing fields con quelli del completer
                             for field_name in missing_fields:
@@ -326,13 +345,13 @@ class NutritionalDataExtractor:
         if section_name == "caloric_needs":
             required_fields = ["bmr", "fabbisogno_base", "fabbisogno_finale", "dispendio_sportivo", "aggiustamento_obiettivo"]
             for field in required_fields:
-                if field not in section_data or section_data[field] is None:
+                if field not in section_data or section_data[field] is None or self._is_invalid_zero(field, section_data.get(field, 0), section_name):
                     missing_fields.append(field)
 
         elif section_name == "macros_total":
-            required_fields = ["proteine_g", "carboidrati_g", "grassi_g", "kcal_finali", "proteine_kcal", "grassi_kcal", "carboidrati_kcal", "proteine_percentuale", "grassi_percentuale", "carboidrati_percentuale"]
+            required_fields = ["proteine_g", "carboidrati_g", "grassi_g", "kcal_totali", "proteine_kcal", "grassi_kcal", "carboidrati_kcal", "proteine_percentuale", "grassi_percentuale", "carboidrati_percentuale"]
             for field in required_fields:
-                if field not in section_data or section_data[field] is None:
+                if field not in section_data or section_data[field] is None or self._is_invalid_zero(field, section_data.get(field, 0), section_name):
                     missing_fields.append(field)
                     
         elif section_name == "daily_macros":
@@ -624,6 +643,12 @@ class NutritionalDataExtractor:
             existing_distribuzione = existing_daily_macros["distribuzione_pasti"]
             new_distribuzione = new_daily_macros["distribuzione_pasti"]
             
+            # Normalizza eventuali "spuntino" generici nei dati esistenti
+            if "spuntino" in existing_distribuzione:
+                spuntino_data = existing_distribuzione.pop("spuntino")
+                existing_distribuzione["spuntino_pomeridiano"] = spuntino_data
+                print(f"[EXTRACTION_SERVICE] Normalizzato 'spuntino' generico esistente in 'spuntino_pomeridiano' per utente {user_id}")
+            
             # Per ogni pasto in DeepSeek
             for meal_name, new_meal_data in new_distribuzione.items():
                 if isinstance(new_meal_data, dict):
@@ -637,13 +662,20 @@ class NutritionalDataExtractor:
                     
                     # Merge campi del pasto (sovrascrive sempre i campi DeepSeek, esclusi gli zeri)
                     for field_name, field_value in new_meal_data.items():
-                        if field_value is not None and field_value != 0:
+                        if field_value is not None and not self._is_invalid_zero(field_name, field_value, 'daily_macros'):
                             existing_meal[field_name] = field_value
                             print(f"[EXTRACTION_SERVICE] Sovrascritto {meal_name}.{field_name} = {field_value} per utente {user_id}")
-                        elif field_value == 0:
-                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 per {meal_name}.{field_name} per utente {user_id}")
+                        elif self._is_invalid_zero(field_name, field_value, 'daily_macros'):
+                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 invalido per {meal_name}.{field_name} per utente {user_id}")
                 else:
                     print(f"[EXTRACTION_SERVICE] ATTENZIONE: Pasto malformato in DeepSeek per {meal_name}, ignorato")
+            
+            # Normalizza eventuali "spuntino" generici
+            if "spuntino" in new_distribuzione:
+                # Se c'è uno spuntino generico, assumiamo sia pomeridiano
+                spuntino_data = new_distribuzione.pop("spuntino")
+                new_distribuzione["spuntino_pomeridiano"] = spuntino_data
+                print(f"[EXTRACTION_SERVICE] Normalizzato 'spuntino' generico in 'spuntino_pomeridiano' per utente {user_id}")
     
     def _merge_registered_meals(
         self, 
@@ -1022,4 +1054,78 @@ class NutritionalDataExtractor:
                 
         # Se sono arrivato qui, considera simili (stesso tipo di alimenti)
         return False
+    
+    def _is_invalid_zero(self, field_name: str, field_value: Any, section_name: str) -> bool:
+        """
+        Determina se un valore 0 è invalido (errore) o legittimo.
+        
+        Args:
+            field_name: Nome del campo
+            field_value: Valore del campo
+            section_name: Nome della sezione (caloric_needs, macros_total, etc.)
+            
+        Returns:
+            True se il valore 0 è considerato invalido/errore
+        """
+        if field_value != 0:
+            return False
+            
+        # Campi che NON dovrebbero mai essere 0
+        never_zero_fields = {
+            # caloric_needs
+            'bmr', 'fabbisogno_base', 'fabbisogno_finale', 'fabbisogno_totale',
+            'laf_utilizzato',
+            # macros_total
+            'kcal_finali', 'kcal_totali', 'proteine_g', 'carboidrati_g', 'grassi_g',
+            'proteine_kcal', 'carboidrati_kcal', 'grassi_kcal',
+            'proteine_percentuale', 'carboidrati_percentuale', 'grassi_percentuale',
+            # distribuzione pasti
+            'kcal', 'percentuale_kcal',
+            # registered meals
+            'kcal_finali', 'kcal_totali'
+        }
+        
+        # Campi che possono legittimamente essere 0
+        can_be_zero_fields = {
+            'dispendio_sportivo',  # Può essere 0 se non fa sport
+            'aggiustamento_obiettivo',  # Può essere 0 per mantenimento
+            'fibre_g',  # Potrebbe teoricamente essere 0
+            'quantita_g'  # Quando si usa misura_casalinga
+        }
+        
+        # Se il campo è nella lista dei "mai zero", allora 0 è invalido
+        if field_name in never_zero_fields:
+            return True
+            
+        # Se il campo può essere zero, allora 0 è valido
+        if field_name in can_be_zero_fields:
+            return False
+            
+        # Per campi sconosciuti, assumiamo che 0 sia invalido per sicurezza
+        print(f"[EXTRACTION_SERVICE] Campo sconosciuto '{field_name}' con valore 0, considerato invalido")
+        return True
+    
+    def _complete_missing_macros_fields(self, user_id: str, macros_section: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Usa caloric_data_completer per completare i campi mancanti in macros_total.
+        
+        Args:
+            user_id: ID utente
+            macros_section: Sezione macros_total da completare
+            
+        Returns:
+            Sezione macros_total completata o None se errore
+        """
+        try:
+            # Crea una copia per il completamento
+            completed_macros = macros_section.copy()
+            
+            # Usa il metodo del completer per calcolare i campi mancanti
+            self.caloric_data_completer._complete_macros_total(completed_macros)
+            
+            return completed_macros
+            
+        except Exception as e:
+            print(f"[EXTRACTION_SERVICE] Errore nel completamento campi mancanti macros_total: {str(e)}")
+            return None
     

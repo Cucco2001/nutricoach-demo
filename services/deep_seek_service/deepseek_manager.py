@@ -12,6 +12,7 @@ from .extraction_service import NutritionalDataExtractor
 from .notification_manager import NotificationManager
 import time
 import threading
+import queue
 
 
 class DeepSeekManager:
@@ -62,16 +63,7 @@ class DeepSeekManager:
         if not self.is_available():
             return
             
-        # Non incrementare il contatore se un'estrazione è già in corso.
-        # Questo previene che le interazioni vengano "perse" se l'utente
-        # scrive messaggi multipli mentre un'estrazione è attiva.
-        # Il contatore verrà aggiornato solo alla prossima interazione
-        # dopo che l'estrazione corrente sarà completata.
-        if self._is_extraction_in_progress(user_id):
-            print(f"[DEEPSEEK_MANAGER] Estrazione per {user_id} già in corso, interazione non contata per ora.")
-            return
-
-        # Incrementa il contatore delle interazioni solo se non c'è un'estrazione in corso
+        # Incrementa SEMPRE il contatore delle interazioni
         st.session_state[self.interaction_count_key] += 1
         
         # Controlla se sono passate abbastanza interazioni
@@ -80,7 +72,21 @@ class DeepSeekManager:
         interactions_since_last = current_interaction_count - last_extraction_count
         
         if interactions_since_last >= extraction_interval:
-            print(f"[DEEPSEEK_MANAGER] Avvio estrazione dopo {interactions_since_last} interazioni.")
+            print(f"[DEEPSEEK_MANAGER] {interactions_since_last} interazioni dall'ultima estrazione.")
+            
+            # Controlla se c'è già un'estrazione in corso
+            if self._is_extraction_in_progress(user_id):
+                print(f"[DEEPSEEK_MANAGER] Estrazione già in corso per {user_id}, richiesta messa in coda.")
+                # Metti in coda la richiesta per processarla dopo
+                if hasattr(st.session_state, 'deepseek_queue'):
+                    st.session_state.deepseek_queue.put({
+                        'user_id': user_id,
+                        'user_data_manager': user_data_manager,
+                        'user_info': user_info,
+                        'interaction_count': current_interaction_count,
+                        'interactions_since_last': interactions_since_last
+                    })
+                return
             
             # Ottieni la storia delle conversazioni
             conversation_history = user_data_manager.get_agent_qa(user_id)
@@ -93,15 +99,19 @@ class DeepSeekManager:
                 
                 new_conversation_part = conversation_history[-num_new_interactions:]
                 
-                print(f"[DEEPSEEK_MANAGER] Estraggo {len(new_conversation_part)} nuove interazioni.")
+                print(f"[DEEPSEEK_MANAGER] Avvio estrazione di {len(new_conversation_part)} nuove interazioni.")
 
                 # Avvia l'estrazione asincrona
                 self.extractor.extract_data_async(
                     user_id=user_id,
                     conversation_history=new_conversation_part,
                     user_info=user_info or {},
-                    interaction_count=current_interaction_count
+                    interaction_count=current_interaction_count,
+                    deepseek_manager=self
                 )
+                
+                # Aggiorna il contatore dell'ultima estrazione
+                st.session_state[self.last_extraction_count_key] = current_interaction_count
                 
                 # Mostra notifica di avvio
                 self.notification_manager.show_extraction_started_info()
@@ -137,6 +147,63 @@ class DeepSeekManager:
     def show_notifications(self) -> None:
         """Mostra le notifiche DeepSeek."""
         self.notification_manager.check_and_show_notifications()
+    
+    def process_queue(self) -> None:
+        """
+        Processa la coda delle richieste di estrazione pendenti.
+        Chiamato quando un'estrazione finisce per avviare la prossima se presente.
+        """
+        if not hasattr(st.session_state, 'deepseek_queue'):
+            return
+            
+        try:
+            # Controlla se c'è una richiesta in coda
+            if not st.session_state.deepseek_queue.empty():
+                # Prendi la prossima richiesta
+                request = st.session_state.deepseek_queue.get_nowait()
+                
+                user_id = request['user_id']
+                user_data_manager = request['user_data_manager']
+                user_info = request['user_info']
+                interaction_count = request['interaction_count']
+                interactions_since_last = request['interactions_since_last']
+                
+                print(f"[DEEPSEEK_MANAGER] Processando richiesta in coda per utente {user_id}")
+                
+                # Verifica che non ci sia già un'estrazione in corso
+                if not self._is_extraction_in_progress(user_id):
+                    # Ottieni la storia aggiornata delle conversazioni
+                    conversation_history = user_data_manager.get_agent_qa(user_id)
+                    
+                    if conversation_history and len(conversation_history) >= interactions_since_last:
+                        new_conversation_part = conversation_history[-interactions_since_last:]
+                        
+                        print(f"[DEEPSEEK_MANAGER] Avvio estrazione dalla coda di {len(new_conversation_part)} interazioni.")
+                        
+                        # Avvia l'estrazione
+                        self.extractor.extract_data_async(
+                            user_id=user_id,
+                            conversation_history=new_conversation_part,
+                            user_info=user_info,
+                            interaction_count=interaction_count,
+                            deepseek_manager=self
+                        )
+                        
+                        # Aggiorna il contatore dell'ultima estrazione
+                        st.session_state[self.last_extraction_count_key] = interaction_count
+                        
+                        # Mostra notifica
+                        self.notification_manager.show_extraction_started_info()
+                else:
+                    # Se c'è ancora un'estrazione in corso, rimetti in coda
+                    st.session_state.deepseek_queue.put(request)
+                    print(f"[DEEPSEEK_MANAGER] Estrazione ancora in corso, richiesta rimessa in coda")
+                    
+        except queue.Empty:
+            # Coda vuota, niente da fare
+            pass
+        except Exception as e:
+            print(f"[DEEPSEEK_MANAGER] Errore nel processare la coda: {str(e)}")
     
     def clear_user_data(self, user_id: str) -> bool:
         """
