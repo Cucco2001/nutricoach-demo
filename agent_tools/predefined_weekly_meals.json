@@ -121,7 +121,7 @@
       "spuntino_mattutino": ["pera", "noci sgusciate"],
       "pranzo": ["riso_basmati", "pollo_petto", "zucchine", "olio_oliva"],
       "spuntino_pomeridiano": ["banana", "burro_arachidi"],
-      "cena": ["piselli", "pasta_secca", "prosciutto_crudo"]
+      "cena": ["piselli", "pasta", "prosciutto_crudo"]
     },
     "giorno_7": {
       "colazione": ["uova", "pane_integrale"],

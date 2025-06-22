@@ -7,7 +7,7 @@ per un pasto in modo da rispettare i target nutrizionali del pasto.
 
 import os
 import json
-from typing import Dict, List, Any, Tuple
+from typing import Dict, List, Any, Tuple, Optional
 import logging
 from scipy.optimize import minimize
 import numpy as np
@@ -436,6 +436,582 @@ def calculate_actual_nutrients(portions: Dict[str, float],
         "carboidrati_g": float(round(total_carboidrati, 1)),
         "grassi_g": float(round(total_grassi, 1))
     }
+
+
+def find_generic_food_variants(generic_term: str) -> List[str]:
+    """
+    Trova tutte le varianti specifiche di un termine generico nel database.
+    
+    Args:
+        generic_term: Termine generico (es. "yogurt", "latte", "pane")
+        
+    Returns:
+        Lista dei nomi canonici delle varianti trovate
+    """
+    variants = []
+    
+    # Mappature esplicite per i termini generici più comuni
+    explicit_mappings = {
+        "yogurt": ["yogurt_magro", "yogurt_intero", "yogurt_greco_0percento", "yogurt_greco_2percento"],
+        "latte": ["latte_intero", "latte_parzialmente_scremato", "latte_scremato"],
+        "latticini": ["latte_intero", "latte_parzialmente_scremato", "latte_scremato", "yogurt_magro", "yogurt_intero", "yogurt_greco_0percento", "yogurt_greco_2percento"],
+        "pane": ["pane_bianco", "pane_integrale"],
+        "pasta": ["pasta_di_semola", "pasta_integrale"],
+        "riso": ["riso", "riso_bianco", "riso_integrale"],
+        "formaggio": ["formaggio_fresco", "parmigiano_reggiano", "mozzarella", "ricotta"],
+        "pollo": ["pollo_petto", "pollo_coscia"],
+        "pesce": ["tonno_naturale", "merluzzo", "salmone", "orata", "branzino"],
+        "verdura": ["verdure_miste", "zucchine", "carote", "pomodori", "spinaci", "broccoli"],
+        "verdure": ["verdure_miste", "zucchine", "carote", "pomodori", "spinaci", "broccoli"],
+        "frutta": ["mela", "pera", "banana", "arancia", "kiwi", "fragole"],
+        "crackers": ["cracker"],
+        "biscotti": ["biscotti_secchi", "biscotti_integrali"],
+    }
+    
+    # Controlla prima le mappature esplicite
+    if generic_term in explicit_mappings:
+        # Verifica che gli alimenti esistano effettivamente nel database
+        for food in explicit_mappings[generic_term]:
+            # Verifica che l'alimento sia nel database
+            if food in db.alias.values() or db.alias.get(food.lower().replace("_", " ")):
+                variants.append(food)
+    
+    # Se non ci sono mappature esplicite, cerca dinamicamente in tutti gli alias
+    if not variants:
+        for alias_name, canonical_name in db.alias.items():
+            # Verifica se l'alias contiene il termine generico (come parola intera o sottostringa)
+            alias_words = alias_name.lower().split()
+            generic_words = generic_term.lower().split()
+            
+            # Metodo 1: Controlla se tutte le parole del termine generico sono presenti nell'alias
+            if all(generic_word in alias_words for generic_word in generic_words):
+                variants.append(canonical_name)
+            # Metodo 2: Controlla se il termine generico è una sottostringa dell'alias
+            elif generic_term in alias_name:
+                variants.append(canonical_name)
+    
+    # Rimuovi duplicati mantenendo l'ordine
+    variants = list(dict.fromkeys(variants))
+    
+    return variants
+
+
+def load_user_excluded_foods(user_id: str) -> List[str]:
+    """
+    Carica gli alimenti esclusi dall'utente dal file JSON.
+    
+    Args:
+        user_id: ID dell'utente
+        
+    Returns:
+        Lista degli alimenti esclusi (normalizzati usando alias del database)
+    """
+    # Fix: Handle user_id that may already contain 'user_' prefix
+    if user_id.startswith("user_"):
+        user_file_path = f"user_data/{user_id}.json"
+    else:
+        user_file_path = f"user_data/user_{user_id}.json"
+    
+    print(f"🔍 DEBUG load_user_excluded_foods:")
+    print(f"   📁 User ID: {user_id}")
+    print(f"   📄 File path: {user_file_path}")
+    
+    if not os.path.exists(user_file_path):
+        print(f"   ❌ File utente non trovato")
+        return []
+    
+    try:
+        with open(user_file_path, 'r', encoding='utf-8') as f:
+            user_data = json.load(f)
+        
+        user_preferences = user_data.get("user_preferences", {})
+        excluded_foods_raw = user_preferences.get("excluded_foods", [])
+        
+        print(f"   📋 Excluded foods raw: {excluded_foods_raw}")
+        
+        # Mappa gli alimenti esclusi usando gli alias del database + termini generici
+        excluded_foods_mapped = []
+        for food in excluded_foods_raw:
+            if not food or not food.strip():
+                continue
+                
+            # Normalizza il nome usando la stessa logica del database
+            normalized_food = food.lower().replace("_", " ").strip()
+            
+            # Cerca il nome principale usando gli alias
+            canonical_name = db.alias.get(normalized_food)
+            if canonical_name:
+                excluded_foods_mapped.append(canonical_name)
+                print(f"   ✅ Mappato '{food}' → '{canonical_name}'")
+            else:
+                # Se non trovato esatto, cerca termini generici che espandono a varianti multiple
+                generic_matches = find_generic_food_variants(normalized_food)
+                if generic_matches:
+                    excluded_foods_mapped.extend(generic_matches)
+                    print(f"   ✅ Mappato generico '{food}' → {generic_matches}")
+                else:
+                    print(f"   ⚠️  '{food}' non trovato nel database - ignorato")
+        
+        # Rimuovi duplicati mantenendo l'ordine
+        excluded_foods_mapped = list(dict.fromkeys(excluded_foods_mapped))
+        print(f"   🎯 Excluded foods finali: {excluded_foods_mapped}")
+        return excluded_foods_mapped
+        
+    except Exception as e:
+        print(f"   ❌ Errore nel caricamento excluded foods: {str(e)}")
+        return []
+
+
+def filter_substitutes_by_excluded_foods(
+    substitutes: Dict[str, Dict[str, Dict[str, float]]], 
+    excluded_foods: List[str]
+) -> Dict[str, Dict[str, Dict[str, float]]]:
+    """
+    Filtra i sostituti rimuovendo quelli che sono tra gli alimenti esclusi.
+    
+    Args:
+        substitutes: Dizionario dei sostituti da filtrare
+        excluded_foods: Lista degli alimenti esclusi (nomi canonici)
+        
+    Returns:
+        Dizionario dei sostituti filtrato
+    """
+    if not excluded_foods:
+        return substitutes
+    
+    print(f"🔍 DEBUG filter_substitutes_by_excluded_foods:")
+    print(f"   🚫 Alimenti esclusi: {excluded_foods}")
+    
+    filtered_substitutes = {}
+    
+    for food_name, food_substitutes in substitutes.items():
+        filtered_food_substitutes = {}
+        
+        for substitute_name, substitute_data in food_substitutes.items():
+            # Mappa il sostituto al nome canonico
+            substitute_canonical = db.alias.get(substitute_name.lower().replace("_", " "))
+            if not substitute_canonical:
+                substitute_canonical = substitute_name
+            
+            print(f"   🔍 Controllo sostituto '{substitute_name}' → '{substitute_canonical}'")
+            
+            # Verifica che il sostituto non sia tra gli esclusi
+            if substitute_canonical not in excluded_foods:
+                filtered_food_substitutes[substitute_name] = substitute_data
+                print(f"   ✅ Sostituto '{substitute_name}' mantenuto")
+            else:
+                print(f"   🚫 Sostituto '{substitute_name}' rimosso (escluso dall'utente)")
+        
+        # Mantieni l'alimento solo se ha almeno un sostituto valido
+        if filtered_food_substitutes:
+            filtered_substitutes[food_name] = filtered_food_substitutes
+    
+    return filtered_substitutes
+
+
+def check_and_replace_excluded_foods_final(
+    final_portions: Dict[str, float],
+    excluded_foods: List[str],
+    meal_name: str
+) -> Tuple[Dict[str, float], List[str], Dict[str, str]]:
+    """
+    Controlla la lista finale degli alimenti ottimizzati e sostituisce quelli esclusi.
+    
+    Args:
+        final_portions: Porzioni finali ottimizzate
+        excluded_foods: Lista degli alimenti esclusi dall'utente (nomi canonici)
+        meal_name: Nome del pasto per la logica dei sostituti
+        
+    Returns:
+        Tuple contenente:
+        - Porzioni aggiornate con sostituzioni
+        - Lista degli alimenti esclusi che sono stati trovati
+        - Dizionario con le sostituzioni effettuate {alimento_escluso: sostituto}
+    """
+    if not excluded_foods:
+        return final_portions, [], {}
+    
+    print(f"🔍 DEBUG check_and_replace_excluded_foods_final:")
+    print(f"   🍽️  Pasto: {meal_name}")
+    print(f"   📋 Porzioni finali: {list(final_portions.keys())}")
+    print(f"   🚫 Alimenti esclusi: {excluded_foods}")
+    
+    updated_portions = final_portions.copy()
+    found_excluded = []
+    replacements = {}
+    
+    try:
+        # Carica i dati dei sostituti
+        substitutes_data = load_substitutes_data()
+        substitutes_db = substitutes_data.get("substitutes", {})
+    except Exception as e:
+        print(f"   ❌ Errore nel caricamento sostituti: {str(e)}")
+        # Se non possiamo caricare i sostituti, rimuoviamo solo i cibi esclusi
+        for food in list(updated_portions.keys()):
+            normalized_food = db.alias.get(food.lower().replace("_", " "))
+            if not normalized_food:
+                normalized_food = food
+            
+            if normalized_food in excluded_foods:
+                found_excluded.append(food)
+                del updated_portions[food]
+                print(f"   🚫 Rimosso '{food}' (escluso dall'utente)")
+        
+        return updated_portions, found_excluded, replacements
+    
+    for food in list(final_portions.keys()):
+        # Mappa l'alimento al nome principale usando gli alias
+        normalized_food = db.alias.get(food.lower().replace("_", " "))
+        if not normalized_food:
+            normalized_food = food
+        
+        print(f"   🔍 Controllo '{food}' → '{normalized_food}'")
+        
+        if normalized_food in excluded_foods:
+            print(f"   🚫 '{food}' è escluso - cerco sostituto")
+            found_excluded.append(food)
+            original_portion = final_portions[food]
+            
+            # Cerca un sostituto appropriato
+            replacement = find_appropriate_substitute_final(
+                normalized_food, 
+                excluded_foods, 
+                substitutes_db, 
+                meal_name
+            )
+            
+            if replacement:
+                # Calcola la porzione equivalente per il sostituto
+                replacement_portion = calculate_substitute_portion(
+                    normalized_food, replacement, original_portion
+                )
+                
+                # Rimuovi l'alimento escluso e aggiungi il sostituto
+                del updated_portions[food]
+                updated_portions[replacement] = replacement_portion
+                replacements[food] = replacement
+                print(f"   ✅ Sostituito '{food}' ({original_portion}g) con '{replacement}' ({replacement_portion}g)")
+            else:
+                # Nessun sostituto trovato nel database - prova con sostituti forzati
+                forced_replacement = get_forced_substitute(normalized_food, excluded_foods, meal_name)
+                
+                if forced_replacement:
+                    # Calcola porzione basata sui valori calorici medi
+                    replacement_portion = calculate_forced_substitute_portion(
+                        normalized_food, forced_replacement, original_portion
+                    )
+                    
+                    # Rimuovi l'alimento escluso e aggiungi il sostituto forzato
+                    del updated_portions[food]
+                    updated_portions[forced_replacement] = replacement_portion
+                    replacements[food] = forced_replacement
+                    print(f"   ✅ Sostituito '{food}' ({original_portion}g) con '{forced_replacement}' ({replacement_portion}g) [sostituto forzato]")
+                else:
+                    # Nessun sostituto possibile, rimuovi l'alimento
+                    del updated_portions[food]
+                    print(f"   ⚠️  Nessun sostituto trovato per '{food}' - rimosso dalla lista")
+    
+    print(f"   🎯 Porzioni finali aggiornate: {list(updated_portions.keys())}")
+    print(f"   🔄 Sostituzioni: {replacements}")
+    
+    return updated_portions, found_excluded, replacements
+
+
+def find_appropriate_substitute_final(
+    excluded_food: str, 
+    excluded_foods: List[str], 
+    substitutes_db: Dict, 
+    meal_name: str
+) -> Optional[str]:
+    """
+    Trova un sostituto appropriato per un alimento escluso.
+    
+    Args:
+        excluded_food: Nome canonico dell'alimento escluso
+        excluded_foods: Lista completa degli alimenti esclusi
+        substitutes_db: Database dei sostituti
+        meal_name: Nome del pasto per la logica speciale
+        
+    Returns:
+        Nome dell'alimento sostituto o None se non trovato
+    """
+    if excluded_food not in substitutes_db:
+        return None
+    
+    available_substitutes = substitutes_db[excluded_food]
+    
+    # Determina se è colazione o spuntino per la logica speciale
+    meal_name_lower = meal_name.lower()
+    is_colazione_or_spuntino = any(keyword in meal_name_lower for keyword in [
+        "colazione", "breakfast",
+        "spuntino", "merenda", "snack",
+        "spuntino_pomeridiano", "spuntino_mattutino", 
+        "spuntino_serale", "spuntino_pomeriggio", 
+        "spuntino_mattina", "spuntino_sera"
+    ])
+    
+    # Ordina i sostituti per similarity_score (decrescente)
+    sorted_substitutes = sorted(
+        available_substitutes.items(),
+        key=lambda x: x[1]['similarity_score'],
+        reverse=True
+    )
+    
+    for substitute_name, substitute_data in sorted_substitutes:
+        # Mappa il sostituto al nome canonico
+        substitute_canonical = db.alias.get(substitute_name.lower().replace("_", " "))
+        if not substitute_canonical:
+            substitute_canonical = substitute_name
+        
+        # Verifica che il sostituto non sia tra gli esclusi
+        if substitute_canonical not in excluded_foods:
+            # Logica speciale per pane durante colazione/spuntini
+            if (is_colazione_or_spuntino and 
+                excluded_food in ["pane_bianco", "pane_integrale"]):
+                
+                # Durante colazione/spuntini, sostituire pane solo con crackers/pan_bauletto
+                allowed_substitutes = ["cracker", "crackers", "pan_bauletto", "pan bauletto"]
+                if any(allowed in substitute_name.lower() for allowed in allowed_substitutes):
+                    return substitute_name
+                # Continua a cercare altri sostituti appropriati
+                continue
+            else:
+                # Per tutti gli altri casi, usa il primo sostituto non escluso
+                return substitute_name
+    
+    return None
+
+
+def calculate_substitute_portion(
+    original_food: str, 
+    substitute_food: str, 
+    original_portion: float
+) -> float:
+    """
+    Calcola la porzione equivalente per un alimento sostituto.
+    
+    Args:
+        original_food: Nome canonico dell'alimento originale
+        substitute_food: Nome dell'alimento sostituto
+        original_portion: Porzione originale in grammi
+        
+    Returns:
+        Porzione equivalente del sostituto in grammi (arrotondata alla decina)
+    """
+    try:
+        substitutes_data = load_substitutes_data()
+        substitutes_db = substitutes_data.get("substitutes", {})
+        
+        if (original_food in substitutes_db and 
+            substitute_food in substitutes_db[original_food]):
+            
+            substitute_data = substitutes_db[original_food][substitute_food]
+            substitute_grams = (original_portion / 100.0) * substitute_data['grams']
+            
+            # Arrotonda alla decina più vicina
+            substitute_grams_rounded = float(10 * np.floor(substitute_grams / 10 + 0.5))
+            return max(10.0, substitute_grams_rounded)  # Minimo 10g
+        else:
+            # Fallback: mantieni la stessa porzione
+            return original_portion
+            
+    except Exception as e:
+        print(f"   ⚠️  Errore nel calcolo porzione sostituto: {str(e)}")
+        return original_portion
+
+
+def get_forced_substitute(excluded_food: str, excluded_foods: List[str], meal_name: str) -> Optional[str]:
+    """
+    Trova un sostituto forzato per un alimento escluso quando il database dei sostituti non ha opzioni.
+    
+    Args:
+        excluded_food: Nome canonico dell'alimento escluso
+        excluded_foods: Lista completa degli alimenti esclusi
+        meal_name: Nome del pasto per la logica speciale
+        
+    Returns:
+        Nome dell'alimento sostituto forzato o None se non possibile
+    """
+    # Determina se è colazione o spuntino per la logica speciale
+    meal_name_lower = meal_name.lower()
+    is_colazione_or_spuntino = any(keyword in meal_name_lower for keyword in [
+        "colazione", "breakfast",
+        "spuntino", "merenda", "snack",
+        "spuntino_pomeridiano", "spuntino_mattutino", 
+        "spuntino_serale", "spuntino_pomeriggio", 
+        "spuntino_mattina", "spuntino_sera"
+    ])
+    
+    # Mapping di sostituti forzati basati sul tipo di alimento e contesto
+    forced_substitutes_map = {
+        # PANE DURANTE COLAZIONE/SPUNTINI -> CRACKERS
+        ("pane_bianco", True): ["cracker", "crackers"],
+        ("pane_integrale", True): ["cracker", "crackers"],
+        
+        # PANE DURANTE PRANZO/CENA -> PASTA O PATATE
+        ("pane_bianco", False): ["pasta_di_semola", "pasta", "patate"],
+        ("pane_integrale", False): ["pasta_integrale", "pasta_di_semola", "pasta", "patate"],
+        
+        # PASTA -> RISO O PATATE
+        ("pasta_di_semola", False): ["riso", "riso_bianco", "patate"],
+        ("pasta_integrale", False): ["riso_integrale", "riso", "patate"],
+        
+        # RISO -> PASTA O PATATE  
+        ("riso", False): ["pasta_di_semola", "pasta", "patate"],
+        ("riso_bianco", False): ["pasta_di_semola", "pasta", "patate"],
+        ("riso_integrale", False): ["pasta_integrale", "pasta_di_semola", "pasta", "patate"],
+        
+        # PATATE -> PASTA O RISO
+        ("patate", False): ["pasta_di_semola", "pasta", "riso"],
+        
+        # LATTE -> YOGURT (per tutti i pasti)
+        ("latte_intero", None): ["yogurt_intero", "yogurt_magro"],
+        ("latte_parzialmente_scremato", None): ["yogurt_magro", "yogurt_greco_0percento"],
+        ("latte_scremato", None): ["yogurt_magro", "yogurt_greco_0percento"],
+        
+        # YOGURT -> LATTE (per tutti i pasti)
+        ("yogurt_intero", None): ["latte_intero", "latte_parzialmente_scremato"],
+        ("yogurt_magro", None): ["latte_parzialmente_scremato", "latte_scremato"],
+        
+        # PROTEINE ANIMALI -> ALTRE PROTEINE
+        ("pollo_petto", False): ["tacchino_petto", "manzo_magro", "merluzzo", "tonno_naturale"],
+        ("manzo_magro", False): ["pollo_petto", "tacchino_petto", "merluzzo", "tonno_naturale"],
+        ("tonno_naturale", False): ["merluzzo", "salmone", "pollo_petto"],
+        ("merluzzo", False): ["tonno_naturale", "salmone", "pollo_petto"],
+        
+        # FRUTTA -> ALTRA FRUTTA
+        ("mela", None): ["pera", "arancia", "banana", "uva"],
+        ("pera", None): ["mela", "arancia", "banana", "uva"], 
+        ("banana", None): ["mela", "pera", "arancia", "uva"],
+        ("arancia", None): ["mela", "pera", "banana", "mandarino"],
+        ("uva", None): ["mela", "pera", "banana"],
+        
+        # VERDURE -> ALTRE VERDURE
+        ("verdure_miste", None): ["zucchine", "carote", "peperoni", "melanzane"],
+        ("zucchine", None): ["verdure_miste", "carote", "peperoni"],
+        ("carote", None): ["verdure_miste", "zucchine", "peperoni"],
+        
+        # FRUTTA SECCA -> ALTRA FRUTTA SECCA
+        ("mandorle", None): ["noci", "nocciole", "arachidi"],
+        ("noci", None): ["mandorle", "nocciole", "arachidi"],
+        ("nocciole", None): ["mandorle", "noci", "arachidi"],
+    }
+    
+    # Cerca il sostituto appropriato
+    key = (excluded_food, is_colazione_or_spuntino)
+    
+    # Prova prima con il contesto specifico (colazione/spuntino)
+    if key in forced_substitutes_map:
+        candidates = forced_substitutes_map[key]
+    else:
+        # Prova con il contesto generale (None)
+        key_general = (excluded_food, None)
+        if key_general in forced_substitutes_map:
+            candidates = forced_substitutes_map[key_general]
+        else:
+            return None
+    
+    # Trova il primo candidato che non è tra gli alimenti esclusi
+    for candidate in candidates:
+        # Mappa il candidato al nome canonico
+        candidate_canonical = db.alias.get(candidate.lower().replace("_", " "))
+        if not candidate_canonical:
+            candidate_canonical = candidate
+        
+        if candidate_canonical not in excluded_foods:
+            # Verifica che il candidato sia nel database
+            found, _ = db.check_foods_in_db([candidate])
+            if found:
+                return candidate
+    
+    return None
+
+
+def calculate_forced_substitute_portion(
+    original_food: str, 
+    substitute_food: str, 
+    original_portion: float
+) -> float:
+    """
+    Calcola la porzione equivalente per un sostituto forzato basandosi sui valori calorici medi.
+    
+    Args:
+        original_food: Nome canonico dell'alimento originale
+        substitute_food: Nome dell'alimento sostituto forzato
+        original_portion: Porzione originale in grammi
+        
+    Returns:
+        Porzione equivalente del sostituto in grammi (arrotondata alla decina)
+    """
+    # Valori calorici medi per 100g (database di riferimento)
+    caloric_values = {
+        # CEREALI E DERIVATI
+        "pane_bianco": 270,
+        "pane_integrale": 235,
+        "pasta_di_semola": 350,
+        "pasta_integrale": 340,
+        "pasta": 350,
+        "riso": 330,
+        "riso_bianco": 330,
+        "riso_integrale": 340,
+        "patate": 85,
+        "cracker": 430,
+        "crackers": 430,
+        
+        # LATTICINI
+        "latte_intero": 64,
+        "latte_parzialmente_scremato": 50,
+        "latte_scremato": 36,
+        "yogurt_intero": 61,
+        "yogurt_magro": 63,
+        "yogurt_greco_0percento": 57,
+        
+        # PROTEINE ANIMALI
+        "pollo_petto": 165,
+        "tacchino_petto": 135,
+        "manzo_magro": 158,
+        "tonno_naturale": 116,
+        "merluzzo": 82,
+        "salmone": 185,
+        
+        # FRUTTA
+        "mela": 52,
+        "pera": 57,
+        "banana": 89,
+        "arancia": 47,
+        "mandarino": 53,
+        "uva": 60,
+        
+        # VERDURE
+        "verdure_miste": 25,
+        "zucchine": 20,
+        "carote": 35,
+        "peperoni": 31,
+        "melanzane": 24,
+        
+        # FRUTTA SECCA
+        "mandorle": 575,
+        "noci": 654,
+        "nocciole": 628,
+        "arachidi": 567,
+    }
+    
+    # Ottieni i valori calorici
+    original_kcal = caloric_values.get(original_food, 200)  # Default 200 kcal/100g
+    substitute_kcal = caloric_values.get(substitute_food, 200)  # Default 200 kcal/100g
+    
+    # Calcola la porzione equivalente basata sui valori calorici
+    # Porzione_sostituto = Porzione_originale * (kcal_originale / kcal_sostituto)
+    equivalent_portion = original_portion * (original_kcal / substitute_kcal)
+    
+    # Arrotonda alla decina più vicina
+    equivalent_portion_rounded = float(10 * np.floor(equivalent_portion / 10 + 0.5))
+    
+    # Applica vincoli minimi e massimi ragionevoli
+    min_portion = 10.0
+    max_portion = 500.0  # Massimo 500g per evitare porzioni eccessive
+    
+    return max(min_portion, min(max_portion, equivalent_portion_rounded))
 
 
 def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = None) -> Dict[str, Any]:
@@ -961,11 +1537,63 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             else:
                 errors[f"{nutrient}_error_pct"] = 0.0
         
-        # 13. Calcola i sostituti per ogni alimento
-        food_substitutes = calculate_food_substitutes(optimized_portions_rounded)
+        # 13. Gestisci gli alimenti esclusi dall'utente
+        excluded_foods = load_user_excluded_foods(user_id)
+        excluded_replacements = {}
+        found_excluded_foods = []
         
-        # 14. Prepara il messaggio di summary con tutte le ottimizzazioni
-        summary_parts = [f"Ottimizzazione completata per {meal_name} con {len(final_food_list)} alimenti"]
+        if excluded_foods:
+            # Controlla e sostituisce gli alimenti esclusi
+            updated_portions, found_excluded_foods, excluded_replacements = check_and_replace_excluded_foods_final(
+                optimized_portions_rounded, excluded_foods, meal_name
+            )
+            
+            # Se ci sono state sostituzioni, ricalcola i nutrienti e i contributi
+            if excluded_replacements:
+                optimized_portions_rounded = updated_portions
+                
+                # Ricalcola i dati nutrizionali per la nuova lista di alimenti
+                final_food_list_updated = list(optimized_portions_rounded.keys())
+                nutrition_data_updated = get_food_nutrition_per_100g(final_food_list_updated)
+                
+                # Ricalcola i nutrienti effettivi
+                final_actual_nutrients_rounded = calculate_actual_nutrients(optimized_portions_rounded, nutrition_data_updated)
+                
+                # Ricalcola i contributi individuali
+                individual_contributions = {}
+                for food, grams in optimized_portions_rounded.items():
+                    if food in nutrition_data_updated:
+                        nutrition = nutrition_data_updated[food]
+                        individual_contributions[food] = {
+                            "portion_g": grams,
+                            "kcal": float(round(nutrition['energia_kcal'] * grams / 100, 1)),
+                            "proteine_g": float(round(nutrition['proteine_g'] * grams / 100, 1)),
+                            "carboidrati_g": float(round(nutrition['carboidrati_g'] * grams / 100, 1)),
+                            "grassi_g": float(round(nutrition['grassi_g'] * grams / 100, 1)),
+                            "categoria": nutrition['categoria']
+                        }
+                
+                # Ricalcola gli errori percentuali
+                errors = {}
+                for nutrient in ["kcal", "proteine_g", "carboidrati_g", "grassi_g"]:
+                    target = target_nutrients[nutrient]
+                    actual = final_actual_nutrients_rounded[nutrient]
+                    if target > 0:
+                        error_pct = abs(actual - target) / target * 100
+                        errors[f"{nutrient}_error_pct"] = float(round(error_pct, 1))
+                    else:
+                        errors[f"{nutrient}_error_pct"] = 0.0
+        
+        # 14. Calcola i sostituti per ogni alimento
+        food_substitutes = calculate_food_substitutes(optimized_portions_rounded, meal_name)
+        
+        # 15. Filtra i sostituti rimuovendo quelli tra gli alimenti esclusi
+        if excluded_foods:
+            food_substitutes = filter_substitutes_by_excluded_foods(food_substitutes, excluded_foods)
+        
+        # 16. Prepara il messaggio di summary con tutte le ottimizzazioni
+        final_food_count = len(optimized_portions_rounded)
+        summary_parts = [f"Ottimizzazione completata per {meal_name} con {final_food_count} alimenti"]
         
         if oil_added:
             summary_parts.append(f"olio aggiunto automaticamente (miglioramento: {improvement:.1%})")
@@ -982,6 +1610,21 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
             summary_parts.append(f"{carb_adjustment_food} aggiunto per migliorare i carboidrati")
         elif carb_substituted:
             summary_parts.append(f"sostituzione {carb_substitution_type} per migliorare i carboidrati")
+        
+        if excluded_replacements:
+            excluded_count = len(excluded_replacements)
+            if excluded_count == 1:
+                excluded_names = list(excluded_replacements.keys())[0]
+                replacement_name = list(excluded_replacements.values())[0]
+                summary_parts.append(f"sostituito {excluded_names} (escluso) con {replacement_name}")
+            else:
+                summary_parts.append(f"{excluded_count} alimenti esclusi sostituiti")
+        elif found_excluded_foods:
+            excluded_count = len(found_excluded_foods)
+            if excluded_count == 1:
+                summary_parts.append(f"rimosso {found_excluded_foods[0]} (escluso dall'utente)")
+            else:
+                summary_parts.append(f"{excluded_count} alimenti esclusi rimossi")
         
         summary_parts.append("Porzioni arrotondate alla decina più vicina")
         
@@ -1037,12 +1680,16 @@ def load_substitutes_data() -> Dict[str, Any]:
         raise ValueError(f"Errore nella lettura del file sostituti: {str(e)}")
 
 
-def calculate_food_substitutes(optimized_portions: Dict[str, float]) -> Dict[str, Dict[str, Dict[str, float]]]:
+def calculate_food_substitutes(optimized_portions: Dict[str, float], meal_name: str) -> Dict[str, Dict[str, Dict[str, float]]]:
     """
     Calcola i sostituti per ogni alimento con le grammature corrette.
     
+    Per colazione e spuntini, il pane e pane integrale vengono sostituiti
+    solo con crackers o pan bauletto.
+    
     Args:
         optimized_portions: Dizionario con alimento -> grammi ottimizzati
+        meal_name: Nome del pasto
         
     Returns:
         Dict con struttura: {
@@ -1058,6 +1705,16 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float]) -> Dict[str
         
         result = {}
         
+        # Determina se è colazione o spuntino
+        meal_name_lower = meal_name.lower()
+        is_colazione_or_spuntino = any(keyword in meal_name_lower for keyword in [
+            "colazione", "breakfast",
+            "spuntino", "merenda", "snack",
+            "spuntino_pomeridiano", "spuntino_mattutino", 
+            "spuntino_serale", "spuntino_pomeriggio", 
+            "spuntino_mattina", "spuntino_sera"
+        ])
+        
         for food, portion_grams in optimized_portions.items():
             food_substitutes = {}
             
@@ -1067,29 +1724,81 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float]) -> Dict[str
             if not normalized_food_name:
                 normalized_food_name = food
             
-            # Cerca i sostituti usando il nome principale mappato
-            if normalized_food_name in substitutes_db:
-                available_substitutes = substitutes_db[normalized_food_name]
+            # Logica speciale per pane/pane integrale durante colazione/spuntini
+            if is_colazione_or_spuntino and normalized_food_name in ["pane_bianco", "pane_integrale"]:
+                # Crea sostituti personalizzati per crackers e pan bauletto
+                # Devo cercare questi alimenti nel database dei sostituti per calcolare le equivalenze
                 
-                # Ordina i sostituti per similarity_score (decrescente) e prendi i primi 2
-                sorted_substitutes = sorted(
-                    available_substitutes.items(),
-                    key=lambda x: x[1]['similarity_score'],
-                    reverse=True
-                )[:2]
+                # Cerca nel database le conversioni per pane -> crackers e pane -> pan_bauletto
+                pane_substitutes = substitutes_db.get(normalized_food_name, {})
                 
-                for substitute_name, substitute_data in sorted_substitutes:
-                    # Calcola i grammi del sostituto basati sulla porzione ottimizzata
-                    # La formula è: grammi_sostituto = (porzione_originale / 100) * grammi_equivalenti_per_100g
-                    substitute_grams = (portion_grams / 100.0) * substitute_data['grams']
+                # Lista dei sostituti ammessi per colazione/spuntini
+                allowed_substitutes = ["cracker", "pan_bauletto", "crackers", "pan bauletto"]
+                
+                for substitute_name, substitute_data in pane_substitutes.items():
+                    # Verifica se il sostituto è tra quelli ammessi
+                    if any(allowed in substitute_name.lower() for allowed in allowed_substitutes):
+                        # Calcola i grammi del sostituto basati sulla porzione ottimizzata
+                        substitute_grams = (portion_grams / 100.0) * substitute_data['grams']
+                        
+                        # Arrotonda i grammi del sostituto alla decina più vicina
+                        substitute_grams_rounded = float(10 * np.floor(substitute_grams / 10 + 0.5))
+                        
+                        food_substitutes[substitute_name] = {
+                            "grams": substitute_grams_rounded,
+                            "similarity_score": float(substitute_data['similarity_score'])
+                        }
+                
+                # Se non abbiamo trovato crackers o pan_bauletto nei sostituti esistenti,
+                # calcoliamo manualmente basandoci sui rapporti calorici tipici
+                if not food_substitutes:
+                    # Rapporti approssimativi basati su valori calorici medi
+                    # Pane bianco ~270 kcal/100g, Crackers ~430 kcal/100g, Pan bauletto ~285 kcal/100g
+                    if normalized_food_name == "pane_bianco":
+                        food_substitutes["cracker"] = {
+                            "grams": float(10 * np.floor((portion_grams * 0.63) / 10 + 0.5)),  # 270/430
+                            "similarity_score": 90.0
+                        }
+                        food_substitutes["pan_bauletto"] = {
+                            "grams": float(10 * np.floor((portion_grams * 0.95) / 10 + 0.5)),  # 270/285
+                            "similarity_score": 95.0
+                        }
+                    # Pane integrale ~235 kcal/100g
+                    elif normalized_food_name == "pane_integrale":
+                        food_substitutes["cracker"] = {
+                            "grams": float(10 * np.floor((portion_grams * 0.55) / 10 + 0.5)),  # 235/430
+                            "similarity_score": 90.0
+                        }
+                        food_substitutes["pan_bauletto"] = {
+                            "grams": float(10 * np.floor((portion_grams * 0.82) / 10 + 0.5)),  # 235/285
+                            "similarity_score": 95.0
+                        }
+            
+            else:
+                # Logica normale per tutti gli altri casi
+                # Cerca i sostituti usando il nome principale mappato
+                if normalized_food_name in substitutes_db:
+                    available_substitutes = substitutes_db[normalized_food_name]
                     
-                    # Arrotonda i grammi del sostituto alla decina più vicina
-                    substitute_grams_rounded = float(10 * np.floor(substitute_grams / 10 + 0.5))
+                    # Ordina i sostituti per similarity_score (decrescente) e prendi i primi 2
+                    sorted_substitutes = sorted(
+                        available_substitutes.items(),
+                        key=lambda x: x[1]['similarity_score'],
+                        reverse=True
+                    )[:2]
                     
-                    food_substitutes[substitute_name] = {
-                        "grams": substitute_grams_rounded,
-                        "similarity_score": float(substitute_data['similarity_score'])
-                    }
+                    for substitute_name, substitute_data in sorted_substitutes:
+                        # Calcola i grammi del sostituto basati sulla porzione ottimizzata
+                        # La formula è: grammi_sostituto = (porzione_originale / 100) * grammi_equivalenti_per_100g
+                        substitute_grams = (portion_grams / 100.0) * substitute_data['grams']
+                        
+                        # Arrotonda i grammi del sostituto alla decina più vicina
+                        substitute_grams_rounded = float(10 * np.floor(substitute_grams / 10 + 0.5))
+                        
+                        food_substitutes[substitute_name] = {
+                            "grams": substitute_grams_rounded,
+                            "similarity_score": float(substitute_data['similarity_score'])
+                        }
             
             # Aggiungi i sostituti solo se ne abbiamo trovati
             if food_substitutes:
@@ -1100,8 +1809,5 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float]) -> Dict[str
     except Exception as e:
         logger.warning(f"Errore nel calcolo dei sostituti: {str(e)}")
         return {}
-
-
-
 
 

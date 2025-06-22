@@ -9,7 +9,7 @@ poste agli utenti durante la fase di registrazione iniziale nel sistema NutrAICo
 NUTRITION_QUESTIONS = [
     {
         "id": "allergies",
-        "question": "Hai qualche intolleranza o allergia alimentare?",
+        "question": "Hai qualche intolleranza o allergia alimentare? (Devi specificare anche nelle preferenze alimentari i cibi da escludere in caso)",
         "type": "radio",
         "options": ["No", "Sì"],
         "follow_up": "Specifica quali:",

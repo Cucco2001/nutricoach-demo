@@ -317,7 +317,7 @@
     "grassi_saturi_g": 21.7,
     "fibra_g": 8.0,
     "nova_group": 4,
-    "categoria": "grassi_aggiunti"
+    "categoria": "frutta_secca"
   },
   "lenticchie": {
     "energia_kcal": 319,
@@ -934,8 +934,9 @@
     "grassi_saturi_g": 8.0,
     "fibra_g": 6.0,
     "nova_group": 2,
-    "categoria": "grassi_aggiunti"
+    "categoria": "frutta_secca"
   },
+
   "mandorle": {
     "energia_kcal": 628,
     "proteine_g": 22.0,

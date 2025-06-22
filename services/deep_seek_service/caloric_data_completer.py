@@ -126,6 +126,10 @@ class CaloricDataCompleter:
             existing_aggiustamento = get_field(caloric_data, 'aggiustamento_obiettivo')
             print(f"[CALORIC_COMPLETER] Aggiustamento già presente: {existing_aggiustamento} kcal")
         
+        # Completa anche macros_total se presente ma incompleto
+        if 'macros_total' in completed_data:
+            self._complete_macros_total(completed_data['macros_total'])
+        
         return completed_data
     
     def _extract_user_basic_info(self, user_info: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -274,6 +278,52 @@ class CaloricDataCompleter:
         except Exception as e:
             print(f"[CALORIC_COMPLETER] Errore nel calcolo aggiustamento: {str(e)}")
             return 0
+    
+    def _complete_macros_total(self, macros_data: Dict[str, Any]) -> None:
+        """
+        Completa i campi calcolabili in macros_total basandosi sui valori presenti.
+        
+        Args:
+            macros_data: Dizionario dei macronutrienti totali (modificato in place)
+        """
+        # Se abbiamo i grammi dei macronutrienti, calcola le kcal
+        proteine_g = macros_data.get('proteine_g', 0)
+        carboidrati_g = macros_data.get('carboidrati_g', 0)
+        grassi_g = macros_data.get('grassi_g', 0)
+        
+        if proteine_g and 'proteine_kcal' not in macros_data:
+            macros_data['proteine_kcal'] = proteine_g * 4
+            print(f"[CALORIC_COMPLETER] Calcolato proteine_kcal: {macros_data['proteine_kcal']}")
+            
+        if carboidrati_g and 'carboidrati_kcal' not in macros_data:
+            macros_data['carboidrati_kcal'] = carboidrati_g * 4
+            print(f"[CALORIC_COMPLETER] Calcolato carboidrati_kcal: {macros_data['carboidrati_kcal']}")
+            
+        if grassi_g and 'grassi_kcal' not in macros_data:
+            macros_data['grassi_kcal'] = grassi_g * 9
+            print(f"[CALORIC_COMPLETER] Calcolato grassi_kcal: {macros_data['grassi_kcal']}")
+        
+        # Calcola kcal_totali se mancante
+        if 'kcal_totali' not in macros_data or macros_data.get('kcal_totali') == 0:
+            proteine_kcal = macros_data.get('proteine_kcal', proteine_g * 4 if proteine_g else 0)
+            carboidrati_kcal = macros_data.get('carboidrati_kcal', carboidrati_g * 4 if carboidrati_g else 0)
+            grassi_kcal = macros_data.get('grassi_kcal', grassi_g * 9 if grassi_g else 0)
+            
+            if proteine_kcal or carboidrati_kcal or grassi_kcal:
+                macros_data['kcal_totali'] = round(proteine_kcal + carboidrati_kcal + grassi_kcal)
+                print(f"[CALORIC_COMPLETER] Calcolato kcal_totali: {macros_data['kcal_totali']}")
+        
+        # Calcola percentuali se mancanti
+        kcal_totali = macros_data.get('kcal_totali', 0) or macros_data.get('kcal_finali', 0)
+        if kcal_totali:
+            if 'proteine_percentuale' not in macros_data and 'proteine_kcal' in macros_data:
+                macros_data['proteine_percentuale'] = round((macros_data['proteine_kcal'] / kcal_totali) * 100, 1)
+                
+            if 'carboidrati_percentuale' not in macros_data and 'carboidrati_kcal' in macros_data:
+                macros_data['carboidrati_percentuale'] = round((macros_data['carboidrati_kcal'] / kcal_totali) * 100, 1)
+                
+            if 'grassi_percentuale' not in macros_data and 'grassi_kcal' in macros_data:
+                macros_data['grassi_percentuale'] = round((macros_data['grassi_kcal'] / kcal_totali) * 100, 1)
     
     def debug_field_mapping(self, extracted_data: Dict[str, Any]) -> Dict[str, Any]:
         """

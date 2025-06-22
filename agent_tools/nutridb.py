@@ -88,7 +88,7 @@ class NutriDB:
             "affumicato", "affumicati", "affumicata", "affumicate", "arrosto", "arrostito", "brasato",
             "stufato", "stufati", "al naturale", "naturale", "sott'olio", "sottolio", "sgocciolato",
             "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
-            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di"
+            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di", "tostate", "tostato"
         ]
         
         # Base mapping dalle chiavi del database
@@ -125,8 +125,6 @@ class NutriDB:
             "formaggio": "asiago",  
             "mozzarella di bufala": "mozzarella",
             "integrale riso": "riso_integrale",     
-            "pasta": "pasta_secca",
-            "pasta secca": "pasta_secca",
             "pasta integrale": "pasta_integrale",
             "tonno": "tonno_fresco",
             "tonno naturale": "tonno_naturale",
@@ -259,7 +257,11 @@ class NutriDB:
             "petto di tacchino": "fesa_tacchino",       
             "basilico": "verdure_miste",
             "scaglie di parmigiano": "parmigiano_reggiano",
-            "gnocchi": "pasta_secca"        
+            "gnocchi": "pasta_di_semola",
+            "pasta": "pasta_di_semola",
+            "pasta secca": "pasta_di_semola",
+            "pasta_secca": "pasta_di_semola",
+            "frutta secca": "mandorle"
         })
         
         # Ritorna il dizionario intelligente che implementa ricerca a 3 step
