@@ -1157,9 +1157,7 @@ class PDFGenerator:
         story.append(Paragraph("🤖 Sistema e Personalizzazione", self.styles['CustomSubTitle']))
         system_notes = [
             "• I dati nutrizionali sono estratti automaticamente dalle conversazioni con l'assistente NutrAICoach usando tecnologia AI avanzata.",
-            "• Il piano è personalizzato in base alle tue caratteristiche fisiche, livello di attività e obiettivi.",
-            "• Per modifiche o aggiornamenti, continua la conversazione con l'assistente nutrizionale.",
-            "• Questo documento è stato generato automaticamente e riflette le informazioni disponibili al momento della creazione."
+            "• Il piano è personalizzato in base alle tue caratteristiche fisiche, livello di attività e obiettivi."
         ]
         
         for note in system_notes:
@@ -1167,6 +1165,6 @@ class PDFGenerator:
             story.append(Spacer(1, 6))
         
         # Footer finale
-        story.append(Spacer(1, 20))
+        story.append(Spacer(1, 10))
         footer_text = f"Documento generato da NutrAICoach il {datetime.now().strftime('%d/%m/%Y alle %H:%M')}"
         story.append(Paragraph(footer_text, self.styles['CustomCenteredText'])) 
