@@ -10,6 +10,10 @@ import json
 import time
 from typing import Dict, List, Any, Optional
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# Carica variabili d'ambiente dal file .env
+load_dotenv()
 
 
 class DeepSeekClient:
@@ -65,8 +69,13 @@ class DeepSeekClient:
                 # Prepara il contesto della conversazione
                 # NOTA: La cronologia passata qui contiene GIA' solo le nuove interazioni
                 # grazie alla logica nel DeepSeekManager.
+                print(f"[DEEPSEEK_CLIENT] Debug: tipo conversation_history: {type(conversation_history)}")
+                if conversation_history:
+                    print(f"[DEEPSEEK_CLIENT] Debug: primo elemento: {type(conversation_history[0])}")
+                    print(f"[DEEPSEEK_CLIENT] Debug: chiavi primo elemento: {list(conversation_history[0].keys()) if isinstance(conversation_history[0], dict) else 'non è dict'}")
+                
                 conversation_text = "\n\n".join([
-                    f"UTENTE: {qa.question}\nAGENTE: {qa.answer}" 
+                    f"UTENTE: {qa['question'] if isinstance(qa, dict) else qa.question}\nAGENTE: {qa['answer'] if isinstance(qa, dict) else qa.answer}" 
                     for qa in conversation_history
                 ])
                 
@@ -138,9 +147,9 @@ class DeepSeekClient:
         
         prompt = """
 Stai per analizzare una singola interazione alla volta, parte di una conversazione più ampia tra un nutrizionista AI e un utente.
-Il tuo compito è quello di estrarre solamente i dati nutrizionali calcolati o forniti in questa specifica interazione, senza cercare di completare o immaginare dati mancanti e senza restituire l’intero schema JSON completo.
+Il tuo compito è quello di estrarre solamente i dati nutrizionali calcolati o forniti in questa specifica interazione, senza cercare di completare o immaginare dati mancanti e senza restituire l'intero schema JSON completo.
 
-Se nell’interazione sono presenti uno o più dei seguenti campi, restituiscili nel formato JSON riportato sotto, includendo solo i campi effettivamente rilevati.
+Se nell'interazione sono presenti uno o più dei seguenti campi, restituiscili nel formato JSON riportato sotto, includendo solo i campi effettivamente rilevati.
 CONVERSAZIONE:
 """ + conversation_text + """
 

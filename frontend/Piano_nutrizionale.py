@@ -70,10 +70,16 @@ class PianoNutrizionale:
         
         # Mostra informazioni aggiuntive se disponibili
         if hasattr(st.session_state, 'deepseek_manager'):
-            status = st.session_state.deepseek_manager.get_extraction_status()
-            if status.get('available', False):
-                interactions_since_last = status.get('interactions_since_last', 0)
-                st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
+            # Ottieni user_id dal session_state
+            user_id = None
+            if hasattr(st.session_state, 'user_info') and st.session_state.user_info:
+                user_id = st.session_state.user_info.get('id')
+            
+            if user_id:
+                status = st.session_state.deepseek_manager.get_extraction_status(user_id)
+                if status.get('available', False):
+                    interactions_since_last = status.get('interactions_since_last', 0)
+                    st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
 
     def display_nutritional_plan(self, user_id):
         """

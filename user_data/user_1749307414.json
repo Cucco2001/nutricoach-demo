@@ -294,58 +294,54 @@
     },
     "registered_meals": [
       {
+        "nome_pasto": "colazione",
         "alimenti": [
           {
-            "quantita_g": 30,
             "nome_alimento": "Avena",
+            "quantita_g": 30,
+            "misura_casalinga": "3 cucchiai colmi",
             "macronutrienti": {
-              "kcal": 0,
-              "grassi": 2,
               "proteine": 2,
-              "carboidrati": 20
-            },
-            "misura_casalinga": "3 cucchiai colmi"
+              "carboidrati": 20,
+              "grassi": 2
+            }
           },
           {
-            "quantita_g": 300,
             "nome_alimento": "Latte parzialmente scremato",
+            "quantita_g": 300,
+            "misura_casalinga": "1 grande bicchiere e mezzo",
             "macronutrienti": {
-              "kcal": 0,
-              "grassi": 11,
               "proteine": 10,
-              "carboidrati": 15
-            },
-            "misura_casalinga": "1 grande bicchiere e mezzo"
+              "carboidrati": 15,
+              "grassi": 11
+            }
           },
           {
-            "quantita_g": 190,
             "nome_alimento": "Banana",
+            "quantita_g": 190,
+            "misura_casalinga": "1 banana grande",
             "macronutrienti": {
-              "kcal": 0,
-              "grassi": 1,
               "proteine": 2,
-              "carboidrati": 43
-            },
-            "misura_casalinga": "1 banana grande"
+              "carboidrati": 43,
+              "grassi": 1
+            }
           },
           {
-            "quantita_g": 20,
             "nome_alimento": "Mandorle",
+            "quantita_g": 20,
+            "misura_casalinga": "1 piccola manciata (15-16 mandorle)",
             "macronutrienti": {
-              "kcal": 0,
-              "grassi": 11,
               "proteine": 4,
-              "carboidrati": 1
-            },
-            "misura_casalinga": "1 piccola manciata (15-16 mandorle)"
+              "carboidrati": 1,
+              "grassi": 11
+            }
           }
         ],
-        "nome_pasto": "colazione",
         "totali_pasto": {
-          "kcal_totali": 595,
-          "grassi_totali": 25,
+          "kcal_finali": 595,
           "proteine_totali": 19,
-          "carboidrati_totali": 79
+          "carboidrati_totali": 79,
+          "grassi_totali": 25
         }
       }
     ]
