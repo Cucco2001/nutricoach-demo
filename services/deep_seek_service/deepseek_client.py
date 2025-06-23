@@ -297,7 +297,8 @@ MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
       "alimenti": [{"nome_alimento": "Petto di tacchino", "quantita_g": 90, "misura_casalinga": "1 filetto medio", "sostituti": "100g di petto di pollo, 80g di bresaola"}, {"nome_alimento": "Riso integrale", "quantita_g": 100, "misura_casalinga": "1 porzione media", "sostituti": "120g di quinoa, 90g di farro"}, {"nome_alimento": "Lenticchie", "quantita_g": 90, "misura_casalinga": "1 ciotola", "sostituti": "100g di ceci, 80g di fagioli"}, {"nome_alimento": "Carote", "quantita_g": 150, "misura_casalinga": "1 ciotola", "sostituti": "200g di zucchine, 180g di peperoni"}, {"nome_alimento": "Olio extravergine di oliva", "quantita_g": 20, "misura_casalinga": "1 cucchiaio", "sostituti": "25g di olio di semi, 20g di burro"}]
     }
   }
-- Non usare "weekly_diet_partial" per diete settimanali complete
+- Se utente chiede piu di un pasto, ma non per un giorno intero, usa "weekly_diet_partial" per ciascun pasto
+- NON USARE "weekly_diet_partial" se utente chiede di modificare un giorno intero di dieta o piu giorni, usa "weekly_diet" in quel caso.
 - weekly_diet_partial preserva tutti gli altri pasti del giorno invariati
 
 REGOLE FONDAMENTALI PER GLI AGGIORNAMENTI - MOLTO IMPORTANTE:

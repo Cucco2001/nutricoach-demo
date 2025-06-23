@@ -26,9 +26,10 @@ class DeepSeekManager:
         self.notification_manager = NotificationManager()
         # Coda globale thread-safe indipendente da Streamlit
         self.queue = queue.Queue()
-        # Contatori interni indipendenti da Streamlit
-        self.user_interaction_counts = {}  # {user_id: total_interactions}
-        self.user_last_extraction_counts = {}  # {user_id: last_processed_interactions}
+        # Traccia solo l'indice dell'ultima conversazione processata per evitare duplicati
+        self.user_last_conversation_index = {}  # {user_id: index_of_last_processed_conversation}
+        # Set per tracciare conversazioni già in coda per evitare duplicati
+        self.queued_conversations = set()  # {(user_id, conversation_index)}
     
     def _is_extraction_in_progress(self, user_id: str) -> bool:
         """Controlla se un'estrazione è già in corso per questo utente."""
@@ -89,68 +90,53 @@ class DeepSeekManager:
         extraction_interval: int = 1
     ) -> None:
         """
-        Controlla se è necessario avviare un'estrazione e la avvia se appropriato.
-        Completamente indipendente da Streamlit.
+        Controlla se ci sono nuove conversazioni e le mette in coda per l'estrazione.
         
         Args:
             user_id: ID dell'utente
             user_data_manager: Manager per i dati utente (può essere None, legge dal file)
             user_info: Informazioni dell'utente
-            extraction_interval: Intervallo di interazioni per l'estrazione
+            extraction_interval: Intervallo di interazioni per l'estrazione (default 1 = ogni conversazione)
         """
         if not self.is_available():
             return
             
-        # Incrementa SEMPRE il contatore interno delle interazioni
-        if user_id not in self.user_interaction_counts:
-            self.user_interaction_counts[user_id] = 0
-        if user_id not in self.user_last_extraction_counts:
-            self.user_last_extraction_counts[user_id] = 0
-            
-        self.user_interaction_counts[user_id] += 1
+        # Ottieni le conversazioni direttamente dal file
+        conversation_history = self._get_user_conversations(user_id)
         
-        # Controlla se sono passate abbastanza interazioni
-        last_extraction_count = self.user_last_extraction_counts[user_id]
-        current_interaction_count = self.user_interaction_counts[user_id]
-        interactions_since_last = current_interaction_count - last_extraction_count
-        
-        if interactions_since_last >= extraction_interval:
-            print(f"[DEEPSEEK_MANAGER] {interactions_since_last} interazioni dall'ultima estrazione per {user_id}.")
+        if not conversation_history:
+            print(f"[DEEPSEEK_MANAGER] Nessuna conversazione trovata per {user_id}")
+            return
             
-            # Controlla se c'è già un'estrazione in corso
-            if self._is_extraction_in_progress(user_id):
-                print(f"[DEEPSEEK_MANAGER] Estrazione già in corso per {user_id}, richiesta messa in coda.")
-                # Metti in coda la richiesta per processarla dopo
+        # Trova le conversazioni nuove basandosi sull'indice
+        total_conversations = len(conversation_history)
+        last_processed_index = self.user_last_conversation_index.get(user_id, -1)
+        
+        # Metti in coda ogni conversazione nuova individualmente
+        new_conversations_added = 0
+        for i in range(last_processed_index + 1, total_conversations, extraction_interval):
+            # Evita duplicati nella coda
+            conversation_key = (user_id, i)
+            if conversation_key not in self.queued_conversations:
+                # Aggiungi alla coda
                 self.queue.put({
                     'user_id': user_id,
-                    'user_info': user_info
+                    'user_info': user_info,
+                    'conversation_index': i,
+                    'conversation': conversation_history[i]
                 })
-                return
+                self.queued_conversations.add(conversation_key)
+                new_conversations_added += 1
+        
+        if new_conversations_added > 0:
+            print(f"[DEEPSEEK_MANAGER] Aggiunte {new_conversations_added} conversazioni alla coda per {user_id}")
+            print(f"[DEEPSEEK_MANAGER] Coda attuale: {self.queue.qsize()} elementi")
             
-            # Ottieni le conversazioni direttamente dal file
-            conversation_history = self._get_user_conversations(user_id)
-            
-            if conversation_history and len(conversation_history) >= interactions_since_last:
-                new_conversation_part = conversation_history[-interactions_since_last:]
-                
-                print(f"[DEEPSEEK_MANAGER] Avvio estrazione di {len(new_conversation_part)} nuove conversazioni.")
-
-                # Avvia l'estrazione asincrona
-                self.extractor.extract_data_async(
-                    user_id=user_id,
-                    conversation_history=new_conversation_part,
-                    user_info=user_info or {},
-                    interaction_count=current_interaction_count,
-                    deepseek_manager=self
-                )
-                
-                # Aggiorna il contatore interno dell'ultima estrazione
-                self.user_last_extraction_counts[user_id] = current_interaction_count
-                
-                # Mostra notifica di avvio
-                self.notification_manager.show_extraction_started_info()
-            else:
-                print(f"[DEEPSEEK_MANAGER] Non ci sono abbastanza conversazioni per {user_id}: {len(conversation_history) if conversation_history else 0}")
+            # Se non c'è un'estrazione in corso, avvia il processing della coda
+            if not self._is_extraction_in_progress(user_id):
+                self.process_queue()
+        else:
+            print(f"[DEEPSEEK_MANAGER] Nessuna nuova conversazione da aggiungere per {user_id}")
     
     def check_and_process_results(self) -> None:
         """Controlla i risultati dell'estrazione e processa le notifiche."""
@@ -160,27 +146,6 @@ class DeepSeekManager:
         if results:
             # Processa le notifiche
             self.notification_manager.process_extraction_results(results)
-            
-            # Aggiorna i contatori per i risultati di successo
-            for result in results:
-                if result.get("success"):
-                    interaction_count = result.get("interaction_count")
-                    user_id = result.get("user_id")
-                    
-                    if interaction_count and user_id:
-                        # Aggiorna contatori interni (thread-safe)
-                        self.user_last_extraction_counts[user_id] = interaction_count
-                        
-                        # Aggiorna session_state per compatibilità legacy (solo se disponibile)
-                        try:
-                            import streamlit as st
-                            if hasattr(st, 'session_state'):
-                                # Solo per l'utente corrente nella sessione
-                                if user_id in str(st.session_state.get('user_info', {}).get('user_id', '')):
-                                    st.session_state.last_extraction_count = interaction_count
-                        except Exception as e:
-                            # Ignora errori se non siamo in contesto Streamlit
-                            print(f"[DEEPSEEK_MANAGER] Avviso: impossibile aggiornare session_state: {e}")
         
         # Controlla sempre se ci sono richieste in coda da processare
         # Questo assicura che la coda continui ad essere processata anche se
@@ -193,64 +158,49 @@ class DeepSeekManager:
     
     def process_queue(self) -> None:
         """
-        Processa la coda delle richieste di estrazione pendenti.
+        Processa UNA singola conversazione dalla coda.
         Chiamato quando un'estrazione finisce per avviare la prossima se presente.
-        Legge direttamente dal file utente, thread-safe.
         """
         try:
-            # Controlla se c'è una richiesta in coda (coda thread-safe globale)
+            # Prendi una richiesta dalla coda
             if not self.queue.empty():
-                # Prendi la prossima richiesta
                 request = self.queue.get_nowait()
                 
                 user_id = request['user_id']
                 user_info = request['user_info']
+                conversation_index = request['conversation_index']
+                conversation = request['conversation']
                 
-                print(f"[DEEPSEEK_MANAGER] Processando richiesta in coda per utente {user_id}")
+                # Rimuovi dalla lista delle conversazioni in coda
+                conversation_key = (user_id, conversation_index)
+                self.queued_conversations.discard(conversation_key)
+                
+                print(f"[DEEPSEEK_MANAGER] Processando conversazione {conversation_index} per utente {user_id}")
                 
                 # Verifica che non ci sia già un'estrazione in corso
                 if not self._is_extraction_in_progress(user_id):
-                    # Determina cosa processare leggendo direttamente dal file utente
-                    conversation_history = self._get_user_conversations(user_id)
+                    # Avvia l'estrazione per questa singola conversazione
+                    self.extractor.extract_data_async(
+                        user_id=user_id,
+                        conversation_history=[conversation],  # Una sola conversazione
+                        user_info=user_info,
+                        interaction_count=conversation_index + 1,
+                        deepseek_manager=self
+                    )
                     
-                    if conversation_history:
-                        # Usa i contatori interni (completamente indipendenti da Streamlit)
-                        if user_id not in self.user_interaction_counts:
-                            self.user_interaction_counts[user_id] = len(conversation_history)
-                        if user_id not in self.user_last_extraction_counts:
-                            self.user_last_extraction_counts[user_id] = 0
-                            
-                        last_extraction_count = self.user_last_extraction_counts[user_id]
-                        current_interaction_count = self.user_interaction_counts[user_id]
-                        interactions_since_last = current_interaction_count - last_extraction_count
-                        
-                        if interactions_since_last > 0 and len(conversation_history) >= interactions_since_last:
-                            new_conversation_part = conversation_history[-interactions_since_last:]
-                            
-                            print(f"[DEEPSEEK_MANAGER] Avvio estrazione dalla coda di {len(new_conversation_part)} conversazioni.")
-                            
-                            # Avvia l'estrazione
-                            self.extractor.extract_data_async(
-                                user_id=user_id,
-                                conversation_history=new_conversation_part,
-                                user_info=user_info,
-                                interaction_count=current_interaction_count,
-                                deepseek_manager=self
-                            )
-                            
-                            # Aggiorna il contatore interno
-                            self.user_last_extraction_counts[user_id] = current_interaction_count
-                            
-                            # Mostra notifica
-                            self.notification_manager.show_extraction_started_info()
-                        else:
-                            print(f"[DEEPSEEK_MANAGER] Nessuna nuova conversazione da processare per {user_id}")
-                    else:
-                        print(f"[DEEPSEEK_MANAGER] Nessuna conversazione trovata per {user_id}")
+                    # Aggiorna l'indice dell'ultima conversazione processata
+                    self.user_last_conversation_index[user_id] = conversation_index
+                    
+                    # Mostra notifica
+                    self.notification_manager.show_extraction_started_info()
+                    
+                    print(f"[DEEPSEEK_MANAGER] Estrazione avviata per conversazione {conversation_index}")
+                    print(f"[DEEPSEEK_MANAGER] Rimanenti in coda: {self.queue.qsize()}")
                 else:
                     # Se c'è ancora un'estrazione in corso, rimetti in coda
                     self.queue.put(request)
-                    print(f"[DEEPSEEK_MANAGER] Estrazione ancora in corso, richiesta rimessa in coda")
+                    self.queued_conversations.add(conversation_key)
+                    print(f"[DEEPSEEK_MANAGER] Estrazione in corso, richiesta rimessa in coda")
                     
         except queue.Empty:
             # Coda vuota, niente da fare
@@ -270,11 +220,16 @@ class DeepSeekManager:
         """
         success = self.extractor.clear_user_extracted_data(user_id)
         if success:
-            # Reset dei contatori interni
-            if user_id in self.user_interaction_counts:
-                del self.user_interaction_counts[user_id]
-            if user_id in self.user_last_extraction_counts:
-                del self.user_last_extraction_counts[user_id]
+            # Reset dell'indice conversazioni
+            if user_id in self.user_last_conversation_index:
+                del self.user_last_conversation_index[user_id]
+            
+            # Rimuovi conversazioni in coda per questo utente
+            self.queued_conversations = {
+                key for key in self.queued_conversations 
+                if key[0] != user_id
+            }
+            
             # Cancella le notifiche
             self.notification_manager.clear_notifications()
         return success
@@ -283,14 +238,19 @@ class DeepSeekManager:
         """Reset dei contatori delle interazioni."""
         if user_id:
             # Reset per un utente specifico
-            if user_id in self.user_interaction_counts:
-                del self.user_interaction_counts[user_id]
-            if user_id in self.user_last_extraction_counts:
-                del self.user_last_extraction_counts[user_id]
+            if user_id in self.user_last_conversation_index:
+                del self.user_last_conversation_index[user_id]
+            
+            # Rimuovi conversazioni in coda per questo utente
+            self.queued_conversations = {
+                key for key in self.queued_conversations 
+                if key[0] != user_id
+            }
         else:
             # Reset globale
-            self.user_interaction_counts.clear()
-            self.user_last_extraction_counts.clear()
+            self.user_last_conversation_index.clear()
+            self.queued_conversations.clear()
+            
         self.notification_manager.clear_notifications()
     
     def get_extraction_status(self, user_id: str) -> Dict[str, Any]:
@@ -303,14 +263,13 @@ class DeepSeekManager:
         Returns:
             Dict con informazioni sullo stato
         """
-        interaction_count = self.user_interaction_counts.get(user_id, 0)
-        last_extraction_count = self.user_last_extraction_counts.get(user_id, 0)
+        last_processed_index = self.user_last_conversation_index.get(user_id, -1)
+        conversations_in_queue = sum(1 for key in self.queued_conversations if key[0] == user_id)
         
         return {
             "available": self.is_available(),
-            "interaction_count": interaction_count,
-            "last_extraction_count": last_extraction_count,
-            "interactions_since_last": interaction_count - last_extraction_count,
+            "last_processed_conversation_index": last_processed_index,
+            "user_conversations_in_queue": conversations_in_queue,
             "extraction_in_progress": self._is_extraction_in_progress(user_id),
-            "queue_size": self.queue.qsize()
+            "total_queue_size": self.queue.qsize()
         } 
