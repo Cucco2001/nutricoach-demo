@@ -115,6 +115,8 @@ class NutriDB:
             "pan bauletto": "pan_bauletto",
             "basmati riso": "riso",
             "riso integrale": "riso_integrale",
+            "cous cous": "couscous",
+            "couscous integrale": "couscous",
             "fiocchi di riso": "riso",
             "fiocchi di avena": "avena",
             "fiocchi d'avena": "avena",

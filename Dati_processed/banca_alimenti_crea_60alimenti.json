@@ -43,6 +43,17 @@
     "nova_group": 1,
     "categoria": "cereali"
   },
+  "couscous": {
+    "energia_kcal": 361,
+    "proteine_g": 13.7,
+    "carboidrati_g": 76.5,
+    "zuccheri_g": 2.7,
+    "grassi_g": 1.1,
+    "grassi_saturi_g": 0.2,
+    "fibra_g": 1.3,
+    "nova_group": 1,
+    "categoria": "cereali"
+  },
   "pollo_petto": {
     "energia_kcal": 100,
     "proteine_g": 23.3,
