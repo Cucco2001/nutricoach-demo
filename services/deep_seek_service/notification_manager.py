@@ -7,6 +7,7 @@ dell'estrazione automatica dei dati nutrizionali.
 
 import streamlit as st
 from typing import Dict, List, Any, Optional
+import threading
 
 
 class NotificationManager:
@@ -16,8 +17,25 @@ class NotificationManager:
         """Inizializza il gestore delle notifiche."""
         self.notification_key = "deepseek_notification"
     
+    def _is_streamlit_context_available(self) -> bool:
+        """
+        Verifica se siamo nel contesto principale di Streamlit.
+        
+        Returns:
+            bool: True se possiamo accedere a st.session_state
+        """
+        try:
+            # Prova ad accedere al session_state per verificare il contesto
+            _ = st.session_state
+            return True
+        except Exception:
+            return False
+    
     def check_and_show_notifications(self) -> None:
         """Controlla e mostra le notifiche DeepSeek se presenti."""
+        if not self._is_streamlit_context_available():
+            return
+            
         if hasattr(st.session_state, self.notification_key):
             notification = getattr(st.session_state, self.notification_key)
             
@@ -89,6 +107,12 @@ class NotificationManager:
             notification_type: Tipo di notifica (success, warning, error, info)
             message: Messaggio da mostrare
         """
+        if not self._is_streamlit_context_available():
+            # Se non siamo nel contesto Streamlit (thread in background), 
+            # logga solo un messaggio invece di accedere al session_state
+            print(f"[NOTIFICATION_MANAGER] {notification_type.upper()}: {message}")
+            return
+            
         setattr(st.session_state, self.notification_key, {
             "type": notification_type,
             "message": message,
@@ -97,6 +121,9 @@ class NotificationManager:
     
     def clear_notifications(self) -> None:
         """Cancella tutte le notifiche pendenti."""
+        if not self._is_streamlit_context_available():
+            return
+            
         if hasattr(st.session_state, self.notification_key):
             delattr(st.session_state, self.notification_key)
     
@@ -118,5 +145,12 @@ class NotificationManager:
     
     def show_extraction_started_info(self) -> None:
         """Mostra una notifica che l'estrazione è iniziata."""
-        st.info("📊 Estrazione dati nutrizionali avviata in background...")
-        print("[NOTIFICATION_MANAGER] Notifica di avvio estrazione mostrata") 
+        if self._is_streamlit_context_available():
+            # Se siamo nel contesto principale di Streamlit, mostra direttamente
+            st.info("📊 Estrazione dati nutrizionali avviata in background...")
+            print("[NOTIFICATION_MANAGER] Notifica di avvio estrazione mostrata")
+        else:
+            # Se siamo in un thread in background, imposta una notifica per dopo
+            # Nota: _set_notification gestirà il fatto che non siamo nel contesto Streamlit
+            self.set_info_notification("📊 Estrazione dati nutrizionali avviata in background...")
+            print("[NOTIFICATION_MANAGER] Notifica di avvio estrazione programmata per il thread principale") 
