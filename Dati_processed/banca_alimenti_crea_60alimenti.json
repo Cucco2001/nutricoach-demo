@@ -99,17 +99,16 @@
     "categoria": "verdure"
   },
   "verdure_miste": {
-    "energia_kcal": 11,
-    "proteine_g": 1.1,
-    "carboidrati_g": 1.4,
-    "zuccheri_g": 1.2,
+    "energia_kcal": 17,
+    "proteine_g": 1.9,
+    "carboidrati_g": 1.7,
+    "zuccheri_g": 1.6,
     "grassi_g": 0.1,
     "grassi_saturi_g": 0.03,
     "fibra_g": 1.2,
     "nova_group": 1,
     "categoria": "verdure"
- 
-    },
+  },
   "olio_oliva": {
     "energia_kcal": 899,
     "proteine_g": 0.0,
@@ -607,6 +606,17 @@
     "categoria": "verdure"
       },
   "insalata": {
+    "energia_kcal": 22,
+    "proteine_g": 1.5,
+    "carboidrati_g": 3.0,
+    "zuccheri_g": 3.0,
+    "grassi_g": 0.2,
+    "grassi_saturi_g": 0.07,
+    "fibra_g": 1.3,
+    "nova_group": 1,
+    "categoria": "verdure"
+  },
+  "rucola": {
     "energia_kcal": 22,
     "proteine_g": 1.5,
     "carboidrati_g": 3.0,

@@ -7,7 +7,7 @@
       "cereali": 9,
       "tuberi": 1,
       "proteine_animali": 11,
-      "verdure": 12,
+      "verdure": 13,
       "grassi_aggiunti": 4,
       "frutta": 10,
       "uova": 2,
@@ -190,6 +190,10 @@
       }
     },
     "zucchine": {
+      "verdure_miste": {
+        "grams": 100.0,
+        "similarity_score": 130.0
+      },
       "cavolfiore": {
         "grams": 56.7,
         "similarity_score": 128.6
@@ -205,14 +209,14 @@
       "broccoli": {
         "grams": 51.5,
         "similarity_score": 124.4
-      },
-      "verdure_miste": {
-        "grams": 154.5,
-        "similarity_score": 123.2
       }
     },
     "asparagi": {
       "zucchine": {
+        "grams": 235.3,
+        "similarity_score": 127.6
+      },
+      "verdure_miste": {
         "grams": 235.3,
         "similarity_score": 127.6
       },
@@ -227,32 +231,28 @@
       "broccoli": {
         "grams": 121.2,
         "similarity_score": 122.0
-      },
-      "verdure_miste": {
-        "grams": 363.6,
-        "similarity_score": 121.7
       }
     },
     "verdure_miste": {
-      "bieta": {
-        "grams": 73.3,
-        "similarity_score": 128.0
-      },
-      "fagiolini": {
-        "grams": 45.8,
-        "similarity_score": 127.9
-      },
-      "broccoli": {
-        "grams": 33.3,
-        "similarity_score": 124.9
-      },
       "zucchine": {
-        "grams": 64.7,
-        "similarity_score": 123.2
+        "grams": 100.0,
+        "similarity_score": 130.0
       },
       "cavolfiore": {
-        "grams": 36.7,
-        "similarity_score": 122.2
+        "grams": 56.7,
+        "similarity_score": 128.6
+      },
+      "asparagi": {
+        "grams": 42.5,
+        "similarity_score": 127.6
+      },
+      "fagiolini": {
+        "grams": 70.8,
+        "similarity_score": 124.9
+      },
+      "broccoli": {
+        "grams": 51.5,
+        "similarity_score": 124.4
       }
     },
     "olio_oliva": {
@@ -606,6 +606,10 @@
         "grams": 186.4,
         "similarity_score": 113.1
       },
+      "rucola": {
+        "grams": 186.4,
+        "similarity_score": 113.1
+      },
       "melanzane": {
         "grams": 178.3,
         "similarity_score": 112.0
@@ -613,10 +617,6 @@
       "bieta": {
         "grams": 273.3,
         "similarity_score": 107.1
-      },
-      "verdure_miste": {
-        "grams": 372.7,
-        "similarity_score": 105.4
       }
     },
     "tonno_sottolio_sgocciolato": {
@@ -703,8 +703,8 @@
         "similarity_score": 120.0
       },
       "verdure_miste": {
-        "grams": 318.2,
-        "similarity_score": 119.1
+        "grams": 205.9,
+        "similarity_score": 120.0
       }
     },
     "bresaola": {
@@ -732,6 +732,10 @@
         "grams": 104.5,
         "similarity_score": 121.8
       },
+      "rucola": {
+        "grams": 104.5,
+        "similarity_score": 121.8
+      },
       "carote": {
         "grams": 56.1,
         "similarity_score": 121.1
@@ -743,14 +747,14 @@
       "bieta": {
         "grams": 153.3,
         "similarity_score": 115.4
-      },
-      "verdure_miste": {
-        "grams": 209.1,
-        "similarity_score": 113.9
       }
     },
     "melanzane": {
       "insalata": {
+        "grams": 104.5,
+        "similarity_score": 122.0
+      },
+      "rucola": {
         "grams": 104.5,
         "similarity_score": 122.0
       },
@@ -761,10 +765,6 @@
       "bieta": {
         "grams": 153.3,
         "similarity_score": 117.4
-      },
-      "verdure_miste": {
-        "grams": 209.1,
-        "similarity_score": 117.0
       },
       "fagiolini": {
         "grams": 95.8,
@@ -1070,15 +1070,15 @@
       }
     },
     "bieta": {
-      "verdure_miste": {
-        "grams": 136.4,
-        "similarity_score": 128.0
-      },
       "fagiolini": {
         "grams": 62.5,
         "similarity_score": 126.0
       },
       "insalata": {
+        "grams": 68.2,
+        "similarity_score": 123.6
+      },
+      "rucola": {
         "grams": 68.2,
         "similarity_score": 123.6
       },
@@ -1092,13 +1092,35 @@
       }
     },
     "insalata": {
+      "rucola": {
+        "grams": 100.0,
+        "similarity_score": 130.0
+      },
       "bieta": {
         "grams": 146.7,
         "similarity_score": 123.6
       },
-      "verdure_miste": {
-        "grams": 200.0,
-        "similarity_score": 122.1
+      "melanzane": {
+        "grams": 95.7,
+        "similarity_score": 122.0
+      },
+      "pomodoro": {
+        "grams": 95.7,
+        "similarity_score": 121.8
+      },
+      "fagiolini": {
+        "grams": 91.7,
+        "similarity_score": 120.1
+      }
+    },
+    "rucola": {
+      "insalata": {
+        "grams": 100.0,
+        "similarity_score": 130.0
+      },
+      "bieta": {
+        "grams": 146.7,
+        "similarity_score": 123.6
       },
       "melanzane": {
         "grams": 95.7,
@@ -1158,10 +1180,6 @@
       }
     },
     "fagiolini": {
-      "verdure_miste": {
-        "grams": 218.2,
-        "similarity_score": 127.9
-      },
       "broccoli": {
         "grams": 72.7,
         "similarity_score": 126.7
@@ -1171,6 +1189,10 @@
         "similarity_score": 126.0
       },
       "zucchine": {
+        "grams": 141.2,
+        "similarity_score": 124.9
+      },
+      "verdure_miste": {
         "grams": 141.2,
         "similarity_score": 124.9
       },
@@ -1206,6 +1228,10 @@
         "grams": 176.5,
         "similarity_score": 128.6
       },
+      "verdure_miste": {
+        "grams": 176.5,
+        "similarity_score": 128.6
+      },
       "asparagi": {
         "grams": 75.0,
         "similarity_score": 126.8
@@ -1217,10 +1243,6 @@
       "fagiolini": {
         "grams": 125.0,
         "similarity_score": 124.1
-      },
-      "verdure_miste": {
-        "grams": 272.7,
-        "similarity_score": 122.2
       }
     },
     "piselli": {
@@ -1730,11 +1752,11 @@
         "grams": 137.5,
         "similarity_score": 126.7
       },
-      "verdure_miste": {
-        "grams": 300.0,
-        "similarity_score": 124.9
-      },
       "zucchine": {
+        "grams": 194.1,
+        "similarity_score": 124.4
+      },
+      "verdure_miste": {
         "grams": 194.1,
         "similarity_score": 124.4
       },
