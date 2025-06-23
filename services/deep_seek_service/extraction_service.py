@@ -72,19 +72,13 @@ class NutritionalDataExtractor:
                         )
                     
                     success = self._save_extracted_data(user_id, completed_data)
-                    if success:
-                        print(f"[EXTRACTION_SERVICE] Dati estratti e salvati per utente {user_id}")
-                    else:
+                    if not success:
                         print(f"[EXTRACTION_SERVICE] Errore nel salvataggio dati per utente {user_id}")
-                else:
-                    print(f"[EXTRACTION_SERVICE] Nessun dato estratto per utente {user_id}")
-                    
             except Exception as e:
                 print(f"[EXTRACTION_SERVICE] Errore nell'estrazione per utente {user_id}: {str(e)}")
             finally:
                 # Processa la coda quando l'estrazione finisce
                 if deepseek_manager:
-                    print(f"[EXTRACTION_SERVICE] Estrazione completata, controllo coda...")
                     deepseek_manager.process_queue()
         
         # Avvia in background thread
@@ -141,7 +135,6 @@ class NutritionalDataExtractor:
             if os.path.exists(user_file_path):
                 with open(user_file_path, 'r', encoding='utf-8') as f:
                     user_data = json.load(f)
-                    print(f"[EXTRACTION_SERVICE] Dati completi caricati per utente {user_id}")
                     return user_data
             else:
                 print(f"[EXTRACTION_SERVICE] File utente non trovato per {user_id}")
@@ -182,12 +175,8 @@ class NutritionalDataExtractor:
                     merged = self._merge_extracted_data(existing_data, extracted_data, user_id)
                     if merged:
                         user_data["nutritional_info_extracted"] = existing_data
-                        print(f"[EXTRACTION_SERVICE] Dati merged per utente {user_id}")
-                    else:
-                        print(f"[EXTRACTION_SERVICE] Nessun merge necessario per utente {user_id}")
                 else:
                     user_data["nutritional_info_extracted"] = extracted_data
-                    print(f"[EXTRACTION_SERVICE] Primi dati estratti per utente {user_id}")
                 
                 # Salva il file aggiornato
                 with open(user_file_path, 'w', encoding='utf-8') as f:
@@ -549,7 +538,6 @@ class NutritionalDataExtractor:
             num_meals = follow_up.get('num_meals')
             
             if isinstance(num_meals, int) and 1 <= num_meals <= 5:
-                print(f"[EXTRACTION_SERVICE] Numero pasti da preferenze utente: {num_meals}")
                 return num_meals
         
         # Fallback: 
@@ -638,12 +626,10 @@ class NutritionalDataExtractor:
         # Numero pasti
         if "numero_pasti" in missing_fields:
             existing_daily_macros["numero_pasti"] = completed_daily_macros["numero_pasti"]
-            print(f"[EXTRACTION_SERVICE] Completato numero_pasti = {completed_daily_macros['numero_pasti']}")
         
         # Distribuzione pasti
         if "distribuzione_pasti" in missing_fields:
             existing_daily_macros["distribuzione_pasti"] = completed_daily_macros["distribuzione_pasti"]
-            print(f"[EXTRACTION_SERVICE] Completata distribuzione_pasti completa")
         else:
             # Completa solo i campi specifici mancanti nei pasti esistenti
             if "distribuzione_pasti" not in existing_daily_macros:
@@ -666,7 +652,6 @@ class NutritionalDataExtractor:
                         
                         if field_name in completed_meal:
                             existing_distribuzione[meal_name][field_name] = completed_meal[field_name]
-                            print(f"[EXTRACTION_SERVICE] Completato {missing_field} = {completed_meal[field_name]}")
     
     def _merge_daily_macros_special(
         self, 
@@ -685,9 +670,6 @@ class NutritionalDataExtractor:
         # 1. Merge numero_pasti (sovrascrive se presente e diverso da 0)
         if "numero_pasti" in new_daily_macros and new_daily_macros["numero_pasti"] is not None and new_daily_macros["numero_pasti"] != 0:
             existing_daily_macros["numero_pasti"] = new_daily_macros["numero_pasti"]
-            print(f"[EXTRACTION_SERVICE] Sovrascritto numero_pasti in daily_macros per utente {user_id}")
-        elif "numero_pasti" in new_daily_macros and new_daily_macros["numero_pasti"] == 0:
-            print(f"[EXTRACTION_SERVICE] Ignorato numero_pasti=0 in daily_macros per utente {user_id}")
         
         # 2. Merge distribuzione_pasti (preserva dati esistenti)
         if "distribuzione_pasti" in new_daily_macros and isinstance(new_daily_macros["distribuzione_pasti"], dict):
@@ -701,7 +683,6 @@ class NutritionalDataExtractor:
             if "spuntino" in existing_distribuzione:
                 spuntino_data = existing_distribuzione.pop("spuntino")
                 existing_distribuzione["spuntino_pomeridiano"] = spuntino_data
-                print(f"[EXTRACTION_SERVICE] Normalizzato 'spuntino' generico esistente in 'spuntino_pomeridiano' per utente {user_id}")
             
             # Per ogni pasto in DeepSeek
             for meal_name, new_meal_data in new_distribuzione.items():
@@ -709,8 +690,6 @@ class NutritionalDataExtractor:
                     # Se il pasto non esiste o è malformato, crealo/ricrealo
                     if meal_name not in existing_distribuzione or not isinstance(existing_distribuzione[meal_name], dict):
                         existing_distribuzione[meal_name] = {}
-                        if meal_name in existing_distribuzione and not isinstance(existing_distribuzione[meal_name], dict):
-                            print(f"[EXTRACTION_SERVICE] ATTENZIONE: Pasto malformato {meal_name} sostituito con dict valido")
                     
                     existing_meal = existing_distribuzione[meal_name]
                     
@@ -718,18 +697,12 @@ class NutritionalDataExtractor:
                     for field_name, field_value in new_meal_data.items():
                         if field_value is not None and not self._is_invalid_zero(field_name, field_value, 'daily_macros'):
                             existing_meal[field_name] = field_value
-                            print(f"[EXTRACTION_SERVICE] Sovrascritto {meal_name}.{field_name} = {field_value} per utente {user_id}")
-                        elif self._is_invalid_zero(field_name, field_value, 'daily_macros'):
-                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 invalido per {meal_name}.{field_name} per utente {user_id}")
-                else:
-                    print(f"[EXTRACTION_SERVICE] ATTENZIONE: Pasto malformato in DeepSeek per {meal_name}, ignorato")
             
             # Normalizza eventuali "spuntino" generici
             if "spuntino" in new_distribuzione:
                 # Se c'è uno spuntino generico, assumiamo sia pomeridiano
                 spuntino_data = new_distribuzione.pop("spuntino")
                 new_distribuzione["spuntino_pomeridiano"] = spuntino_data
-                print(f"[EXTRACTION_SERVICE] Normalizzato 'spuntino' generico in 'spuntino_pomeridiano' per utente {user_id}")
     
     def _merge_registered_meals(
         self, 
@@ -759,7 +732,7 @@ class NutritionalDataExtractor:
             if not meal_type:
                 continue
                 
-            print(f"[EXTRACTION_SERVICE] Processando nuovo pasto: {meal_type}")
+
             
             # Trova tutti i pasti esistenti dello stesso tipo
             meals_to_remove = []
@@ -772,18 +745,18 @@ class NutritionalDataExtractor:
                 
                 if normalized_existing == normalized_new:
                     meals_to_remove.append(i)
-                    print(f"[EXTRACTION_SERVICE] Trovato pasto esistente da sostituire: {existing_type}")
+
             
             # Rimuovi i pasti dello stesso tipo (in ordine inverso per non alterare gli indici)
             for i in reversed(meals_to_remove):
                 del existing_meals[i]
                 changes_made = True
-                print(f"[EXTRACTION_SERVICE] Rimosso pasto duplicato per utente {user_id}")
+
             
             # Aggiungi il nuovo pasto
             existing_meals.append(new_meal)
             changes_made = True
-            print(f"[EXTRACTION_SERVICE] Aggiunto nuovo pasto {meal_type} per utente {user_id}")
+
         
         return changes_made
     
@@ -851,7 +824,7 @@ class NutritionalDataExtractor:
         # Restituisci il mapping o il nome normalizzato se non trovato
         normalized = meal_mappings.get(name, name.replace(" ", "_"))
         
-        print(f"[EXTRACTION_SERVICE] Normalized '{meal_name}' → '{normalized}'")
+
         return normalized
     
     def clear_user_extracted_data(self, user_id: str) -> bool:
@@ -928,7 +901,7 @@ class NutritionalDataExtractor:
             if day_key not in existing_weekly_diet:
                 existing_weekly_diet[day_key] = new_day_data.copy()
                 changes_made = True
-                print(f"[EXTRACTION_SERVICE] Aggiunto nuovo giorno {day_key} per utente {user_id}")
+
                 continue
             
             # Il giorno esiste, merge intelligente dei pasti
@@ -1003,35 +976,27 @@ class NutritionalDataExtractor:
             meal_data = update.get("data")
             
             if not all([day_key, meal_name, meal_data]):
-                print(f"[EXTRACTION_SERVICE] Update parziale incompleto ignorato: {update}")
+
                 continue
             
             # Assicura che il giorno esista
             if day_key not in existing_weekly_diet:
                 existing_weekly_diet[day_key] = {}
-                print(f"[EXTRACTION_SERVICE] Creato nuovo giorno {day_key} per update parziale")
+
             
             # Assicura che sia un dizionario
             if not isinstance(existing_weekly_diet[day_key], dict):
                 existing_weekly_diet[day_key] = {}
-                print(f"[EXTRACTION_SERVICE] Ripristinato giorno {day_key} come dict per update parziale")
+
             
             # Aggiorna il pasto specifico
             existing_weekly_diet[day_key][meal_name] = meal_data.copy()
             changes_made = True
             
-            print(f"[EXTRACTION_SERVICE] Aggiornato {day_key}.{meal_name} per utente {user_id}")
-            
+ 
             # Log dettagliato degli alimenti aggiornati
             if isinstance(meal_data, dict) and "alimenti" in meal_data:
                 alimenti = meal_data["alimenti"]
-                if isinstance(alimenti, dict):
-                    alimenti_count = len([k for k, v in alimenti.items() if v and v > 0])
-                    print(f"[EXTRACTION_SERVICE] Nuovo {meal_name} con {alimenti_count} alimenti")
-                elif isinstance(alimenti, list):
-                    alimenti_count = len(alimenti)
-                    print(f"[EXTRACTION_SERVICE] Nuovo {meal_name} con {alimenti_count} alimenti")
-        
         return changes_made
     
     def _merge_day_meals(
@@ -1067,14 +1032,12 @@ class NutritionalDataExtractor:
                 if self._meals_are_different(existing_meal, new_meal_data):
                     existing_day[meal_name] = new_meal_data.copy()
                     changes_made = True
-                    print(f"[EXTRACTION_SERVICE] Sovrascritto {day_key}.{meal_name} per utente {user_id} (differente)")
-                else:
-                    print(f"[EXTRACTION_SERVICE] Mantenuto {day_key}.{meal_name} esistente (simile)")
+                    
             else:
                 # Nuovo pasto, aggiungilo
                 existing_day[meal_name] = new_meal_data.copy()
                 changes_made = True
-                print(f"[EXTRACTION_SERVICE] Aggiunto nuovo {day_key}.{meal_name} per utente {user_id}")
+
         
         return changes_made
     
@@ -1156,7 +1119,6 @@ class NutritionalDataExtractor:
             return False
             
         # Per campi sconosciuti, assumiamo che 0 sia invalido per sicurezza
-        print(f"[EXTRACTION_SERVICE] Campo sconosciuto '{field_name}' con valore 0, considerato invalido")
         return True
     
     def _complete_missing_macros_fields(self, user_id: str, macros_section: Dict[str, Any]) -> Optional[Dict[str, Any]]:

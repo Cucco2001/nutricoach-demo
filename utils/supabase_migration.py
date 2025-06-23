@@ -37,7 +37,6 @@ class SupabaseMigrationManager:
         Returns:
             Dict con il report di verifica
         """
-        print("🔍 Verifica consistenza dati locale ↔ Supabase...")
         
         if not self.supabase_service.is_available():
             return {"error": "Supabase non disponibile"}
@@ -78,7 +77,6 @@ class SupabaseMigrationManager:
         Returns:
             bool: True se la migrazione è riuscita
         """
-        print("📤 Migrazione completa locale → Supabase...")
         
         if not self.supabase_service.is_available():
             print("❌ Supabase non disponibile")
@@ -112,7 +110,6 @@ class SupabaseMigrationManager:
         Returns:
             bool: True se il download è riuscito
         """
-        print("📥 Download completo Supabase → locale...")
         
         if not self.supabase_service.is_available():
             print("❌ Supabase non disponibile")
@@ -143,7 +140,6 @@ class SupabaseMigrationManager:
         Returns:
             Dict con il report di confronto
         """
-        print("📊 Confronto file CSV con Supabase...")
         
         report = {
             "users_csv": self._compare_users_csv(),

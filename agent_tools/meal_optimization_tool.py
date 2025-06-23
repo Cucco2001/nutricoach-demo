@@ -16,7 +16,7 @@ from .nutridb import NutriDB
 from .nutridb_tool import get_user_id
 
 # Configurazione logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # Inizializza il database
@@ -50,10 +50,7 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
     else:
         user_file_path = f"user_data/user_{user_id}.json"
     
-    print(f"🔍 DEBUG load_user_meal_targets:")
-    print(f"   📁 User ID: {user_id}")
-    print(f"   🍽️  Meal name richiesto: '{meal_name}'")
-    print(f"   📄 File path: {user_file_path}")
+
     
     if not os.path.exists(user_file_path):
         raise ValueError(f"File utente {user_id} non trovato.")
@@ -61,13 +58,11 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
     with open(user_file_path, 'r', encoding='utf-8') as f:
         user_data = json.load(f)
     
-    print(f"   ✅ File caricato con successo")
-    
     nutritional_info = user_data.get("nutritional_info_extracted", {})
     daily_macros = nutritional_info.get("daily_macros", {})
     distribuzione_pasti = daily_macros.get("distribuzione_pasti", {})
     
-    print(f"   📊 Pasti disponibili nel file: {list(distribuzione_pasti.keys())}")
+
     
     # Crea un mapping robusto per i nomi dei pasti
     def normalize_meal_name(name):
@@ -123,17 +118,14 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
     
     # Normalizza il nome del pasto in input
     normalized_input = normalize_meal_name(meal_name)
-    print(f"   🔤 Nome meal normalizzato: '{normalized_input}'")
     
     # Cerca prima nel mapping
     canonical_meal_name = meal_mappings.get(normalized_input)
-    print(f"   🎯 Nome canonico dal mapping: '{canonical_meal_name}'")
     
     # Se non trovato nel mapping, prova una ricerca più flessibile
     if not canonical_meal_name:
         # Prova con parole chiave parziali
         input_words = normalized_input.replace("_", " ").split()
-        print(f"   🔍 Ricerca flessibile con parole: {input_words}")
         
         for key_words in [
             ["colazione"], 
@@ -160,7 +152,7 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
                     canonical_meal_name = "cena"
                     break
     
-    print(f"   🎯 Nome canonico finale: '{canonical_meal_name}'")
+
     
     # Cerca il pasto nei dati utente
     meal_data = None
@@ -168,20 +160,16 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
     # Prova prima con il nome canonico trovato
     if canonical_meal_name and canonical_meal_name in distribuzione_pasti:
         meal_data = distribuzione_pasti[canonical_meal_name]
-        print(f"   ✅ Trovato con nome canonico: '{canonical_meal_name}'")
     
     # Se non trovato, prova con tutte le chiavi disponibili confrontando i nomi normalizzati
     if not meal_data:
-        print(f"   🔍 Nome canonico non trovato, provo ricerca diretta...")
         for available_meal_key in distribuzione_pasti.keys():
             normalized_available = normalize_meal_name(available_meal_key)
-            print(f"      Confronto '{normalized_input}' con '{normalized_available}' (chiave: '{available_meal_key}')")
             
             # Confronto diretto
             if normalized_available == normalized_input:
                 meal_data = distribuzione_pasti[available_meal_key]
                 canonical_meal_name = available_meal_key
-                print(f"   ✅ Match diretto trovato: '{available_meal_key}'")
                 break
             
             # Confronto parziale (se il nome input è contenuto nella chiave disponibile o viceversa)
@@ -191,7 +179,6 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
                 any(word in normalized_available for word in normalized_input.split("_"))):
                 meal_data = distribuzione_pasti[available_meal_key]
                 canonical_meal_name = available_meal_key
-                print(f"   ✅ Match parziale trovato: '{available_meal_key}'")
                 break
     
     # Se ancora non trovato, restituisci errore con informazioni utili
@@ -208,20 +195,12 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
         print(f"   ❌ ERRORE: {error_msg}")
         raise ValueError(error_msg)
     
-    print(f"   📊 Dati meal trovati: {meal_data}")
-    
     result = {
         "kcal": float(meal_data.get("kcal", 0)),
         "proteine_g": float(meal_data.get("proteine_g", 0)),
         "carboidrati_g": float(meal_data.get("carboidrati_g", 0)),
         "grassi_g": float(meal_data.get("grassi_g", 0))
     }
-    
-    print(f"   🎯 Target finali restituiti:")
-    print(f"      Calorie: {result['kcal']}")
-    print(f"      Proteine: {result['proteine_g']}g")
-    print(f"      Carboidrati: {result['carboidrati_g']}g")
-    print(f"      Grassi: {result['grassi_g']}g")
     
     return result
 
@@ -513,12 +492,7 @@ def load_user_excluded_foods(user_id: str) -> List[str]:
     else:
         user_file_path = f"user_data/user_{user_id}.json"
     
-    print(f"🔍 DEBUG load_user_excluded_foods:")
-    print(f"   📁 User ID: {user_id}")
-    print(f"   📄 File path: {user_file_path}")
-    
     if not os.path.exists(user_file_path):
-        print(f"   ❌ File utente non trovato")
         return []
     
     try:
@@ -527,8 +501,6 @@ def load_user_excluded_foods(user_id: str) -> List[str]:
         
         user_preferences = user_data.get("user_preferences", {})
         excluded_foods_raw = user_preferences.get("excluded_foods", [])
-        
-        print(f"   📋 Excluded foods raw: {excluded_foods_raw}")
         
         # Mappa gli alimenti esclusi usando gli alias del database + termini generici
         excluded_foods_mapped = []
@@ -543,19 +515,14 @@ def load_user_excluded_foods(user_id: str) -> List[str]:
             canonical_name = db.alias.get(normalized_food)
             if canonical_name:
                 excluded_foods_mapped.append(canonical_name)
-                print(f"   ✅ Mappato '{food}' → '{canonical_name}'")
             else:
                 # Se non trovato esatto, cerca termini generici che espandono a varianti multiple
                 generic_matches = find_generic_food_variants(normalized_food)
                 if generic_matches:
                     excluded_foods_mapped.extend(generic_matches)
-                    print(f"   ✅ Mappato generico '{food}' → {generic_matches}")
-                else:
-                    print(f"   ⚠️  '{food}' non trovato nel database - ignorato")
         
         # Rimuovi duplicati mantenendo l'ordine
         excluded_foods_mapped = list(dict.fromkeys(excluded_foods_mapped))
-        print(f"   🎯 Excluded foods finali: {excluded_foods_mapped}")
         return excluded_foods_mapped
         
     except Exception as e:
@@ -580,9 +547,6 @@ def filter_substitutes_by_excluded_foods(
     if not excluded_foods:
         return substitutes
     
-    print(f"🔍 DEBUG filter_substitutes_by_excluded_foods:")
-    print(f"   🚫 Alimenti esclusi: {excluded_foods}")
-    
     filtered_substitutes = {}
     
     for food_name, food_substitutes in substitutes.items():
@@ -593,15 +557,11 @@ def filter_substitutes_by_excluded_foods(
             substitute_canonical = db.alias.get(substitute_name.lower().replace("_", " "))
             if not substitute_canonical:
                 substitute_canonical = substitute_name
-            
-            print(f"   🔍 Controllo sostituto '{substitute_name}' → '{substitute_canonical}'")
-            
+
             # Verifica che il sostituto non sia tra gli esclusi
             if substitute_canonical not in excluded_foods:
                 filtered_food_substitutes[substitute_name] = substitute_data
-                print(f"   ✅ Sostituto '{substitute_name}' mantenuto")
-            else:
-                print(f"   🚫 Sostituto '{substitute_name}' rimosso (escluso dall'utente)")
+
         
         # Mantieni l'alimento solo se ha almeno un sostituto valido
         if filtered_food_substitutes:
@@ -632,10 +592,7 @@ def check_and_replace_excluded_foods_final(
     if not excluded_foods:
         return final_portions, [], {}
     
-    print(f"🔍 DEBUG check_and_replace_excluded_foods_final:")
-    print(f"   🍽️  Pasto: {meal_name}")
-    print(f"   📋 Porzioni finali: {list(final_portions.keys())}")
-    print(f"   🚫 Alimenti esclusi: {excluded_foods}")
+
     
     updated_portions = final_portions.copy()
     found_excluded = []
@@ -656,7 +613,6 @@ def check_and_replace_excluded_foods_final(
             if normalized_food in excluded_foods:
                 found_excluded.append(food)
                 del updated_portions[food]
-                print(f"   🚫 Rimosso '{food}' (escluso dall'utente)")
         
         return updated_portions, found_excluded, replacements
     
@@ -666,10 +622,8 @@ def check_and_replace_excluded_foods_final(
         if not normalized_food:
             normalized_food = food
         
-        print(f"   🔍 Controllo '{food}' → '{normalized_food}'")
-        
+        # Se l'alimento è escluso dall'utente
         if normalized_food in excluded_foods:
-            print(f"   🚫 '{food}' è escluso - cerco sostituto")
             found_excluded.append(food)
             original_portion = final_portions[food]
             
@@ -691,7 +645,7 @@ def check_and_replace_excluded_foods_final(
                 del updated_portions[food]
                 updated_portions[replacement] = replacement_portion
                 replacements[food] = replacement
-                print(f"   ✅ Sostituito '{food}' ({original_portion}g) con '{replacement}' ({replacement_portion}g)")
+               
             else:
                 # Nessun sostituto trovato nel database - prova con sostituti forzati
                 forced_replacement = get_forced_substitute(normalized_food, excluded_foods, meal_name)
@@ -706,14 +660,11 @@ def check_and_replace_excluded_foods_final(
                     del updated_portions[food]
                     updated_portions[forced_replacement] = replacement_portion
                     replacements[food] = forced_replacement
-                    print(f"   ✅ Sostituito '{food}' ({original_portion}g) con '{forced_replacement}' ({replacement_portion}g) [sostituto forzato]")
+                   
                 else:
                     # Nessun sostituto possibile, rimuovi l'alimento
                     del updated_portions[food]
-                    print(f"   ⚠️  Nessun sostituto trovato per '{food}' - rimosso dalla lista")
     
-    print(f"   🎯 Porzioni finali aggiornate: {list(updated_portions.keys())}")
-    print(f"   🔄 Sostituzioni: {replacements}")
     
     return updated_portions, found_excluded, replacements
 

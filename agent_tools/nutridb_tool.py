@@ -5,7 +5,7 @@ import json
 import os
 
 # Configurazione logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # Inizializza il database
@@ -207,7 +207,6 @@ def calculate_sport_expenditure(sports: Union[List[Dict[str, Any]], Dict[str, An
         # Calcola il dispendio per ogni sport
         for sport in sports_list:
             original_sport_name = sport["sport_name"]
-            print(f"[DEBUG] Ricevuto sport_name: '{original_sport_name}' (tipo: {type(original_sport_name)})")
             sport_hours = float(sport["hours"])
             intensity_multiplier = 1.0
             

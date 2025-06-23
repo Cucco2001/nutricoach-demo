@@ -364,7 +364,7 @@ class NutriDB:
             LAF = float(str(LAF).replace(",", "."))  # Gestisce anche valori con la virgola
             if LAF not in valid_lafs:
                 closest_laf = min(valid_lafs, key=lambda x: abs(x - LAF))
-                print(f"ATTENZIONE: LAF {LAF} convertito al valore valido più vicino: {closest_laf}")
+
                 LAF = closest_laf
         except (ValueError, TypeError):
             raise ValueError("LAF deve essere uno dei seguenti valori: 1.30, 1.45, 1.60, 1.75")

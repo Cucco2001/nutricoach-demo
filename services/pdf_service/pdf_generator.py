@@ -451,7 +451,7 @@ class PDFGenerator:
                 try:
                     with open(user_file_path, 'r', encoding='utf-8') as f:
                         user_data = json.load(f)
-                    print(f"[PDF_SERVICE] File utente caricato da: {user_file_path}")
+        
                     break
                 except (json.JSONDecodeError, Exception) as e:
                     print(f"[PDF_ERROR] Errore lettura {user_file_path}: {str(e)}")
@@ -469,7 +469,7 @@ class PDFGenerator:
             print(f"[PDF_ERROR] Nessun dato nutrizionale estratto trovato per user_id: {user_id}")
             return None
         
-        print(f"[PDF_SERVICE] Dati nutrizionali caricati con successo per user_id: {user_id}")
+
         return nutritional_data
     
     def _add_document_header(self, story: list, user_info: Dict[str, Any], extracted_data: Dict[str, Any]):
@@ -545,12 +545,12 @@ class PDFGenerator:
             extracted_data: Dati nutrizionali estratti
         """
         if not extracted_data or "caloric_needs" not in extracted_data:
-            print("[PDF_SERVICE] Sezione caloric_needs saltata - dati non disponibili")
+
             return
         
         caloric_data = extracted_data["caloric_needs"]
         if not caloric_data:
-            print("[PDF_SERVICE] Sezione caloric_needs saltata - dati vuoti")
+
             return
         
         # Titolo sezione più compatto
@@ -611,12 +611,12 @@ class PDFGenerator:
             extracted_data: Dati nutrizionali estratti
         """
         if not extracted_data or "macros_total" not in extracted_data:
-            print("[PDF_SERVICE] Sezione macros_total saltata - dati non disponibili")
+
             return
         
         macros_data = extracted_data["macros_total"]
         if not macros_data:
-            print("[PDF_SERVICE] Sezione macros_total saltata - dati vuoti")
+
             return
         
         # Titolo sezione più compatto
@@ -677,12 +677,12 @@ class PDFGenerator:
             extracted_data: Dati nutrizionali estratti
         """
         if not extracted_data or "daily_macros" not in extracted_data:
-            print("[PDF_SERVICE] Sezione daily_macros saltata - dati non disponibili")
+
             return
         
         daily_data = extracted_data["daily_macros"]
         if not daily_data:
-            print("[PDF_SERVICE] Sezione daily_macros saltata - dati vuoti")
+
             return
         
         # Titolo sezione più compatto
@@ -702,7 +702,7 @@ class PDFGenerator:
         for pasto_nome, pasto_data in distribuzione_pasti.items():
             # Controllo di sicurezza per pasto_data
             if not pasto_data:
-                print(f"[PDF_SERVICE] Saltato pasto '{pasto_nome}' - dati vuoti")
+
                 continue
                 
             kcal = pasto_data.get('kcal', 0)
@@ -752,7 +752,7 @@ class PDFGenerator:
             extracted_data: Dati nutrizionali estratti
         """
         if not extracted_data or "registered_meals" not in extracted_data or not extracted_data["registered_meals"]:
-            print("[PDF_SERVICE] Sezione registered_meals saltata - dati non disponibili")
+
             return
         
         meals_data = extracted_data["registered_meals"]
@@ -778,7 +778,7 @@ class PDFGenerator:
                 for alimento in meal["alimenti"]:
                     # Controllo di sicurezza per alimento
                     if not alimento:
-                        print("[PDF_SERVICE] Saltato alimento vuoto")
+        
                         continue
                         
                     nome = alimento.get('nome_alimento', 'N/A')
@@ -813,10 +813,8 @@ class PDFGenerator:
             if "totali_pasto" in meal:
                 totali = meal["totali_pasto"]
                 
-                # Controllo di sicurezza per totali
-                if not totali:
-                    print(f"[PDF_SERVICE] Saltati totali per pasto '{nome_pasto}' - dati vuoti")
-                else:
+                                # Controllo di sicurezza per totali
+                if totali:
                     totals_data = [
                         ['Calorie Totali', 'Proteine Totali', 'Carboidrati Totali', 'Grassi Totali'],
                         [
@@ -868,7 +866,7 @@ class PDFGenerator:
         has_weekly_data = "weekly_diet" in extracted_data and extracted_data["weekly_diet"]
         
         if not has_day1_data and not has_weekly_data:
-            print("[PDF_SERVICE] Sezione weekly_diet saltata - nessun dato disponibile")
+
             return
         # Nomi dei giorni
         day_names = {
@@ -996,7 +994,6 @@ class PDFGenerator:
                                         
                                         if substitutes_result and substitutes_result != 'N/A':
                                             row[3] = substitutes_result
-                                            print(f"[PDF_SERVICE] Sostituti generati per {alimento_nome}: {substitutes_result}")
                                         
                                 except (ValueError, TypeError) as ve:
                                     print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome}: {str(ve)}")
@@ -1164,7 +1161,6 @@ class PDFGenerator:
                                 
                                 if substitutes_result and substitutes_result != 'N/A':
                                     row[3] = substitutes_result
-                                    print(f"[PDF_SERVICE] Sostituti generati per {alimento_nome}: {substitutes_result}")
                                     
                         except (ValueError, TypeError) as ve:
                             print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome}: {str(ve)}")

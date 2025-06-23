@@ -10,7 +10,7 @@ from typing import Dict, List, Any, Optional
 from .meal_optimization_tool import optimize_meal_portions
 from .nutridb_tool import get_user_id
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 def normalize_meal_name(name):

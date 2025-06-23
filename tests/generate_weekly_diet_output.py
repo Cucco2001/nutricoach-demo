@@ -240,8 +240,8 @@ def main():
         with open(output_filename, 'w', encoding='utf-8') as f:
             f.write(diet_content)
         
-        print(f"✅ Dieta settimanale salvata in: {output_filename}")
-        print(f"📄 Dimensione file: {len(diet_content)} caratteri")
+    
+
         
         # Mostra un preview
         lines = diet_content.split('\n')

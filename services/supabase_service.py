@@ -15,7 +15,7 @@ from supabase import create_client, Client
 import logging
 
 # Configurazione logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 

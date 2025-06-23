@@ -15,7 +15,7 @@ except ImportError:
         pass
 
 # Configurazione logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -392,10 +392,6 @@ class UserDataManager:
                     existing_deepseek_data = existing_data.get("nutritional_info_extracted")
                     existing_cost_data = existing_data.get("conversation_costs")
                     existing_last_cost_update = existing_data.get("last_cost_update")
-                    if existing_deepseek_data:
-                        print(f"[USER_DATA_MANAGER] Preservando dati DeepSeek per user {user_id}: {list(existing_deepseek_data.keys())}")
-                    if existing_cost_data:
-                        print(f"[USER_DATA_MANAGER] Preservando dati costi più recenti per user {user_id}")
             except Exception as e:
                 print(f"[USER_DATA_MANAGER] Errore nel leggere dati esistenti: {str(e)}")
         
@@ -420,14 +416,12 @@ class UserDataManager:
         # RESTAURA i dati DeepSeek se esistevano
         if existing_deepseek_data:
             data["nutritional_info_extracted"] = existing_deepseek_data
-            print(f"[USER_DATA_MANAGER] Dati DeepSeek restaurati per user {user_id}")
         
         # RESTAURA i dati dei costi se esistevano
         if existing_cost_data:
             data["conversation_costs"] = existing_cost_data
             data["last_cost_update"] = existing_last_cost_update
-            print(f"[USER_DATA_MANAGER] Dati costi restaurati per user {user_id}")
-        
+ 
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         
@@ -559,5 +553,4 @@ class UserDataManager:
         # Salva i dati aggiornati
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        
-        print(f"[COST_TRACKER] Salvate statistiche costi per {user_id}: €{stats['costs']['total_cost_eur']:.4f}") 
+         
