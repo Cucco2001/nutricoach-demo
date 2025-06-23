@@ -19,7 +19,8 @@
       "cereali_colazione": 9,
       "affettati": 3,
       "latticini": 3,
-      "creme_spalmabili": 3,
+      "creme_spalmabili": 2,
+      "creme_spalmabili_light": 1,
       "dolci": 2,
       "integratori": 2,
       "caffè": 1
@@ -1262,10 +1263,6 @@
       "marmellata": {
         "grams": 133.9,
         "similarity_score": 129.9
-      },
-      "marmellata_hero_light": {
-        "grams": 633.3,
-        "similarity_score": 119.1
       }
     },
     "kiwi": {
@@ -1338,20 +1335,6 @@
       "miele": {
         "grams": 74.7,
         "similarity_score": 129.9
-      },
-      "marmellata_hero_light": {
-        "grams": 472.9,
-        "similarity_score": 125.8
-      }
-    },
-    "marmellata_hero_light": {
-      "marmellata": {
-        "grams": 21.1,
-        "similarity_score": 125.8
-      },
-      "miele": {
-        "grams": 15.8,
-        "similarity_score": 123.6
       }
     },
     "fette_biscottate": {

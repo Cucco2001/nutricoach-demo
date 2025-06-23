@@ -301,6 +301,7 @@ def get_portion_constraints():
         "frutta_secca": {"min": 5, "max": 40},
         "grassi_aggiunti": {"min": 5, "max": 120},
         "creme_spalmabili": {"min": 10, "max": 40},
+        "creme_spalmabili_light": {"min": 10, "max": 30},
         "uova": {"min": 60, "max": 200},  # ~1-2 uova
         "dolci": {"min": 10, "max": 80},   # Porzioni piccole per dolci
         "integratori": {"min": 10, "max": 50},  # Maggiore flessibilità per integratori        
@@ -1584,14 +1585,10 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
                     else:
                         errors[f"{nutrient}_error_pct"] = 0.0
         
-        # 14. Calcola i sostituti per ogni alimento
-        food_substitutes = calculate_food_substitutes(optimized_portions_rounded, meal_name)
+        # 14. Calcola i sostituti per ogni alimento (con filtro esclusioni integrato)
+        food_substitutes = calculate_food_substitutes(optimized_portions_rounded, meal_name, user_id)
         
-        # 15. Filtra i sostituti rimuovendo quelli tra gli alimenti esclusi
-        if excluded_foods:
-            food_substitutes = filter_substitutes_by_excluded_foods(food_substitutes, excluded_foods)
-        
-        # 16. Prepara il messaggio di summary con tutte le ottimizzazioni
+        # 15. Prepara il messaggio di summary con tutte le ottimizzazioni
         final_food_count = len(optimized_portions_rounded)
         summary_parts = [f"Ottimizzazione completata per {meal_name} con {final_food_count} alimenti"]
         
@@ -1680,16 +1677,19 @@ def load_substitutes_data() -> Dict[str, Any]:
         raise ValueError(f"Errore nella lettura del file sostituti: {str(e)}")
 
 
-def calculate_food_substitutes(optimized_portions: Dict[str, float], meal_name: str) -> Dict[str, Dict[str, Dict[str, float]]]:
+def calculate_food_substitutes(optimized_portions: Dict[str, float], meal_name: str, user_id: str = None) -> Dict[str, Dict[str, Dict[str, float]]]:
     """
     Calcola i sostituti per ogni alimento con le grammature corrette.
     
-    Per colazione e spuntini, il pane e pane integrale vengono sostituiti
-    solo con crackers o pan bauletto.
+    Per colazione e spuntini:
+    - Il pane e pane integrale vengono sostituiti solo con crackers o pan bauletto
+    - Le uova e albume vengono sostituiti solo con parmigiano o albume d'uovo
     
     Args:
         optimized_portions: Dizionario con alimento -> grammi ottimizzati
         meal_name: Nome del pasto
+        user_id: ID dell'utente per caricare gli alimenti esclusi 
+                (opzionale, usa get_user_id() se None)
         
     Returns:
         Dict con struttura: {
@@ -1702,6 +1702,20 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float], meal_name: 
     try:
         substitutes_data = load_substitutes_data()
         substitutes_db = substitutes_data.get("substitutes", {})
+        
+        # Carica gli alimenti esclusi dall'utente
+        excluded_foods = []
+        try:
+            # Se user_id non è fornito, tenta di ottenerlo automaticamente
+            if not user_id:
+                user_id = get_user_id()
+            
+            # Carica gli alimenti esclusi usando l'user_id ottenuto
+            excluded_foods = load_user_excluded_foods(user_id)
+        except Exception as e:
+            # Se non riusciamo a ottenere user_id o caricare excluded_foods, procediamo senza esclusioni
+            print(f"   ⚠️  Impossibile caricare excluded_foods: {str(e)}")
+            excluded_foods = []
         
         result = {}
         
@@ -1738,6 +1752,15 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float], meal_name: 
                 for substitute_name, substitute_data in pane_substitutes.items():
                     # Verifica se il sostituto è tra quelli ammessi
                     if any(allowed in substitute_name.lower() for allowed in allowed_substitutes):
+                        # Se abbiamo cibi esclusi, verifica che il sostituto non sia escluso
+                        if excluded_foods:
+                            substitute_canonical = db.alias.get(substitute_name.lower().replace("_", " "))
+                            if not substitute_canonical:
+                                substitute_canonical = substitute_name
+                            
+                            if substitute_canonical in excluded_foods:
+                                continue  # Salta questo sostituto se è escluso
+                        
                         # Calcola i grammi del sostituto basati sulla porzione ottimizzata
                         substitute_grams = (portion_grams / 100.0) * substitute_data['grams']
                         
@@ -1755,30 +1778,119 @@ def calculate_food_substitutes(optimized_portions: Dict[str, float], meal_name: 
                     # Rapporti approssimativi basati su valori calorici medi
                     # Pane bianco ~270 kcal/100g, Crackers ~430 kcal/100g, Pan bauletto ~285 kcal/100g
                     if normalized_food_name == "pane_bianco":
-                        food_substitutes["cracker"] = {
-                            "grams": float(10 * np.floor((portion_grams * 0.63) / 10 + 0.5)),  # 270/430
-                            "similarity_score": 90.0
-                        }
-                        food_substitutes["pan_bauletto"] = {
-                            "grams": float(10 * np.floor((portion_grams * 0.95) / 10 + 0.5)),  # 270/285
-                            "similarity_score": 95.0
-                        }
+                        # Verifica se cracker è escluso
+                        if not excluded_foods or "cracker" not in excluded_foods:
+                            food_substitutes["cracker"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.63) / 10 + 0.5)),  # 270/430
+                                "similarity_score": 90.0
+                            }
+                        # Verifica se pan_bauletto è escluso
+                        if not excluded_foods or "pan_bauletto" not in excluded_foods:
+                            food_substitutes["pan_bauletto"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.95) / 10 + 0.5)),  # 270/285
+                                "similarity_score": 95.0
+                            }
                     # Pane integrale ~235 kcal/100g
                     elif normalized_food_name == "pane_integrale":
-                        food_substitutes["cracker"] = {
-                            "grams": float(10 * np.floor((portion_grams * 0.55) / 10 + 0.5)),  # 235/430
-                            "similarity_score": 90.0
+                        # Verifica se cracker è escluso
+                        if not excluded_foods or "cracker" not in excluded_foods:
+                            food_substitutes["cracker"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.55) / 10 + 0.5)),  # 235/430
+                                "similarity_score": 90.0
+                            }
+                        # Verifica se pan_bauletto è escluso
+                        if not excluded_foods or "pan_bauletto" not in excluded_foods:
+                            food_substitutes["pan_bauletto"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.82) / 10 + 0.5)),  # 235/285
+                                "similarity_score": 95.0
+                            }
+            
+            # Logica speciale per uova/albume durante colazione/spuntini
+            elif is_colazione_or_spuntino and normalized_food_name in ["uova", "albume_uova"]:
+                # Crea sostituti personalizzati per parmigiano e albume d'uovo
+                # Cerca nel database le conversioni per uova -> parmigiano e uova -> albume
+                
+                uova_substitutes = substitutes_db.get(normalized_food_name, {})
+                
+                # Lista dei sostituti ammessi per colazione/spuntini
+                allowed_substitutes = ["parmigiano", "parmigiano_reggiano", "grana_padano", "albume_uova", "albume"]
+                
+                for substitute_name, substitute_data in uova_substitutes.items():
+                    # Verifica se il sostituto è tra quelli ammessi
+                    if any(allowed in substitute_name.lower() for allowed in allowed_substitutes):
+                        # Se abbiamo cibi esclusi, verifica che il sostituto non sia escluso
+                        if excluded_foods:
+                            substitute_canonical = db.alias.get(substitute_name.lower().replace("_", " "))
+                            if not substitute_canonical:
+                                substitute_canonical = substitute_name
+                            
+                            if substitute_canonical in excluded_foods:
+                                continue  # Salta questo sostituto se è escluso
+                        
+                        # Calcola i grammi del sostituto basati sulla porzione ottimizzata
+                        substitute_grams = (portion_grams / 100.0) * substitute_data['grams']
+                        
+                        # Arrotonda i grammi del sostituto alla decina più vicina
+                        substitute_grams_rounded = float(10 * np.floor(substitute_grams / 10 + 0.5))
+                        
+                        food_substitutes[substitute_name] = {
+                            "grams": substitute_grams_rounded,
+                            "similarity_score": float(substitute_data['similarity_score'])
                         }
-                        food_substitutes["pan_bauletto"] = {
-                            "grams": float(10 * np.floor((portion_grams * 0.82) / 10 + 0.5)),  # 235/285
-                            "similarity_score": 95.0
-                        }
+                
+                # Se non abbiamo trovato parmigiano o albume nei sostituti esistenti,
+                # calcoliamo manualmente basandoci sui rapporti calorici tipici
+                if not food_substitutes:
+                    # Rapporti approssimativi basati su valori calorici medi
+                    # Uova ~155 kcal/100g, Parmigiano ~390 kcal/100g, Albume ~52 kcal/100g
+                    if normalized_food_name == "uova":
+                        # Verifica se parmigiano_reggiano è escluso
+                        if not excluded_foods or "parmigiano_reggiano" not in excluded_foods:
+                            food_substitutes["parmigiano_reggiano"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.40) / 10 + 0.5)),  # 155/390
+                                "similarity_score": 85.0
+                            }
+                        # Verifica se albume_uova è escluso
+                        if not excluded_foods or "albume_uova" not in excluded_foods:
+                            food_substitutes["albume_uova"] = {
+                                "grams": float(10 * np.floor((portion_grams * 3.0) / 10 + 0.5)),  # 155/52
+                                "similarity_score": 90.0
+                            }
+                    # Albume d'uova ~52 kcal/100g
+                    elif normalized_food_name == "albume_uova":
+                        # Verifica se parmigiano_reggiano è escluso
+                        if not excluded_foods or "parmigiano_reggiano" not in excluded_foods:
+                            food_substitutes["parmigiano_reggiano"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.13) / 10 + 0.5)),  # 52/390
+                                "similarity_score": 80.0
+                            }
+                        # Verifica se uova è escluso (per sostituire albume con uova intere)
+                        if not excluded_foods or "uova" not in excluded_foods:
+                            food_substitutes["uova"] = {
+                                "grams": float(10 * np.floor((portion_grams * 0.34) / 10 + 0.5)),  # 52/155
+                                "similarity_score": 95.0
+                            }
             
             else:
                 # Logica normale per tutti gli altri casi
                 # Cerca i sostituti usando il nome principale mappato
                 if normalized_food_name in substitutes_db:
                     available_substitutes = substitutes_db[normalized_food_name]
+                    
+                    # Se abbiamo cibi esclusi, filtriamo prima i sostituti
+                    if excluded_foods:
+                        filtered_substitutes = {}
+                        for substitute_name, substitute_data in available_substitutes.items():
+                            # Mappa il sostituto al nome canonico
+                            substitute_canonical = db.alias.get(substitute_name.lower().replace("_", " "))
+                            if not substitute_canonical:
+                                substitute_canonical = substitute_name
+                            
+                            # Verifica che il sostituto non sia tra gli esclusi
+                            if substitute_canonical not in excluded_foods:
+                                filtered_substitutes[substitute_name] = substitute_data
+                        
+                        available_substitutes = filtered_substitutes
                     
                     # Ordina i sostituti per similarity_score (decrescente) e prendi i primi 2
                     sorted_substitutes = sorted(
