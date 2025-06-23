@@ -40,7 +40,6 @@ class DeepSeekManager:
         for thread in threading.enumerate():
             active_threads.append(f"{thread.name}({'alive' if thread.is_alive() else 'dead'})")
             if thread.name == target_thread_name and thread.is_alive():
-                print(f"[DEEPSEEK_MANAGER] Thread di estrazione per l'utente {user_id} è ancora attivo.")
                 return True
         
         # Debug: mostra tutti i thread attivi quando non trova quello specifico
@@ -71,7 +70,6 @@ class DeepSeekManager:
                 user_data = json.load(f)
             
             conversations = user_data.get('nutritional_info', {}).get('agent_qa', [])
-            print(f"[DEEPSEEK_MANAGER] Trovate {len(conversations)} conversazioni per utente {user_id}")
             return conversations
             
         except Exception as e:
@@ -105,7 +103,6 @@ class DeepSeekManager:
         conversation_history = self._get_user_conversations(user_id)
         
         if not conversation_history:
-            print(f"[DEEPSEEK_MANAGER] Nessuna conversazione trovata per {user_id}")
             return
             
         # Trova le conversazioni nuove basandosi sull'indice
@@ -128,15 +125,10 @@ class DeepSeekManager:
                 self.queued_conversations.add(conversation_key)
                 new_conversations_added += 1
         
-        if new_conversations_added > 0:
-            print(f"[DEEPSEEK_MANAGER] Aggiunte {new_conversations_added} conversazioni alla coda per {user_id}")
-            print(f"[DEEPSEEK_MANAGER] Coda attuale: {self.queue.qsize()} elementi")
-            
+        if new_conversations_added > 0:      
             # Se non c'è un'estrazione in corso, avvia il processing della coda
             if not self._is_extraction_in_progress(user_id):
                 self.process_queue()
-        else:
-            print(f"[DEEPSEEK_MANAGER] Nessuna nuova conversazione da aggiungere per {user_id}")
     
     def check_and_process_results(self) -> None:
         """Controlla i risultati dell'estrazione e processa le notifiche."""
@@ -175,7 +167,7 @@ class DeepSeekManager:
                 conversation_key = (user_id, conversation_index)
                 self.queued_conversations.discard(conversation_key)
                 
-                print(f"[DEEPSEEK_MANAGER] Processando conversazione {conversation_index} per utente {user_id}")
+                
                 
                 # Verifica che non ci sia già un'estrazione in corso
                 if not self._is_extraction_in_progress(user_id):
@@ -194,8 +186,6 @@ class DeepSeekManager:
                     # Mostra notifica
                     self.notification_manager.show_extraction_started_info()
                     
-                    print(f"[DEEPSEEK_MANAGER] Estrazione avviata per conversazione {conversation_index}")
-                    print(f"[DEEPSEEK_MANAGER] Rimanenti in coda: {self.queue.qsize()}")
                 else:
                     # Se c'è ancora un'estrazione in corso, rimetti in coda
                     self.queue.put(request)
