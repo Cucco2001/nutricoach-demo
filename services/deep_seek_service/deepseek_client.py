@@ -111,6 +111,9 @@ class DeepSeekClient:
                 # Parse del JSON
                 extracted_data = json.loads(response_text)
                 
+                # Salva debug delle conversazioni processate e output
+                self._save_conversation_debug(conversation_history, user_info, response_text, extracted_data)
+                
                 print(f"[DEEPSEEK_CLIENT] Dati estratti con successo: {list(extracted_data.keys())}")
                 return extracted_data
                 
@@ -320,4 +323,55 @@ ALTRE REGOLE:
 """
         
         return prompt
+    
+    def _save_conversation_debug(
+        self, 
+        conversation_history: List[Any], 
+        user_info: Dict[str, Any], 
+        raw_response: str, 
+        extracted_data: Dict[str, Any]
+    ) -> None:
+        """
+        Salva le conversazioni processate e le risposte di DeepSeek per debugging.
+        
+        Args:
+            conversation_history: Lista delle conversazioni processate
+            user_info: Informazioni dell'utente
+            raw_response: Risposta raw di DeepSeek
+            extracted_data: Dati estratti parsati
+        """
+        try:
+            from datetime import datetime
+            
+            # Crea la directory di debug se non esiste
+            debug_dir = "tests/deep_seek_out"
+            os.makedirs(debug_dir, exist_ok=True)
+            
+            # Estrai user_id dalle info utente
+            user_id = user_info.get('user_id', 'unknown')
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            
+            # Salva conversazione processata e risposta
+            conversation_file = os.path.join(debug_dir, f"{user_id}_{timestamp}_conversation.json")
+            with open(conversation_file, 'w', encoding='utf-8') as f:
+                debug_data = {
+                    "timestamp": datetime.now().isoformat(),
+                    "user_id": user_id,
+                    "user_info": user_info,
+                    "conversation_count": len(conversation_history),
+                    "conversations": conversation_history,
+                    "raw_deepseek_response": raw_response,
+                    "extracted_keys": list(extracted_data.keys()) if extracted_data else []
+                }
+                json.dump(debug_data, f, indent=2, ensure_ascii=False)
+            
+            # Salva anche versione "latest" per facile accesso
+            latest_conv_file = os.path.join(debug_dir, f"{user_id}_latest_conversation.json")
+            with open(latest_conv_file, 'w', encoding='utf-8') as f:
+                json.dump(debug_data, f, indent=2, ensure_ascii=False)
+            
+            print(f"[DEEPSEEK_CLIENT] Debug conversazione salvata in {conversation_file}")
+            
+        except Exception as e:
+            print(f"[DEEPSEEK_CLIENT] Errore nel salvataggio debug conversazione: {str(e)}")
 

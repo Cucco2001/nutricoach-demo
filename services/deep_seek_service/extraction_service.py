@@ -199,12 +199,66 @@ class NutritionalDataExtractor:
                     auto_sync_user_data(user_id, user_data)
                 except Exception as e:
                     print(f"[EXTRACTION_SERVICE] Errore sincronizzazione Supabase per {user_id}: {str(e)}")
+                
+                # Salva copia locale per debugging
+                self._save_debug_output(user_id, extracted_data, user_data)
                     
                 return True
                 
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nel salvataggio per utente {user_id}: {str(e)}")
             return False
+    
+    def _save_debug_output(self, user_id: str, extracted_data: Dict[str, Any], complete_user_data: Dict[str, Any]) -> None:
+        """
+        Salva una copia di debug dell'output DeepSeek nella cartella tests/deep_seek_out.
+        
+        Args:
+            user_id: ID dell'utente
+            extracted_data: Dati estratti da DeepSeek (solo ultima estrazione)
+            complete_user_data: Dati completi dell'utente (con merge)
+        """
+        try:
+            from datetime import datetime
+            
+            # Crea la directory di debug se non esiste
+            debug_dir = "tests/deep_seek_out"
+            os.makedirs(debug_dir, exist_ok=True)
+            
+            # Timestamp per il nome file
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            
+            # Salva l'ultima estrazione con timestamp
+            extraction_file = os.path.join(debug_dir, f"{user_id}_{timestamp}_extraction.json")
+            with open(extraction_file, 'w', encoding='utf-8') as f:
+                debug_data = {
+                    "timestamp": datetime.now().isoformat(),
+                    "user_id": user_id,
+                    "extraction_type": "single_extraction",
+                    "extracted_data": extracted_data
+                }
+                json.dump(debug_data, f, indent=2, ensure_ascii=False)
+            
+            # Salva anche una versione "latest" sovrascritta ogni volta
+            latest_file = os.path.join(debug_dir, f"{user_id}_latest_extraction.json")
+            with open(latest_file, 'w', encoding='utf-8') as f:
+                json.dump(debug_data, f, indent=2, ensure_ascii=False)
+            
+            # Salva i dati completi merged
+            complete_file = os.path.join(debug_dir, f"{user_id}_latest_complete.json")
+            with open(complete_file, 'w', encoding='utf-8') as f:
+                complete_debug_data = {
+                    "timestamp": datetime.now().isoformat(),
+                    "user_id": user_id,
+                    "extraction_type": "complete_merged",
+                    "nutritional_info_extracted": complete_user_data.get("nutritional_info_extracted", {})
+                }
+                json.dump(complete_debug_data, f, indent=2, ensure_ascii=False)
+            
+            print(f"[EXTRACTION_SERVICE] Debug output salvato in {debug_dir} per utente {user_id}")
+            
+        except Exception as e:
+            print(f"[EXTRACTION_SERVICE] Errore nel salvataggio debug per {user_id}: {str(e)}")
     
     def _merge_extracted_data(
         self, 
