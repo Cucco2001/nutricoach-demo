@@ -19,6 +19,13 @@ from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, CondPageBreak
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 
+# Importa la funzione per calcolare i sostituti automaticamente
+try:
+    from agent_tools.meal_optimization_tool import calculate_food_substitutes
+except ImportError:
+    print("[PDF_WARNING] Impossibile importare calculate_food_substitutes - i sostituti automatici non saranno disponibili")
+    calculate_food_substitutes = None
+
 
 class SmartDocTemplate(SimpleDocTemplate):
     """
@@ -220,6 +227,64 @@ class PDFGenerator:
         
         return cleaned_text if cleaned_text else 'N/A'
     
+    def _generate_substitutes_for_meal(self, meal_name: str, alimenti_dict: Dict[str, float], user_id: str = None) -> str:
+        """
+        Genera automaticamente i sostituti per gli alimenti di un pasto usando calculate_food_substitutes.
+        
+        Args:
+            meal_name: Nome del pasto (es. "colazione", "pranzo")
+            alimenti_dict: Dizionario {nome_alimento: quantita_g}
+            user_id: ID dell'utente per le esclusioni alimentari
+            
+        Returns:
+            Stringa formattata con i sostituti per tutti gli alimenti del pasto
+            
+        Examples:
+            Input: {"pane_integrale": 80, "prosciutto_crudo": 50}
+            Output: "80g di crackers o 85g di pan bauletto, 45g di bresaola o 50g di speck"
+        """
+        if not calculate_food_substitutes:
+            return "N/A"
+        
+        if not alimenti_dict:
+            return "N/A"
+        
+        try:
+            # Calcola i sostituti per tutti gli alimenti del pasto
+            substitutes_result = calculate_food_substitutes(alimenti_dict, meal_name, user_id)
+            
+            if not substitutes_result:
+                return "N/A"
+            
+            # Formatta i sostituti in una stringa leggibile
+            formatted_substitutes = []
+            
+            for alimento, substitutes in substitutes_result.items():
+                if not substitutes:
+                    continue
+                
+                # Crea la lista dei sostituti per questo alimento
+                substitute_texts = []
+                for substitute_name, substitute_data in substitutes.items():
+                    grams = substitute_data.get('grams', 0)
+                    if grams > 0:
+                        substitute_texts.append(f"{int(grams)}g di {substitute_name}")
+                
+                if substitute_texts:
+                    # Unisce i sostituti con " o " per lo stesso alimento
+                    substitute_string = " o ".join(substitute_texts)
+                    formatted_substitutes.append(substitute_string)
+            
+            if formatted_substitutes:
+                # Unisce i sostituti di alimenti diversi con ", "
+                return ", ".join(formatted_substitutes)
+            else:
+                return "N/A"
+                
+        except Exception as e:
+            print(f"[PDF_WARNING] Errore nella generazione automatica sostituti per {meal_name}: {str(e)}")
+            return "N/A"
+    
     def generate_nutritional_plan_pdf(self, user_id: str, user_info: Dict[str, Any]) -> bytes:
         """
         Genera un PDF completo del piano nutrizionale.
@@ -235,6 +300,9 @@ class PDFGenerator:
             ValueError: Se i dati nutrizionali non sono disponibili
             FileNotFoundError: Se il file utente non esiste
         """
+        # Salva l'user_id corrente per la generazione automatica dei sostituti
+        self._current_user_id = user_id
+        
         # Carica i dati nutrizionali
         extracted_data = self._load_user_nutritional_data(user_id)
         if not extracted_data:
@@ -279,6 +347,10 @@ class PDFGenerator:
         # Restituisci i bytes del PDF
         pdf_bytes = buffer.getvalue()
         buffer.close()
+        
+        # Pulisci l'user_id corrente
+        if hasattr(self, '_current_user_id'):
+            delattr(self, '_current_user_id')
         
         return pdf_bytes
     
@@ -804,6 +876,10 @@ class PDFGenerator:
             if "alimenti" in meal and meal["alimenti"]:
                 ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga', 'Sostituti Validi']]
                 
+                # Raccogli gli alimenti per generare sostituti automatici se necessario
+                meal_alimenti_dict = {}
+                has_missing_substitutes = False
+                
                 for alimento in meal["alimenti"]:
                     if not alimento:
                         continue
@@ -812,8 +888,38 @@ class PDFGenerator:
                     misura_raw = alimento.get('misura_casalinga', 'N/A')
                     misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
                     sostituti_raw = alimento.get('sostituti', 'N/A')
+                    
+                    # Se i sostituti non sono presenti, prepara per la generazione automatica
+                    if not sostituti_raw or sostituti_raw == 'N/A':
+                        has_missing_substitutes = True
+                        try:
+                            quantita_num = float(quantita) if quantita != 'N/A' else 0
+                            if quantita_num > 0:
+                                meal_alimenti_dict[nome] = quantita_num
+                        except (ValueError, TypeError):
+                            pass
+                    
                     sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
                     ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
+                
+                # Se ci sono sostituti mancanti, genera automaticamente per tutto il pasto
+                if has_missing_substitutes and meal_alimenti_dict:
+                    try:
+                        # Estrai l'user_id dal nome del file, se disponibile
+                        user_id = getattr(self, '_current_user_id', None)
+                        generated_substitutes = self._generate_substitutes_for_meal(nome_pasto, meal_alimenti_dict, user_id)
+                        
+                        # Aggiorna gli ingredienti che avevano sostituti mancanti
+                        if generated_substitutes and generated_substitutes != 'N/A':
+                            print(f"[PDF_SERVICE] Sostituti generati automaticamente per {nome_pasto}: {generated_substitutes}")
+                            
+                            # Sostituisci i 'N/A' dei sostituti con quelli generati per tutti gli alimenti del pasto
+                            for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
+                                if row[3] == 'N/A':  # Colonna sostituti
+                                    row[3] = generated_substitutes
+                                    
+                    except Exception as e:
+                        print(f"[PDF_WARNING] Errore nella generazione sostituti per {nome_pasto}: {str(e)}")
                 
                 if len(ingredients_data) > 1:
                     # Usa dimensioni compatte se ci sono più di 4 pasti
@@ -915,6 +1021,10 @@ class PDFGenerator:
         alimenti = meal_data["alimenti"]
         ingredients_data = [['Alimento', 'Quantità', 'Misura Casalinga', 'Sostituti Validi']]
         
+        # Raccogli gli alimenti per generare sostituti automatici se necessario
+        meal_alimenti_dict = {}
+        has_missing_substitutes = False
+        
         # Gestisce sia formato lista che formato dizionario
         if isinstance(alimenti, list):
             # Formato lista: [{"nome_alimento": "...", "quantita_g": ...}]
@@ -926,14 +1036,46 @@ class PDFGenerator:
                 misura_raw = alimento.get('misura_casalinga', 'N/A')
                 misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
                 sostituti_raw = alimento.get('sostituti', 'N/A')
+                
+                # Se i sostituti non sono presenti, prepara per la generazione automatica
+                if not sostituti_raw or sostituti_raw == 'N/A':
+                    has_missing_substitutes = True
+                    try:
+                        quantita_num = float(quantita) if quantita != 'N/A' else 0
+                        if quantita_num > 0:
+                            meal_alimenti_dict[nome] = quantita_num
+                    except (ValueError, TypeError):
+                        pass
+                
                 sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
                 ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
         
         elif isinstance(alimenti, dict):
             # Formato dizionario: {"alimento": quantita}
+            has_missing_substitutes = True  # I dizionari non hanno sostituti preimpostati
             for nome_alimento, quantita in alimenti.items():
                 if quantita and quantita > 0:
+                    meal_alimenti_dict[nome_alimento] = float(quantita)
                     ingredients_data.append([nome_alimento, f"{quantita}g", "N/A", "N/A"])
+        
+        # Se ci sono sostituti mancanti, genera automaticamente per tutto il pasto
+        if has_missing_substitutes and meal_alimenti_dict:
+            try:
+                # Estrai l'user_id dal nome del file, se disponibile
+                user_id = getattr(self, '_current_user_id', None)
+                generated_substitutes = self._generate_substitutes_for_meal(meal_name, meal_alimenti_dict, user_id)
+                
+                # Aggiorna gli ingredienti che avevano sostituti mancanti
+                if generated_substitutes and generated_substitutes != 'N/A':
+                    print(f"[PDF_SERVICE] Sostituti generati automaticamente per {meal_name}: {generated_substitutes}")
+                    
+                    # Sostituisci i 'N/A' dei sostituti con quelli generati per tutti gli alimenti del pasto
+                    for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
+                        if row[3] == 'N/A':  # Colonna sostituti
+                            row[3] = generated_substitutes
+                            
+            except Exception as e:
+                print(f"[PDF_WARNING] Errore nella generazione sostituti per {meal_name}: {str(e)}")
         
         # Se ci sono ingredienti, crea la tabella
         if len(ingredients_data) > 1:
