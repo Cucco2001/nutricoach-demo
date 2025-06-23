@@ -106,7 +106,7 @@ class PreferencesUI:
         Args:
             food_type: Tipo di alimento ("excluded" o "preferred")
         """
-        label = "Inserisci un alimento da escludere" if food_type == "excluded" else "Inserisci un alimento preferito"
+        label = "Inserisci un alimento da escludere (1 alla volta)" if food_type == "excluded" else "Inserisci un alimento preferito (1 alla volta)"
         
         # Utilizzo un form che si resetta automaticamente dopo il submit
         with st.form(key=f"add_{food_type}_form", clear_on_submit=True):
