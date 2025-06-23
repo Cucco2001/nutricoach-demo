@@ -231,11 +231,14 @@ class NutriDB:
             "lattuga": "insalata",
             "rucola": "insalata",
             "latte mandorla": "latte_scremato",
-            "orata": "pesce_spada",       ################
-            "gamberi": "pesce_spada",     ################
-            "spigola": "pesce_spada",     ################
-            "merluzzo": "pesce_spada",    ################
-            "funghi":"verdure_miste",     ################
+            "pesce": "pesce_spada",    
+            "gambero": "gamberi",    
+            "gamberetti": "gamberi",
+            "nasello": "merluzzo",  
+            "funghetti":"funghi",     
+            "funghi secchi": "funghi",
+            "porcini": "funghi",
+            "funghi porcini": "funghi",
             "fetta biscottata": "fette_biscottate",
             "cracker integrali": "cracker_integrali",
             "crackers integrali": "cracker_integrali",

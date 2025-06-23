@@ -638,6 +638,50 @@
     "nova_group": 1,
     "categoria": "proteine_animali"
   },
+  "merluzzo": {
+    "energia_kcal": 71,
+    "proteine_g": 17,
+    "carboidrati_g": 0.0,
+    "zuccheri_g": 0.0,
+    "grassi_g": 0.3,
+    "grassi_saturi_g": 0.1,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "proteine_animali"
+  },
+  "spigola": {
+    "energia_kcal": 82,
+    "proteine_g": 16.5,
+    "carboidrati_g": 0.6,
+    "zuccheri_g": 0.0,
+    "grassi_g": 1.5,
+    "grassi_saturi_g": 0.5,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "proteine_animali"
+  },
+  "gamberi": {
+    "energia_kcal": 71,
+    "proteine_g": 13.6,
+    "carboidrati_g": 2.9,
+    "zuccheri_g": 0.0,
+    "grassi_g": 0.6,
+    "grassi_saturi_g": 0.1,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "proteine_animali"
+  },
+  "orata": {
+    "energia_kcal": 121,
+    "proteine_g": 20.7,
+    "carboidrati_g": 1,
+    "zuccheri_g": 0.0,
+    "grassi_g": 3.8,
+    "grassi_saturi_g": 1.1,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "proteine_animali"
+  },
   "salmone_affumicato": {
     "energia_kcal": 147,
     "proteine_g": 25.4,
@@ -679,6 +723,17 @@
     "grassi_g": 0.2,
     "grassi_saturi_g": 0.1,
     "fibra_g": 2.4,
+    "nova_group": 1,
+    "categoria": "verdure"
+  },
+  "funghi": {
+    "energia_kcal": 46,
+    "proteine_g": 7,
+    "carboidrati_g": 1.5,
+    "zuccheri_g": 1.5,
+    "grassi_g": 0.4,
+    "grassi_saturi_g": 0.1,
+    "fibra_g": 4.3,
     "nova_group": 1,
     "categoria": "verdure"
   },
