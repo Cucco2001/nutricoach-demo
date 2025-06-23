@@ -198,17 +198,17 @@ class PDFGenerator:
     
     def _clean_sostituti(self, sostituti_text: str) -> str:
         """
-        Rimuove tutto il contenuto tra parentesi dai sostituti alimentari.
+        Rimuove tutto il contenuto tra parentesi dai sostituti alimentari e accorcia i nomi.
         
         Args:
             sostituti_text: Testo dei sostituti alimentari
             
         Returns:
-            Testo pulito senza contenuto tra parentesi
+            Testo pulito senza contenuto tra parentesi e con nomi accorciati
             
         Examples:
             "100g di riso basmati (integrale), 90g di pasta (di grano duro)" → "100g di riso basmati, 90g di pasta"
-            "80g di pollo (petto), 70g di tacchino (fesa)" → "80g di pollo, 70g di tacchino"
+            "80g di yogurt_greco (intero), 70g di latte_parzialmente_scremato" → "80g di yogurt_gr, 70g di latte_prz_scremato"
             "N/A" → "N/A"
         """
         if not sostituti_text or sostituti_text == 'N/A':
@@ -225,7 +225,42 @@ class PDFGenerator:
         # Pulisce spazi prima delle virgole
         cleaned_text = re.sub(r'\s+,', ',', cleaned_text)
         
+        # Accorcia i nomi degli alimenti nei sostituti esistenti
+        if cleaned_text and cleaned_text != 'N/A':
+            cleaned_text = cleaned_text.replace("parzialmente", "prz")
+            cleaned_text = cleaned_text.replace("integrale", "intgrl")
+            cleaned_text = cleaned_text.replace("intero", "int")
+            cleaned_text = cleaned_text.replace("greco", "gr")
+        
         return cleaned_text if cleaned_text else 'N/A'
+    
+    def _shorten_food_names_for_pdf(self, food_name: str) -> str:
+        """
+        Accorcia i nomi degli alimenti per la sezione sostituti del PDF per risparmiare spazio.
+        
+        Args:
+            food_name: Nome completo dell'alimento
+            
+        Returns:
+            Nome accorciato dell'alimento
+            
+        Examples:
+            "yogurt_greco" → "yogurt_gr"
+            "latte_parzialmente_scremato" → "latte_prz_scremato"
+            "pane_integrale" → "pane_int"
+        """
+        if not food_name:
+            return food_name
+        
+        # Sostituzioni per accorciare i nomi
+        shortened = food_name
+        shortened = shortened.replace("parzialmente", "prz")
+        shortened = shortened.replace("integrale", "intgrl")
+        shortened = shortened.replace("intero", "int")
+        shortened = shortened.replace("greco", "gr")
+        shortened = shortened.replace("hero", "")
+        
+        return shortened
     
     def _generate_substitutes_for_meal(self, meal_name: str, alimenti_dict: Dict[str, float], user_id: str = None) -> str:
         """
@@ -268,7 +303,9 @@ class PDFGenerator:
                 for substitute_name, substitute_data in substitutes.items():
                     grams = substitute_data.get('grams', 0)
                     if grams > 0:
-                        substitute_texts.append(f"{int(grams)}g di {substitute_name}")
+                        # Accorcia il nome dell'alimento sostituto per risparmiare spazio
+                        short_name = self._shorten_food_names_for_pdf(substitute_name)
+                        substitute_texts.append(f"{int(grams)}g di {short_name}")
                 
                 if substitute_texts:
                     # Unisce i sostituti con " o " per lo stesso alimento
