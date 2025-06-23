@@ -263,13 +263,17 @@ available_tools = [
         "type": "function",
         "function": {
             "name": "generate_6_additional_days",
-            "description": "Genera automaticamente 6 giorni aggiuntivi di dieta (giorni 2-7) mantenendo la struttura e i target nutrizionali del giorno 1. Utilizza il sistema di selezione automatica delle diete basato sui macronutrienti dell'utente e applica ottimizzazione delle porzioni per ogni pasto.",
+            "description": "Genera automaticamente giorni aggiuntivi di dieta mantenendo la struttura e i target nutrizionali del giorno 1. Se day_range non è specificato, genera tutti i 6 giorni (2-7). Se day_range è specificato, genera solo i giorni richiesti. Utilizza il sistema di selezione automatica delle diete basato sui macronutrienti dell'utente e applica ottimizzazione delle porzioni per ogni pasto. Non include sostituti nell'output finale.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "user_id": {
                         "type": "string",
                         "description": "ID dell'utente (opzionale, usa l'utente corrente se non specificato)"
+                    },
+                    "day_range": {
+                        "type": "string",
+                        "description": "Range di giorni da generare (opzionale). Formati supportati: '2-4' (range), '3,5,7' (lista), '2' (singolo giorno), '2,4-6' (misto). Solo giorni 2-7 sono validi."
                     }
                 },
                 "required": []
@@ -338,6 +342,7 @@ LINEE GUIDA FONDAMENTALI PER LA REALIZZAZIONE E MODIFICA DEI PASTI:
     - Considera la **gastronomia mediterranea o internazionale** per abbinamenti credibili.
     - Considera le preferenze espresse dall'utente nel scegliere gli alimenti.
     - Non ripetere MAI lo stesso cibo all'interno della stessa giornata
+    - Non usare troppi cibi per pasto, ma cerca di utilizzare 3 o max 4 ingredienti per pasto.
   
 2. OTTIMIZZAZIONE PORZIONI: Utilizza SEMPRE il tool optimize_meal_portions per ottenere porzioni degli alimenti che rispettino i target nutrizionali.
    ```
@@ -641,11 +646,12 @@ Se utente chiede di modificare un pasto, usa sempre il tool optimize_meal_portio
 
 1. Per ogni creazione o modifica di un pasto:
    a) SELEZIONE ALIMENTI: Seleziona SEMPRE alimenti specifici in base alle seguenti linee guida:
-        - Assicurati SEMPRE che vi siano fonti di proteine, carboidrati e grassi, ma FAI ATTENZIONE nella scelta degli alimenti in base ai target specifici del pasto:
+        - Assicurati SEMPRE che vi siano fonti di proteine, carboidrati e grassi, ma FAI ATTENZIONE nella scelta degli alimenti in base ai target specifici del pasto
         - Considera la **gastronomia mediterranea o internazionale** per abbinamenti credibili
         - Considera le preferenze espresse dall'utente nel scegliere gli alimenti.
         - Non ripetere MAI lo stesso cibo all'interno della stessa giornata
         - Usa nomi standard di cibi (NON ricotta di vacca magra, MA ricotta)
+        - Non usare troppi cibi per pasto, ma cerca di utilizzare 3 o max 4 ingredienti per pasto.
 
    b) OTTIMIZZAZIONE PORZIONI: Usa SEMPRE il tool optimize_meal_portions per ottenere delle prime porzioni degli alimenti:
         - Se il tool optimize_meal_portions non trova un cibo, INTERNAMENTE cambia la scelta di cibo senza informare l'utente e chiama nuovamente il tool optimize_meal_portions senza informare l'utente del disguido
@@ -693,13 +699,16 @@ FASE 6 - CONTROLLO ALIMENTI ULTRAPROCESSATI
 FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA 
 
 1. **Generazione automatica dei giorni 2-7**:
-   - Usa il tool generate_6_additional_days per generare automaticamente 6 giorni aggiuntivi di dieta in base alla struttura e ai target nutrizionali del giorno 1
+   - Usa il tool generate_6_additional_days per generare automaticamente i 6 giorni aggiuntivi di dieta in base alla struttura e ai target nutrizionali del giorno 1 nel seguente modo:  
+        * Genera prima i giorni 2-4, poi i giorni 5-7.
+            * Usa il parametro day_range per generare solo specifici giorni (day_range="2,3,4" o day_range="5,6,7")
+            * Non mostrare i sostituti nell'output finale, dei giorni aggiuntivi e SPECIFICA CHE I SOSTITUTI SARANNO PRESENTI NEL PDF FINALE
 
 2. **Adattamento alle preferenze e intolleranze dell'utente**:
    - Confronta TUTTI gli alimenti generati con le intolleranze/allergie e con le preferenze dichiarate dall'utente
    - Se trovi alimenti non compatibili:
-     * Identifica sostituzioni fornite da generate_6_additional_days
-     * Sostituisci i cibi non compatibili con i cibi sostitutivi
+     * Sostituisci i cibi problematici con alternative appropriate della stessa categoria alimentare
+     * Mantieni la stessa struttura nutrizionale del pasto originale
      * NON INFORMARE l'utente di queste sostituzioni, FALLO E BASTA
 
 3. **Presentazione finale al cliente**:
@@ -709,7 +718,6 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
    - Includi per ogni giorno:
      * Tutti i pasti con alimenti e porzioni in grammi che sono stati scelti nel punto 2
      * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
-     * I sostituti che sono stati calcolati
    - Alla fine, riassumi le caratteristiche nutrizionali della settimana
 
 **FORMATO OBBLIGATORIO PER LA PRESENTAZIONE:**
@@ -720,26 +728,26 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 🗓️ **GIORNO 1 - LUNEDÌ**
 
 🌅 **COLAZIONE** 
-• **Alimento_1**: Xg → 🥄 misura_casalinga (Sostituti: xxx, xxx)
-• **Alimento_2**: Xg → 🥛 misura_casalinga (Sostituti: xxx, xxx) 
+• **Alimento_1**: Xg → 🥄 misura_casalinga 
+• **Alimento_2**: Xg → 🥛 misura_casalinga  
 • **Alimento_3**: Xg → 🍌 misura_casalinga 
-• **Alimento_4**: Xg → 🥜 misura_casalinga (Sostituti: xxx, xxx) 
+• **Alimento_4**: Xg → 🥜 misura_casalinga 
 
 🍽️ **PRANZO** 
 • **Alimento_1**: Xg → 🍚 misura_casalinga 
-• **Alimento_2**: Xg → 🍗 misura_casalinga (Sostituti: xxx, xxx)
+• **Alimento_2**: Xg → 🍗 misura_casalinga 
 • **Alimento_3**: Xg → 🥒 misura_casalinga 
-• **Alimento_4**: Xg → 🫒 misura_casalinga (Sostituti: xxx, xxx)
+• **Alimento_4**: Xg → 🫒 misura_casalinga 
 
 🥨 **SPUNTINO POMERIDIANO** 
-• **Alimento_1**: Xg → 🥛 misura_casalinga (Sostituti: xxx, xxx)
-• **Alimento_2**: Xg → 🫐 misura_casalinga (Sostituti: xxx, xxx)
+• **Alimento_1**: Xg → 🥛 misura_casalinga 
+• **Alimento_2**: Xg → 🫐 misura_casalinga 
 
 🌙 **CENA** 
-• **Alimento_1**: Xg → 🐟 misura_casalinga (Sostituti: xxx, xxx)
+• **Alimento_1**: Xg → 🐟 misura_casalinga 
 • **Alimento_2**: Xg → 🥔 misura_casalinga 
-• **Alimento_3**: Xg → 🥬 misura_casalinga (Sostituti: xxx, xxx)
-• **Alimento_4**: Xg → 🫒 misura_casalinga (Sostituti: xxx, xxx)
+• **Alimento_3**: Xg → 🥬 misura_casalinga 
+• **Alimento_4**: Xg → 🫒 misura_casalinga 
 
 ---
 **ESEMPI DI MISURE CASALINGHE DA USARE:**
@@ -754,7 +762,7 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 - Formaggi: "1 fetta" (20g), "3 cubetti" (30g) 
 ```
 
-**REGOLE DI FORMATTAZIONE:**
+**REGOLE FONDAMENTALI DI FORMATTAZIONE:**
 
 - **A CAPO DOPO OGNI PASTO**: Ogni nome del pasto (🌅 **COLAZIONE**, 🍽️ **PRANZO**, etc.) DEVE essere seguito da un cibo A CAPO
 - **A CAPO TRA OGNI ALIMENTO**: Ogni alimento DEVE essere su una riga diversa rispetto al successivo
@@ -762,8 +770,8 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 **FORMATO ESATTO**: 
    ```
    🌅 **COLAZIONE** 
-   • **Nome_Alimento**: Xg → 🥄 misura_casalinga (Sostituti: xxx, xxx)
-   • **Nome_Alimento**: Xg → 🥛 misura_casalinga (Sostituti: xxx, xxx)
+   • **Nome_Alimento**: Xg → 🥄 misura_casalinga 
+   • **Nome_Alimento**: Xg → 🥛 misura_casalinga 
    ```
 4. **MAI**: Alimenti sulla stessa riga
 
@@ -771,7 +779,7 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 - Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
 - Devi SEMPRE generare TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7, SENZA APPROSSIMARE NESSUN GIORNO
 - DEVI SEMPRE mostrare all'utente prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
-
+- Specifica che i sostituti saranno presenti nel PDF finale
 """
 
 
@@ -861,15 +869,16 @@ FASE 5: Creazione e modifica dei singoli pasti
 - Utilizza SEMPRE il tool optimize_meal_portions per ottenere porzioni e ricontrollale e espandile in grammi e misure casalinghe
 - Inserisci i sostituti SOLO SE optimize_meal_portions li restituisce
 - Includi metodi di preparazione per ogni pasto
+- Non usare troppi cibi per pasto, ma cerca di utilizzare 3 o max 4 ingredienti per pasto.
 
 FASE 6: Controllo ultraprocessati
 - Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
 
 FASE 7: Generazione dieta settimanale completa
-- Usa il tool generate_6_additional_days per generare 6 giorni aggiuntivi di dieta (giorni 2-7)
+- Usa il tool generate_6_additional_days per generare giorni aggiuntivi di dieta (specificando i giorni da generare)
 - Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
 - Presenta la dieta settimanale COMPLETA (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
-  * Alimenti con grammature precise + misure casalinghe intuitive + sostituti 
+  * Alimenti con grammature precise + misure casalinghe intuitive 
   * Separatori chiari tra i giorni
   * TUTTI I GIORNI MOSTRATI in output, SENZA APPROSSIMARE NESSUN GIORNO
   * Genera prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
@@ -903,7 +912,7 @@ def get_follow_up_prompt(phase: str, context: str = ""):
         "FASE_4": "Procedi con la distribuzione delle calorie e dei macronutrienti tra i pasti.",
         "FASE_5": "Continua con la creazione dei singoli pasti.",
         "FASE_6": "Continua con il controllo vitaminico e degli ultraprocessati.",
-        "FASE_7": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
+        "FASE_7": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days (con day_range opzionale se necessario) e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
     }
     
     prompt = base_prompts.get(phase, "Continua con la fase successiva del piano nutrizionale.")

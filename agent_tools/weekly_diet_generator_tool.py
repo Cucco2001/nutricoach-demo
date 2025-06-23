@@ -18,6 +18,89 @@ def normalize_meal_name(name):
     return name.lower().strip().replace(" ", "_").replace("-", "_")
 
 
+def parse_day_range(day_range_str: str) -> List[int]:
+    """
+    Parsa una stringa di range giorni e restituisce una lista di numeri di giorni validi.
+    
+    FORMATI SUPPORTATI:
+    - Range: "2-4" → [2, 3, 4]
+    - Lista: "3,5,7" → [3, 5, 7] 
+    - Singolo: "2" → [2]
+    - Mix: "2,4-6" → [2, 4, 5, 6]
+    
+    VALIDAZIONE:
+    - Solo giorni nel range 2-7 (il giorno 1 è già presente)
+    - Rimuove duplicati e ordina
+    - Solleva ValueError per input non validi
+    
+    Args:
+        day_range_str: Stringa che specifica i giorni da generare
+        
+    Returns:
+        Lista ordinata di numeri di giorni validi (2-7)
+        
+    Raises:
+        ValueError: Se il formato è invalido o contiene giorni fuori range
+        
+    Examples:
+        >>> parse_day_range("2-4")
+        [2, 3, 4]
+        >>> parse_day_range("3,5,7")
+        [3, 5, 7]
+        >>> parse_day_range("2,4-6")
+        [2, 4, 5, 6]
+    """
+    if not day_range_str or not isinstance(day_range_str, str):
+        raise ValueError("day_range deve essere una stringa non vuota")
+    
+    try:
+        days = set()  # Usa set per evitare duplicati
+        
+        # Dividi per virgole per gestire liste
+        parts = [part.strip() for part in day_range_str.split(',')]
+        
+        for part in parts:
+            if '-' in part:
+                # Gestisci range (es. "2-4")
+                range_parts = part.split('-')
+                if len(range_parts) != 2:
+                    raise ValueError(f"Range invalido: '{part}'. Usa formato 'start-end'")
+                
+                start = int(range_parts[0].strip())
+                end = int(range_parts[1].strip())
+                
+                if start > end:
+                    raise ValueError(f"Range invalido: '{part}'. Start deve essere <= end")
+                
+                days.update(range(start, end + 1))
+            else:
+                # Gestisci numero singolo
+                day = int(part.strip())
+                days.add(day)
+        
+        # Valida che tutti i giorni siano nel range 2-7
+        valid_days = []
+        for day in days:
+            if not (2 <= day <= 7):
+                raise ValueError(f"Giorno {day} fuori range. Giorni validi: 2-7")
+            valid_days.append(day)
+        
+        # Ordina e restituisci
+        valid_days.sort()
+        
+        if not valid_days:
+            raise ValueError("Nessun giorno valido trovato")
+        
+        logger.info(f"Range giorni parsato: '{day_range_str}' → {valid_days}")
+        return valid_days
+        
+    except ValueError as ve:
+        # Re-raise ValueError con messaggio originale
+        raise ve
+    except Exception as e:
+        raise ValueError(f"Errore nel parsing range '{day_range_str}': {str(e)}")
+
+
 def get_canonical_meal_name(meal_name: str) -> str:
     """
     Converte un nome di pasto in forma canonica usando lo stesso mapping del meal_optimization_tool.
@@ -460,7 +543,7 @@ def apply_special_rules_for_days_357(days_dict: Dict[str, Dict[str, List[str]]],
     return days_dict
 
 
-def optimize_day_portions(day_meals: Dict[str, List[str]], user_id: str) -> Dict[str, Any]:
+def optimize_day_portions(day_meals: Dict[str, List[str]], user_id: str, include_substitutes: bool = True) -> Dict[str, Any]:
     """Ottimizza le porzioni per tutti i pasti di un giorno."""
     optimized_day = {}
     
@@ -472,14 +555,19 @@ def optimize_day_portions(day_meals: Dict[str, List[str]], user_id: str) -> Dict
             optimization_result = optimize_meal_portions(meal_name, food_list, user_id)
             
             if optimization_result.get("success", False):
-                optimized_day[meal_name] = {
+                meal_data = {
                     "alimenti": optimization_result.get("portions", {}),
                     "target_nutrients": optimization_result.get("target_nutrients", {}),
                     "actual_nutrients": optimization_result.get("actual_nutrients", {}),
                     "macro_single_foods": optimization_result.get("macro_single_foods", {}),
-                    "optimization_summary": optimization_result.get("optimization_summary", ""),
-                    "substitutes": optimization_result.get("substitutes", {})
+                    "optimization_summary": optimization_result.get("optimization_summary", "")
                 }
+                
+                # Includi i sostituti solo se richiesto
+                if include_substitutes:
+                    meal_data["substitutes"] = optimization_result.get("substitutes", {})
+                
+                optimized_day[meal_name] = meal_data
                 logger.info(f"Ottimizzato con successo {meal_name}")
             else:
                 error_msg = optimization_result.get("error_message", "Errore sconosciuto")
@@ -499,16 +587,21 @@ def optimize_day_portions(day_meals: Dict[str, List[str]], user_id: str) -> Dict
     return optimized_day
 
 
-def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
+def generate_6_additional_days(user_id: Optional[str] = None, day_range: Optional[str] = None) -> Dict[str, Any]:
     """
-    Genera automaticamente 6 giorni aggiuntivi di dieta (giorni 2-7) per l'utente.
+    Genera automaticamente giorni aggiuntivi di dieta per l'utente.
+    
+    Se day_range non è specificato, genera tutti i 6 giorni (giorni 2-7).
+    Se day_range è specificato, genera solo i giorni richiesti (es. "2-4" per giorni 2,3,4).
     
     PIPELINE COMPLETA:
     1. Estrae la struttura dei pasti del giorno 1 dell'utente
-    2. Carica i 6 giorni predefiniti dal file JSON
-    3. Adatta ogni giorno predefinito alla struttura del giorno 1
-    4. Applica regole speciali per giorni 3, 5, 7 (copia colazione e spuntini dal giorno 1)
-    5. Ottimizza le porzioni di ogni pasto per ogni giorno
+    2. Parsa il range giorni richiesto (se specificato)
+    3. Carica i 6 giorni predefiniti dal file JSON
+    4. Adatta ogni giorno predefinito alla struttura del giorno 1
+    5. Applica regole speciali per giorni 3, 5, 7 (copia colazione e spuntini dal giorno 1)
+    6. Ottimizza le porzioni di ogni pasto per ogni giorno
+    7. Include nei risultati finali solo i giorni richiesti
     
     STRUTTURA INPUT UTENTE (esempio):
     user_data/user_{user_id}.json → nutritional_info_extracted → registered_meals
@@ -581,24 +674,39 @@ def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
     
     Args:
         user_id: ID dell'utente (opzionale, usa get_user_id() se None)
+        day_range: Range giorni da generare (opzionale, tutti i giorni 2-7 se None)
+                  Formati supportati: "2-4", "3,5,7", "2", "2,4-6"
         
     Returns:
         Dict con i giorni generati e metadati del processo
         
     Raises:
-        ValueError: Se impossibile estrarre struttura giorno 1
+        ValueError: Se impossibile estrarre struttura giorno 1 o day_range invalido
         Exception: Se errori durante il processo di generazione
         
     Examples:
         >>> result = generate_6_additional_days("1749309652")
         >>> print(f"Giorni generati: {result['giorni_totali']}")
         >>> print(f"Pasti nel giorno 2: {len(result['giorni_generati']['giorno_2'])}")
+        
+        >>> result = generate_6_additional_days("1749309652", "2-4")
+        >>> print(f"Giorni richiesti: 2-4")
+        >>> print(f"Giorni generati: {list(result['giorni_generati'].keys())}")
+        
+        >>> result = generate_6_additional_days("1749309652", "3,5,7")
+        >>> print(f"Solo giorni dispari: {list(result['giorni_generati'].keys())}")
     """
     try:
         if user_id is None:
             user_id = get_user_id()
         
-        logger.info(f"Avvio generazione 6 giorni aggiuntivi per utente {user_id}")
+        # Parsa il range giorni richiesto
+        if day_range is not None:
+            requested_days = parse_day_range(day_range)
+            logger.info(f"Avvio generazione giorni {requested_days} per utente {user_id} (range: '{day_range}')")
+        else:
+            requested_days = None  # None significa tutti i giorni
+            logger.info(f"Avvio generazione 6 giorni aggiuntivi per utente {user_id} (comportamento standard)")
         
         predefined_days = load_predefined_days(user_id)
         logger.info("Caricati giorni predefiniti")
@@ -618,8 +726,16 @@ def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
         
         final_days = {}
         for day_key, day_meals in adapted_days.items():
+            # Estrai il numero del giorno dalla chiave (es. "giorno_2" → 2)
+            day_number = int(day_key.split("_")[1])
+            
+            # Se è specificato un range, controlla se questo giorno è incluso
+            if requested_days is not None and day_number not in requested_days:
+                logger.info(f"Saltato {day_key} (non nel range richiesto)")
+                continue
+            
             logger.info(f"Ottimizzazione {day_key}...")
-            final_days[day_key] = optimize_day_portions(day_meals, user_id)
+            final_days[day_key] = optimize_day_portions(day_meals, user_id, include_substitutes=False)
         
         logger.info("Generazione completata con successo")
         
@@ -630,8 +746,10 @@ def generate_6_additional_days(user_id: Optional[str] = None) -> Dict[str, Any]:
             "giorni_generati": final_days,
             "user_id": user_id,
             "giorni_totali": len(final_days),
+            "day_range_requested": day_range,
+            "requested_days": requested_days,
             "generation_timestamp": time.time(),
-            "summary": f"Generati con successo {len(final_days)} giorni aggiuntivi di dieta"
+            "summary": f"Generati con successo {len(final_days)} giorni{f' (range: {day_range})' if day_range else ' aggiuntivi'} di dieta"
         }
         
         return result
