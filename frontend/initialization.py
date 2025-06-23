@@ -81,6 +81,11 @@ def initialize_app():
             user_data_manager=st.session_state.user_data_manager
         )
 
+    # === INIZIALIZZAZIONE SERVIZIO SUPABASE ===
+    if "supabase_service" not in st.session_state:
+        from services.supabase_service import SupabaseUserService
+        st.session_state.supabase_service = SupabaseUserService()
+
     # === VARIABILI PER GESTIONE AGENTE IN BACKGROUND ===
     if "agent_generating" not in st.session_state:
         st.session_state.agent_generating = False

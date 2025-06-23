@@ -425,19 +425,31 @@ class SupabaseUserService:
 def get_supabase_service() -> SupabaseUserService:
     """
     Ottiene un'istanza del servizio Supabase, utilizzando il caching di Streamlit.
+    Gestisce anche i casi in cui session_state non è disponibile.
     
     Returns:
         SupabaseUserService: Istanza del servizio
     """
-    if "supabase_service" not in st.session_state:
-        st.session_state.supabase_service = SupabaseUserService()
-    
-    return st.session_state.supabase_service
+    try:
+        # Verifica se siamo in un contesto Streamlit valido
+        if hasattr(st, 'session_state') and st.session_state is not None:
+            if "supabase_service" not in st.session_state:
+                st.session_state.supabase_service = SupabaseUserService()
+            return st.session_state.supabase_service
+        else:
+            # Fallback: crea una nuova istanza senza caching
+            logger.warning("⚠️ session_state non disponibile, creando istanza temporanea SupabaseService")
+            return SupabaseUserService()
+    except Exception as e:
+        # Fallback di sicurezza: crea sempre una nuova istanza
+        logger.warning(f"⚠️ Errore nell'accesso a session_state: {str(e)}, creando istanza temporanea")
+        return SupabaseUserService()
 
 
 def auto_sync_user_data(user_id: str, user_data: Dict[str, Any]) -> None:
     """
     Sincronizza automaticamente i dati di un utente su Supabase quando vengono modificati.
+    Funzione robusta che gestisce tutti i possibili errori senza interrompere l'applicazione.
     
     Args:
         user_id: ID dell'utente
@@ -445,9 +457,15 @@ def auto_sync_user_data(user_id: str, user_data: Dict[str, Any]) -> None:
     """
     try:
         supabase_service = get_supabase_service()
-        if supabase_service.is_available():
-            supabase_service.sync_user_data_to_supabase(user_id, user_data)
+        if supabase_service and supabase_service.is_available():
+            success = supabase_service.sync_user_data_to_supabase(user_id, user_data)
+            if success:
+                logger.debug(f"✅ Auto-sync completato per {user_id}")
+            else:
+                logger.warning(f"⚠️ Auto-sync fallito per {user_id}, ma dati salvati localmente")
         else:
-            logger.warning(f"⚠️ Auto-sync disabilitato per {user_id}: Supabase non disponibile")
+            logger.debug(f"📴 Auto-sync saltato per {user_id}: Supabase non disponibile")
     except Exception as e:
-        logger.error(f"❌ Errore durante auto-sync per {user_id}: {str(e)}") 
+        # Log dell'errore ma non interrompere l'applicazione
+        logger.error(f"❌ Errore durante auto-sync per {user_id}: {str(e)}")
+        logger.debug(f"💾 Dati dell'utente {user_id} comunque salvati localmente") 
