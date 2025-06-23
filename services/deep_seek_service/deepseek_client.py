@@ -146,7 +146,7 @@ class DeepSeekClient:
         obiettivo = user_info.get('obiettivo', 'N/A')
         
         prompt = """
-Stai per analizzare una singola interazione alla volta, parte di una conversazione più ampia tra un nutrizionista AI e un utente.
+Stai per analizzare una singola o più interazioni, parte di una conversazione più ampia tra un nutrizionista AI e un utente.
 Il tuo compito è quello di estrarre solamente i dati nutrizionali calcolati o forniti in questa specifica interazione, senza cercare di completare o immaginare dati mancanti e senza restituire l'intero schema JSON completo.
 
 Se nell'interazione sono presenti uno o più dei seguenti campi, restituiscili nel formato JSON riportato sotto, includendo solo i campi effettivamente rilevati.
@@ -302,9 +302,8 @@ MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
 
 REGOLE FONDAMENTALI PER GLI AGGIORNAMENTI - MOLTO IMPORTANTE:
 - **NON AZZERARE MAI CAMPI CHE NON SONO MENZIONATI NELLA CONVERSAZIONE CORRENTE**
-- **ESTRAI E AGGIORNA SOLO I CAMPI EFFETTIVAMENTE DISCUSSI NELL'ULTIMA CONVERSAZIONE**
+- **ESTRAI E AGGIORNA SOLO I CAMPI EFFETTIVAMENTE DISCUSSI NELLE INTERAZIONI CORRENTI**
 - **NON INSERIRE MAI 0 COME VALORE PREDEFINITO**: Se un valore non è presente, OMETTI il campo
-- **PER I VALORI NUMERICI**: Inserisci solo i valori esplicitamente menzionati o calcolabili dalla conversazione
 - Se nella conversazione si parla solo di "caloric_needs", NON restituire campi vuoti per "macros_total", "registered_meals", etc.
 - Se si modifica solo un pasto specifico, usa "weekly_diet_partial" e NON modificare altri pasti
 - Se si aggiorna solo la distribuzione calorica, NON azzerare i pasti registrati
@@ -316,7 +315,6 @@ ALTRE REGOLE:
 - Se un dato non è presente nella conversazione corrente, ometti completamente quella sezione
 - I numeri devono essere numerici, non stringhe
 - Cerca con attenzione i calcoli numerici nella conversazione
-- La sezione "weekly_diet" è OPZIONALE: includila solo se presente nella conversazione
 - **RICORDA**: È meglio restituire meno campi (solo quelli discussi) che restituire campi vuoti o azzerati
 """
         
