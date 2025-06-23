@@ -198,7 +198,7 @@ class NutritionalDataExtractor:
     
     def _save_debug_output(self, user_id: str, extracted_data: Dict[str, Any], complete_user_data: Dict[str, Any]) -> None:
         """
-        Salva una copia di debug dell'output DeepSeek nella cartella tests/deep_seek_out.
+        Salva un singolo file di debug completo con conversazione ed estrazione.
         
         Args:
             user_id: ID dell'utente
@@ -212,39 +212,112 @@ class NutritionalDataExtractor:
             debug_dir = "tests/deep_seek_out"
             os.makedirs(debug_dir, exist_ok=True)
             
+         
+            
             # Timestamp per il nome file
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             
-            # Salva l'ultima estrazione con timestamp
-            extraction_file = os.path.join(debug_dir, f"{user_id}_{timestamp}_extraction.json")
-            with open(extraction_file, 'w', encoding='utf-8') as f:
-                debug_data = {
-                    "timestamp": datetime.now().isoformat(),
-                    "user_id": user_id,
-                    "extraction_type": "single_extraction",
-                    "extracted_data": extracted_data
+            # Salva un singolo file completo con conversazione + estrazione
+            debug_file = os.path.join(debug_dir, f"{user_id}_{timestamp}_debug_completo.json")
+            
+            # Carica la conversazione recente se disponibile
+            conversation_data = self._load_recent_conversation_data(user_id)
+            
+            debug_data = {
+                "timestamp": datetime.now().isoformat(),
+                "user_id": user_id,
+                "debug_type": "conversazione_completa_con_estrazione",
+                
+                # Sezione conversazione
+                "conversazione": conversation_data,
+                
+                # Sezione estrazione
+                "estrazione": {
+                    "dati_estratti_questa_volta": extracted_data,
+                    "dati_nutritional_completi_merged": complete_user_data.get("nutritional_info_extracted", {}),
+                    "timestamp_estrazione": datetime.now().isoformat()
+                },
+                
+                # Metadati
+                "metadati": {
+                    "versione_debug": "2.0",
+                    "descrizione": "File unico contenente conversazione analizzata + estrazione risultante"
                 }
+            }
+            
+            with open(debug_file, 'w', encoding='utf-8') as f:
                 json.dump(debug_data, f, indent=2, ensure_ascii=False)
             
-            # Salva anche una versione "latest" sovrascritta ogni volta
-            latest_file = os.path.join(debug_dir, f"{user_id}_latest_extraction.json")
+            # Mantieni anche una versione "latest" per facilità di accesso
+            latest_file = os.path.join(debug_dir, f"{user_id}_latest_debug_completo.json")
             with open(latest_file, 'w', encoding='utf-8') as f:
                 json.dump(debug_data, f, indent=2, ensure_ascii=False)
             
-            # Salva i dati completi merged
-            complete_file = os.path.join(debug_dir, f"{user_id}_latest_complete.json")
-            with open(complete_file, 'w', encoding='utf-8') as f:
-                complete_debug_data = {
-                    "timestamp": datetime.now().isoformat(),
-                    "user_id": user_id,
-                    "extraction_type": "complete_merged",
-                    "nutritional_info_extracted": complete_user_data.get("nutritional_info_extracted", {})
-                }
-                json.dump(complete_debug_data, f, indent=2, ensure_ascii=False)
-            
+            print(f"[EXTRACTION_SERVICE] Salvato debug completo per {user_id}: {debug_file}")
             
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nel salvataggio debug per {user_id}: {str(e)}")
+    
+    def _load_recent_conversation_data(self, user_id: str) -> Dict[str, Any]:
+        """
+        Carica i dati della conversazione recente per il debug.
+        
+        Args:
+            user_id: ID dell'utente
+            
+        Returns:
+            Dati della conversazione o informazioni di fallback
+        """
+        try:
+            # Cerca file di conversazione esistenti nella cartella debug
+            debug_dir = "tests/deep_seek_out"
+            conversation_files = []
+            
+            if os.path.exists(debug_dir):
+                for filename in os.listdir(debug_dir):
+                    if "conversation" in filename and filename.endswith('.json'):
+                        conversation_files.append(os.path.join(debug_dir, filename))
+            
+            # Usa il file di conversazione più recente se disponibile
+            if conversation_files:
+                # Ordina per tempo di modifica (più recente primo)
+                conversation_files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+                
+                with open(conversation_files[0], 'r', encoding='utf-8') as f:
+                    conversation_data = json.load(f)
+                    
+                return {
+                    "fonte": "file_conversazione_esistente",
+                    "file_utilizzato": os.path.basename(conversation_files[0]),
+                    "conversazioni": conversation_data.get("conversations", []),
+                    "user_info": conversation_data.get("user_info", {}),
+                    "raw_deepseek_response": conversation_data.get("raw_deepseek_response", ""),
+                    "extracted_keys": conversation_data.get("extracted_keys", [])
+                }
+            
+            # Fallback: carica dati utente dal file principale
+            user_data = self._load_complete_user_data(user_id)
+            if user_data:
+                return {
+                    "fonte": "dati_utente_file",
+                    "user_info": user_data,
+                    "nota": "Conversazione recente non disponibile, usando dati utente salvati"
+                }
+            
+            # Fallback finale
+            return {
+                "fonte": "fallback",
+                "nota": "Nessun dato di conversazione disponibile",
+                "user_id": user_id
+            }
+            
+        except Exception as e:
+            return {
+                "fonte": "errore",
+                "errore": str(e),
+                "user_id": user_id
+            }
+    
     
     def _merge_extracted_data(
         self, 
