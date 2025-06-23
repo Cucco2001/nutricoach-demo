@@ -48,7 +48,6 @@ class CaloricDataCompleter:
         Returns:
             Dati estratti completati con i valori mancanti
         """
-        print(f"[CALORIC_COMPLETER] Completamento dati per utente {user_id}")
         
         # Copia i dati per non modificare l'originale
         completed_data = extracted_data.copy()
@@ -57,15 +56,9 @@ class CaloricDataCompleter:
         caloric_section_name = ensure_section(completed_data, "caloric_needs")
         caloric_data = completed_data[caloric_section_name]
         
-        # Debug: mostra quali campi sono già presenti
-        debug_info = self.field_mapper.debug_available_fields(caloric_data)
-        print(f"[CALORIC_COMPLETER] Campi disponibili: {debug_info.get('available_keys', [])}")
-        print(f"[CALORIC_COMPLETER] Campi mappati: {debug_info.get('mapped_fields', {})}")
-        
         # Estrai informazioni utente necessarie
         user_basic_info = self._extract_user_basic_info(user_info)
         if not user_basic_info:
-            print(f"[CALORIC_COMPLETER] Informazioni utente incomplete per {user_id}")
             return completed_data
             
         # Calcola BMR e fabbisogno base usando la funzione originale dell'agente
@@ -73,34 +66,26 @@ class CaloricDataCompleter:
         if harris_benedict_result:
             if not has_field(caloric_data, 'bmr'):
                 set_field(caloric_data, 'bmr', harris_benedict_result.get('bmr'))
-                print(f"[CALORIC_COMPLETER] BMR calcolato: {harris_benedict_result.get('bmr')} kcal")
             else:
                 existing_bmr = get_field(caloric_data, 'bmr')
-                print(f"[CALORIC_COMPLETER] BMR già presente: {existing_bmr} kcal")
             
             if not has_field(caloric_data, 'laf_utilizzato'):
                 set_field(caloric_data, 'laf_utilizzato', harris_benedict_result.get('laf_utilizzato'))
-                print(f"[CALORIC_COMPLETER] LAF impostato: {harris_benedict_result.get('laf_utilizzato')}")
             else:
                 existing_laf = get_field(caloric_data, 'laf_utilizzato')
-                print(f"[CALORIC_COMPLETER] LAF già presente: {existing_laf}")
             
             if not has_field(caloric_data, 'fabbisogno_base'):
                 set_field(caloric_data, 'fabbisogno_base', harris_benedict_result.get('fabbisogno_giornaliero'))
-                print(f"[CALORIC_COMPLETER] Fabbisogno base calcolato: {harris_benedict_result.get('fabbisogno_giornaliero')} kcal")
             else:
                 existing_fabbisogno = get_field(caloric_data, 'fabbisogno_base')
-                print(f"[CALORIC_COMPLETER] Fabbisogno base già presente: {existing_fabbisogno} kcal")
         
         # Calcola dispendio sportivo usando la funzione originale dell'agente
         if not has_field(caloric_data, 'dispendio_sportivo'):
             dispendio_sportivo = self._calculate_sport_expenditure_original(user_info)
             if dispendio_sportivo is not None:
                 set_field(caloric_data, 'dispendio_sportivo', dispendio_sportivo)
-                print(f"[CALORIC_COMPLETER] Dispendio sportivo calcolato: {dispendio_sportivo} kcal")
         else:
             existing_dispendio = get_field(caloric_data, 'dispendio_sportivo')
-            print(f"[CALORIC_COMPLETER] Dispendio sportivo già presente: {existing_dispendio} kcal")
         
         # Calcola fabbisogno finale se mancante o incompleto
         fabbisogno_base = get_field(caloric_data, 'fabbisogno_base', 0)
@@ -109,11 +94,8 @@ class CaloricDataCompleter:
         if not has_field(caloric_data, 'fabbisogno_finale') and fabbisogno_base:
             fabbisogno_finale = fabbisogno_base + dispendio_sportivo
             set_field(caloric_data, 'fabbisogno_finale', fabbisogno_finale)
-            print(f"[CALORIC_COMPLETER] Fabbisogno finale calcolato: {fabbisogno_finale} kcal")
         else:
             existing_totale = get_field(caloric_data, 'fabbisogno_finale')
-            if existing_totale:
-                print(f"[CALORIC_COMPLETER] Fabbisogno finale già presente: {existing_totale} kcal")
         
         # Calcola aggiustamento obiettivo se mancante
         if not has_field(caloric_data, 'aggiustamento_obiettivo'):
@@ -121,10 +103,8 @@ class CaloricDataCompleter:
             aggiustamento = self._calculate_goal_adjustment(user_info, bmr_value)
             if aggiustamento is not None:
                 set_field(caloric_data, 'aggiustamento_obiettivo', aggiustamento)
-                print(f"[CALORIC_COMPLETER] Aggiustamento obiettivo: {aggiustamento} kcal")
         else:
             existing_aggiustamento = get_field(caloric_data, 'aggiustamento_obiettivo')
-            print(f"[CALORIC_COMPLETER] Aggiustamento già presente: {existing_aggiustamento} kcal")
         
         # Completa anche macros_total se presente ma incompleto
         if 'macros_total' in completed_data:
@@ -177,7 +157,6 @@ class CaloricDataCompleter:
                 print(f"[CALORIC_COMPLETER] Errore in Harris-Benedict: {result['error']}")
                 return None
                 
-            print(f"[CALORIC_COMPLETER] Harris-Benedict calcolato con successo")
             return result
             
         except Exception as e:
@@ -215,8 +194,6 @@ class CaloricDataCompleter:
                 sport_name = sport_info.get('key', sport_info.get('name', 'unknown'))
                 hours = sport_entry.get('hours_per_week', 0)
                 intensity = sport_entry.get('intensity', 'medium')
-                
-                print(f"[DEBUG] Ricevuto sport_name: '{sport_name}' (tipo: {type(sport_name)})")
                 
                 if sport_name and hours:
                     sports_for_calculation.append({
@@ -293,15 +270,12 @@ class CaloricDataCompleter:
         
         if proteine_g and 'proteine_kcal' not in macros_data:
             macros_data['proteine_kcal'] = proteine_g * 4
-            print(f"[CALORIC_COMPLETER] Calcolato proteine_kcal: {macros_data['proteine_kcal']}")
             
         if carboidrati_g and 'carboidrati_kcal' not in macros_data:
             macros_data['carboidrati_kcal'] = carboidrati_g * 4
-            print(f"[CALORIC_COMPLETER] Calcolato carboidrati_kcal: {macros_data['carboidrati_kcal']}")
             
         if grassi_g and 'grassi_kcal' not in macros_data:
             macros_data['grassi_kcal'] = grassi_g * 9
-            print(f"[CALORIC_COMPLETER] Calcolato grassi_kcal: {macros_data['grassi_kcal']}")
         
         # Calcola kcal_totali se mancante
         if 'kcal_totali' not in macros_data or macros_data.get('kcal_totali') == 0:
@@ -311,7 +285,6 @@ class CaloricDataCompleter:
             
             if proteine_kcal or carboidrati_kcal or grassi_kcal:
                 macros_data['kcal_totali'] = round(proteine_kcal + carboidrati_kcal + grassi_kcal)
-                print(f"[CALORIC_COMPLETER] Calcolato kcal_totali: {macros_data['kcal_totali']}")
         
         # Calcola percentuali se mancanti
         kcal_totali = macros_data.get('kcal_totali', 0) or macros_data.get('kcal_finali', 0)

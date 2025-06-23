@@ -69,11 +69,6 @@ class DeepSeekClient:
                 # Prepara il contesto della conversazione
                 # NOTA: La cronologia passata qui contiene GIA' solo le nuove interazioni
                 # grazie alla logica nel DeepSeekManager.
-                print(f"[DEEPSEEK_CLIENT] Debug: tipo conversation_history: {type(conversation_history)}")
-                if conversation_history:
-                    print(f"[DEEPSEEK_CLIENT] Debug: primo elemento: {type(conversation_history[0])}")
-                    print(f"[DEEPSEEK_CLIENT] Debug: chiavi primo elemento: {list(conversation_history[0].keys()) if isinstance(conversation_history[0], dict) else 'non è dict'}")
-                
                 conversation_text = "\n\n".join([
                     f"UTENTE: {qa['question'] if isinstance(qa, dict) else qa.question}\nAGENTE: {qa['answer'] if isinstance(qa, dict) else qa.answer}" 
                     for qa in conversation_history
@@ -82,7 +77,6 @@ class DeepSeekClient:
                 # Costruisci il prompt
                 extraction_prompt = self._build_extraction_prompt(conversation_text, user_info)
                 
-                print(f"[DEEPSEEK_CLIENT] Tentativo {retry_count + 1}/{max_retries}")
                 
                 # Chiamata a DeepSeek
                 response = self.client.chat.completions.create(
@@ -114,7 +108,6 @@ class DeepSeekClient:
                 # Salva debug delle conversazioni processate e output
                 self._save_conversation_debug(conversation_history, user_info, response_text, extracted_data)
                 
-                print(f"[DEEPSEEK_CLIENT] Dati estratti con successo: {list(extracted_data.keys())}")
                 return extracted_data
                 
             except Exception as e:
@@ -124,7 +117,6 @@ class DeepSeekClient:
                 
                 if retry_count < max_retries:
                     wait_time = 5 * retry_count  # Attesa progressiva: 5s, 10s, 15s
-                    print(f"[DEEPSEEK_CLIENT] Attendo {wait_time} secondi prima del prossimo tentativo...")
                     time.sleep(wait_time)
                 else:
                     print(f"[DEEPSEEK_CLIENT] Tutti i tentativi falliti. Ultimo errore: {error_msg}")
@@ -370,7 +362,6 @@ ALTRE REGOLE:
             with open(latest_conv_file, 'w', encoding='utf-8') as f:
                 json.dump(debug_data, f, indent=2, ensure_ascii=False)
             
-            print(f"[DEEPSEEK_CLIENT] Debug conversazione salvata in {conversation_file}")
             
         except Exception as e:
             print(f"[DEEPSEEK_CLIENT] Errore nel salvataggio debug conversazione: {str(e)}")

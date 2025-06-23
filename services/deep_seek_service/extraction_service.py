@@ -47,8 +47,6 @@ class NutritionalDataExtractor:
             
         # Il controllo della frequenza è gestito dal DeepSeek Manager
         # Quando arriviamo qui, l'estrazione è già stata approvata
-        print(f"[EXTRACTION_SERVICE] Avviando estrazione per utente {user_id} (interazione {interaction_count})")
-        
         def extract_in_background():
             try:
                 # Chiama DeepSeek per l'estrazione
@@ -244,7 +242,6 @@ class NutritionalDataExtractor:
                 }
                 json.dump(complete_debug_data, f, indent=2, ensure_ascii=False)
             
-            print(f"[EXTRACTION_SERVICE] Debug output salvato in {debug_dir} per utente {user_id}")
             
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nel salvataggio debug per {user_id}: {str(e)}")
@@ -289,39 +286,31 @@ class NutritionalDataExtractor:
                         if field_value is not None and not self._is_invalid_zero(field_name, field_value, key):
                             existing_data[key][field_name] = field_value
                             changes_made = True
-                            print(f"[EXTRACTION_SERVICE] Sovrascritto {field_name} in {key} per utente {user_id}")
-                        elif self._is_invalid_zero(field_name, field_value, key):
-                            print(f"[EXTRACTION_SERVICE] Ignorato valore 0 invalido per {field_name} in {key} per utente {user_id}")
                 
                 # 2. Completa campi mancanti per caloric_needs e daily_macros
                 if key == "caloric_needs":
                     missing_fields = self._get_missing_fields(key, existing_data[key])
                     if missing_fields:
-                        print(f"[EXTRACTION_SERVICE] Campi mancanti in caloric_needs: {missing_fields}")
                         completed_section = self._complete_missing_caloric_fields(user_id, existing_data[key])
                         if completed_section:
                             # Sostituisce i missing fields con quelli del completer
                             for field_name in missing_fields:
                                 if field_name in completed_section and completed_section[field_name] is not None:
                                     existing_data[key][field_name] = completed_section[field_name]
-                                    print(f"[EXTRACTION_SERVICE] Sostituito campo mancante {field_name} = {completed_section[field_name]}")
                             changes_made = True
                 elif key == "macros_total":
                     missing_fields = self._get_missing_fields(key, existing_data[key])
                     if missing_fields:
-                        print(f"[EXTRACTION_SERVICE] Campi mancanti in macros_total: {missing_fields}")
                         completed_section = self._complete_missing_macros_fields(user_id, existing_data[key])
                         if completed_section:
                             # Sostituisce i missing fields con quelli del completer
                             for field_name in missing_fields:
                                 if field_name in completed_section and completed_section[field_name] is not None:
                                     existing_data[key][field_name] = completed_section[field_name]
-                                    print(f"[EXTRACTION_SERVICE] Sostituito campo mancante {field_name} = {completed_section[field_name]}")
                             changes_made = True
                 elif key == "daily_macros":
                     missing_fields = self._get_missing_fields(key, existing_data[key])
                     if missing_fields:
-                        print(f"[EXTRACTION_SERVICE] Campi mancanti in daily_macros: {missing_fields}")
                         completed_section = self._complete_missing_daily_macros_fields(user_id, existing_data[key], existing_data)
                         if completed_section:
                             # Sostituisce i missing fields con quelli del completer
@@ -492,7 +481,6 @@ class NutritionalDataExtractor:
             if "numero_pasti" not in completed_daily_macros or completed_daily_macros["numero_pasti"] is None:
                 numero_pasti = self._determine_numero_pasti(complete_user_data)
                 completed_daily_macros["numero_pasti"] = numero_pasti
-                print(f"[EXTRACTION_SERVICE] Numero pasti determinato: {numero_pasti}")
             
             # 2. Ottieni totali giornalieri da macros_total o caloric_needs
             totali_giornalieri = self._get_daily_totals(all_extracted_data)
@@ -854,17 +842,14 @@ class NutritionalDataExtractor:
             # Cancella solo la sezione nutritional_info_extracted se esiste
             if "nutritional_info_extracted" in user_data:
                 del user_data["nutritional_info_extracted"]
-                print(f"[EXTRACTION_SERVICE] Cancellata sezione nutritional_info_extracted per utente {user_id}")
                 
                 # Salva i dati aggiornati (senza la sezione estratta)
                 with open(user_file_path, 'w', encoding='utf-8') as f:
                     import json
                     json.dump(user_data, f, indent=2, ensure_ascii=False)
-                
-                print(f"[EXTRACTION_SERVICE] Dati utente {user_id} aggiornati senza sezione estratta")
+            
                 return True
             else:
-                print(f"[EXTRACTION_SERVICE] Nessun dato estratto da cancellare per utente {user_id}")
                 return True
                 
         except Exception as e:
@@ -967,7 +952,6 @@ class NutritionalDataExtractor:
             # Formato singolo
             updates_list = [partial_updates]
         else:
-            print(f"[EXTRACTION_SERVICE] Formato partial_updates non riconosciuto per utente {user_id}")
             return False
         
         for update in updates_list:

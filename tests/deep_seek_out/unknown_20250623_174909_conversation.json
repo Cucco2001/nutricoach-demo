@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-06-23T17:49:09.882657",
+  "user_id": "unknown",
+  "user_info": {
+    "id": "user_1747679093",
+    "username": "gcuccorese",
+    "età": 30,
+    "sesso": "Maschio",
+    "peso": 70,
+    "altezza": 170,
+    "attività": "Sedentario",
+    "obiettivo": "Mantenimento",
+    "preferences": {
+      "excluded_foods": [],
+      "preferred_foods": [],
+      "user_notes": []
+    }
+  },
+  "conversation_count": 1,
+  "conversations": [
+    {
+      "question": "procedi",
+      "answer": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\n⚡ Sto analizzando tutti i tuoi dati iniziali per impostare una dieta personalizzata e adatta a te. \n\nEcco come valuto ogni punto:\n\n- Dati personali: Età 30 anni, maschio, peso 70 kg, altezza 170 cm, attività quotidiana sedentaria.\n- Obiettivo: Mantenimento del peso attuale.\n- Nessuna allergia o intolleranza alimentare riportata.\n- Nessuna attività sportiva abituale.\n- Nessuna preferenza o esclusione specifica di cibi comunicata.\n- Nessun numero di pasti o orari preferiti: userò lo schema standard consigliato (4 pasti: colazione, pranzo, spuntino, cena).\n\n📊 Riassunto informazioni rilevanti:\n- Nessun alimento da escludere.\n- Nessuna intolleranza/allergia.\n- Nessuna preferenza alimentare o restrizione dichiarata.\n- Nessuna attività fisica extra da considerare nel calcolo del fabbisogno.\n- Numero pasti: 4 (schema standard).\n\n📚 Fonti utilizzate:\n- Raccolta abitudini alimentari e dati utente: modellato su linee guida pratiche di analisi nutrizionale SINU (Società Italiana di Nutrizione Umana)\n- Struttura pasti: schema suggerito dalla letteratura internazionale per la popolazione italiana\n\n➡️ Se hai domande sulle informazioni valutate o vuoi aggiungere un dettaglio, chiedimi pure! \nSe è tutto chiaro, procedo con la FASE 2: calcolo preciso del tuo fabbisogno energetico e metabolico. Posso andare avanti?",
+      "timestamp": 1750693743.0420423
+    }
+  ],
+  "raw_deepseek_response": "\n{\n    \"daily_macros\": {\n        \"numero_pasti\": 4\n    }\n}\n",
+  "extracted_keys": [
+    "daily_macros"
+  ]
+}
