@@ -231,6 +231,14 @@ class PDFGenerator:
             cleaned_text = cleaned_text.replace("integrale", "intgrl")
             cleaned_text = cleaned_text.replace("intero", "int")
             cleaned_text = cleaned_text.replace("greco", "gr")
+            cleaned_text = cleaned_text.replace("hero", "")
+            cleaned_text = cleaned_text.replace("percento", "%")
+            cleaned_text = cleaned_text.replace("magro", "mgr")
+            cleaned_text = cleaned_text.replace("scremato", "scrmt")
+            cleaned_text = cleaned_text.replace("_", " ")
+            cleaned_text = cleaned_text.replace("verdi", "vrd")
+            cleaned_text = cleaned_text.replace("di", "")
+            cleaned_text = cleaned_text.replace("semola", "sem.")
         
         return cleaned_text if cleaned_text else 'N/A'
     
@@ -259,6 +267,14 @@ class PDFGenerator:
         shortened = shortened.replace("intero", "int")
         shortened = shortened.replace("greco", "gr")
         shortened = shortened.replace("hero", "")
+        shortened = shortened.replace("percento", "%")
+        shortened = shortened.replace("magro", "mgr")
+        shortened = shortened.replace("scremato", "scrmt")
+        shortened = shortened.replace("_", " ")
+        shortened = shortened.replace("verdi", "vrd")
+        shortened = shortened.replace("di", "")
+        shortened = shortened.replace("semola", "sem.")
+
         
         return shortened
     
@@ -939,21 +955,33 @@ class PDFGenerator:
                     sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
                     ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
                 
-                # Se ci sono sostituti mancanti, genera automaticamente per tutto il pasto
-                if has_missing_substitutes and meal_alimenti_dict:
+                # Se ci sono sostituti mancanti, genera automaticamente per ogni singolo alimento
+                if has_missing_substitutes:
                     try:
                         # Estrai l'user_id dal nome del file, se disponibile
                         user_id = getattr(self, '_current_user_id', None)
-                        generated_substitutes = self._generate_substitutes_for_meal(nome_pasto, meal_alimenti_dict, user_id)
                         
-                        # Aggiorna gli ingredienti che avevano sostituti mancanti
-                        if generated_substitutes and generated_substitutes != 'N/A':
-                            print(f"[PDF_SERVICE] Sostituti generati automaticamente per {nome_pasto}: {generated_substitutes}")
-                            
-                            # Sostituisci i 'N/A' dei sostituti con quelli generati per tutti gli alimenti del pasto
-                            for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
-                                if row[3] == 'N/A':  # Colonna sostituti
-                                    row[3] = generated_substitutes
+                        # Genera sostituti specifici per ogni alimento che ne ha bisogno
+                        for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
+                            if row[3] == 'N/A':  # Colonna sostituti
+                                alimento_nome = row[0]  # Nome alimento
+                                try:
+                                    # Estrai la quantità dall'alimento (rimuovi 'g' e converti)
+                                    quantita_str = row[1].replace('g', '')
+                                    quantita = float(quantita_str) if quantita_str != 'N/A' else 0
+                                    
+                                    if quantita > 0:
+                                        # Genera sostituti solo per questo alimento specifico
+                                        single_food_dict = {alimento_nome: quantita}
+                                        substitutes_result = self._generate_substitutes_for_meal(nome_pasto, single_food_dict, user_id)
+                                        
+                                        if substitutes_result and substitutes_result != 'N/A':
+                                            row[3] = substitutes_result
+                                            print(f"[PDF_SERVICE] Sostituti generati per {alimento_nome}: {substitutes_result}")
+                                        
+                                except (ValueError, TypeError) as ve:
+                                    print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome}: {str(ve)}")
+                                    continue
                                     
                     except Exception as e:
                         print(f"[PDF_WARNING] Errore nella generazione sostituti per {nome_pasto}: {str(e)}")
@@ -1095,21 +1123,33 @@ class PDFGenerator:
                     meal_alimenti_dict[nome_alimento] = float(quantita)
                     ingredients_data.append([nome_alimento, f"{quantita}g", "N/A", "N/A"])
         
-        # Se ci sono sostituti mancanti, genera automaticamente per tutto il pasto
-        if has_missing_substitutes and meal_alimenti_dict:
+        # Se ci sono sostituti mancanti, genera automaticamente per ogni singolo alimento
+        if has_missing_substitutes:
             try:
                 # Estrai l'user_id dal nome del file, se disponibile
                 user_id = getattr(self, '_current_user_id', None)
-                generated_substitutes = self._generate_substitutes_for_meal(meal_name, meal_alimenti_dict, user_id)
                 
-                # Aggiorna gli ingredienti che avevano sostituti mancanti
-                if generated_substitutes and generated_substitutes != 'N/A':
-                    print(f"[PDF_SERVICE] Sostituti generati automaticamente per {meal_name}: {generated_substitutes}")
-                    
-                    # Sostituisci i 'N/A' dei sostituti con quelli generati per tutti gli alimenti del pasto
-                    for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
-                        if row[3] == 'N/A':  # Colonna sostituti
-                            row[3] = generated_substitutes
+                # Genera sostituti specifici per ogni alimento che ne ha bisogno
+                for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
+                    if row[3] == 'N/A':  # Colonna sostituti
+                        alimento_nome = row[0]  # Nome alimento
+                        try:
+                            # Estrai la quantità dall'alimento (rimuovi 'g' e converti)
+                            quantita_str = row[1].replace('g', '')
+                            quantita = float(quantita_str) if quantita_str != 'N/A' else 0
+                            
+                            if quantita > 0:
+                                # Genera sostituti solo per questo alimento specifico
+                                single_food_dict = {alimento_nome: quantita}
+                                substitutes_result = self._generate_substitutes_for_meal(meal_name, single_food_dict, user_id)
+                                
+                                if substitutes_result and substitutes_result != 'N/A':
+                                    row[3] = substitutes_result
+                                    print(f"[PDF_SERVICE] Sostituti generati per {alimento_nome}: {substitutes_result}")
+                                    
+                        except (ValueError, TypeError) as ve:
+                            print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome}: {str(ve)}")
+                            continue
                             
             except Exception as e:
                 print(f"[PDF_WARNING] Errore nella generazione sostituti per {meal_name}: {str(e)}")
