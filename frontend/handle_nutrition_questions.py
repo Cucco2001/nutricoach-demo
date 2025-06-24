@@ -366,7 +366,7 @@ class NutritionQuestionHandler:
             1: ["Pranzo"],
             2: ["Pranzo", "Cena"],
             3: ["Colazione", "Pranzo", "Cena"],
-            4: ["Colazione", "Pranzo", "Cena", "Spuntino pomeridiano"],
+            4: ["Colazione", "Pranzo", "Spuntino pomeridiano", "Cena"],
             5: ["Colazione", "Spuntino mattutino", "Pranzo", "Spuntino pomeridiano", "Cena"]
         }
         
