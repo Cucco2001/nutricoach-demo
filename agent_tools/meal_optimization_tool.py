@@ -418,6 +418,175 @@ def calculate_actual_nutrients(portions: Dict[str, float],
     }
 
 
+def get_category_mappings():
+    """
+    Definisce i mappings delle categorie alimentari.
+    Se l'utente esclude un elemento di una categoria, vengono esclusi tutti.
+    
+    Returns:
+        Dict: Mappature categoria -> lista alimenti da escludere
+    """
+    return {
+        # === LATTICINI E DERIVATI ===
+        "latte": ["latte_intero", "latte_parzialmente_scremato", "latte_scremato"],
+        "yogurt": ["yogurt_magro", "yogurt_greco_0percento", "yogurt_greco_2percento"],
+        "latticini": ["latte_intero", "latte_parzialmente_scremato", "latte_scremato", 
+                     "yogurt_magro", "yogurt_greco_0percento", "yogurt_greco_2percento","asiago", "grana_padano", "mozzarella", "parmigiano_reggiano", "pecorino", "ricotta", "mozzarella"],
+        
+        # === FORMAGGI ===
+        "formaggio": ["asiago", "grana_padano", "mozzarella", "parmigiano_reggiano", "pecorino", "ricotta", "mozzarella"],
+        "formaggi": ["asiago", "grana_padano", "mozzarella", "parmigiano_reggiano", "pecorino", "ricotta", "mozzarella"],
+        
+        # === CEREALI E DERIVATI ===
+        "pane": ["pane_bianco", "pane_integrale"],
+        "pasta": ["pasta_di_semola", "pasta_integrale"],
+        "riso": ["riso", "riso_integrale"],
+        "cereali": ["pasta_di_semola", "pasta_integrale", "riso", "riso_integrale", "couscous", 
+                   "pane_bianco", "pane_integrale", "quinoa", "farro", "orzo"],
+        "cereali_colazione": ["biscotti_secchi", "cereali_fibra_1", "cereali_integrali", 
+                             "cracker", "fette_biscottate", "pan_bauletto"],
+        
+        # === PROTEINE ANIMALI ===
+        # Pollo (sottocategoria)
+        "pollo": ["pollo_petto", "pollo_coscia", "pollo_ali"],
+        
+        # Pesce (sottocategoria)
+        "pesce": ["tonno_naturale", "tonno_fresco", "tonno_sottolio_sgocciolato", "merluzzo", 
+                 "salmone_al_naturale", "salmone_affumicato", "orata", "spigola", "pesce_spada", "gamberi"],
+        "tonno": ["tonno_naturale", "tonno_fresco", "tonno_sottolio_sgocciolato"],
+        "salmone": ["salmone_al_naturale", "salmone_affumicato"],
+        
+        # Carne (sottocategoria)
+        "carne": ["carne_manzo", "pollo_petto", "pollo_coscia", "pollo_ali"],
+        "manzo": ["carne_manzo"],
+        
+        # Categoria generale proteine animali
+        "proteine_animali": ["carne_manzo", "gamberi", "merluzzo", "orata", "pesce_spada", 
+                           "pollo_ali", "pollo_coscia", "pollo_petto", "salmone_affumicato", 
+                           "salmone_al_naturale", "spigola", "tonno_fresco", "tonno_naturale", 
+                           "tonno_sottolio_sgocciolato", "wurstel"],
+        "proteine": ["carne_manzo", "gamberi", "merluzzo", "orata", "pesce_spada", 
+                    "pollo_ali", "pollo_coscia", "pollo_petto", "salmone_affumicato", 
+                    "salmone_al_naturale", "spigola", "tonno_fresco", "tonno_naturale", 
+                    "tonno_sottolio_sgocciolato", "wurstel"],
+        
+        # === AFFETTATI ===
+        "affettati": ["bresaola", "prosciutto_cotto", "speck", "fesa di tacchino", "prosciutto_crudo"],
+        "prosciutto": ["prosciutto_cotto", "prosciutto_crudo"],
+        
+        # === UOVA ===
+        "uova": ["uova", "albume_uova"],
+        "uovo": ["uova", "albume_uova"],
+        
+        # === VERDURE ===
+        "verdura": ["verdure_miste", "zucchine", "asparagi", "bieta", "broccoli", "carote", 
+                   "cavolfiore", "fagiolini", "funghi", "insalata", "melanzane", "pomodoro", 
+                   "spinaci", "zucca"],
+        "verdure": ["verdure_miste", "zucchine", "asparagi", "bieta", "broccoli", "carote", 
+                   "cavolfiore", "fagiolini", "funghi", "insalata", "melanzane", "pomodoro", 
+                   "spinaci", "zucca"],
+        # Sottocategorie specifiche di verdure
+        "pomodori": ["pomodoro"],
+        "carote": ["carote"],
+        "zucchine": ["zucchine"],
+        "broccoli": ["broccoli"],
+        "spinaci": ["spinaci"],
+        
+        # === FRUTTA ===
+        "frutta": ["mela", "pere", "banana", "arancia", "kiwi", "albicocche", "ciliegie", 
+                  "lamponi", "mirtilli", "uva"],
+        # Sottocategorie specifiche di frutta
+        "mela": ["mela"],
+        "mele": ["mela"],
+        "banana": ["banana"],
+        "banane": ["banana"],
+        "arancia": ["arancia"],
+        "arance": ["arancia"],
+        "uva": ["uva"],
+        "kiwi": ["kiwi"],
+        
+        # === LEGUMI ===
+        "legumi": ["ceci", "fagioli_cannellini", "lenticchie", "mais", "piselli"],
+        "fagioli": ["fagioli_cannellini"],
+        "ceci": ["ceci"],
+        "lenticchie": ["lenticchie"],
+        "piselli": ["piselli"],
+        
+        # === FRUTTA SECCA ===
+        "frutta_secca": ["anacardi", "arachidi", "mandorle", "nocciole", "noci_sgusciate"],
+        "noci": ["noci_sgusciate"],
+        "mandorle": ["mandorle"],
+        "nocciole": ["nocciole"],
+        "arachidi": ["arachidi", "burro_arachidi"],
+        
+        # === GRASSI E CONDIMENTI ===
+        "grassi_aggiunti": ["avocado", "burro", "olio_oliva", "olive_verdi"],
+        "olio": ["olio_oliva"],
+        "burro": ["burro"],
+        "olive": ["olive_verdi"],
+        
+        # === DOLCI E CREME ===
+        "dolci": ["biscotti_colazione", "crostata_frutta"],
+        "creme_spalmabili": ["marmellata_frutta", "nutella", "nutella_light"],
+        "nutella": ["nutella", "nutella_light"],
+        "marmellata": ["marmellata_frutta"],
+        
+        # === TUBERI ===
+        "patate": ["patate"],
+        "tuberi": ["patate"],
+        
+        # === ZUCCHERO E DOLCIFICANTI ===
+        "zucchero": ["zucchero"],
+        
+        # === INTEGRATORI ===
+        "integratori": ["iso_fuji_yamamoto", "pro_milk_20g_proteine"],
+        "proteine_polvere": ["iso_fuji_yamamoto", "pro_milk_20g_proteine"],
+        
+        # === CIOCCOLATO ===
+        "cioccolato": ["cioccolato_fondente"],
+    }
+
+
+def expand_category_to_excluded_foods(food_name: str) -> List[str]:
+    """
+    Se il cibo appartiene a una categoria, restituisce tutti i cibi della categoria.
+    Ogni alimento viene mappato tramite l'alias del database.
+    Altrimenti restituisce una lista vuota.
+    
+    Args:
+        food_name: Nome del cibo (normalizzato)
+        
+    Returns:
+        Lista dei cibi da escludere per quella categoria (mappati tramite alias), o lista vuota
+    """
+    mappings = get_category_mappings()
+    normalized_food = food_name.lower().replace("_", " ").strip()
+    
+    # Controlla se il nome corrisponde direttamente a una categoria
+    if normalized_food in mappings:
+        category_foods = mappings[normalized_food]
+        mapped_foods = []
+        
+        # Mappa ogni alimento della categoria tramite l'alias del database
+        for food in category_foods:
+            # Prova prima il nome così com'è
+            if food in db.alias.values():
+                mapped_foods.append(food)
+            else:
+                # Prova a cercarlo tramite alias
+                food_normalized = food.lower().replace("_", " ")
+                canonical_name = db.alias.get(food_normalized)
+                if canonical_name:
+                    mapped_foods.append(canonical_name)
+                # Se non trovato, aggiungi comunque il nome originale come fallback
+                else:
+                    mapped_foods.append(food)
+        
+        return mapped_foods
+    
+    return []
+
+
 def find_generic_food_variants(generic_term: str) -> List[str]:
     """
     Trova tutte le varianti specifiche di un termine generico nel database.
@@ -502,12 +671,19 @@ def load_user_excluded_foods(user_id: str) -> List[str]:
         user_preferences = user_data.get("user_preferences", {})
         excluded_foods_raw = user_preferences.get("excluded_foods", [])
         
-        # Mappa gli alimenti esclusi usando gli alias del database + termini generici
+        # Processa ogni alimento: prima controlla se è una categoria, poi processa normalmente
         excluded_foods_mapped = []
         for food in excluded_foods_raw:
             if not food or not food.strip():
                 continue
                 
+            # Prima controlla se questo alimento appartiene a una categoria da espandere
+            category_foods = expand_category_to_excluded_foods(food)
+            if category_foods:
+                # Se trovata una categoria, aggiungi tutti i suoi alimenti
+                excluded_foods_mapped.extend(category_foods)
+            
+            # Processa anche come alimento singolo (flusso normale)
             # Normalizza il nome usando la stessa logica del database
             normalized_food = food.lower().replace("_", " ").strip()
             
