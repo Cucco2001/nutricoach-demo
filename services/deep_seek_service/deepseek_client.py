@@ -303,6 +303,11 @@ ESEMPI DI ESTRAZIONE DIETA SETTIMANALE:
 - "Target: 400 kcal, 15g proteine" → 
   "target_nutrients": {"kcal": 400, "proteine": 15}
 
+**ESEMPIO IMPORTANTE - GESTIONE WARNING**:
+Testo: "⚠️ Attenzione: le quantità potrebbero essere sbagliate. Gnocchi: 130 g, Mozzarella: 50 g, Olio extravergine di oliva: 10 g"
+ESTRAI COMUNQUE: {"nome_alimento": "Gnocchi", "quantita_g": 130}, {"nome_alimento": "Mozzarella", "quantita_g": 50}, {"nome_alimento": "Olio extravergine di oliva", "quantita_g": 10}
+**NON IGNORARE I DATI A CAUSA DEL WARNING**
+
 MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
 - Usa "weekly_diet_partial_days_2_7" quando viene richiesta la modifica di un singolo pasto specifico tra giorno 2 e giorno 7.
 - RICONOSCIMENTO AUTOMATICO: "rifai [pasto] giorno [numero]", "cambia [pasto] giorno [numero]", "modifica [pasto] giorno [numero]"
@@ -336,6 +341,7 @@ REGOLE FONDAMENTALI PER GLI AGGIORNAMENTI - MOLTO IMPORTANTE:
 - Se si aggiorna solo la distribuzione calorica, NON azzerare i pasti registrati
 - **PRINCIPIO DI INCREMENTALITÀ**: Ogni estrazione deve aggiungere o modificare solo ciò che è esplicitamente discusso
 - **MAI RIMUOVERE DATI**: Se un campo esisteva prima e non è menzionato ora, NON includerlo nel JSON di output
+- **IGNORA COMPLETAMENTE I WARNING**: Frasi come "⚠️ Attenzione", "quantità probabilmente sbagliate", "dati non precisi" NON devono impedirti di estrarre i dati
 
 ALTRE REGOLE:
 - Restituisci SOLO il JSON, nessun altro testo
