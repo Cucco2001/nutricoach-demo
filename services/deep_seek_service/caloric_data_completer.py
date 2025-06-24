@@ -54,11 +54,7 @@ class CaloricDataCompleter:
         
         # Copia i dati per non modificare l'originale
         completed_data = extracted_data.copy()
-        
-        # DEBUG: Log dettagliato
-        print(f"[CALORIC_COMPLETER] DEBUG per {user_id}:")
-        print(f"[CALORIC_COMPLETER] extracted_data keys: {list(extracted_data.keys())}")
-        print(f"[CALORIC_COMPLETER] 'caloric_needs' in extracted_data: {'caloric_needs' in extracted_data}")
+    
         if 'caloric_needs' in extracted_data:
             print(f"[CALORIC_COMPLETER] extracted_data['caloric_needs'] content: {extracted_data['caloric_needs']}")
         
@@ -112,8 +108,6 @@ class CaloricDataCompleter:
                     # FORMULA CORRETTA: include anche l'aggiustamento per l'obiettivo
                     fabbisogno_finale = fabbisogno_base + dispendio_sportivo + aggiustamento_obiettivo
                     set_field(caloric_data, 'fabbisogno_finale', fabbisogno_finale)
-        else:
-            print(f"[CALORIC_COMPLETER] Saltato completamento caloric_needs per {user_id}: DeepSeek non ha estratto questa sezione")
         
         # Completa macros_total se presente ma incompleto (sempre, indipendentemente da caloric_needs)
         if 'macros_total' in completed_data:

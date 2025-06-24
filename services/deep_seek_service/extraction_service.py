@@ -57,10 +57,6 @@ class NutritionalDataExtractor:
                 if deepseek_result and "extracted_data" in deepseek_result:
                     extracted_data = deepseek_result["extracted_data"]
                     
-                    # DEBUG: Log che cosa DeepSeek ha estratto
-                    print(f"[EXTRACTION_SERVICE] DEBUG per {user_id}:")
-                    print(f"[EXTRACTION_SERVICE] DeepSeek extracted_data keys: {list(extracted_data.keys())}")
-                    
                     # Carica i dati completi dell'utente dal file per il completer
                     complete_user_data = self._load_complete_user_data(user_id)
                     if complete_user_data:
@@ -69,8 +65,6 @@ class NutritionalDataExtractor:
                             user_id, complete_user_data, extracted_data
                         )
                         
-                        # DEBUG: Log cosa ha restituito il completer
-                        print(f"[EXTRACTION_SERVICE] Completer output keys: {list(completed_data.keys())}")
                         if 'caloric_needs' in completed_data:
                             print(f"[EXTRACTION_SERVICE] PROBLEMA: caloric_needs aggiunto dal completer!")
                             print(f"[EXTRACTION_SERVICE] caloric_needs content: {completed_data['caloric_needs']}")
