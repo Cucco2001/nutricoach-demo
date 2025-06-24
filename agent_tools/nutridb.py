@@ -890,7 +890,7 @@ class NutriDB:
                     raccomandazione = (
                         f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f}, molto vicino al limite del sottopeso (18.5). "
                         f"Perdere peso potrebbe portarti sotto la soglia salutare. "
-                        f"Ti consiglio di valutare il 'Mantenimento' o una ricomposizione corporea "
+                        f"Ti consiglio di valutare una ricomposizione corporea attraverso il Mantenimento"
                         f"(perdita grasso + guadagno muscolare) piuttosto che una perdita di peso pura. "
                         f"Vuoi comunque procedere con l'obiettivo di perdita di peso?"
                     )
@@ -905,7 +905,7 @@ class NutriDB:
                         f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f}, molto vicino al limite del sovrappeso (25.0). "
                         f"Aumentare ulteriormente il peso potrebbe portarti oltre la soglia salutare. "
                         f"Ti consiglio di concentrarti su una ricomposizione corporea "
-                        f"(guadagno muscolare con controllo del grasso) o il 'Mantenimento' "
+                        f"(guadagno muscolare con controllo del grasso) attraverso il 'Mantenimento' "
                         f"piuttosto che un aumento di massa puro. "
                         f"Vuoi comunque procedere con l'obiettivo di aumento massa?"
                     )

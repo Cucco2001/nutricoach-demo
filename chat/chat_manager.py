@@ -53,7 +53,6 @@ class ChatManager:
                     # Carica le risposte nutrizionali esistenti
                     st.session_state.nutrition_answers = nutritional_info.nutrition_answers
                     st.session_state.current_question = len(NUTRITION_QUESTIONS)
-                    st.success(f"🔄 Caricate {len(nutritional_info.nutrition_answers)} risposte nutrizionali precedenti")
                 else:
                     # Se non ci sono risposte salvate, inizializza valori di default
                     st.session_state.current_question = st.session_state.get('current_question', 0)
