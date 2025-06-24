@@ -89,7 +89,7 @@ class NutriDB:
             "stufato", "stufati", "al naturale", "naturale", "sott'olio", "sottolio", "sgocciolato",
             "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
             "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di", "tostate", "tostato",
-            "fiocchi", "fiocchi di", "fiocchi d'"
+            "fiocchi", "fiocchi di", "fiocchi d'", "mista", "miste"
         ]
         
         # Base mapping dalle chiavi del database
@@ -149,7 +149,10 @@ class NutriDB:
             "yogurt greco 0 percento": "yogurt_greco_0percento",
             "yogurt greco 2%": "yogurt_greco_2percento",
             "yogurt greco 2 percento": "yogurt_greco_2percento",
+            "yogurt naturale": "yogurt_greco_2percento",
+            "yogurt": "yogurt_greco_2percento",
             "proteine in polvere": "iso_fuji_yamamoto",
+            "shake proteico": "iso_fuji_yamamoto",
             "proteine": "iso_fuji_yamamoto",
             "proteine del siero del latte": "iso_fuji_yamamoto",
             "proteine del latte": "iso_fuji_yamamoto",

@@ -248,6 +248,12 @@ class PDFGenerator:
             cleaned_text = cleaned_text.replace("_di", "")
             cleaned_text = cleaned_text.replace(" di", "")
             cleaned_text = cleaned_text.replace("semola", "sem.")
+            cleaned_text = cleaned_text.replace("crudo", "crd")
+            cleaned_text = cleaned_text.replace("crude", "crd")
+            cleaned_text = cleaned_text.replace("crudi", "crd")
+            cleaned_text = cleaned_text.replace("cruda", "crd")
+            cleaned_text = cleaned_text.replace("reggiano", "regg")
+            cleaned_text = cleaned_text.replace("tacchino", "tacch.")
         
         return cleaned_text if cleaned_text else 'N/A'
     
@@ -291,8 +297,13 @@ class PDFGenerator:
         shortened = shortened.replace("verdi", "vrd")
         shortened = shortened.replace("_di", "")
         shortened = shortened.replace("di", "")
-    
         shortened = shortened.replace("semola", "sem.")
+        shortened = shortened.replace("crudo", "crd")
+        shortened = shortened.replace("crude", "crd")
+        shortened = shortened.replace("crudi", "crd")
+        shortened = shortened.replace("cruda", "crd")
+        shortened = shortened.replace("reggiano", "regg")
+        shortened = shortened.replace("tacchino", "tacch.")        
 
         
         return shortened

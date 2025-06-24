@@ -273,7 +273,7 @@ def get_portion_constraints():
         "cereali": {"min": 60, "max": 170},
         "cereali_colazione": {"min": 20, "max": 60},
         "tuberi": {"min": 100, "max": 500},  # Aumentato max per patate
-        "legumi": {"min": 40, "max": 200},
+        "legumi": {"min": 100, "max": 400},
         "verdure": {"min": 100, "max": 400},
         "insalata": {"min": 50, "max": 150},
         "frutta": {"min": 80, "max": 300},
