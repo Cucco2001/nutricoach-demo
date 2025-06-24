@@ -25,6 +25,21 @@ def initialize_app():
     Questa funzione deve essere chiamata all'inizio dell'app per configurare
     tutti i componenti necessari al funzionamento.
     """
+    # Protezione contro errori di inizializzazione della sessione
+    try:
+        # Verifica che session_state sia disponibile
+        _ = st.session_state
+    except Exception as e:
+        # Se session_state non è disponibile, aspetta un momento e riprova
+        import time
+        time.sleep(0.1)
+        try:
+            _ = st.session_state
+        except:
+            # Se continua a fallire, forza un rerun
+            st.rerun()
+            return
+    
     # Carica le variabili d'ambiente
     load_dotenv()
     

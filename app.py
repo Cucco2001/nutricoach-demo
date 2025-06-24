@@ -79,6 +79,17 @@ deepseek_results_queue, deepseek_lock, file_access_lock = initialize_global_vari
 
 
 def main():
+    # Protezione contro errori di inizializzazione della sessione Streamlit
+    try:
+        # Test di accesso al session_state
+        _ = st.session_state
+    except Exception as e:
+        st.error("🔄 Rilevato problema di inizializzazione. Ricarica automatica in corso...")
+        import time
+        time.sleep(1)
+        st.rerun()
+        return
+    
     # Carica lo stile CSS custom
     load_css()
     
