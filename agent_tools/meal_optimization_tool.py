@@ -1153,6 +1153,7 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
     
     Per i pasti di colazione, esegue ottimizzazioni intelligenti:
     1. Se deficit di grassi >3g e >15%, prova ad aggiungere mandorle
+    2. Se deficit di proteine >5g e >15%, prova ad aggiungere proteine in polvere
     
     Per i pasti di spuntino, esegue ottimizzazioni intelligenti:
     1. Se deficit di grassi >2g e >15%, prova ad aggiungere mandorle
@@ -1330,6 +1331,62 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
                                 
                         except Exception as e:
                             logger.warning(f"Errore nel test con mandorle aggiunte: {str(e)}")
+
+        # 8.0.1. Step aggiuntivo: ottimizzazione proteine per colazione
+        protein_added_breakfast = False
+        protein_adjustment_food_breakfast = None
+        
+        if is_breakfast:  
+            # Calcola errore proteico attuale
+            protein_target = target_nutrients["proteine_g"]
+            protein_actual = final_actual_nutrients["proteine_g"]
+            protein_deficit = protein_target - protein_actual
+            protein_error_pct = abs(protein_deficit) / protein_target * 100 if protein_target > 0 else 0
+            
+            # Se c'è un deficit significativo di proteine (>15%), prova ad aggiungere proteine in polvere
+            if protein_deficit > 10 and protein_error_pct > 15:  # Deficit significativo (>5g e >15%)
+                # Controlla se le proteine in polvere non sono già presenti
+                protein_variants = ["iso_fuji_yamamoto", "pro_milk_20g_proteine", "proteine", "proteine in polvere", "iso"]
+                protein_already_present = any(any(variant in food.lower() for variant in protein_variants) for food in final_food_list)
+                
+                if not protein_already_present:
+                    test_food_list_protein = final_food_list + ["iso_fuji_yamamoto"]
+                    protein_found, _ = db.check_foods_in_db(["iso_fuji_yamamoto"])
+                    
+                    if protein_found:
+                        try:
+                            # Calcola i dati nutrizionali per la lista con proteine in polvere aggiunte
+                            foods_nutrition_protein = get_food_nutrition_per_100g(test_food_list_protein)
+                            
+                            optimized_portions_protein = optimize_portions(target_nutrients, foods_nutrition_protein)
+                            actual_nutrients_protein = calculate_actual_nutrients(optimized_portions_protein, foods_nutrition_protein)
+                            
+                            # Calcola errore con proteine in polvere aggiunte
+                            error_with_protein = sum([
+                                abs(actual_nutrients_protein["kcal"] - target_nutrients["kcal"]) / max(target_nutrients["kcal"], 1),
+                                abs(actual_nutrients_protein["proteine_g"] - target_nutrients["proteine_g"]) / max(target_nutrients["proteine_g"], 1),
+                                abs(actual_nutrients_protein["carboidrati_g"] - target_nutrients["carboidrati_g"]) / max(target_nutrients["carboidrati_g"], 1),
+                                abs(actual_nutrients_protein["grassi_g"] - target_nutrients["grassi_g"]) / max(target_nutrients["grassi_g"], 1)
+                            ]) / 4
+                            
+                            # Calcola errore attuale
+                            current_error = sum([
+                                abs(final_actual_nutrients["kcal"] - target_nutrients["kcal"]) / max(target_nutrients["kcal"], 1),
+                                abs(final_actual_nutrients["proteine_g"] - target_nutrients["proteine_g"]) / max(target_nutrients["proteine_g"], 1),
+                                abs(final_actual_nutrients["carboidrati_g"] - target_nutrients["carboidrati_g"]) / max(target_nutrients["carboidrati_g"], 1),
+                                abs(final_actual_nutrients["grassi_g"] - target_nutrients["grassi_g"]) / max(target_nutrients["grassi_g"], 1)
+                            ]) / 4
+                            
+                            # Se aggiungere proteine in polvere migliora significativamente
+                            if error_with_protein < current_error - 0.03:
+                                protein_added_breakfast = True
+                                final_portions = optimized_portions_protein
+                                final_actual_nutrients = actual_nutrients_protein
+                                final_food_list = test_food_list_protein
+                                protein_adjustment_food_breakfast = "iso_fuji_yamamoto"
+                                
+                        except Exception as e:
+                            logger.warning(f"Errore nel test con proteine in polvere aggiunte: {str(e)}")
 
         # 8.1. Step aggiuntivo: ottimizzazione grassi per spuntini
         # Determina se è uno spuntino
@@ -1724,6 +1781,9 @@ def optimize_meal_portions(meal_name: str, food_list: List[str], user_id: str = 
         
         if fat_added:
             summary_parts.append(f"{fat_adjustment_food} aggiunte per deficit di grassi")
+        
+        if protein_added_breakfast:
+            summary_parts.append(f"{protein_adjustment_food_breakfast} aggiunte per deficit proteico")
         
         if protein_added:
             summary_parts.append(f"{protein_adjustment_food} aggiunto per deficit proteico")
