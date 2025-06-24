@@ -431,7 +431,7 @@ def get_category_mappings():
         "latte": ["latte_intero", "latte_parzialmente_scremato", "latte_scremato"],
         "yogurt": ["yogurt_magro", "yogurt_greco_0percento", "yogurt_greco_2percento"],
         "latticini": ["latte_intero", "latte_parzialmente_scremato", "latte_scremato", 
-                     "yogurt_magro", "yogurt_greco_0percento", "yogurt_greco_2percento","asiago", "grana_padano", "mozzarella", "parmigiano_reggiano", "pecorino", "ricotta", "mozzarella"],
+                     "yogurt_magro", "yogurt_greco_0percento", "yogurt_greco_2percento","asiago", "grana_padano", "mozzarella", "parmigiano_reggiano", "pecorino", "ricotta", "mozzarella", "pro_milk_20g_proteine"],
         
         # === FORMAGGI ===
         "formaggio": ["asiago", "grana_padano", "mozzarella", "parmigiano_reggiano", "pecorino", "ricotta", "mozzarella"],

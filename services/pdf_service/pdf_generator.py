@@ -254,6 +254,8 @@ class PDFGenerator:
             cleaned_text = cleaned_text.replace("cruda", "crd")
             cleaned_text = cleaned_text.replace("reggiano", "regg")
             cleaned_text = cleaned_text.replace("tacchino", "tacch.")
+            cleaned_text = cleaned_text.replace("pro_milk_20g_proteine", "pro_milk")
+            cleaned_text = cleaned_text.replace("proteine", "")
         
         return cleaned_text if cleaned_text else 'N/A'
     
@@ -296,7 +298,7 @@ class PDFGenerator:
         shortened = shortened.replace("_", " ")
         shortened = shortened.replace("verdi", "vrd")
         shortened = shortened.replace("_di", "")
-        shortened = shortened.replace("di", "")
+        shortened = shortened.replace(" di", "")
         shortened = shortened.replace("semola", "sem.")
         shortened = shortened.replace("crudo", "crd")
         shortened = shortened.replace("crude", "crd")
@@ -304,6 +306,8 @@ class PDFGenerator:
         shortened = shortened.replace("cruda", "crd")
         shortened = shortened.replace("reggiano", "regg")
         shortened = shortened.replace("tacchino", "tacch.")        
+        shortened = shortened.replace("proteine", "")
+        shortened = shortened.replace("pro_milk_20g_proteine", "pro_milk")
 
         
         return shortened

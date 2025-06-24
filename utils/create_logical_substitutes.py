@@ -33,6 +33,11 @@ INCOMPATIBLE_CATEGORIES = {
     "legumi": ["latte", "formaggi", "latticini"]
 }
 
+# CONFIGURAZIONE: Alimenti che non devono avere sostituti
+FOODS_WITHOUT_SUBSTITUTES = {
+    "caffe"
+}
+
 def load_foods_data():
     """Carica i dati degli alimenti"""
     with open('Dati_processed/banca_alimenti_crea_60alimenti.json', 'r', encoding='utf-8') as f:
@@ -243,6 +248,10 @@ if __name__ == "__main__":
         substitutes = {}
         
         for food_name, food_data in foods_data.items():
+            # Salta gli alimenti che non devono avere sostituti
+            if food_name.lower() in FOODS_WITHOUT_SUBSTITUTES:
+                continue
+                
             food_category = get_food_category(food_name, categories)
             food_kcal = food_data.get('energia_kcal', 0)
             
@@ -253,6 +262,10 @@ if __name__ == "__main__":
             
             for candidate_name, candidate_data in foods_data.items():
                 if candidate_name == food_name:
+                    continue
+                
+                # Salta gli alimenti che non possono essere usati come sostituti
+                if candidate_name.lower() in FOODS_WITHOUT_SUBSTITUTES:
                     continue
                 
                 candidate_category = get_food_category(candidate_name, categories)
@@ -302,11 +315,15 @@ if __name__ == "__main__":
                 if "burro" in candidate_name.lower():
                     food_penalty = 20  # Penalità per il burro
                 elif candidate_name.lower() == "pollo_ali":
-                    food_penalty = 20  # Penalità per ali di pollo
+                    food_penalty = 70  # Penalità per ali di pollo
                 elif "gelato" in candidate_name.lower():
-                    food_penalty = 20  # Penalità per tutti i gelati
+                    food_penalty = 70  # Penalità per tutti i gelati
                 elif "gelato_fiordilatte" in candidate_name.lower():
-                    food_penalty = 20  # Penalità per tutti i gelati
+                    food_penalty = 70  # Penalità per tutti i gelati
+                elif "caffe" in candidate_name.lower():
+                    food_penalty = 70  # Penalità per tutti i gelati
+                elif "zucchero" in candidate_name.lower():
+                    food_penalty = 70  # Penalità per tutti i gelati
                 
                 # Score finale
                 final_score = macro_similarity + category_bonus - gram_penalty - gram_distance_penalty - food_penalty
@@ -339,6 +356,10 @@ if __name__ == "__main__":
             
             for candidate_name, candidate_data in foods_data.items():
                 if candidate_name == food_name or candidate_name in already_found_names:
+                    continue
+                
+                # Salta gli alimenti che non possono essere usati come sostituti
+                if candidate_name.lower() in FOODS_WITHOUT_SUBSTITUTES:
                     continue
                 
                 candidate_category = get_food_category(candidate_name, categories)
@@ -382,9 +403,15 @@ if __name__ == "__main__":
                 if "burro" in candidate_name.lower():
                     food_penalty = 20  # Penalità per il burro
                 elif candidate_name.lower() == "pollo_ali":
-                    food_penalty = 20  # Penalità per ali di pollo
+                    food_penalty = 70  # Penalità per ali di pollo
                 elif "gelato" in candidate_name.lower():
-                    food_penalty = 20  # Penalità per tutti i gelati
+                    food_penalty = 70  # Penalità per tutti i gelati
+                elif "gelato_fiordilatte" in candidate_name.lower():
+                    food_penalty = 70  # Penalità per tutti i gelati
+                elif "caffe" in candidate_name.lower():
+                    food_penalty = 70  # Penalità per tutti i gelati
+                elif "zucchero" in candidate_name.lower():
+                    food_penalty = 70  # Penalità per tutti i gelati
                 
                 # PENALITÀ IMPORTANTE per sostituti aggiuntivi (per garantire priorità ai primi 5)
                 additional_substitute_penalty = 25  # Deficit importante di 25 punti

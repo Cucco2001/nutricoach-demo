@@ -9,14 +9,37 @@ class SmartAliasDict(dict):
     def __init__(self, base_mapping, preparation_words):
         super().__init__(base_mapping)
         self.preparation_words = preparation_words
+    
+    def _normalize_apostrophes(self, text):
+        """
+        Normalizza tutti i tipi di apostrofi al normale apostrofo ASCII.
+        Questo risolve il problema con DeepSeek che usa caratteri diversi.
+        """
+        # Sostituisci tutti i tipi di apostrofi/quote con l'apostrofo normale
+        apostrophes = [
+            '\u0060',   # U+0060 GRAVE ACCENT (backtick) - usato da DeepSeek
+            '\u2018',   # U+2018 LEFT SINGLE QUOTATION MARK
+            '\u2019',   # U+2019 RIGHT SINGLE QUOTATION MARK  
+            '\u201B',   # U+201B SINGLE HIGH-REVERSED-9 QUOTATION MARK
+            '\u2032',   # U+2032 PRIME
+        ]
+        
+        for apostrophe in apostrophes:
+            text = text.replace(apostrophe, "'")
+        
+        return text
         
     def get(self, key, default=None):
         """
-        Ricerca intelligente a 3 step:
+        Ricerca intelligente a 4 step:
+        0. Normalizza apostrofi (risolve problema DeepSeek)  
         1. Ricerca diretta
         2. Sostituisce _ con spazi e riprova
         3. Rimuove parole di preparazione e riprova
         """
+        # STEP 0: Normalizza apostrofi
+        key = self._normalize_apostrophes(key)
+        
         # STEP 1: Ricerca diretta
         result = super().get(key, None)
         if result is not None:
@@ -85,11 +108,12 @@ class NutriDB:
             "bollito", "bolliti", "bollita", "bollite", "lessato", "lessati", "lessata", "lesse",
             "al vapore", "saltato", "saltati", "saltata", "saltate", "cotto", "cotti", "cotta", "cotte",
             "crudo", "crudi", "cruda", "crude", "marinato", "marinati", "marinata", "marinate",
-            "affumicato", "affumicati", "affumicata", "affumicate", "arrosto", "arrostito", "brasato",
+            "affumicato", "affumicati", "affumicata", "affumicate", "arrosto", "arrosto di","arrostito", "brasato",
             "stufato", "stufati", "al naturale", "naturale", "sott'olio", "sottolio", "sgocciolato",
             "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
             "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di", "tostate", "tostato",
-            "fiocchi", "fiocchi di", "fiocchi d'", "mista", "miste"
+            "fiocchi", "fiocchi di", "fiocchi d'", "mista", "miste", "passata", "passate", "passato", "passati", 
+            "passata d'", "passato d'", "passate d'", "passati d'", "passata di", "passato di", "passate di", "passati di"
         ]
         
         # Base mapping dalle chiavi del database
@@ -166,6 +190,7 @@ class NutriDB:
             "burro arachidi": "burro_arachidi",
             "cereali integrali": "cornflakes",     
             "burro di arachidi": "burro_arachidi",
+            "burro d'arachidi": "burro_arachidi",
             "verdure miste": "verdure_miste",  
             "verdure": "verdure_miste",  
             "pomodori": "pomodoro",

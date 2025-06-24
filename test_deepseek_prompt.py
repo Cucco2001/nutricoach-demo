@@ -138,9 +138,27 @@ def test_with_predefined_examples():
     
     # Esempio di conversazione con calcoli calorici
     example_conversation = """
-UTENTE: Procedi
+UTENTE: Inserisci
 
-AGENTE: ✓ FASE 6 - CONTROLLO ALIMENTI ULTRAPROCESSATI\n\n⚡ Sto elaborando: Analisi della presenza di alimenti ultraprocessati (NOVA 4) nella tua giornata alimentare, per garantire che non superino la soglia raccomandata.\n\nSpiegazione semplice:\n- Gli alimenti ultraprocessati sono prodotti industriali con ingredienti e additivi difficili da trovare nelle cucine domestiche. Mangiarne troppi può essere poco salutare per il benessere a lungo termine.\n- Le più recenti linee guida scientifiche consigliano di limitare questi alimenti a meno del 10% delle calorie totali.\n\n📊 Risultati intermedi:\n- Unico alimento ultraprocessato rilevato: Biscotti secchi\n- Percentuale ultraprocessati: 1.8% del peso totale della dieta giornaliera (~30g su 1650g)\n- Limite massimo (10%) non superato: la dieta è ampiamente nei limiti e salutare sotto questo aspetto\n\n📚 Fonti utilizzate:\n- Studio NOVA sugli alimenti ultraprocessati\n- Banca dati CREA (per classificazione ingredienti)\n- Letteratura internazionale sulle linee guida prevenzione (Monteiro et al., 2019)\n\n➡️ Conclusione: I biscotti secchi sono l’unico ultraprocessato, ma la quantità è minima (molto al di sotto della soglia critica). La tua alimentazione è ottimale anche sotto questo punto di vista!\n\nVuoi vedere subito la dieta settimanale personalizzata (giorni 1-4) in FASE 7, oppure hai altre richieste o domande su questa giornata?",
+AGENTE: ⚠️ Attenzione: la passata di pomodoro non è presente nel database nutrizionale ufficiale, quindi non posso calcolare in modo preciso le quantità e i nutrienti ottimali per inserirla tra gli ingredienti del pranzo.
+
+Tuttavia, puoi considerare di aggiungere a casa circa 80-100 g di passata di pomodoro (pari a 3-4 cucchiai) per condire 130 g di gnocchi: il suo apporto calorico è molto basso (circa 20 kcal per 100 g) e praticamente irrilevante su proteine e grassi, quindi non altera i bilanci del pasto.
+
+Versione suggerita del pranzo giorno 7:
+
+🍽️ PRANZO (giorno 7, variante con passata) • Gnocchi: 130 g → 🍠 1 piatto piccolo
+• Passata di pomodoro: 80–100 g → 🥄 3-4 cucchiai
+• Mozzarella: 50 g → 🧀 2 fette
+• Olio extravergine di oliva: 10 g → 🥄 1 cucchiaio
+• Insalata: 290 g → 🥗 2 piatti grandi
+
+👉 Ricetta: Cuoci gli gnocchi, condiscili con la passata riscaldata e l’olio, aggiungi sopra mozzarella a dadini. Accompagna con insalata fresca.
+
+📚 Fonti utilizzate:
+
+Dati CREA (stima per passata di pomodoro)
+Linee guida composizione pasti SINU
+➡️ Conclusione: Così ottieni un pranzo gustoso con passata di pomodoro: l’equilibrio del pasto resta ottimale. Se vuoi altre modifiche ai pasti o domande sulle sostituzioni, chiedi pure! Vuoi modificare altre ricette o giornate della settimana?
 """
     
     conversation_history = [
