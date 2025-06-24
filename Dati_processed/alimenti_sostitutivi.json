@@ -30,6 +30,7 @@
       "Bonus +30 per stessa categoria alimentare",
       "Bonus +15 per categorie correlate",
       "Penalità per grammature irrealistiche (>500g o <20g)",
+      "Penalità -20 per scoraggiare il burro come sostituto",
       "Esclusione combinazioni illogiche (es: verdure↔cereali)",
       "Soglia minima score: 60"
     ]
@@ -278,10 +279,6 @@
       }
     },
     "olio_oliva": {
-      "burro": {
-        "grams": 118.6,
-        "similarity_score": 129.3
-      },
       "avocado": {
         "grams": 377.7,
         "similarity_score": 122.2
@@ -289,13 +286,13 @@
       "olive_verdi": {
         "grams": 607.4,
         "similarity_score": 121.0
+      },
+      "burro": {
+        "grams": 118.6,
+        "similarity_score": 109.3
       }
     },
     "olive_verdi": {
-      "burro": {
-        "grams": 19.5,
-        "similarity_score": 126.9
-      },
       "avocado": {
         "grams": 62.2,
         "similarity_score": 125.5
@@ -303,6 +300,10 @@
       "olio_oliva": {
         "grams": 16.5,
         "similarity_score": 124.6
+      },
+      "burro": {
+        "grams": 19.5,
+        "similarity_score": 106.9
       }
     },
     "avocado": {
@@ -310,13 +311,13 @@
         "grams": 160.8,
         "similarity_score": 125.5
       },
-      "burro": {
-        "grams": 31.4,
-        "similarity_score": 122.9
-      },
       "olio_oliva": {
         "grams": 26.5,
         "similarity_score": 122.2
+      },
+      "burro": {
+        "grams": 31.4,
+        "similarity_score": 102.9
       }
     },
     "pane_bianco": {
@@ -596,10 +597,6 @@
         "grams": 85.6,
         "similarity_score": 107.3
       },
-      "burro_arachidi": {
-        "grams": 85.0,
-        "similarity_score": 106.7
-      },
       "mandorle": {
         "grams": 84.6,
         "similarity_score": 104.7
@@ -607,6 +604,10 @@
       "nocciole": {
         "grams": 79.1,
         "similarity_score": 103.5
+      },
+      "noci_sgusciate": {
+        "grams": 90.2,
+        "similarity_score": 103.2
       }
     },
     "lenticchie": {
@@ -1782,10 +1783,6 @@
       }
     },
     "mandorle": {
-      "burro_arachidi": {
-        "grams": 100.5,
-        "similarity_score": 127.3
-      },
       "nocciole": {
         "grams": 93.6,
         "similarity_score": 125.2
@@ -1801,6 +1798,10 @@
       "anacardi": {
         "grams": 104.0,
         "similarity_score": 116.2
+      },
+      "burro_arachidi": {
+        "grams": 100.5,
+        "similarity_score": 107.3
       }
     },
     "anacardi": {
@@ -1812,10 +1813,6 @@
         "grams": 97.4,
         "similarity_score": 118.5
       },
-      "burro_arachidi": {
-        "grams": 96.6,
-        "similarity_score": 118.2
-      },
       "mandorle": {
         "grams": 96.2,
         "similarity_score": 116.2
@@ -1823,6 +1820,10 @@
       "nocciole": {
         "grams": 90.0,
         "similarity_score": 114.6
+      },
+      "noci_sgusciate": {
+        "grams": 102.5,
+        "similarity_score": 114.1
       }
     },
     "nocciole": {
@@ -1834,10 +1835,6 @@
         "grams": 106.8,
         "similarity_score": 125.2
       },
-      "burro_arachidi": {
-        "grams": 107.4,
-        "similarity_score": 123.0
-      },
       "arachidi": {
         "grams": 108.2,
         "similarity_score": 120.2
@@ -1845,13 +1842,13 @@
       "anacardi": {
         "grams": 111.1,
         "similarity_score": 114.6
+      },
+      "cioccolato_fondente": {
+        "grams": 126.4,
+        "similarity_score": 103.5
       }
     },
     "arachidi": {
-      "burro_arachidi": {
-        "grams": 99.2,
-        "similarity_score": 127.2
-      },
       "mandorle": {
         "grams": 98.7,
         "similarity_score": 124.7
@@ -1867,6 +1864,10 @@
       "anacardi": {
         "grams": 102.6,
         "similarity_score": 118.5
+      },
+      "cioccolato_fondente": {
+        "grams": 116.8,
+        "similarity_score": 107.3
       }
     },
     "noci_sgusciate": {
@@ -1878,10 +1879,6 @@
         "grams": 93.8,
         "similarity_score": 124.3
       },
-      "burro_arachidi": {
-        "grams": 94.2,
-        "similarity_score": 122.0
-      },
       "arachidi": {
         "grams": 95.0,
         "similarity_score": 119.2
@@ -1889,6 +1886,10 @@
       "anacardi": {
         "grams": 97.5,
         "similarity_score": 114.1
+      },
+      "cioccolato_fondente": {
+        "grams": 110.9,
+        "similarity_score": 103.2
       }
     },
     "salmone_al_naturale": {

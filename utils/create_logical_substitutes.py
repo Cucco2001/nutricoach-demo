@@ -138,6 +138,7 @@ def create_logical_substitutes_database():
                 "Bonus +30 per stessa categoria alimentare",
                 "Bonus +15 per categorie correlate", 
                 "Penalità per grammature irrealistiche (>500g o <20g)",
+                "Penalità -20 per scoraggiare il burro come sostituto",
                 "Esclusione combinazioni illogiche (es: verdure↔cereali)",
                 "Soglia minima score: 60"
             ]
@@ -221,8 +222,13 @@ if __name__ == "__main__":
                 elif equivalent_grams < 20:
                     gram_penalty = min(20, (20 - equivalent_grams) / 2)
                 
+                # Penalità specifica per scoraggiare il burro come sostituto
+                butter_penalty = 0
+                if "burro" in candidate_name.lower():
+                    butter_penalty = 20  # Penalità di 20 punti per il burro
+                
                 # Score finale
-                final_score = macro_similarity + category_bonus - gram_penalty
+                final_score = macro_similarity + category_bonus - gram_penalty - butter_penalty
                 
                 # Filtri di esclusione logica
                 if should_exclude_combination(food_name, candidate_name, food_category, candidate_category):
