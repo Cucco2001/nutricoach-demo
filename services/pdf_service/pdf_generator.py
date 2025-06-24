@@ -861,7 +861,7 @@ class PDFGenerator:
             if i < len(meals_data) - 1:
                 story.append(Spacer(1, 15))
         
-        story.append(Spacer(1, 20))
+        story.append(Spacer(1, 10))
     
     def _add_weekly_diet_section(self, story: list, extracted_data: Dict[str, Any]):
         """
@@ -888,8 +888,15 @@ class PDFGenerator:
         # Mostra tutti i giorni 1-7
         for day_num in range(1, 8):
             # Inizia una nuova pagina per ogni giorno (tranne il primo)
+            # Ma solo se non siamo già all'inizio di una nuova pagina
             if day_num > 1:
-                story.append(PageBreak())
+                # CondPageBreak è un "page break condizionale" che inserisce una nuova pagina
+                # SOLO se lo spazio rimanente nella pagina corrente è inferiore al valore specificato (6*inch).
+                # Questo evita di creare pagine quasi vuote quando il contenuto precedente 
+                # ha già occupato la maggior parte della pagina.
+                # Se invece c'è ancora molto spazio (più di 6 pollici), il contenuto continua
+                # sulla stessa pagina, ottimizzando l'utilizzo dello spazio del PDF.
+                story.append(CondPageBreak(6*inch))
             
             day_name = day_names.get(day_num, f"Giorno {day_num}")
             
@@ -914,7 +921,7 @@ class PDFGenerator:
             
             # Aggiungi spazio alla fine della pagina se non è l'ultimo giorno
             if day_num < 7:
-                story.append(Spacer(1, 30))
+                story.append(Spacer(1, 10))
     
     def _add_day1_meals_to_pdf(self, story: list, weekly_diet_day_1: list):
         """
@@ -1048,7 +1055,7 @@ class PDFGenerator:
                     story.append(ingredients_table)
             
             # Usa spazio ridotto se ci sono molti pasti
-            space_after_meal = 8 if is_compact else 15
+            space_after_meal = 6 if is_compact else 15
             story.append(Spacer(1, space_after_meal))
     
     def _add_weekly_diet_day_to_pdf(self, story: list, day_data: Dict[str, Any]):
