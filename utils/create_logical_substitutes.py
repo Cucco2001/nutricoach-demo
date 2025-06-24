@@ -14,6 +14,25 @@ CATEGORIES_WITH_EXTERNAL_SUBSTITUTES = {
     "uova"
 }
 
+# CONFIGURAZIONE: Categorie correlate che ricevono bonus tra loro
+RELATED_CATEGORIES = {
+    "latte": ["formaggi", "latticini"],
+    "formaggi": ["latte", "latticini"], 
+    "latticini": ["latte", "formaggi"],
+    "tuberi": ["cereali"],
+    "cereali": ["tuberi"]
+}
+
+# CONFIGURAZIONE: Categorie incompatibili che ricevono malus tra loro
+INCOMPATIBLE_CATEGORIES = {
+    "verdure": ["latte", "formaggi", "latticini"],
+    "latte": ["verdure", "frutta", "legumi", "cereali"],
+    "formaggi": ["verdure"],
+    "latticini": ["verdure"],
+    "frutta": ["latte", "formaggi", "latticini"],
+    "legumi": ["latte", "formaggi", "latticini"]
+}
+
 def load_foods_data():
     """Carica i dati degli alimenti"""
     with open('Dati_processed/banca_alimenti_crea_60alimenti.json', 'r', encoding='utf-8') as f:
@@ -45,13 +64,30 @@ def get_food_category(food_name: str, categories: Dict[str, List[str]] = None) -
         return foods_data[food_name].get('categoria', 'uncategorized')
     return "uncategorized"
 
-def calculate_macronutrient_similarity(food1_data: Dict, food2_data: Dict) -> float:
-    """Calcola la similarità basata sui macronutrienti (0-100)"""
+def are_categories_related(cat1: str, cat2: str) -> bool:
+    """Verifica se due categorie sono correlate"""
+    if cat1 == cat2:
+        return False  # Stessa categoria, non correlata
     
-    def get_macro_percentages(food_data):
+    return cat2 in RELATED_CATEGORIES.get(cat1, [])
+
+def are_categories_incompatible(cat1: str, cat2: str) -> bool:
+    """Verifica se due categorie sono incompatibili"""
+    if cat1 == cat2:
+        return False  # Stessa categoria, non incompatibile
+    
+    return cat2 in INCOMPATIBLE_CATEGORIES.get(cat1, [])
+
+def calculate_macronutrient_similarity(food1_data: Dict, food2_data: Dict) -> float:
+    """
+    Calcola la similarità basata sui macronutrienti (0-100)
+    Priorità al macronutriente dominante, peso minore agli altri
+    """
+    
+    def get_macro_percentages_and_dominant(food_data):
         kcal = food_data.get('energia_kcal', 0)
         if kcal == 0:
-            return [0, 0, 0]
+            return [0, 0, 0], 0
         
         prot_kcal = food_data.get('proteine_g', 0) * 4
         carb_kcal = food_data.get('carboidrati_g', 0) * 4
@@ -59,23 +95,44 @@ def calculate_macronutrient_similarity(food1_data: Dict, food2_data: Dict) -> fl
         
         total_macro_kcal = prot_kcal + carb_kcal + fat_kcal
         if total_macro_kcal == 0:
-            return [0, 0, 0]
+            return [0, 0, 0], 0
         
-        return [
-            (prot_kcal / total_macro_kcal) * 100,
-            (carb_kcal / total_macro_kcal) * 100,
-            (fat_kcal / total_macro_kcal) * 100
+        percentages = [
+            (prot_kcal / total_macro_kcal) * 100,  # 0: proteine
+            (carb_kcal / total_macro_kcal) * 100,  # 1: carboidrati
+            (fat_kcal / total_macro_kcal) * 100    # 2: grassi
         ]
+        
+        # Trova il macronutriente dominante (indice del maggiore)
+        dominant_macro = percentages.index(max(percentages))
+        
+        return percentages, dominant_macro
     
-    macro1 = get_macro_percentages(food1_data)
-    macro2 = get_macro_percentages(food2_data)
+    macro1, dominant1 = get_macro_percentages_and_dominant(food1_data)
+    macro2, dominant2 = get_macro_percentages_and_dominant(food2_data)
     
-    # Calcola distanza euclidea tra percentuali macronutrienti
-    distance = math.sqrt(sum((a - b) ** 2 for a, b in zip(macro1, macro2)))
-    
-    # Converte in similarità (0-100, dove 100 = identico)
-    max_distance = math.sqrt(3 * (100 ** 2))  # Distanza massima possibile
-    similarity = max(0, 100 - (distance / max_distance) * 100)
+    # Se hanno macronutrienti dominanti diversi, penalità importante
+    if dominant1 != dominant2:
+        # Calcola distanza pesata: 70% peso al macro dominante, 30% agli altri
+        dominant_diff = abs(macro1[dominant1] - macro2[dominant1])
+        other_diff = abs(macro1[dominant2] - macro2[dominant2])
+        
+        # Distanza pesata per macro dominanti diversi
+        weighted_distance = (dominant_diff * 0.7) + (other_diff * 0.3)
+        similarity = max(0, 100 - (weighted_distance * 1.5))  # Moltiplicatore per penalizzare
+        
+    else:
+        # Stesso macro dominante: calcola similarità più accurata
+        # 60% peso al macro dominante, 20% ciascuno agli altri due
+        dominant_diff = abs(macro1[dominant1] - macro2[dominant1])
+        
+        # Altri due macro
+        other_indices = [i for i in range(3) if i != dominant1]
+        other_diff_sum = sum(abs(macro1[i] - macro2[i]) for i in other_indices)
+        
+        # Distanza pesata per stesso macro dominante
+        weighted_distance = (dominant_diff * 0.6) + (other_diff_sum * 0.2)
+        similarity = max(0, 100 - weighted_distance)
     
     return similarity
 
@@ -131,16 +188,22 @@ def create_logical_substitutes_database():
         "metadata": {
             "description": "Database di alimenti sostitutivi basato su categorie alimentari logiche e macronutrienti",
             "reference_amount": "100g",
-            "calculation_method": "Equivalenza calorica con priorità per categorie alimentari logiche e similarità macronutrienti",
+            "calculation_method": "Equivalenza calorica con priorità per categorie alimentari logiche e similarità macronutrienti dominanti",
             "categories": category_counts,
-            "algorithm_version": "2.0_logical",
+            "algorithm_version": "2.3_gram_distance_penalty",
             "filters_applied": [
-                "Bonus +30 per stessa categoria alimentare",
-                "Bonus +15 per categorie correlate", 
+                "Similarità basata su macronutriente dominante (60-70% peso)",
+                "Penalità importante per macro dominanti diversi (moltiplicatore 1.5)",
+                "Penalità proporzionale distanza da 100g ideali: |grammi-100|/10 (max 20 punti)",
+                "Malus categorie incompatibili: verdure/frutta/legumi ↔ latte/formaggi",
+                "5 sostituti migliori dalla categoria principale (soglia: 60)",
+                "5 sostituti aggiuntivi da tutte le categorie (soglia: 45)",
+                "Bonus +30 stessa categoria, +35/+30 correlate, -20/-15 incompatibili",
                 "Penalità per grammature irrealistiche (>500g o <20g)",
-                "Penalità -20 per scoraggiare il burro come sostituto",
+                "Penalità -20 per burro, pollo_ali e gelati come sostituti",
+                "Penalità -25 per sostituti aggiuntivi (garantisce priorità ai primi 5)",
                 "Esclusione combinazioni illogiche (es: verdure↔cereali)",
-                "Soglia minima score: 60"
+                "Massimo 10 sostituti totali per alimento"
             ]
         },
         "substitutes": substitutes
@@ -198,11 +261,11 @@ if __name__ == "__main__":
                 if candidate_kcal == 0:
                     continue
                 
-                # NUOVO FILTRO: Limita i sostituti alla stessa categoria, 
+                # NUOVO FILTRO: Limita i sostituti alla stessa categoria o categorie correlate, 
                 # tranne per le categorie specificate in CATEGORIES_WITH_EXTERNAL_SUBSTITUTES
                 if food_category not in CATEGORIES_WITH_EXTERNAL_SUBSTITUTES:
-                    if candidate_category != food_category:
-                        continue  # Salta candidati di categorie diverse
+                    if candidate_category != food_category and not are_categories_related(food_category, candidate_category):
+                        continue  # Salta candidati di categorie diverse e non correlate
                 
                 # Calcola equivalenza calorica
                 equivalent_grams = (food_kcal / candidate_kcal) * 100
@@ -210,10 +273,14 @@ if __name__ == "__main__":
                 # Calcola similarità macronutrienti
                 macro_similarity = calculate_macronutrient_similarity(food_data, candidate_data)
                 
-                # Bonus per stessa categoria
+                # Bonus/Malus per categorie
                 category_bonus = 0
                 if candidate_category == food_category:
                     category_bonus = 30
+                elif are_categories_related(food_category, candidate_category):
+                    category_bonus = 35  # Bonus aumentato per categorie correlate
+                elif are_categories_incompatible(food_category, candidate_category):
+                    category_bonus = -30  # Malus per categorie incompatibili
                 
                 # Penalità per grammature irrealistiche
                 gram_penalty = 0
@@ -222,13 +289,27 @@ if __name__ == "__main__":
                 elif equivalent_grams < 20:
                     gram_penalty = min(20, (20 - equivalent_grams) / 2)
                 
-                # Penalità specifica per scoraggiare il burro come sostituto
-                butter_penalty = 0
+                # NUOVA PENALITÀ: Distanza dalle grammature ideali (100g)
+                # Penalità sempre proporzionale alla distanza dall'ideale
+                gram_distance_penalty = 0
+                distance_from_ideal = abs(equivalent_grams - 100)
+                # Penalità proporzionale: più ci si allontana da 100g, più penalità
+                # Formula: distanza / 10 con cap a 20 punti massimi
+                gram_distance_penalty = min(20, distance_from_ideal / 10)
+                
+                # Penalità specifiche per scoraggiare certi alimenti come sostituti
+                food_penalty = 0
                 if "burro" in candidate_name.lower():
-                    butter_penalty = 20  # Penalità di 20 punti per il burro
+                    food_penalty = 20  # Penalità per il burro
+                elif candidate_name.lower() == "pollo_ali":
+                    food_penalty = 20  # Penalità per ali di pollo
+                elif "gelato" in candidate_name.lower():
+                    food_penalty = 20  # Penalità per tutti i gelati
+                elif "gelato_fiordilatte" in candidate_name.lower():
+                    food_penalty = 20  # Penalità per tutti i gelati
                 
                 # Score finale
-                final_score = macro_similarity + category_bonus - gram_penalty - butter_penalty
+                final_score = macro_similarity + category_bonus - gram_penalty - gram_distance_penalty - food_penalty
                 
                 # Filtri di esclusione logica
                 if should_exclude_combination(food_name, candidate_name, food_category, candidate_category):
@@ -245,13 +326,97 @@ if __name__ == "__main__":
                         'category_bonus': category_bonus
                     })
             
-            # Ordina per score e prendi i migliori 5
+            # Ordina per score e prendi i migliori 5 della categoria principale
             candidates.sort(key=lambda x: x['similarity_score'], reverse=True)
             top_candidates = candidates[:5]
             
-            if top_candidates:
+            # NUOVA FUNZIONALITÀ: Aggiungi 5 sostituti migliori da TUTTE le categorie
+            # (escludendo quelli già trovati nell'analisi principale)
+            already_found_names = {candidate['name'] for candidate in top_candidates}
+            
+            # Cerca candidati da tutte le categorie (senza limitazioni di categoria)
+            all_category_candidates = []
+            
+            for candidate_name, candidate_data in foods_data.items():
+                if candidate_name == food_name or candidate_name in already_found_names:
+                    continue
+                
+                candidate_category = get_food_category(candidate_name, categories)
+                candidate_kcal = candidate_data.get('energia_kcal', 0)
+                
+                if candidate_kcal == 0:
+                    continue
+                
+                # Calcola equivalenza calorica
+                equivalent_grams = (food_kcal / candidate_kcal) * 100
+                
+                # Calcola similarità macronutrienti
+                macro_similarity = calculate_macronutrient_similarity(food_data, candidate_data)
+                
+                # Bonus/Malus per categorie (ridotto per varietà)
+                category_bonus = 0
+                if candidate_category == food_category:
+                    category_bonus = 30  
+                elif are_categories_related(food_category, candidate_category):
+                    category_bonus = 30   # Bonus per categorie correlate nei sostituti aggiuntivi
+                elif are_categories_incompatible(food_category, candidate_category):
+                    category_bonus = -30  # Malus ridotto per categorie incompatibili
+                
+                # Penalità per grammature irrealistiche
+                gram_penalty = 0
+                if equivalent_grams > 500:
+                    gram_penalty = min(30, (equivalent_grams - 500) / 20)
+                elif equivalent_grams < 20:
+                    gram_penalty = min(20, (20 - equivalent_grams) / 2)
+                
+                # NUOVA PENALITÀ: Distanza dalle grammature ideali (100g)
+                # Penalità sempre proporzionale alla distanza dall'ideale
+                gram_distance_penalty = 0
+                distance_from_ideal = abs(equivalent_grams - 100)
+                # Penalità proporzionale: più ci si allontana da 100g, più penalità
+                # Formula: distanza / 10 con cap a 20 punti massimi
+                gram_distance_penalty = min(20, distance_from_ideal / 10)
+                
+                # Penalità specifiche per scoraggiare certi alimenti come sostituti
+                food_penalty = 0
+                if "burro" in candidate_name.lower():
+                    food_penalty = 20  # Penalità per il burro
+                elif candidate_name.lower() == "pollo_ali":
+                    food_penalty = 20  # Penalità per ali di pollo
+                elif "gelato" in candidate_name.lower():
+                    food_penalty = 20  # Penalità per tutti i gelati
+                
+                # PENALITÀ IMPORTANTE per sostituti aggiuntivi (per garantire priorità ai primi 5)
+                additional_substitute_penalty = 25  # Deficit importante di 25 punti
+                
+                # Score finale
+                final_score = macro_similarity + category_bonus - gram_penalty - gram_distance_penalty - food_penalty - additional_substitute_penalty
+                
+                # Filtri di esclusione logica (mantieni quelli esistenti)
+                if should_exclude_combination(food_name, candidate_name, food_category, candidate_category):
+                    continue
+                
+                # Soglia più bassa per permettere più varietà da altre categorie
+                if final_score >= 50:  # Ridotto da 60 a 45 per più varietà
+                    all_category_candidates.append({
+                        'name': candidate_name,
+                        'grams': round(equivalent_grams, 1),
+                        'similarity_score': round(final_score, 1),
+                        'category': candidate_category,
+                        'macro_similarity': round(macro_similarity, 1),
+                        'category_bonus': category_bonus
+                    })
+            
+            # Ordina e prendi i migliori 5 da tutte le categorie
+            all_category_candidates.sort(key=lambda x: x['similarity_score'], reverse=True)
+            additional_candidates = all_category_candidates[:5]
+            
+            # Combina i risultati: prima i 5 della categoria principale, poi i 5 aggiuntivi
+            all_substitutes = top_candidates + additional_candidates
+            
+            if all_substitutes:
                 substitutes[food_name] = {}
-                for candidate in top_candidates:
+                for candidate in all_substitutes:
                     substitutes[food_name][candidate['name']] = {
                         'grams': candidate['grams'],
                         'similarity_score': candidate['similarity_score']
