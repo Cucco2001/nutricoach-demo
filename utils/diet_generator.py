@@ -467,23 +467,23 @@ def generate_alternative_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
         
         # Estrai i pasti registrati dalla struttura corretta
         nutritional_info = user_data.get("nutritional_info_extracted", {})
-        registered_meals = nutritional_info.get("registered_meals", [])
+        weekly_diet_day_1 = nutritional_info.get("weekly_diet_day_1", [])
         
         # Debug: verifica le chiavi presenti
         logger.info(f"🔍 Chiavi principali nel file utente: {list(user_data.keys())}")
         logger.info(f"🔍 Chiavi in nutritional_info_extracted: {list(nutritional_info.keys()) if nutritional_info else 'None'}")
-        logger.info(f"🔍 Numero di pasti registrati trovati: {len(registered_meals)}")
+        logger.info(f"🔍 Numero di pasti registrati trovati: {len(weekly_diet_day_1)}")
         
-        if not registered_meals:
+        if not weekly_diet_day_1:
             raise ValueError("Nessun pasto registrato trovato per l'utente")
         
-        logger.info(f"📊 Trovati {len(registered_meals)} pasti registrati")
+        logger.info(f"📊 Trovati {len(weekly_diet_day_1)} pasti registrati")
         
         alternative_diet = {
             "metadata": {
                 "description": "Dieta alternativa generata automaticamente con sostituti alimentari",
                 "generation_method": "Sostituzione randomica pesata + ottimizzazione porzioni",
-                "original_meals_count": len(registered_meals),
+                "original_meals_count": len(weekly_diet_day_1),
                 "substitution_source": "Database sostituti logici"
             },
             "alternative_meals": []
@@ -492,7 +492,7 @@ def generate_alternative_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
         successful_optimizations = 0
         
         # Processa ogni pasto
-        for i, meal in enumerate(registered_meals):
+        for i, meal in enumerate(weekly_diet_day_1):
             meal_name = meal.get("nome_pasto", f"Pasto_{i+1}")
             
             # Salta pasti vuoti (con quantità 0)
@@ -567,7 +567,7 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
     }
     
     # Struttura risultato
-    weekly_diet = {
+    weekly_diet_days_2_7 = {
         "metadata": {
             "description": "Settimana completa di diete alternative con pattern alternati",
             "generation_method": "Pattern alternati: A(1,3,5,7) B(2,4,6) per colazione/spuntini + ottimizzazione porzioni",
@@ -581,7 +581,7 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
             "failed_days": [],
             "user_id": user_id or get_user_id()
         },
-        "weekly_diet": {},
+        "weekly_diet_days_2_7": {},
         "meal_patterns": {
             "pattern_a": None,  # Pattern per giorni 1,3,5,7
             "pattern_b": None   # Pattern per giorni 2,4,6
@@ -594,7 +594,7 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
     try:
         # Ottieni timestamp di generazione
         from datetime import datetime
-        weekly_diet["metadata"]["generation_timestamp"] = datetime.now().isoformat()
+        weekly_diet_days_2_7["metadata"]["generation_timestamp"] = datetime.now().isoformat()
         
         logger.info(f"📊 Configurazione settimana con pattern alternati:")
         logger.info(f"   - Giorno base (esistente): {WEEK_CONFIG['base_day']}")
@@ -605,7 +605,7 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
         # FASE 1: Estrai Pattern A dal Giorno 1 (già presente nel sistema)
         logger.info("🔍 Estrazione Pattern A dal Giorno 1...")
         pattern_a = _extract_pattern_from_day1(user_id, WEEK_CONFIG["pasti_da_mantenere"])
-        weekly_diet["meal_patterns"]["pattern_a"] = pattern_a
+        weekly_diet_days_2_7["meal_patterns"]["pattern_a"] = pattern_a
         
         if pattern_a:
             logger.info(f"✅ Pattern A estratto: {len(pattern_a)} pasti trovati")
@@ -617,7 +617,7 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
         # FASE 2: Genera Pattern B (diverso dal Pattern A)
         logger.info("🔄 Generazione Pattern B...")
         pattern_b = _generate_pattern_b(user_id, WEEK_CONFIG["pasti_da_mantenere"])
-        weekly_diet["meal_patterns"]["pattern_b"] = pattern_b
+        weekly_diet_days_2_7["meal_patterns"]["pattern_b"] = pattern_b
         
         if pattern_b:
             logger.info(f"✅ Pattern B generato: {len(pattern_b)} pasti")
@@ -668,13 +668,13 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
                     "day_number": day_number,
                     "day_type": _get_day_type(day_number),
                     "pattern_used": pattern_name,
-                    "generation_order": len(weekly_diet["weekly_diet"]) + 1,
+                    "generation_order": len(weekly_diet_days_2_7["weekly_diet_days_2_7"]) + 1,
                     "meals_count": len(day_diet.get("alternative_meals", [])),
                     "successful_optimizations": day_diet.get("metadata", {}).get("successful_optimizations", 0)
                 }
                 
                 # Salva il giorno nella struttura settimanale
-                weekly_diet["weekly_diet"][day_key] = day_diet
+                weekly_diet_days_2_7["weekly_diet_days_2_7"][day_key] = day_diet
                 successful_generations += 1
                 
                 logger.info(f"✅ Giorno {day_number} generato con successo:")
@@ -691,8 +691,8 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
                 continue
         
         # Aggiorna metadati finali
-        weekly_diet["metadata"]["successful_days"] = successful_generations
-        weekly_diet["metadata"]["failed_days"] = failed_generations
+        weekly_diet_days_2_7["metadata"]["successful_days"] = successful_generations
+        weekly_diet_days_2_7["metadata"]["failed_days"] = failed_generations
         
         # Log risultati finali
         logger.info(f"🎯 Generazione settimana completata:")
@@ -709,7 +709,7 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
         
         logger.info(f"✅ Settimana diete alternative generata con successo!")
         
-        return weekly_diet
+        return weekly_diet_days_2_7
         
     except Exception as e:
         logger.error(f"❌ Errore critico nella generazione della settimana: {str(e)}")
@@ -718,8 +718,8 @@ def generate_week_diet(user_id: Optional[str] = None) -> Dict[str, Any]:
         error_result = {
             "error": True,
             "error_message": str(e),
-            "metadata": weekly_diet["metadata"],
-            "weekly_diet": weekly_diet["weekly_diet"]  # Mantieni eventuali giorni già generati
+            "metadata": weekly_diet_days_2_7["metadata"],
+            "weekly_diet_days_2_7": weekly_diet_days_2_7["weekly_diet_days_2_7"]  # Mantieni eventuali giorni già generati
         }
         
         return error_result
@@ -741,16 +741,16 @@ def _extract_pattern_from_day1(user_id: Optional[str], pasti_da_mantenere: List[
         
         # Estrai i pasti registrati
         nutritional_info = user_data.get("nutritional_info_extracted", {})
-        registered_meals = nutritional_info.get("registered_meals", [])
+        weekly_diet_day_1 = nutritional_info.get("weekly_diet_day_1", [])
         
-        if not registered_meals:
+        if not weekly_diet_day_1:
             logger.warning("Nessun pasto registrato trovato per estrarre Pattern A")
             return None
         
         # Estrai i pasti che corrispondono ai nomi richiesti
         pattern_a = {}
         
-        for meal in registered_meals:
+        for meal in weekly_diet_day_1:
             meal_name = meal.get("nome_pasto", "").lower()
             
             # Normalizza il nome del pasto per confronto

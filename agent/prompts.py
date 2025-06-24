@@ -408,7 +408,7 @@ Esempio proteine:
 
 PROCESSO DI CREAZIONE DIETA:
 
-FASE 0 - ANALISI BMI E COERENZA OBIETTIVI
+FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI
 
 Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la coerenza dell'obiettivo dell'utente
 
@@ -441,7 +441,7 @@ Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la
 
 4. Esempio di output:
    ```
-   ✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI
+   ✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI
    
    📊 Risultati analisi:
    - BMI attuale: 27.2 (Sovrappeso)
@@ -834,7 +834,7 @@ PREFERENZE ALIMENTARI:
 {json.dumps(user_preferences, indent=2)}
 Basandoti su queste informazioni, procedi con le seguenti fasi:
 
-FASE 0: Analisi BMI e coerenza obiettivi:
+FASE 0: Analisi BMI e coerenza obiettivi rispetto a BMI:
 - Calcola il BMI e la categoria di appartenenza usando SEMPRE il tool analyze_bmi_and_goals
 - Valuta la coerenza dell'obiettivo con il BMI
     - Se l'obiettivo non è coerente, chiedi all'utente se intende modificare l'obiettivo

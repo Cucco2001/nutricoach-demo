@@ -304,7 +304,7 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
     }
     
     LOGICA:
-    - Cerca in user_data/user_{user_id}.json -> nutritional_info_extracted -> registered_meals
+    - Cerca in user_data/user_{user_id}.json -> nutritional_info_extracted -> weekly_diet_day_1
     - Per ogni pasto registrato, estrae solo gli alimenti con quantita_g > 0
     - Normalizza i nomi dei pasti usando get_canonical_meal_name()
     - Include solo i pasti che hanno almeno un alimento valido
@@ -342,9 +342,9 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
         
         # Estrai i pasti registrati dalla struttura del file utente
         nutritional_info = user_data.get("nutritional_info_extracted", {})
-        registered_meals = nutritional_info.get("registered_meals", [])
+        weekly_diet_day_1 = nutritional_info.get("weekly_diet_day_1", [])
         
-        if not registered_meals:
+        if not weekly_diet_day_1:
             logger.warning("Nessun pasto registrato trovato nel file utente")
             return None
         
@@ -359,7 +359,7 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
         }
         
         # Estrai gli alimenti da ogni pasto registrato
-        for meal in registered_meals:
+        for meal in weekly_diet_day_1:
             meal_name = meal.get("nome_pasto", "").lower()
             alimenti = meal.get("alimenti", [])
             
@@ -604,7 +604,7 @@ def generate_6_additional_days(user_id: Optional[str] = None, day_range: Optiona
     7. Include nei risultati finali solo i giorni richiesti
     
     STRUTTURA INPUT UTENTE (esempio):
-    user_data/user_{user_id}.json → nutritional_info_extracted → registered_meals
+    user_data/user_{user_id}.json → nutritional_info_extracted → weekly_diet_day_1
     [
         {"nome_pasto": "colazione", "alimenti": [{"nome_alimento": "Avena", "quantita_g": 100}]},
         {"nome_pasto": "pranzo", "alimenti": [{"nome_alimento": "Pollo", "quantita_g": 110}, ...]},

@@ -190,7 +190,7 @@ ESTRAI E RESTITUISCI UN JSON NEL SEGUENTE FORMATO OUTPUT CITANDO SOLO I CAMPI PR
     }
 }
 
-"registered_meals": [
+"weekly_diet_day_1": [
     {
         "nome_pasto": "colazione/pranzo/cena/spuntino_mattutino/spuntino_pomeridiano o altri se specificati",
         "alimenti": [
@@ -217,7 +217,7 @@ ESTRAI E RESTITUISCI UN JSON NEL SEGUENTE FORMATO OUTPUT CITANDO SOLO I CAMPI PR
         }
     }
 ]
-"weekly_diet": {
+"weekly_diet_days_2_7": {
     "giorno_2": {
         "colazione": {
             "alimenti": {"nome_alimento": nome_alimento, "quantita_g": quantita_g, "misura_casalinga": misura_casalinga, "sostituti": "100g di riso basmati, 90g di pasta integrale"}
@@ -234,7 +234,7 @@ ESTRAI E RESTITUISCI UN JSON NEL SEGUENTE FORMATO OUTPUT CITANDO SOLO I CAMPI PR
     "giorno_7": {"...struttura identica..."}
 }
 
-"weekly_diet_partial": {
+"weekly_diet_partial_days_2_7": {
     "day": "giorno_X",
     "meal": "nome_pasto",
     "data": {
@@ -254,12 +254,26 @@ IMPORTANTE PER LE QUANTITÀ:
 - "misura_casalinga": Descrivi sempre l'unità originale (es: "2 uova grandi", "1 tazza", "1 fetta di pane")
 
 **FONDAMENTALE - DISTINZIONE TRA GIORNO 1 E GIORNI 2-7**:
-- USA "registered_meals" SOLO per i pasti del PRIMO GIORNO (GIORNO 1)
-- USA "weekly_diet" SOLO per i pasti dei GIORNI 2-7 (quando c'è scritto "GIORNO 2", "GIORNO 3", etc.)
-- SE VEDI "🗓️ GIORNO 2" o simili → USA "weekly_diet"
-- SE NON C'È INDICAZIONE DI GIORNO → USA "registered_meals" (è il giorno 1)
-- ESEMPIO: "🌅 COLAZIONE (550 kcal)" senza giorno → registered_meals
-- ESEMPIO: "🗓️ GIORNO 2 - COLAZIONE" → weekly_diet.giorno_2.colazione
+- USA "weekly_diet_day_1" SOLO per i pasti del PRIMO GIORNO (GIORNO 1)
+- USA "weekly_diet_days_2_7" per i pasti dei GIORNI 2-7
+- USA "weekly_diet_partial_days_2_7" per modifiche specifiche di un singolo pasto dei giorni 2-7
+
+**PATTERN DI RICONOSCIMENTO**:
+- "🗓️ GIORNO 2", "GIORNO 2", "giorno 2" → weekly_diet_days_2_7.giorno_2  
+- "🗓️ GIORNO 3", "GIORNO 3", "giorno 3" → weekly_diet_days_2_7.giorno_3
+- "🗓️ GIORNO 4", "GIORNO 4", "giorno 4" → weekly_diet_days_2_7.giorno_4
+- "🗓️ GIORNO 5", "GIORNO 5", "giorno 5" → weekly_diet_days_2_7.giorno_5
+- "🗓️ GIORNO 6", "GIORNO 6", "giorno 6" → weekly_diet_days_2_7.giorno_6
+- "🗓️ GIORNO 7", "GIORNO 7", "giorno 7" → weekly_diet_days_2_7.giorno_7
+
+**MODIFICHE SPECIFICHE**:
+- "rifai colazione giorno 3" → weekly_diet_partial_days_2_7 con day="giorno_3", meal="colazione"
+- "cambia pranzo giorno 4" → weekly_diet_partial_days_2_7 con day="giorno_4", meal="pranzo"
+- "rifai cena giorno 2" → weekly_diet_partial_days_2_7 con day="giorno_2", meal="cena"
+
+**DEFAULT**:
+- SE NON C'È INDICAZIONE DI GIORNO → USA "weekly_diet_day_1" (è il giorno 1)
+- ESEMPIO: "🌅 COLAZIONE (550 kcal)" senza giorno → weekly_diet_day_1
 
 
 IMPORTANTE PER I TIPI DI PASTO:
@@ -276,7 +290,7 @@ IMPORTANTE PER I TIPI DI PASTO:
 
 IMPORTANTE PER LA DIETA SETTIMANALE:
 - Se nella conversazione è presente una dieta settimanale completa (giorni 2-7), estrai TUTTI i dati
-- La sezione "weekly_diet" deve contenere SOLO i giorni 2-7 (il giorno 1 è già nei "registered_meals")
+- La sezione "weekly_diet_days_2_7" deve contenere SOLO i giorni 2-7 (il giorno 1 è già nei "weekly_diet_day_1")
 - Per ogni giorno, estrai tutti i pasti con i loro alimenti e grammature con sostituti se specificati nella conversazione
 - Se ci sono informazioni sui target nutrizionali e valori effettivi, includili
 - Se l'agente ha fornito dettagli sui macronutrienti per pasto, estraili accuratamente
@@ -290,25 +304,35 @@ ESEMPI DI ESTRAZIONE DIETA SETTIMANALE:
   "target_nutrients": {"kcal": 400, "proteine": 15}
 
 MODIFICHE PARZIALI DELLA DIETA SETTIMANALE:
-- Usa "weekly_diet_partial" SOLO quando viene richiesta la modifica di un singolo pasto specifico tra giorno 2 e giorno 7.
-- Esempio: "Cambia il pranzo del giorno 2 con tacchino e lenticchie" →
-  "weekly_diet_partial": {
-    "day": "giorno_2",
-    "meal": "pranzo", 
-    "data": {
-      "alimenti": [{"nome_alimento": "Petto di tacchino", "quantita_g": 90, "misura_casalinga": "1 filetto medio", "sostituti": "100g di petto di pollo, 80g di bresaola"}, {"nome_alimento": "Riso integrale", "quantita_g": 100, "misura_casalinga": "1 porzione media", "sostituti": "120g di quinoa, 90g di farro"}, {"nome_alimento": "Lenticchie", "quantita_g": 90, "misura_casalinga": "1 ciotola", "sostituti": "100g di ceci, 80g di fagioli"}, {"nome_alimento": "Carote", "quantita_g": 150, "misura_casalinga": "1 ciotola", "sostituti": "200g di zucchine, 180g di peperoni"}, {"nome_alimento": "Olio extravergine di oliva", "quantita_g": 20, "misura_casalinga": "1 cucchiaio", "sostituti": "25g di olio di semi, 20g di burro"}]
-    }
+- Usa "weekly_diet_partial_days_2_7" quando viene richiesta la modifica di un singolo pasto specifico tra giorno 2 e giorno 7.
+- RICONOSCIMENTO AUTOMATICO: "rifai [pasto] giorno [numero]", "cambia [pasto] giorno [numero]", "modifica [pasto] giorno [numero]"
+
+**ESEMPI DI RICONOSCIMENTO**:
+- "rifai cena giorno 4" → weekly_diet_partial_days_2_7 con day="giorno_4", meal="cena"
+- "cambia pranzo giorno 3" → weekly_diet_partial_days_2_7 con day="giorno_3", meal="pranzo"  
+- "rifai colazione giorno 2" → weekly_diet_partial_days_2_7 con day="giorno_2", meal="colazione"
+- "modifica spuntino giorno 5" → weekly_diet_partial_days_2_7 con day="giorno_5", meal="spuntino_pomeridiano"
+
+**FORMATO OUTPUT**:
+"weekly_diet_partial_days_2_7": {
+  "day": "giorno_X",
+  "meal": "nome_pasto",
+  "data": {
+    "alimenti": [{"nome_alimento": "...", "quantita_g": X, "misura_casalinga": "...", "sostituti": "..."}]
   }
-- Se utente chiede piu di un pasto, ma non per un giorno intero, usa "weekly_diet_partial" per ciascun pasto
-- NON USARE "weekly_diet_partial" se utente chiede di modificare un giorno intero di dieta o piu giorni, usa "weekly_diet" in quel caso.
-- weekly_diet_partial preserva tutti gli altri pasti del giorno invariati
+}
+
+**REGOLE**:
+- Se utente chiede più di un pasto, ma non per un giorno intero, usa "weekly_diet_partial_days_2_7" per ciascun pasto
+- NON USARE "weekly_diet_partial_days_2_7" se utente chiede di modificare un giorno intero di dieta o più giorni, usa "weekly_diet_days_2_7" in quel caso
+- weekly_diet_partial_days_2_7 preserva tutti gli altri pasti del giorno invariati
 
 REGOLE FONDAMENTALI PER GLI AGGIORNAMENTI - MOLTO IMPORTANTE:
 - **NON AZZERARE MAI CAMPI CHE NON SONO MENZIONATI NELLA CONVERSAZIONE CORRENTE**
 - **ESTRAI E AGGIORNA SOLO I CAMPI EFFETTIVAMENTE DISCUSSI NELLE INTERAZIONI CORRENTI**
 - **NON INSERIRE MAI 0 COME VALORE PREDEFINITO**: Se un valore non è presente, OMETTI il campo
-- Se nella conversazione si parla solo di "caloric_needs", NON restituire campi vuoti per "macros_total", "registered_meals", etc.
-- Se si modifica solo un pasto specifico, usa "weekly_diet_partial" e NON modificare altri pasti
+- Se nella conversazione si parla solo di "caloric_needs", NON restituire campi vuoti per "macros_total", "weekly_diet_day_1", etc.
+- Se si modifica solo un pasto specifico, usa "weekly_diet_partial_days_2_7" e NON modificare altri pasti
 - Se si aggiorna solo la distribuzione calorica, NON azzerare i pasti registrati
 - **PRINCIPIO DI INCREMENTALITÀ**: Ogni estrazione deve aggiungere o modificare solo ciò che è esplicitamente discusso
 - **MAI RIMUOVERE DATI**: Se un campo esisteva prima e non è menzionato ora, NON includerlo nel JSON di output

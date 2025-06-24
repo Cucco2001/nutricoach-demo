@@ -743,7 +743,7 @@ class PDFGenerator:
         story.append(meal_table)
         story.append(Spacer(1, 15))  # Spazio ridotto
     
-    def _add_registered_meals_section(self, story: list, extracted_data: Dict[str, Any]):
+    def _add_weekly_diet_day_1_section(self, story: list, extracted_data: Dict[str, Any]):
         """
         Aggiunge la sezione dei pasti registrati.
         
@@ -751,11 +751,11 @@ class PDFGenerator:
             story: Lista degli elementi del PDF
             extracted_data: Dati nutrizionali estratti
         """
-        if not extracted_data or "registered_meals" not in extracted_data or not extracted_data["registered_meals"]:
+        if not extracted_data or "weekly_diet_day_1" not in extracted_data or not extracted_data["weekly_diet_day_1"]:
 
             return
         
-        meals_data = extracted_data["registered_meals"]
+        meals_data = extracted_data["weekly_diet_day_1"]
         
         # Titolo sezione
         story.append(Paragraph("👨‍🍳 Ricette e Pasti Creati", self.styles['CustomSectionTitle']))
@@ -862,8 +862,8 @@ class PDFGenerator:
             extracted_data: Dati nutrizionali estratti
         """
         # Verifica che ci siano dati da mostrare
-        has_day1_data = "registered_meals" in extracted_data and extracted_data["registered_meals"]
-        has_weekly_data = "weekly_diet" in extracted_data and extracted_data["weekly_diet"]
+        has_day1_data = "weekly_diet_day_1" in extracted_data and extracted_data["weekly_diet_day_1"]
+        has_weekly_data = "weekly_diet_days_2_7" in extracted_data and extracted_data["weekly_diet_days_2_7"]
         
         if not has_day1_data and not has_weekly_data:
 
@@ -887,14 +887,14 @@ class PDFGenerator:
             story.append(Spacer(1, 15))
             
             if day_num == 1 and has_day1_data:
-                # Giorno 1: dati da registered_meals
-                self._add_day1_meals_to_pdf(story, extracted_data["registered_meals"])
+                # Giorno 1: dati da weekly_diet_day_1
+                self._add_day1_meals_to_pdf(story, extracted_data["weekly_diet_day_1"])
             elif day_num > 1 and has_weekly_data:
-                # Giorni 2-7: dati da weekly_diet
-                weekly_diet = extracted_data["weekly_diet"]
+                # Giorni 2-7: dati da weekly_diet_days_2_7
+                weekly_diet_days_2_7 = extracted_data["weekly_diet_days_2_7"]
                 day_key = f"giorno_{day_num}"
-                if day_key in weekly_diet and weekly_diet[day_key]:
-                    day_data = weekly_diet[day_key]
+                if day_key in weekly_diet_days_2_7 and weekly_diet_days_2_7[day_key]:
+                    day_data = weekly_diet_days_2_7[day_key]
                     self._add_weekly_diet_day_to_pdf(story, day_data)
                 else:
                     story.append(Paragraph("📝 Nessun piano disponibile per questo giorno", self.styles['CustomBodyText']))
@@ -905,20 +905,20 @@ class PDFGenerator:
             if day_num < 7:
                 story.append(Spacer(1, 30))
     
-    def _add_day1_meals_to_pdf(self, story: list, registered_meals: list):
+    def _add_day1_meals_to_pdf(self, story: list, weekly_diet_day_1: list):
         """
-        Aggiunge i pasti del giorno 1 (da registered_meals) al PDF.
+        Aggiunge i pasti del giorno 1 (da weekly_diet_day_1) al PDF.
         
         Args:
             story: Lista degli elementi del PDF
-            registered_meals: Lista dei pasti registrati del giorno 1
+            weekly_diet_day_1: Lista dei pasti registrati del giorno 1
         """
-        if not registered_meals:
+        if not weekly_diet_day_1:
             story.append(Paragraph("📝 Nessun pasto disponibile per questo giorno", self.styles['CustomBodyText']))
             return
         
         # Ordina i pasti
-        sorted_meals = self._sort_meals_by_time(registered_meals)
+        sorted_meals = self._sort_meals_by_time(weekly_diet_day_1)
         
         # Conta i pasti per determinare se serve layout compatto
         meals_count = len(sorted_meals)
@@ -1042,11 +1042,11 @@ class PDFGenerator:
     
     def _add_weekly_diet_day_to_pdf(self, story: list, day_data: Dict[str, Any]):
         """
-        Aggiunge i pasti di un giorno dalla weekly_diet al PDF.
+        Aggiunge i pasti di un giorno dalla weekly_diet_days_2_7 al PDF.
         
         Args:
             story: Lista degli elementi del PDF
-            day_data: Dati del giorno dalla weekly_diet
+            day_data: Dati del giorno dalla weekly_diet_days_2_7
         """
         # Ordine dei pasti
         meal_order = ['colazione', 'spuntino_mattutino', 'pranzo', 'spuntino_pomeridiano', 'cena', 'spuntino_serale']

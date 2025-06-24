@@ -72,7 +72,7 @@ def format_day1_from_user_data(user_id):
             user_data = json.load(f)
         
         nutritional_info = user_data.get("nutritional_info_extracted", {})
-        registered_meals = nutritional_info.get("registered_meals", [])
+        weekly_diet_day_1 = nutritional_info.get("weekly_diet_day_1", [])
         daily_macros = nutritional_info.get("daily_macros", {})
         
         output.append("📅 GIORNO 1 - DATI UTENTE REGISTRATI")
@@ -80,7 +80,7 @@ def format_day1_from_user_data(user_id):
         
         # Organizza i pasti per tipo
         meals_by_type = {}
-        for meal in registered_meals:
+        for meal in weekly_diet_day_1:
             meal_type = meal.get("nome_pasto", "sconosciuto")
             if meal_type not in meals_by_type:
                 meals_by_type[meal_type] = []

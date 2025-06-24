@@ -563,9 +563,9 @@ class NutriDB:
         if not foods_with_grams:
             nutritional_info = user_data.get("nutritional_info_extracted", {})
             
-            # Cerca in registered_meals (pasti registrati dall'agente)
-            if "registered_meals" in nutritional_info:
-                for meal in nutritional_info["registered_meals"]:
+            # Cerca in weekly_diet_day_1 (pasti registrati dall'agente)
+            if "weekly_diet_day_1" in nutritional_info:
+                for meal in nutritional_info["weekly_diet_day_1"]:
                     if "alimenti" in meal:
                         for alimento in meal["alimenti"]:
                             nome_alimento = alimento.get("nome_alimento", "")

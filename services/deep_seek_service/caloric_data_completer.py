@@ -40,6 +40,9 @@ class CaloricDataCompleter:
         """
         Completa i dati calorici mancanti nell'estrazione di DeepSeek.
         
+        REGOLA IMPORTANTE: Non aggiunge sezioni che DeepSeek non ha estratto.
+        Completa solo i campi mancanti nelle sezioni già presenti.
+        
         Args:
             user_id: ID dell'utente
             user_info: Dati utente con nutritional_info
@@ -52,61 +55,67 @@ class CaloricDataCompleter:
         # Copia i dati per non modificare l'originale
         completed_data = extracted_data.copy()
         
-        # Trova o crea la sezione caloric_needs usando il mapper
-        caloric_section_name = ensure_section(completed_data, "caloric_needs")
-        caloric_data = completed_data[caloric_section_name]
+        # DEBUG: Log dettagliato
+        print(f"[CALORIC_COMPLETER] DEBUG per {user_id}:")
+        print(f"[CALORIC_COMPLETER] extracted_data keys: {list(extracted_data.keys())}")
+        print(f"[CALORIC_COMPLETER] 'caloric_needs' in extracted_data: {'caloric_needs' in extracted_data}")
+        if 'caloric_needs' in extracted_data:
+            print(f"[CALORIC_COMPLETER] extracted_data['caloric_needs'] content: {extracted_data['caloric_needs']}")
         
-        # Estrai informazioni utente necessarie
-        user_basic_info = self._extract_user_basic_info(user_info)
-        if not user_basic_info:
-            return completed_data
+        # CONTROLLO CRITICO: Completa caloric_needs SOLO se DeepSeek l'ha estratta NELL'INTERAZIONE CORRENTE
+        # extracted_data contiene SOLO quello che DeepSeek ha estratto nell'ultima interazione
+        if "caloric_needs" in extracted_data and extracted_data["caloric_needs"]:
+            print(f"[CALORIC_COMPLETER] Completamento caloric_needs per {user_id}: DeepSeek ha estratto questa sezione nell'interazione corrente")
+            # Trova la sezione nei dati completi
+            caloric_data = extracted_data["caloric_needs"]
             
-        # Calcola BMR e fabbisogno base usando la funzione originale dell'agente
-        harris_benedict_result = self._calculate_harris_benedict()
-        if harris_benedict_result:
-            if not has_field(caloric_data, 'bmr'):
-                set_field(caloric_data, 'bmr', harris_benedict_result.get('bmr'))
-            else:
-                existing_bmr = get_field(caloric_data, 'bmr')
+            # Estrai informazioni utente necessarie
+            user_basic_info = self._extract_user_basic_info(user_info)
+            if not user_basic_info:
+                # Completa solo macros_total se presente ma incompleto
+                if 'macros_total' in completed_data:
+                    self._complete_macros_total(completed_data['macros_total'])
+                return completed_data
+                
+            # Calcola BMR e fabbisogno base usando la funzione originale dell'agente
+            harris_benedict_result = self._calculate_harris_benedict()
+            if harris_benedict_result:
+                if not has_field(caloric_data, 'bmr'):
+                    set_field(caloric_data, 'bmr', harris_benedict_result.get('bmr'))
+                
+                if not has_field(caloric_data, 'laf_utilizzato'):
+                    set_field(caloric_data, 'laf_utilizzato', harris_benedict_result.get('laf_utilizzato'))
+                
+                if not has_field(caloric_data, 'fabbisogno_base'):
+                    set_field(caloric_data, 'fabbisogno_base', harris_benedict_result.get('fabbisogno_giornaliero'))
             
-            if not has_field(caloric_data, 'laf_utilizzato'):
-                set_field(caloric_data, 'laf_utilizzato', harris_benedict_result.get('laf_utilizzato'))
-            else:
-                existing_laf = get_field(caloric_data, 'laf_utilizzato')
+            # Calcola dispendio sportivo usando la funzione originale dell'agente
+            if not has_field(caloric_data, 'dispendio_sportivo'):
+                dispendio_sportivo = self._calculate_sport_expenditure_original(user_info)
+                if dispendio_sportivo is not None:
+                    set_field(caloric_data, 'dispendio_sportivo', dispendio_sportivo)
             
-            if not has_field(caloric_data, 'fabbisogno_base'):
-                set_field(caloric_data, 'fabbisogno_base', harris_benedict_result.get('fabbisogno_giornaliero'))
-            else:
-                existing_fabbisogno = get_field(caloric_data, 'fabbisogno_base')
-        
-        # Calcola dispendio sportivo usando la funzione originale dell'agente
-        if not has_field(caloric_data, 'dispendio_sportivo'):
-            dispendio_sportivo = self._calculate_sport_expenditure_original(user_info)
-            if dispendio_sportivo is not None:
-                set_field(caloric_data, 'dispendio_sportivo', dispendio_sportivo)
+            # Calcola aggiustamento obiettivo se mancante (deve essere fatto PRIMA del fabbisogno finale)
+            if not has_field(caloric_data, 'aggiustamento_obiettivo'):
+                bmr_value = get_field(caloric_data, 'bmr')
+                aggiustamento = self._calculate_goal_adjustment(user_info, bmr_value)
+                if aggiustamento is not None:
+                    set_field(caloric_data, 'aggiustamento_obiettivo', aggiustamento)
+            
+            # Calcola fabbisogno finale SOLO se mancante (e include aggiustamento obiettivo)
+            if not has_field(caloric_data, 'fabbisogno_finale'):
+                fabbisogno_base = get_field(caloric_data, 'fabbisogno_base', 0)
+                dispendio_sportivo = get_field(caloric_data, 'dispendio_sportivo', 0)
+                aggiustamento_obiettivo = get_field(caloric_data, 'aggiustamento_obiettivo', 0)
+                
+                if fabbisogno_base:
+                    # FORMULA CORRETTA: include anche l'aggiustamento per l'obiettivo
+                    fabbisogno_finale = fabbisogno_base + dispendio_sportivo + aggiustamento_obiettivo
+                    set_field(caloric_data, 'fabbisogno_finale', fabbisogno_finale)
         else:
-            existing_dispendio = get_field(caloric_data, 'dispendio_sportivo')
+            print(f"[CALORIC_COMPLETER] Saltato completamento caloric_needs per {user_id}: DeepSeek non ha estratto questa sezione")
         
-        # Calcola fabbisogno finale se mancante o incompleto
-        fabbisogno_base = get_field(caloric_data, 'fabbisogno_base', 0)
-        dispendio_sportivo = get_field(caloric_data, 'dispendio_sportivo', 0)
-        
-        if not has_field(caloric_data, 'fabbisogno_finale') and fabbisogno_base:
-            fabbisogno_finale = fabbisogno_base + dispendio_sportivo
-            set_field(caloric_data, 'fabbisogno_finale', fabbisogno_finale)
-        else:
-            existing_totale = get_field(caloric_data, 'fabbisogno_finale')
-        
-        # Calcola aggiustamento obiettivo se mancante
-        if not has_field(caloric_data, 'aggiustamento_obiettivo'):
-            bmr_value = get_field(caloric_data, 'bmr')
-            aggiustamento = self._calculate_goal_adjustment(user_info, bmr_value)
-            if aggiustamento is not None:
-                set_field(caloric_data, 'aggiustamento_obiettivo', aggiustamento)
-        else:
-            existing_aggiustamento = get_field(caloric_data, 'aggiustamento_obiettivo')
-        
-        # Completa anche macros_total se presente ma incompleto
+        # Completa macros_total se presente ma incompleto (sempre, indipendentemente da caloric_needs)
         if 'macros_total' in completed_data:
             self._complete_macros_total(completed_data['macros_total'])
         

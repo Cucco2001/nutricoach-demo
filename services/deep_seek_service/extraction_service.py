@@ -56,6 +56,11 @@ class NutritionalDataExtractor:
                 
                 if deepseek_result and "extracted_data" in deepseek_result:
                     extracted_data = deepseek_result["extracted_data"]
+                    
+                    # DEBUG: Log che cosa DeepSeek ha estratto
+                    print(f"[EXTRACTION_SERVICE] DEBUG per {user_id}:")
+                    print(f"[EXTRACTION_SERVICE] DeepSeek extracted_data keys: {list(extracted_data.keys())}")
+                    
                     # Carica i dati completi dell'utente dal file per il completer
                     complete_user_data = self._load_complete_user_data(user_id)
                     if complete_user_data:
@@ -63,6 +68,12 @@ class NutritionalDataExtractor:
                         completed_data = self.caloric_data_completer.complete_caloric_data(
                             user_id, complete_user_data, extracted_data
                         )
+                        
+                        # DEBUG: Log cosa ha restituito il completer
+                        print(f"[EXTRACTION_SERVICE] Completer output keys: {list(completed_data.keys())}")
+                        if 'caloric_needs' in completed_data:
+                            print(f"[EXTRACTION_SERVICE] PROBLEMA: caloric_needs aggiunto dal completer!")
+                            print(f"[EXTRACTION_SERVICE] caloric_needs content: {completed_data['caloric_needs']}")
                     else:
                         # Se non ci sono dati completi, usa quelli passati (fallback)
                         completed_data = self.caloric_data_completer.complete_caloric_data(
@@ -563,72 +574,96 @@ class NutritionalDataExtractor:
                             existing_data[key][field_name] = field_value
                             changes_made = True
                 
-                # 2. Completa campi mancanti per caloric_needs e daily_macros
+                # 2. Completa campi mancanti SOLO se DeepSeek aveva intenzione di aggiornare questa sezione
                 if key == "caloric_needs":
-                    missing_fields = self._get_missing_fields(key, existing_data[key])
-                    if missing_fields:
-                        completed_section = self._complete_missing_caloric_fields(user_id, existing_data[key])
-                        if completed_section:
-                            # Sostituisce i missing fields con quelli del completer
-                            for field_name in missing_fields:
-                                if field_name in completed_section and completed_section[field_name] is not None:
-                                    existing_data[key][field_name] = completed_section[field_name]
-                            changes_made = True
+                    # CONTROLLO IMPORTANTE: Solo se DeepSeek ha estratto caloric_needs in questa interazione
+                    if key in new_data and new_data[key]:
+                        missing_fields = self._get_missing_fields(key, existing_data[key])
+                        if missing_fields:
+                            print(f"[EXTRACTION_SERVICE] Campi mancanti rilevati per {user_id}: {missing_fields}")
+                            completed_section = self._complete_missing_caloric_fields(user_id, existing_data[key])
+                            if completed_section:
+                                # Sostituisce SOLO i missing fields con quelli del completer
+                                # NON sovrascrive mai i campi già estratti correttamente da DeepSeek
+                                for field_name in missing_fields:
+                                    if field_name in completed_section and completed_section[field_name] is not None:
+                                        # Doppio controllo: sostituisce solo se il campo è davvero mancante
+                                        if field_name not in existing_data[key] or existing_data[key][field_name] is None:
+                                            existing_data[key][field_name] = completed_section[field_name]
+                                            print(f"[EXTRACTION_SERVICE] Completato campo mancante {field_name} = {completed_section[field_name]}")
+                                        else:
+                                            print(f"[EXTRACTION_SERVICE] Campo {field_name} già presente, non sovrascritto (valore: {existing_data[key][field_name]})")
+                                changes_made = True
+                    else:
+                        print(f"[EXTRACTION_SERVICE] Saltato completamento caloric_needs: DeepSeek non ha estratto questa sezione nell'interazione corrente")
                 elif key == "macros_total":
-                    missing_fields = self._get_missing_fields(key, existing_data[key])
-                    if missing_fields:
-                        completed_section = self._complete_missing_macros_fields(user_id, existing_data[key])
-                        if completed_section:
-                            # Sostituisce i missing fields con quelli del completer
-                            for field_name in missing_fields:
-                                if field_name in completed_section and completed_section[field_name] is not None:
-                                    existing_data[key][field_name] = completed_section[field_name]
-                            changes_made = True
+                    # CONTROLLO: Solo se DeepSeek ha estratto macros_total in questa interazione
+                    if key in new_data and new_data[key]:
+                        missing_fields = self._get_missing_fields(key, existing_data[key])
+                        if missing_fields:
+                            completed_section = self._complete_missing_macros_fields(user_id, existing_data[key])
+                            if completed_section:
+                                # Sostituisce i missing fields con quelli del completer
+                                for field_name in missing_fields:
+                                    if field_name in completed_section and completed_section[field_name] is not None:
+                                        # Doppio controllo: sostituisce solo se il campo è davvero mancante
+                                        if field_name not in existing_data[key] or existing_data[key][field_name] is None:
+                                            existing_data[key][field_name] = completed_section[field_name]
+                                            print(f"[EXTRACTION_SERVICE] Completato campo mancante macros_total.{field_name} = {completed_section[field_name]}")
+                                        else:
+                                            print(f"[EXTRACTION_SERVICE] Campo macros_total.{field_name} già presente, non sovrascritto")
+                                changes_made = True
+                    else:
+                        print(f"[EXTRACTION_SERVICE] Saltato completamento macros_total: DeepSeek non ha estratto questa sezione nell'interazione corrente")
                 elif key == "daily_macros":
-                    missing_fields = self._get_missing_fields(key, existing_data[key])
-                    if missing_fields:
-                        completed_section = self._complete_missing_daily_macros_fields(user_id, existing_data[key], existing_data)
-                        if completed_section:
-                            # Sostituisce i missing fields con quelli del completer
-                            self._apply_daily_macros_completion(existing_data[key], completed_section, missing_fields)
-                            changes_made = True
+                    # CONTROLLO: Solo se DeepSeek ha estratto daily_macros in questa interazione
+                    if key in new_data and new_data[key]:
+                        missing_fields = self._get_missing_fields(key, existing_data[key])
+                        if missing_fields:
+                            completed_section = self._complete_missing_daily_macros_fields(user_id, existing_data[key], existing_data)
+                            if completed_section:
+                                # Sostituisce i missing fields con quelli del completer
+                                self._apply_daily_macros_completion(existing_data[key], completed_section, missing_fields)
+                                changes_made = True
+                    else:
+                        print(f"[EXTRACTION_SERVICE] Saltato completamento daily_macros: DeepSeek non ha estratto questa sezione nell'interazione corrente")
         
-        # Merge specializzato per registered_meals
-        if "registered_meals" in new_data and new_data["registered_meals"]:
-            if "registered_meals" not in existing_data:
-                existing_data["registered_meals"] = []
+        # Merge specializzato per weekly_diet_day_1
+        if "weekly_diet_day_1" in new_data and new_data["weekly_diet_day_1"]:
+            if "weekly_diet_day_1" not in existing_data:
+                existing_data["weekly_diet_day_1"] = []
             
-            meal_changes = self._merge_registered_meals(
-                existing_data["registered_meals"], 
-                new_data["registered_meals"], 
+            meal_changes = self._merge_weekly_diet_day_1(
+                existing_data["weekly_diet_day_1"], 
+                new_data["weekly_diet_day_1"], 
                 user_id
             )
             
             if meal_changes:
                 changes_made = True
         
-        # Merge specializzato per weekly_diet (supporta modifiche parziali e complete)
-        if "weekly_diet" in new_data and new_data["weekly_diet"]:
-            if "weekly_diet" not in existing_data:
-                existing_data["weekly_diet"] = {}
+        # Merge specializzato per weekly_diet_days_2_7 (supporta modifiche parziali e complete)
+        if "weekly_diet_days_2_7" in new_data and new_data["weekly_diet_days_2_7"]:
+            if "weekly_diet_days_2_7" not in existing_data:
+                existing_data["weekly_diet_days_2_7"] = {}
             
             weekly_changes = self._merge_weekly_diet_smart(
-                existing_data["weekly_diet"], 
-                new_data["weekly_diet"], 
+                existing_data["weekly_diet_days_2_7"], 
+                new_data["weekly_diet_days_2_7"], 
                 user_id
             )
             
             if weekly_changes:
                 changes_made = True
                 
-        # Merge specializzato per weekly_diet_partial (modifiche specifiche di sottocampi)
-        if "weekly_diet_partial" in new_data and new_data["weekly_diet_partial"]:
-            if "weekly_diet" not in existing_data:
-                existing_data["weekly_diet"] = {}
+        # Merge specializzato per weekly_diet_partial_days_2_7 (modifiche specifiche di sottocampi)
+        if "weekly_diet_partial_days_2_7" in new_data and new_data["weekly_diet_partial_days_2_7"]:
+            if "weekly_diet_days_2_7" not in existing_data:
+                existing_data["weekly_diet_days_2_7"] = {}
                 
             partial_changes = self._merge_weekly_diet_partial(
-                existing_data["weekly_diet"],
-                new_data["weekly_diet_partial"],
+                existing_data["weekly_diet_days_2_7"],
+                new_data["weekly_diet_partial_days_2_7"],
                 user_id
             )
             
@@ -968,7 +1003,7 @@ class NutritionalDataExtractor:
                 spuntino_data = new_distribuzione.pop("spuntino")
                 new_distribuzione["spuntino_pomeridiano"] = spuntino_data
     
-    def _merge_registered_meals(
+    def _merge_weekly_diet_day_1(
         self, 
         existing_meals: List[Dict[str, Any]], 
         new_meals: List[Dict[str, Any]], 
@@ -1138,11 +1173,11 @@ class NutritionalDataExtractor:
         user_id: str
     ) -> bool:
         """
-        Merge intelligente per weekly_diet che preserva dati esistenti quando possibile.
+        Merge intelligente per weekly_diet_days_2_7 che preserva dati esistenti quando possibile.
         
         Args:
-            existing_weekly_diet: Dati weekly_diet esistenti
-            new_weekly_diet: Nuovi dati weekly_diet da DeepSeek  
+            existing_weekly_diet: Dati weekly_diet_days_2_7 esistenti
+            new_weekly_diet: Nuovi dati weekly_diet_days_2_7 da DeepSeek  
             user_id: ID utente per logging
             
         Returns:
@@ -1183,7 +1218,7 @@ class NutritionalDataExtractor:
         user_id: str
     ) -> bool:
         """
-        Merge parziale per aggiornamenti specifici della weekly_diet.
+        Merge parziale per aggiornamenti specifici della weekly_diet_days_2_7.
         
         Formato partial_updates atteso:
         {
@@ -1205,7 +1240,7 @@ class NutritionalDataExtractor:
         }
         
         Args:
-            existing_weekly_diet: Dati weekly_diet esistenti
+            existing_weekly_diet: Dati weekly_diet_days_2_7 esistenti
             partial_updates: Aggiornamenti parziali specifici
             user_id: ID utente per logging
             

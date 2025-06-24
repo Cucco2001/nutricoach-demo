@@ -136,7 +136,7 @@ class PianoNutrizionale:
 
             # === SEZIONE PIANO SETTIMANALE ===
             with st.expander("📅 Piano Settimanale - Ricette e Pasti Creati", expanded=False):
-                self._display_registered_meals_section(extracted_data)
+                self._display_weekly_diet_day_1_section(extracted_data)
             
         except Exception as e:
             st.error(f"❌ Errore nel caricamento dei dati: {str(e)}")
@@ -551,7 +551,7 @@ class PianoNutrizionale:
                 st.markdown(f'<div class="ingredient-card"><strong>{label}:</strong> {value}{unit}</div>', 
                            unsafe_allow_html=True)
     
-    def _display_registered_meals_section(self, extracted_data):
+    def _display_weekly_diet_day_1_section(self, extracted_data):
         """
         Mostra la sezione dei pasti creati/registrati organizzati per giorno.
         
@@ -563,8 +563,8 @@ class PianoNutrizionale:
             return
             
         # Controlla se ci sono dati da mostrare
-        has_day1_data = "registered_meals" in extracted_data and extracted_data["registered_meals"]
-        has_weekly_data = "weekly_diet" in extracted_data and extracted_data["weekly_diet"]
+        has_day1_data = "weekly_diet_day_1" in extracted_data and extracted_data["weekly_diet_day_1"]
+        has_weekly_data = "weekly_diet_days_2_7" in extracted_data and extracted_data["weekly_diet_days_2_7"]
         
         if not has_day1_data and not has_weekly_data:
             return
@@ -585,8 +585,8 @@ class PianoNutrizionale:
         if not extracted_data:
             return
             
-        has_day1 = "registered_meals" in extracted_data and extracted_data["registered_meals"]
-        weekly_diet = extracted_data.get("weekly_diet", {})
+        has_day1 = "weekly_diet_day_1" in extracted_data and extracted_data["weekly_diet_day_1"]
+        weekly_diet_days_2_7 = extracted_data.get("weekly_diet_days_2_7", {})
         
         available_days = []
         if has_day1:
@@ -594,7 +594,7 @@ class PianoNutrizionale:
         
         for day_num in range(2, 8):
             day_key = f"giorno_{day_num}"
-            if day_key in weekly_diet and weekly_diet[day_key]:
+            if day_key in weekly_diet_days_2_7 and weekly_diet_days_2_7[day_key]:
                 available_days.append(f"Giorno {day_num}")
         
         if available_days:
@@ -625,16 +625,16 @@ class PianoNutrizionale:
         
         # Aggiungi Giorno 1 se disponibile
         if has_day1_data:
-            day_options["Giorno 1"] = (1, extracted_data["registered_meals"], True)
+            day_options["Giorno 1"] = (1, extracted_data["weekly_diet_day_1"], True)
         
         # Aggiungi Giorni 2-7 se disponibili
         if has_weekly_data:
-            weekly_diet = extracted_data["weekly_diet"]
+            weekly_diet_days_2_7 = extracted_data["weekly_diet_days_2_7"]
             for day_num in range(2, 8):
                 day_key = f"giorno_{day_num}"
-                if day_key in weekly_diet and weekly_diet[day_key]:
+                if day_key in weekly_diet_days_2_7 and weekly_diet_days_2_7[day_key]:
                     day_label = f"Giorno {day_num}"
-                    day_options[day_label] = (day_num, weekly_diet[day_key], False)
+                    day_options[day_label] = (day_num, weekly_diet_days_2_7[day_key], False)
         
         # Se non ci sono giorni disponibili, non mostrare nulla
         if not day_options:
@@ -653,21 +653,21 @@ class PianoNutrizionale:
         
         # Mostra il contenuto del giorno selezionato
         if selected_day_label and selected_day_label in day_options:
-            day_num, day_data, is_registered_meals = day_options[selected_day_label]
+            day_num, day_data, is_weekly_diet_day_1 = day_options[selected_day_label]
             
             st.markdown("---")  # Separatore
             
             # Mostra i pasti del giorno selezionato
-            self._display_day_meals(day_num, day_data, is_registered_meals)
+            self._display_day_meals(day_num, day_data, is_weekly_diet_day_1)
     
-    def _display_day_meals(self, day_num, day_data, is_registered_meals=False):
+    def _display_day_meals(self, day_num, day_data, is_weekly_diet_day_1=False):
         """
         Mostra i pasti di un singolo giorno.
         
         Args:
             day_num: Numero del giorno (1-7)
-            day_data: Dati del giorno (lista per registered_meals, dict per weekly_diet)
-            is_registered_meals: True se i dati vengono da registered_meals (giorno 1)
+            day_data: Dati del giorno (lista per weekly_diet_day_1, dict per weekly_diet_days_2_7)
+            is_weekly_diet_day_1: True se i dati vengono da weekly_diet_day_1 (giorno 1)
         """
         # Determina il nome del giorno
         day_names = {
@@ -681,25 +681,25 @@ class PianoNutrizionale:
         <div style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); 
                     padding: 20px; border-radius: 15px; margin: 20px 0; color: white; text-align: center;">
             <h2>📅 {day_name} (Giorno {day_num})</h2>
-            <p><em>{'Piano base creato' if is_registered_meals else 'Piano settimanale generato'}</em></p>
+            <p><em>{'Piano base creato' if is_weekly_diet_day_1 else 'Piano settimanale generato'}</em></p>
         </div>
         """, unsafe_allow_html=True)
         
-        if is_registered_meals:
-            # Giorno 1: registered_meals (lista di pasti)
+        if is_weekly_diet_day_1:
+            # Giorno 1: weekly_diet_day_1 (lista di pasti)
             sorted_meals = self._sort_meals_by_time(day_data)
             for i, meal in enumerate(sorted_meals):
                 self._display_single_meal(meal, i, len(sorted_meals))
         else:
-            # Giorni 2-7: weekly_diet (dict di pasti)
+            # Giorni 2-7: weekly_diet_days_2_7 (dict di pasti)
             self._display_weekly_diet_day(day_data)
     
     def _display_weekly_diet_day(self, day_data):
         """
-        Mostra i pasti di un giorno dalla weekly_diet.
+        Mostra i pasti di un giorno dalla weekly_diet_days_2_7.
         
         Args:
-            day_data: Dati del giorno dalla sezione weekly_diet
+            day_data: Dati del giorno dalla sezione weekly_diet_days_2_7
         """
         # Ordine dei pasti
         meal_order = ['colazione', 'spuntino_mattutino', 'pranzo', 'spuntino_pomeridiano', 'cena', 'spuntino_serale']
@@ -719,11 +719,11 @@ class PianoNutrizionale:
     
     def _display_weekly_diet_meal(self, meal_name, meal_data):
         """
-        Mostra un singolo pasto dalla weekly_diet.
+        Mostra un singolo pasto dalla weekly_diet_days_2_7.
         
         Args:
             meal_name: Nome del pasto
-            meal_data: Dati del pasto dalla weekly_diet
+            meal_data: Dati del pasto dalla weekly_diet_days_2_7
         """
         # Converti il nome del pasto in forma leggibile
         meal_display_names = {

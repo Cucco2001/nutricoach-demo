@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test specifico per verificare l'estrazione dei pasti (registered_meals).
+Test specifico per verificare l'estrazione dei pasti (weekly_diet_day_1).
 """
 
 import json
@@ -19,7 +19,7 @@ def test_meal_extraction():
         print("❌ DeepSeek non disponibile!")
         return
     
-    # Conversazione con un pasto del GIORNO 1 (dovrebbe andare in registered_meals)
+    # Conversazione con un pasto del GIORNO 1 (dovrebbe andare in weekly_diet_day_1)
     conversation_with_meal = [
         {
             "question": "procedi",
@@ -44,7 +44,7 @@ Tosta le fette di pane integrale e spalma sopra il miele, accompagnando il tutto
         }
     ]
     
-    # Conversazione con un GIORNO 2 (dovrebbe andare in weekly_diet)
+    # Conversazione con un GIORNO 2 (dovrebbe andare in weekly_diet_days_2_7)
     conversation_with_day2 = [
         {
             "question": "procedi", 
@@ -71,7 +71,7 @@ Tosta le fette di pane integrale e spalma sopra il miele, accompagnando il tutto
     }
     
     # Test 1: Estrazione pasto giorno 1
-    print("\n📤 Test 1: Estrazione COLAZIONE (dovrebbe andare in registered_meals)...")
+    print("\n📤 Test 1: Estrazione COLAZIONE (dovrebbe andare in weekly_diet_day_1)...")
     result1 = client.extract_nutritional_data(conversation_with_meal, user_info)
     
     print("\n📊 Risultato Test 1:")
@@ -79,15 +79,15 @@ Tosta le fette di pane integrale e spalma sopra il miele, accompagnando il tutto
         extracted = result1["extracted_data"]
         print(json.dumps(extracted, indent=2, ensure_ascii=False))
         
-        # Verifica presenza registered_meals
-        if "registered_meals" in extracted:
-            print("\n✅ registered_meals trovato!")
-            print(f"   Numero pasti: {len(extracted['registered_meals'])}")
+        # Verifica presenza weekly_diet_day_1
+        if "weekly_diet_day_1" in extracted:
+            print("\n✅ weekly_diet_day_1 trovato!")
+            print(f"   Numero pasti: {len(extracted['weekly_diet_day_1'])}")
         else:
-            print("\n❌ registered_meals NON trovato!")
+            print("\n❌ weekly_diet_day_1 NON trovato!")
     
     # Test 2: Estrazione giorno 2
-    print("\n\n📤 Test 2: Estrazione GIORNO 2 (dovrebbe andare in weekly_diet)...")
+    print("\n\n📤 Test 2: Estrazione GIORNO 2 (dovrebbe andare in weekly_diet_days_2_7)...")
     result2 = client.extract_nutritional_data(conversation_with_day2, user_info)
     
     print("\n📊 Risultato Test 2:")
@@ -95,12 +95,12 @@ Tosta le fette di pane integrale e spalma sopra il miele, accompagnando il tutto
         extracted = result2["extracted_data"]
         print(json.dumps(extracted, indent=2, ensure_ascii=False))
         
-        # Verifica presenza weekly_diet
-        if "weekly_diet" in extracted:
-            print("\n✅ weekly_diet trovato!")
-            print(f"   Giorni presenti: {list(extracted['weekly_diet'].keys())}")
+        # Verifica presenza weekly_diet_days_2_7
+        if "weekly_diet_days_2_7" in extracted:
+            print("\n✅ weekly_diet_days_2_7 trovato!")
+            print(f"   Giorni presenti: {list(extracted['weekly_diet_days_2_7'].keys())}")
         else:
-            print("\n❌ weekly_diet NON trovato!")
+            print("\n❌ weekly_diet_days_2_7 NON trovato!")
 
 if __name__ == "__main__":
     test_meal_extraction() 
