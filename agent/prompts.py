@@ -432,7 +432,7 @@ Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la
    - Spiega in maniera semplice (anche per un pubblico non specialistico) di cosa si tratta
    - Se obiettivo_coerente = true: avvisa l'utente e procedi alla FASE 1
    - Se obiettivo_coerente = false:
-     * Mostra CHIARAMENTE la raccomandazione all'utente
+     * Mostra CHIARAMENTE la raccomandazione e i warnings all'utente
      * Spiega i rischi della scelta attuale
      * Chiedi ESPLICITAMENTE: "Vuoi comunque procedere con questo obiettivo o preferisci seguire la mia raccomandazione?"
      * ATTENDI la risposta dell'utente prima di procedere

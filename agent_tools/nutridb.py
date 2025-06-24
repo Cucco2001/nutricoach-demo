@@ -878,13 +878,40 @@ class NutriDB:
                 warnings.append("BMI elevato - aumento massa sconsigliato")
         
         elif categoria_bmi == "Normopeso":
-            # Per normopeso, tutti gli obiettivi sono generalmente appropriati
-            if obiettivo == "Perdita di peso" and peso <= peso_ideale_min + 2:
-                # Se già nel range basso del normopeso
-                warnings.append("Sei già nel range di peso ideale - valuta se la perdita è necessaria")
-            elif obiettivo == "Aumento di massa" and peso >= peso_ideale_max - 2:
-                # Se già nel range alto del normopeso
-                warnings.append("Sei già nel range alto del peso ideale - monitora che l'aumento sia muscolare")
+            # Per normopeso, controlli più intelligenti sui limiti
+            
+            # Calcola la distanza dai limiti BMI
+            bmi_margin_low = bmi - 18.5  # Quanto sopra il limite sottopeso
+            bmi_margin_high = 25.0 - bmi  # Quanto sotto il limite sovrappeso
+            
+            if obiettivo == "Perdita di peso":
+                if bmi_margin_low <= 1.0:  # Molto vicino al sottopeso (BMI 18.5-19.5)
+                    obiettivo_coerente = False
+                    raccomandazione = (
+                        f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f}, molto vicino al limite del sottopeso (18.5). "
+                        f"Perdere peso potrebbe portarti sotto la soglia salutare. "
+                        f"Ti consiglio di valutare il 'Mantenimento' o una ricomposizione corporea "
+                        f"(perdita grasso + guadagno muscolare) piuttosto che una perdita di peso pura. "
+                        f"Vuoi comunque procedere con l'obiettivo di perdita di peso?"
+                    )
+                    warnings.append("BMI vicino al limite sottopeso - perdita peso rischiosa")
+                elif bmi_margin_low <= 2.0:  # Vicino al sottopeso (BMI 18.5-20.5)
+                    warnings.append("Sei nel range basso del normopeso - valuta attentamente se la perdita è necessaria")
+            
+            elif obiettivo == "Aumento di massa":
+                if bmi_margin_high <= 1.0:  # Molto vicino al sovrappeso (BMI 24.0-25.0)
+                    obiettivo_coerente = False
+                    raccomandazione = (
+                        f"⚠️ ATTENZIONE: Il tuo BMI è {bmi:.1f}, molto vicino al limite del sovrappeso (25.0). "
+                        f"Aumentare ulteriormente il peso potrebbe portarti oltre la soglia salutare. "
+                        f"Ti consiglio di concentrarti su una ricomposizione corporea "
+                        f"(guadagno muscolare con controllo del grasso) o il 'Mantenimento' "
+                        f"piuttosto che un aumento di massa puro. "
+                        f"Vuoi comunque procedere con l'obiettivo di aumento massa?"
+                    )
+                    warnings.append("BMI vicino al limite sovrappeso - aumento massa rischioso")
+                elif bmi_margin_high <= 2.0:  # Vicino al sovrappeso (BMI 23.0-25.0)
+                    warnings.append("Sei nel range alto del normopeso - monitora che l'aumento sia principalmente muscolare")
         
         return {
             "bmi_attuale": round(bmi, 1),
