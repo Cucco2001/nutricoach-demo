@@ -105,7 +105,13 @@ class DeepSeekClient:
                 # Parse del JSON
                 extracted_data = json.loads(response_text)
                 
-                return extracted_data
+                # Restituisce sia i dati estratti che la raw response per il debug
+                return {
+                    "extracted_data": extracted_data,
+                    "raw_response": response_text,
+                    "conversation_history": conversation_history,
+                    "extraction_keys": list(extracted_data.keys()) if extracted_data else []
+                }
                 
             except Exception as e:
                 retry_count += 1
@@ -247,9 +253,13 @@ IMPORTANTE PER LE QUANTITÀ:
 - Se sono menzionate unità diverse (es: "2 uova", "1 tazza", "3 fette"), OMETTI il campo "quantita_g" completamente
 - "misura_casalinga": Descrivi sempre l'unità originale (es: "2 uova grandi", "1 tazza", "1 fetta di pane")
 
-**FONDAMENTALE**:
-- I CAMPI SOTTO REGISTERED_MEALS CORRISPONDONO AI PASTI DEL GIORNO 1, MENTRE IN WEEKLY_DIET SONO I PASTI DEL GIORNO 2-7
-- Le informazioni sono SEMPRE nella conversazione, quindi non inventare informazioni
+**FONDAMENTALE - DISTINZIONE TRA GIORNO 1 E GIORNI 2-7**:
+- USA "registered_meals" SOLO per i pasti del PRIMO GIORNO (GIORNO 1)
+- USA "weekly_diet" SOLO per i pasti dei GIORNI 2-7 (quando c'è scritto "GIORNO 2", "GIORNO 3", etc.)
+- SE VEDI "🗓️ GIORNO 2" o simili → USA "weekly_diet"
+- SE NON C'È INDICAZIONE DI GIORNO → USA "registered_meals" (è il giorno 1)
+- ESEMPIO: "🌅 COLAZIONE (550 kcal)" senza giorno → registered_meals
+- ESEMPIO: "🗓️ GIORNO 2 - COLAZIONE" → weekly_diet.giorno_2.colazione
 
 
 IMPORTANTE PER I TIPI DI PASTO:

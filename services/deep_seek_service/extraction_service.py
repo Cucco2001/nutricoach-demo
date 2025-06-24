@@ -42,7 +42,6 @@ class NutritionalDataExtractor:
             deepseek_manager: Riferimento al manager per processare la coda
         """
         if not self.is_available():
-            print("[EXTRACTION_SERVICE] DeepSeek non disponibile, estrazione saltata")
             return
             
         # Il controllo della frequenza è gestito dal DeepSeek Manager
@@ -50,12 +49,13 @@ class NutritionalDataExtractor:
         def extract_in_background():
             try:
                 # Chiama DeepSeek per l'estrazione
-                extracted_data = self.deepseek_client.extract_nutritional_data(
+                deepseek_result = self.deepseek_client.extract_nutritional_data(
                     conversation_history, 
                     user_info
                 )
                 
-                if extracted_data:
+                if deepseek_result and "extracted_data" in deepseek_result:
+                    extracted_data = deepseek_result["extracted_data"]
                     # Carica i dati completi dell'utente dal file per il completer
                     complete_user_data = self._load_complete_user_data(user_id)
                     if complete_user_data:
@@ -69,15 +69,23 @@ class NutritionalDataExtractor:
                             user_id, user_info, extracted_data
                         )
                     
-                    success = self._save_extracted_data(user_id, completed_data)
+                    success = self._save_extracted_data(user_id, completed_data, deepseek_result)
                     if not success:
                         print(f"[EXTRACTION_SERVICE] Errore nel salvataggio dati per utente {user_id}")
             except Exception as e:
                 print(f"[EXTRACTION_SERVICE] Errore nell'estrazione per utente {user_id}: {str(e)}")
             finally:
+                # IMPORTANTE: Rinomina il thread per evitare race condition
+                # Prima di chiamare process_queue, il thread deve "segnalare" che ha finito
+                current_thread = threading.current_thread()
+                current_thread.name = f"DeepSeekFinished-{user_id}"
+                
                 # Processa la coda quando l'estrazione finisce
+                print(f"[EXTRACTION_SERVICE] Estrazione finita per {user_id}, chiamando process_queue()")
                 if deepseek_manager:
                     deepseek_manager.process_queue()
+                else:
+                    print(f"[EXTRACTION_SERVICE] ERRORE: deepseek_manager è None per {user_id}")
         
         # Avvia in background thread
         extraction_thread = threading.Thread(
@@ -135,14 +143,13 @@ class NutritionalDataExtractor:
                     user_data = json.load(f)
                     return user_data
             else:
-                print(f"[EXTRACTION_SERVICE] File utente non trovato per {user_id}")
                 return None
                 
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nel caricamento dati utente {user_id}: {str(e)}")
             return None
     
-    def _save_extracted_data(self, user_id: str, extracted_data: Dict[str, Any]) -> bool:
+    def _save_extracted_data(self, user_id: str, extracted_data: Dict[str, Any], deepseek_result: Dict[str, Any] = None) -> bool:
         """
         Salva i dati estratti nel file dell'utente.
         
@@ -188,7 +195,7 @@ class NutritionalDataExtractor:
                     print(f"[EXTRACTION_SERVICE] Errore sincronizzazione Supabase per {user_id}: {str(e)}")
                 
                 # Salva copia locale per debugging
-                self._save_debug_output(user_id, extracted_data, user_data)
+                self._save_debug_output(user_id, extracted_data, user_data, deepseek_result)
                     
                 return True
                 
@@ -196,7 +203,7 @@ class NutritionalDataExtractor:
             print(f"[EXTRACTION_SERVICE] Errore nel salvataggio per utente {user_id}: {str(e)}")
             return False
     
-    def _save_debug_output(self, user_id: str, extracted_data: Dict[str, Any], complete_user_data: Dict[str, Any]) -> None:
+    def _save_debug_output(self, user_id: str, extracted_data: Dict[str, Any], complete_user_data: Dict[str, Any], deepseek_result: Dict[str, Any] = None) -> None:
         """
         Salva un singolo file di debug completo con conversazione ed estrazione.
         
@@ -220,40 +227,48 @@ class NutritionalDataExtractor:
             # Salva un singolo file completo con conversazione + estrazione
             debug_file = os.path.join(debug_dir, f"{user_id}_{timestamp}_debug_completo.json")
             
-            # Carica la conversazione recente se disponibile
-            conversation_data = self._load_recent_conversation_data(user_id)
+            # Usa i dati DeepSeek se disponibili, altrimenti fallback
+            if deepseek_result:
+                conversation_history = deepseek_result.get("conversation_history", [])
+                raw_response = deepseek_result.get("raw_response", "")
+                extraction_keys = deepseek_result.get("extraction_keys", [])
+            else:
+                conversation_history = []
+                raw_response = ""
+                extraction_keys = []
+            
+            # Formatta le interazioni direttamente dai dati DeepSeek
+            interazioni_data = self._format_interactions_from_deepseek(conversation_history, complete_user_data)
             
             debug_data = {
                 "timestamp": datetime.now().isoformat(),
                 "user_id": user_id,
                 "debug_type": "conversazione_completa_con_estrazione",
                 
-                # Sezione conversazione
-                "conversazione": conversation_data,
+                # Sezione interazioni strutturate
+                "interazioni": interazioni_data,
                 
-                # Sezione estrazione
-                "estrazione": {
-                    "dati_estratti_questa_volta": extracted_data,
-                    "dati_nutritional_completi_merged": complete_user_data.get("nutritional_info_extracted", {}),
+                # Sezione estrazione DeepSeek
+                "deepseek_estrazione": {
+                    "raw_response_formatted": self._format_raw_response(raw_response),
+                    "dati_estratti_parsed": extracted_data,
+                    "chiavi_estratte": extraction_keys,
                     "timestamp_estrazione": datetime.now().isoformat()
                 },
                 
+                # Dati finali merged
+                "dati_finali_merged": complete_user_data.get("nutritional_info_extracted", {}),
+                
                 # Metadati
                 "metadati": {
-                    "versione_debug": "2.0",
-                    "descrizione": "File unico contenente conversazione analizzata + estrazione risultante"
+                    "versione_debug": "4.0",
+                    "descrizione": "File debug con interazioni da DeepSeek + raw response diretta"
                 }
             }
-            
-            with open(debug_file, 'w', encoding='utf-8') as f:
-                json.dump(debug_data, f, indent=2, ensure_ascii=False)
-            
             # Mantieni anche una versione "latest" per facilità di accesso
             latest_file = os.path.join(debug_dir, f"{user_id}_latest_debug_completo.json")
             with open(latest_file, 'w', encoding='utf-8') as f:
                 json.dump(debug_data, f, indent=2, ensure_ascii=False)
-            
-            print(f"[EXTRACTION_SERVICE] Salvato debug completo per {user_id}: {debug_file}")
             
         except Exception as e:
             print(f"[EXTRACTION_SERVICE] Errore nel salvataggio debug per {user_id}: {str(e)}")
@@ -318,6 +333,194 @@ class NutritionalDataExtractor:
                 "user_id": user_id
             }
     
+    def _format_interactions_for_debug(self, conversation_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Formatta le interazioni in modo leggibile per il debug.
+        
+        Args:
+            conversation_data: Dati della conversazione caricati
+            
+        Returns:
+            Dizionario con interazioni formattate
+        """
+        try:
+            formatted = {
+                "fonte_dati": conversation_data.get("fonte", "unknown"),
+                "info_utente": conversation_data.get("user_info", {}),
+                "lista_interazioni": []
+            }
+            
+            # Ottieni le conversazioni dalla struttura
+            conversations = conversation_data.get("conversazioni", [])
+            if not conversations:
+                conversations = conversation_data.get("conversations", [])
+            
+            if conversations:
+                for i, conv in enumerate(conversations, 1):
+                    interaction = {
+                        "numero_interazione": i,
+                        "domanda_utente": conv.get("question", "N/A"),
+                        "risposta_agente": conv.get("answer", "N/A"),
+                        "timestamp": conv.get("timestamp", "N/A")
+                    }
+                    formatted["lista_interazioni"].append(interaction)
+            else:
+                # Fallback se non ci sono conversazioni strutturate
+                formatted["lista_interazioni"] = [{
+                    "numero_interazione": 1,
+                    "domanda_utente": "Dati non disponibili",
+                    "risposta_agente": "Conversazione non trovata",
+                    "nota": "Impossibile recuperare la conversazione originale"
+                }]
+            
+            return formatted
+            
+        except Exception as e:
+            return {
+                "errore": f"Errore nel formatting interazioni: {str(e)}",
+                "dati_originali": conversation_data
+            }
+    
+    def _format_interactions_from_deepseek(self, conversation_history: List[Any], complete_user_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Formatta le interazioni direttamente dai dati DeepSeek.
+        
+        Args:
+            conversation_history: Storia conversazioni da DeepSeek
+            complete_user_data: Dati completi utente per info aggiuntive
+            
+        Returns:
+            Dizionario con interazioni formattate
+        """
+        try:
+            formatted = {
+                "fonte_dati": "deepseek_direct",
+                "info_utente": complete_user_data.get("nutritional_info", {}),
+                "lista_interazioni": []
+            }
+            
+            if conversation_history:
+                for i, conv in enumerate(conversation_history, 1):
+                    if isinstance(conv, dict):
+                        interaction = {
+                            "numero_interazione": i,
+                            "domanda_utente": conv.get("question", "N/A"),
+                            "risposta_agente": conv.get("answer", "N/A"),
+                            "timestamp": conv.get("timestamp", "N/A")
+                        }
+                    else:
+                        # Se conv ha attributi invece di chiavi dict
+                        interaction = {
+                            "numero_interazione": i,
+                            "domanda_utente": getattr(conv, "question", "N/A"),
+                            "risposta_agente": getattr(conv, "answer", "N/A"),
+                            "timestamp": getattr(conv, "timestamp", "N/A")
+                        }
+                    formatted["lista_interazioni"].append(interaction)
+            else:
+                # Fallback: prova a caricare dal file utente se possibile
+                user_conversations = complete_user_data.get("nutritional_info", {}).get("agent_qa", [])
+                if user_conversations:
+                    for i, conv in enumerate(user_conversations, 1):
+                        interaction = {
+                            "numero_interazione": i,
+                            "domanda_utente": conv.get("question", "N/A"),
+                            "risposta_agente": conv.get("answer", "N/A"),
+                            "timestamp": conv.get("timestamp", "N/A")
+                        }
+                        formatted["lista_interazioni"].append(interaction)
+                else:
+                    formatted["lista_interazioni"] = [{
+                        "numero_interazione": 1,
+                        "domanda_utente": "Nessuna conversazione disponibile",
+                        "risposta_agente": "Dati conversazione non trovati",
+                        "nota": "Impossibile recuperare conversazioni da DeepSeek o file utente"
+                    }]
+            
+            return formatted
+            
+        except Exception as e:
+            return {
+                "errore": f"Errore nel formatting interazioni da DeepSeek: {str(e)}",
+                "conversation_history": conversation_history
+            }
+    
+    def _format_raw_response(self, raw_response: str) -> Dict[str, Any]:
+        """
+        Formatta la raw response di DeepSeek per renderla più leggibile.
+        
+        Args:
+            raw_response: Risposta grezza di DeepSeek
+            
+        Returns:
+            Dizionario con raw response formattata e metadati
+        """
+        try:
+            if not raw_response:
+                return {
+                    "status": "vuota",
+                    "messaggio": "Nessuna raw response disponibile",
+                    "contenuto_originale": "",
+                    "contenuto_formattato": "",
+                    "metadati": {
+                        "lunghezza_caratteri": 0,
+                        "numero_righe": 0
+                    }
+                }
+            
+            # Pulisci la risposta da eventuali markdown
+            cleaned_response = raw_response.strip()
+            
+            # Rimuovi eventuali wrapper di markdown JSON
+            if cleaned_response.startswith("```json"):
+                cleaned_response = cleaned_response[7:]
+            if cleaned_response.startswith("```"):
+                cleaned_response = cleaned_response[3:]
+            if cleaned_response.endswith("```"):
+                cleaned_response = cleaned_response[:-3]
+            
+            cleaned_response = cleaned_response.strip()
+            
+            # Prova a parsare e ri-formattare come JSON
+            formatted_json = ""
+            json_valido = False
+            
+            try:
+                parsed_json = json.loads(cleaned_response)
+                formatted_json = json.dumps(parsed_json, indent=2, ensure_ascii=False)
+                json_valido = True
+            except json.JSONDecodeError as e:
+                formatted_json = f"ERRORE PARSING JSON: {str(e)}\n\nContenuto pulito:\n{cleaned_response}"
+                json_valido = False
+            
+            # Calcola metadati
+            righe_originali = raw_response.count('\n') + 1
+            righe_formattate = formatted_json.count('\n') + 1
+            
+            return {
+                "status": "disponibile",
+                "json_valido": json_valido,
+                "contenuto_originale": raw_response,
+                "contenuto_pulito": cleaned_response,
+                "contenuto_formattato": formatted_json,
+                "metadati": {
+                    "lunghezza_originale": len(raw_response),
+                    "lunghezza_pulita": len(cleaned_response),
+                    "lunghezza_formattata": len(formatted_json),
+                    "righe_originali": righe_originali,
+                    "righe_formattate": righe_formattate,
+                    "aveva_markdown_wrapper": raw_response.strip().startswith("```"),
+                    "tipo_contenuto": "JSON valido" if json_valido else "Testo/JSON malformato"
+                }
+            }
+            
+        except Exception as e:
+            return {
+                "status": "errore",
+                "errore": f"Errore nel formatting raw response: {str(e)}",
+                "contenuto_originale": raw_response if raw_response else "",
+                "contenuto_formattato": "Impossibile formattare"
+            }
     
     def _merge_extracted_data(
         self, 
@@ -903,7 +1106,6 @@ class NutritionalDataExtractor:
             
             # Se il file non esiste, considera l'operazione riuscita
             if not os.path.exists(user_file_path):
-                print(f"[EXTRACTION_SERVICE] File utente {user_id} non esistente, cancellazione considerata riuscita")
                 return True
             
             # Carica i dati esistenti

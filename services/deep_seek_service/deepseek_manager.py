@@ -41,11 +41,7 @@ class DeepSeekManager:
             active_threads.append(f"{thread.name}({'alive' if thread.is_alive() else 'dead'})")
             if thread.name == target_thread_name and thread.is_alive():
                 return True
-        
-        # Debug: mostra tutti i thread attivi quando non trova quello specifico
-        if target_thread_name not in [t.split('(')[0] for t in active_threads]:
-            print(f"[DEEPSEEK_MANAGER] Thread {target_thread_name} non trovato. Thread attivi: {active_threads[:3]}")
-        
+            
         return False
     
     def _get_user_conversations(self, user_id: str) -> List[Any]:
@@ -109,26 +105,33 @@ class DeepSeekManager:
         total_conversations = len(conversation_history)
         last_processed_index = self.user_last_conversation_index.get(user_id, -1)
         
-        # Metti in coda ogni conversazione nuova individualmente
+        # Processa solo l'ultima conversazione (se è nuova)
         new_conversations_added = 0
-        for i in range(last_processed_index + 1, total_conversations, extraction_interval):
-            # Evita duplicati nella coda
-            conversation_key = (user_id, i)
-            if conversation_key not in self.queued_conversations:
-                # Aggiungi alla coda
-                self.queue.put({
-                    'user_id': user_id,
-                    'user_info': user_info,
-                    'conversation_index': i,
-                    'conversation': conversation_history[i]
-                })
-                self.queued_conversations.add(conversation_key)
-                new_conversations_added += 1
+        if total_conversations > 0:
+            latest_conversation_index = total_conversations - 1
+            
+            # Se l'ultima conversazione è più recente dell'ultima processata
+            if latest_conversation_index > last_processed_index:
+                conversation_key = (user_id, latest_conversation_index)
+                if conversation_key not in self.queued_conversations:
+                    # Aggiungi alla coda solo l'ultima conversazione
+                    self.queue.put({
+                        'user_id': user_id,
+                        'user_info': user_info,
+                        'conversation_index': latest_conversation_index,
+                        'conversation': conversation_history[latest_conversation_index]
+                    })
+                    self.queued_conversations.add(conversation_key)
+                    new_conversations_added = 1
+                    print(f"[DEEPSEEK_MANAGER] Accodata solo l'ultima conversazione (indice {latest_conversation_index})")
         
         if new_conversations_added > 0:      
             # Se non c'è un'estrazione in corso, avvia il processing della coda
             if not self._is_extraction_in_progress(user_id):
+                print(f"[DEEPSEEK_MANAGER] Avvio catena estrazione per {user_id} - {new_conversations_added} nuove conversazioni")
                 self.process_queue()
+            else:
+                print(f"[DEEPSEEK_MANAGER] Estrazione già in corso per {user_id}, conversazioni in coda")
     
     def check_and_process_results(self) -> None:
         """Controlla i risultati dell'estrazione e processa le notifiche."""
@@ -167,11 +170,10 @@ class DeepSeekManager:
                 conversation_key = (user_id, conversation_index)
                 self.queued_conversations.discard(conversation_key)
                 
-                
-                
                 # Verifica che non ci sia già un'estrazione in corso
                 if not self._is_extraction_in_progress(user_id):
                     # Avvia l'estrazione per questa singola conversazione
+                    print(f"[DEEPSEEK_MANAGER] Avvio estrazione CODA per {user_id} - conversazione {conversation_index}")
                     self.extractor.extract_data_async(
                         user_id=user_id,
                         conversation_history=[conversation],  # Una sola conversazione
@@ -262,4 +264,57 @@ class DeepSeekManager:
             "user_conversations_in_queue": conversations_in_queue,
             "extraction_in_progress": self._is_extraction_in_progress(user_id),
             "total_queue_size": self.queue.qsize()
-        } 
+        }
+    
+    def force_process_all_conversations(self, user_id: str) -> None:
+        """
+        Forza il processamento di tutte le conversazioni per un utente specifico.
+        Utile per recuperare da situazioni in cui l'estrazione si è interrotta.
+        
+        Args:
+            user_id: ID dell'utente per cui forzare il processamento
+        """
+        if not self.is_available():
+            print(f"[DEEPSEEK_MANAGER] DeepSeek non disponibile per {user_id}")
+            return
+            
+        # Carica tutte le conversazioni dal file
+        conversation_history = self._get_user_conversations(user_id)
+        
+        if not conversation_history:
+            print(f"[DEEPSEEK_MANAGER] Nessuna conversazione trovata per {user_id}")
+            return
+            
+        # Ottieni info utente dal file
+        user_info = None
+        try:
+            user_file_path = f"user_data/{user_id}.json"
+            if os.path.exists(user_file_path):
+                with open(user_file_path, 'r', encoding='utf-8') as f:
+                    user_data = json.load(f)
+                    user_info = user_data.get('nutritional_info', {})
+        except Exception as e:
+            print(f"[DEEPSEEK_MANAGER] Errore nel caricamento dati utente {user_id}: {str(e)}")
+            
+        # Metti in coda tutte le conversazioni non ancora processate
+        last_processed_index = self.user_last_conversation_index.get(user_id, -1)
+        total_conversations = len(conversation_history)
+        
+        conversations_added = 0
+        for i in range(last_processed_index + 1, total_conversations):
+            conversation_key = (user_id, i)
+            if conversation_key not in self.queued_conversations:
+                self.queue.put({
+                    'user_id': user_id,
+                    'user_info': user_info,
+                    'conversation_index': i,
+                    'conversation': conversation_history[i]
+                })
+                self.queued_conversations.add(conversation_key)
+                conversations_added += 1
+                
+        print(f"[DEEPSEEK_MANAGER] Aggiunte {conversations_added} conversazioni in coda per {user_id}")
+        
+        # Avvia il processamento
+        if conversations_added > 0:
+            self.process_queue() 

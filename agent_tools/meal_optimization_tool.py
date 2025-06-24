@@ -196,10 +196,10 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
         raise ValueError(error_msg)
     
     result = {
-        "kcal": float(meal_data.get("kcal", 0)),
-        "proteine_g": float(meal_data.get("proteine_g", 0)),
-        "carboidrati_g": float(meal_data.get("carboidrati_g", 0)),
-        "grassi_g": float(meal_data.get("grassi_g", 0))
+        "kcal": float(meal_data.get("kcal") or 0),
+        "proteine_g": float(meal_data.get("proteine_g") or 0),
+        "carboidrati_g": float(meal_data.get("carboidrati_g") or 0),
+        "grassi_g": float(meal_data.get("grassi_g") or 0)
     }
     
     return result
@@ -234,12 +234,12 @@ def get_food_nutrition_per_100g(food_list: List[str]) -> Dict[str, Dict[str, flo
                 # Ottieni i macronutrienti per 100g usando la chiave canonica
                 macros = db.get_macros(food, 100)
                 
-                # Converte esplicitamente a float per evitare errori di tipo
+                # Converte esplicitamente a float per evitare errori di tipo, gestendo anche valori None
                 foods_nutrition[food] = {
-                    "energia_kcal": float(macros.get("energia_kcal", 0)),
-                    "proteine_g": float(macros.get("proteine_g", 0)),
-                    "carboidrati_g": float(macros.get("carboidrati_g", 0)),
-                    "grassi_g": float(macros.get("grassi_g", 0)),
+                    "energia_kcal": float(macros.get("energia_kcal") or 0),
+                    "proteine_g": float(macros.get("proteine_g") or 0),
+                    "carboidrati_g": float(macros.get("carboidrati_g") or 0),
+                    "grassi_g": float(macros.get("grassi_g") or 0),
                     "categoria": macros.get("categoria", "alimento_misto")
                 }
             except (ValueError, TypeError) as e:
