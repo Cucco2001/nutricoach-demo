@@ -351,6 +351,17 @@
     "nova_group": 1,
     "categoria": "verdure"
   },
+  "mais": {
+    "energia_kcal": 357,
+    "proteine_g": 9.2,
+    "carboidrati_g": 75.1,
+    "zuccheri_g": 2.5,
+    "grassi_g": 3.8,
+    "grassi_saturi_g": 0.03,
+    "fibra_g": 3.1,
+    "nova_group": 1,
+    "categoria": "legumi"
+  },
   "tonno_sottolio_sgocciolato": {
     "energia_kcal": 192,
     "proteine_g": 25.2,

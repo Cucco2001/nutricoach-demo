@@ -88,7 +88,8 @@ class NutriDB:
             "affumicato", "affumicati", "affumicata", "affumicate", "arrosto", "arrostito", "brasato",
             "stufato", "stufati", "al naturale", "naturale", "sott'olio", "sottolio", "sgocciolato",
             "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
-            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di", "tostate", "tostato"
+            "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di", "tostate", "tostato",
+            "fiocchi", "fiocchi di", "fiocchi d'"
         ]
         
         # Base mapping dalle chiavi del database

@@ -13,7 +13,7 @@
       "uova": 2,
       "latte": 3,
       "formaggi": 8,
-      "legumi": 4,
+      "legumi": 5,
       "zucchero": 1,
       "frutta_secca": 7,
       "cereali_colazione": 9,
@@ -515,6 +515,10 @@
       "piselli": {
         "grams": 490.6,
         "similarity_score": 120.6
+      },
+      "mais": {
+        "grams": 88.0,
+        "similarity_score": 113.2
       }
     },
     "banana": {
@@ -617,6 +621,10 @@
       "piselli": {
         "grams": 498.4,
         "similarity_score": 117.6
+      },
+      "mais": {
+        "grams": 89.4,
+        "similarity_score": 115.6
       }
     },
     "carote": {
@@ -639,6 +647,24 @@
       "bieta": {
         "grams": 273.3,
         "similarity_score": 107.1
+      }
+    },
+    "mais": {
+      "lenticchie": {
+        "grams": 111.9,
+        "similarity_score": 115.6
+      },
+      "fagioli_cannellini": {
+        "grams": 113.7,
+        "similarity_score": 113.2
+      },
+      "ceci": {
+        "grams": 104.1,
+        "similarity_score": 113.0
+      },
+      "piselli": {
+        "grams": 557.8,
+        "similarity_score": 101.3
       }
     },
     "tonno_sottolio_sgocciolato": {
@@ -925,6 +951,10 @@
       "piselli": {
         "grams": 535.9,
         "similarity_score": 116.0
+      },
+      "mais": {
+        "grams": 96.1,
+        "similarity_score": 113.0
       }
     },
     "pere": {
@@ -1389,6 +1419,10 @@
       "ceci": {
         "grams": 18.7,
         "similarity_score": 117.1
+      },
+      "mais": {
+        "grams": 17.9,
+        "similarity_score": 103.1
       }
     },
     "arancia": {

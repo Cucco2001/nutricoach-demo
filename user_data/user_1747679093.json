@@ -94,6 +94,46 @@
       "role": "assistant",
       "content": "Il sistema non ha avuto difficoltà con il nome \"Colazione\" scritto correttamente. L’errore era di tipo tecnico e non legato al termine in sé o a una tua scelta. In altre parole: il pasto era chiamato in modo giusto (\"Colazione\"), ma il tool ha restituito un messaggio generico che riguarda solo un temporaneo problema di caricamento, non di dizionario o di vocabolario dei pasti.\n\nNon ci sono errori nei nomi degli alimenti, né nel nome \"Colazione\".\n\n➡️ Procedo con la creazione del pasto colazione ottimizzato, se per te va bene! Vuoi che vada avanti?",
       "timestamp": 1750759345.644023
+    },
+    {
+      "role": "user",
+      "content": "continua",
+      "timestamp": 1750759712.3736615
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 5 - CREAZIONE DEL PASTO: COLAZIONE\n\nEcco una colazione ottimizzata per i tuoi target (672 kcal, ad alto contenuto proteico, con fonti di carboidrati e grassi buoni). Le quantità sono già pronte sia in grammi sia in misure casalinghe, così sarà tutto facile e pratico da seguire.\n\n🌅 COLAZIONE (672 kcal)\n• **Avena**: 60g → 🥄 3/4 tazza  \n    P: 4.8g, C: 40.1g, G: 4.5g  \n    (Sostituti: 50g di biscotti secchi, 60g di muesli)\n• **Latte scremato**: 310g → 🥛 1 bicchiere e mezzo  \n    P: 11.2g, C: 16.4g, G: 0.6g  \n    (Sostituti: 240g di latte parz. scremato, 170g di latte intero)\n• **Banana**: 200g → 🍌 2 banane piccole  \n    P: 2.4g, C: 34.8g, G: 0.6g  \n    (Sostituti: 320g di ciliegie, 310g di mirtilli)\n• **Mandorle**: 30g → 🥜 1 manciata (20-25 mandorle)  \n    P: 6.6g, C: 1.4g, G: 16.6g  \n    (Sostituti: 30g di burro di arachidi, 30g di nocciole)\n\nTotale pasto: P: 25g, C: 92.7g, G: 22.3g\n\nConsiglio ricetta: In una ciotola unisci l’avena con il latte e scalda 2 minuti al microonde o in pentolino; aggiungi le banane a rondelle e le mandorle spezzettate. Puoi arricchire con un pizzico di cannella per più aroma.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per contenuto nutrizionale degli alimenti\n- Algoritmo di ottimizzazione porzioni per raggiungere i target calcolati\n- Sostituti suggeriti sempre bilanciati caloricamente rispetto all'alimento principale\n\n➡️ Vuoi modificare qualcosa nella colazione oppure passo subito a creare il pranzo? Se hai dubbi sulla preparazione, sulle quantità o vuoi vedere degli altri esempi, chiedi pure!",
+      "timestamp": 1750759730.3351765
+    },
+    {
+      "role": "user",
+      "content": "Procedi",
+      "timestamp": 1750759740.392714
+    },
+    {
+      "role": "assistant",
+      "content": "🍽️ PRANZO (974 kcal)\n\n• **Riso basmati**: 150g → 🍚 1 tazza colma  \n    P: 13.5g, C: 124.3g, G: 2.9g  \n    (Sostituti: 160g di riso integrale, 210g di pane bianco)\n\n• **Petto di pollo**: 120g → 🍗 1 filetto medio  \n    P: 28g, C: 0g, G: 1g  \n    (Sostituti: 120g di tonno al naturale, 170g di merluzzo)\n\n• **Zucchine**: 200g → 🥒 1 piatto abbondante  \n    P: 3.8g, C: 3.4g, G: 0.2g  \n    (Sostituti: 200g di verdure miste, 110g di cavolfiore)\n\n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n    P: 0g, C: 0g, G: 30g  \n    (Sostituti: 40g di burro, 110g di avocado)\n\n**Totale pasto**: P: 45g, C: 127.8g, G: 34g\n\nConsiglio ricetta: Cuoci il riso e le zucchine al vapore o in padella. Griglia il petto di pollo con un pizzico di sale e pepe, poi condisci tutto con olio extravergine d’oliva a crudo. Puoi aggiungere basilico fresco sulle verdure per più gusto.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per valori nutrizionali\n- Algoritmo ottimizzazione porzioni e sostituti \n- Ricetta strutturata secondo la gastronomia mediterranea\n\n➡️ Vuoi modificare qualche alimento o porzione, oppure passo allo spuntino pomeridiano? Se hai dubbi su misure, preparazioni, sostituti, sono qui!",
+      "timestamp": 1750759763.649398
+    },
+    {
+      "role": "user",
+      "content": "continua",
+      "timestamp": 1750759823.1563082
+    },
+    {
+      "role": "assistant",
+      "content": "Il sistema non ha trovato \"fiocchi di mais\" nel database alimenti, quindi non posso usarli in modo automatico. Gli altri alimenti (\"yogurt greco\" e \"frutti di bosco\") sono invece disponibili.\n\nProcederò immediatamente a sostituire i \"fiocchi di mais\" con un altro cereale simile e a ripetere l’ottimizzazione per garantirti uno spuntino bilanciato, proteico e gustoso.\n\n➡️ Vuoi suggerire tu un cereale alternativo (ad esempio muesli, cornflakes, biscotti secchi, o una fonte di carboidrati diversa) oppure vuoi che scelga io la soluzione più adatta? Posso procedere anche autonomamente!",
+      "timestamp": 1750759837.5727305
+    },
+    {
+      "role": "user",
+      "content": "procedi",
+      "timestamp": 1750759899.2158318
+    },
+    {
+      "role": "assistant",
+      "content": "🥨 SPUNTINO POMERIDIANO (284 kcal)\n\n• **Yogurt greco**: 100g → 🥛 1 vasetto piccolo  \n P: 9.9g, C: 3g, G: 2g  \n (Sostituti: 140g yogurt greco 0%, 170g yogurt magro)\n\n• **Frutti di bosco**: 80g → 🫐 1 ciotolina  \n P: 0.8g, C: 5.2g, G: 0.5g  \n (Sostituti: 80g di kiwi, 110g di arancia)\n\n• **Muesli**: 30g → 🥣 3 cucchiai  \n P: 2.9g, C: 21.5g, G: 1.8g  \n (Sostituti: 30g di fette biscottate, 40g di pan bauletto)\n\n• **Mandorle**: 10g → 🥜 7-8 mandorle  \n P: 2.2g, C: 0.5g, G: 5.5g  \n (Sostituti: 10g di burro di arachidi, 10g di nocciole)\n\nTotale pasto: P: 15.8g, C: 30.2g, G: 9.8g\n\nConsiglio ricetta: Versa lo yogurt in una ciotolina, aggiungi i frutti di bosco freschi o surgelati, poi il muesli e le mandorle spezzettate. Mescola tutto per una merenda fresca, proteica ed energizzante.\n\n📚 Fonti utilizzate:\n- Valori nutrizionali: Banca dati CREA\n- Algoritmo ottimizzazione pasti/sostituti\n- Idee ricetta dalla colazione mediterranea\n\n➡️ Confermi lo spuntino o vuoi altre idee? Passo ora alla preparazione della cena, oppure hai domande/spunti per variare gli alimenti?",
+      "timestamp": 1750759918.3087895
     }
   ],
   "nutritional_info": {
@@ -184,6 +224,26 @@
         "question": "quale nome non è riuscito a trovare per il pasto?",
         "answer": "Il sistema non ha avuto difficoltà con il nome \"Colazione\" scritto correttamente. L’errore era di tipo tecnico e non legato al termine in sé o a una tua scelta. In altre parole: il pasto era chiamato in modo giusto (\"Colazione\"), ma il tool ha restituito un messaggio generico che riguarda solo un temporaneo problema di caricamento, non di dizionario o di vocabolario dei pasti.\n\nNon ci sono errori nei nomi degli alimenti, né nel nome \"Colazione\".\n\n➡️ Procedo con la creazione del pasto colazione ottimizzato, se per te va bene! Vuoi che vada avanti?",
         "timestamp": 1750759346.1828787
+      },
+      {
+        "question": "continua",
+        "answer": "✓ FASE 5 - CREAZIONE DEL PASTO: COLAZIONE\n\nEcco una colazione ottimizzata per i tuoi target (672 kcal, ad alto contenuto proteico, con fonti di carboidrati e grassi buoni). Le quantità sono già pronte sia in grammi sia in misure casalinghe, così sarà tutto facile e pratico da seguire.\n\n🌅 COLAZIONE (672 kcal)\n• **Avena**: 60g → 🥄 3/4 tazza  \n    P: 4.8g, C: 40.1g, G: 4.5g  \n    (Sostituti: 50g di biscotti secchi, 60g di muesli)\n• **Latte scremato**: 310g → 🥛 1 bicchiere e mezzo  \n    P: 11.2g, C: 16.4g, G: 0.6g  \n    (Sostituti: 240g di latte parz. scremato, 170g di latte intero)\n• **Banana**: 200g → 🍌 2 banane piccole  \n    P: 2.4g, C: 34.8g, G: 0.6g  \n    (Sostituti: 320g di ciliegie, 310g di mirtilli)\n• **Mandorle**: 30g → 🥜 1 manciata (20-25 mandorle)  \n    P: 6.6g, C: 1.4g, G: 16.6g  \n    (Sostituti: 30g di burro di arachidi, 30g di nocciole)\n\nTotale pasto: P: 25g, C: 92.7g, G: 22.3g\n\nConsiglio ricetta: In una ciotola unisci l’avena con il latte e scalda 2 minuti al microonde o in pentolino; aggiungi le banane a rondelle e le mandorle spezzettate. Puoi arricchire con un pizzico di cannella per più aroma.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per contenuto nutrizionale degli alimenti\n- Algoritmo di ottimizzazione porzioni per raggiungere i target calcolati\n- Sostituti suggeriti sempre bilanciati caloricamente rispetto all'alimento principale\n\n➡️ Vuoi modificare qualcosa nella colazione oppure passo subito a creare il pranzo? Se hai dubbi sulla preparazione, sulle quantità o vuoi vedere degli altri esempi, chiedi pure!",
+        "timestamp": 1750759730.9488628
+      },
+      {
+        "question": "Procedi",
+        "answer": "🍽️ PRANZO (974 kcal)\n\n• **Riso basmati**: 150g → 🍚 1 tazza colma  \n    P: 13.5g, C: 124.3g, G: 2.9g  \n    (Sostituti: 160g di riso integrale, 210g di pane bianco)\n\n• **Petto di pollo**: 120g → 🍗 1 filetto medio  \n    P: 28g, C: 0g, G: 1g  \n    (Sostituti: 120g di tonno al naturale, 170g di merluzzo)\n\n• **Zucchine**: 200g → 🥒 1 piatto abbondante  \n    P: 3.8g, C: 3.4g, G: 0.2g  \n    (Sostituti: 200g di verdure miste, 110g di cavolfiore)\n\n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n    P: 0g, C: 0g, G: 30g  \n    (Sostituti: 40g di burro, 110g di avocado)\n\n**Totale pasto**: P: 45g, C: 127.8g, G: 34g\n\nConsiglio ricetta: Cuoci il riso e le zucchine al vapore o in padella. Griglia il petto di pollo con un pizzico di sale e pepe, poi condisci tutto con olio extravergine d’oliva a crudo. Puoi aggiungere basilico fresco sulle verdure per più gusto.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per valori nutrizionali\n- Algoritmo ottimizzazione porzioni e sostituti \n- Ricetta strutturata secondo la gastronomia mediterranea\n\n➡️ Vuoi modificare qualche alimento o porzione, oppure passo allo spuntino pomeridiano? Se hai dubbi su misure, preparazioni, sostituti, sono qui!",
+        "timestamp": 1750759764.5969687
+      },
+      {
+        "question": "continua",
+        "answer": "Il sistema non ha trovato \"fiocchi di mais\" nel database alimenti, quindi non posso usarli in modo automatico. Gli altri alimenti (\"yogurt greco\" e \"frutti di bosco\") sono invece disponibili.\n\nProcederò immediatamente a sostituire i \"fiocchi di mais\" con un altro cereale simile e a ripetere l’ottimizzazione per garantirti uno spuntino bilanciato, proteico e gustoso.\n\n➡️ Vuoi suggerire tu un cereale alternativo (ad esempio muesli, cornflakes, biscotti secchi, o una fonte di carboidrati diversa) oppure vuoi che scelga io la soluzione più adatta? Posso procedere anche autonomamente!",
+        "timestamp": 1750759838.1042433
+      },
+      {
+        "question": "procedi",
+        "answer": "🥨 SPUNTINO POMERIDIANO (284 kcal)\n\n• **Yogurt greco**: 100g → 🥛 1 vasetto piccolo  \n P: 9.9g, C: 3g, G: 2g  \n (Sostituti: 140g yogurt greco 0%, 170g yogurt magro)\n\n• **Frutti di bosco**: 80g → 🫐 1 ciotolina  \n P: 0.8g, C: 5.2g, G: 0.5g  \n (Sostituti: 80g di kiwi, 110g di arancia)\n\n• **Muesli**: 30g → 🥣 3 cucchiai  \n P: 2.9g, C: 21.5g, G: 1.8g  \n (Sostituti: 30g di fette biscottate, 40g di pan bauletto)\n\n• **Mandorle**: 10g → 🥜 7-8 mandorle  \n P: 2.2g, C: 0.5g, G: 5.5g  \n (Sostituti: 10g di burro di arachidi, 10g di nocciole)\n\nTotale pasto: P: 15.8g, C: 30.2g, G: 9.8g\n\nConsiglio ricetta: Versa lo yogurt in una ciotolina, aggiungi i frutti di bosco freschi o surgelati, poi il muesli e le mandorle spezzettate. Mescola tutto per una merenda fresca, proteica ed energizzante.\n\n📚 Fonti utilizzate:\n- Valori nutrizionali: Banca dati CREA\n- Algoritmo ottimizzazione pasti/sostituti\n- Idee ricetta dalla colazione mediterranea\n\n➡️ Confermi lo spuntino o vuoi altre idee? Passo ora alla preparazione della cena, oppure hai domande/spunti per variare gli alimenti?",
+        "timestamp": 1750759918.8583987
       }
     ]
   },
@@ -216,9 +276,9 @@
         "colazione": {
           "kcal": 672,
           "percentuale_kcal": 25,
-          "proteine_g": 32,
-          "carboidrati_g": 86,
-          "grassi_g": 23
+          "proteine_g": 25,
+          "carboidrati_g": 92.7,
+          "grassi_g": 22.3
         },
         "pranzo": {
           "kcal": 941,
@@ -248,44 +308,188 @@
         "nome_pasto": "colazione",
         "alimenti": [
           {
-            "nome_alimento": "avena",
-            "misura_casalinga": "quantità non specificata"
+            "nome_alimento": "Avena",
+            "quantita_g": 60,
+            "misura_casalinga": "3/4 tazza",
+            "sostituti": "50g di biscotti secchi, 60g di muesli",
+            "macronutrienti": {
+              "proteine": 4.8,
+              "carboidrati": 40.1,
+              "grassi": 4.5
+            }
           },
           {
-            "nome_alimento": "latte scremato",
-            "misura_casalinga": "quantità non specificata"
+            "nome_alimento": "Latte scremato",
+            "quantita_g": 310,
+            "misura_casalinga": "1 bicchiere e mezzo",
+            "sostituti": "240g di latte parz. scremato, 170g di latte intero",
+            "macronutrienti": {
+              "proteine": 11.2,
+              "carboidrati": 16.4,
+              "grassi": 0.6
+            }
           },
           {
-            "nome_alimento": "banana",
-            "misura_casalinga": "quantità non specificata"
+            "nome_alimento": "Banana",
+            "quantita_g": 200,
+            "misura_casalinga": "2 banane piccole",
+            "sostituti": "320g di ciliegie, 310g di mirtilli",
+            "macronutrienti": {
+              "proteine": 2.4,
+              "carboidrati": 34.8,
+              "grassi": 0.6
+            }
           },
           {
-            "nome_alimento": "mandorle",
-            "misura_casalinga": "quantità non specificata"
+            "nome_alimento": "Mandorle",
+            "quantita_g": 30,
+            "misura_casalinga": "1 manciata (20-25 mandorle)",
+            "sostituti": "30g di burro di arachidi, 30g di nocciole",
+            "macronutrienti": {
+              "proteine": 6.6,
+              "carboidrati": 1.4,
+              "grassi": 16.6
+            }
           }
-        ]
+        ],
+        "totali_pasto": {
+          "kcal_finali": 672,
+          "proteine_totali": 25,
+          "carboidrati_totali": 92.7,
+          "grassi_totali": 22.3
+        }
+      },
+      {
+        "nome_pasto": "pranzo",
+        "alimenti": [
+          {
+            "nome_alimento": "Riso basmati",
+            "quantita_g": 150,
+            "misura_casalinga": "1 tazza colma",
+            "sostituti": "160g di riso integrale, 210g di pane bianco",
+            "macronutrienti": {
+              "proteine": 13.5,
+              "carboidrati": 124.3,
+              "grassi": 2.9
+            }
+          },
+          {
+            "nome_alimento": "Petto di pollo",
+            "quantita_g": 120,
+            "misura_casalinga": "1 filetto medio",
+            "sostituti": "120g di tonno al naturale, 170g di merluzzo",
+            "macronutrienti": {
+              "proteine": 28,
+              "carboidrati": 0,
+              "grassi": 1
+            }
+          },
+          {
+            "nome_alimento": "Zucchine",
+            "quantita_g": 200,
+            "misura_casalinga": "1 piatto abbondante",
+            "sostituti": "200g di verdure miste, 110g di cavolfiore",
+            "macronutrienti": {
+              "proteine": 3.8,
+              "carboidrati": 3.4,
+              "grassi": 0.2
+            }
+          },
+          {
+            "nome_alimento": "Olio extravergine di oliva",
+            "quantita_g": 30,
+            "misura_casalinga": "3 cucchiai",
+            "sostituti": "40g di burro, 110g di avocado",
+            "macronutrienti": {
+              "proteine": 0,
+              "carboidrati": 0,
+              "grassi": 30
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 974,
+          "proteine_totali": 45,
+          "carboidrati_totali": 127.8,
+          "grassi_totali": 34
+        }
+      },
+      {
+        "nome_pasto": "spuntino_pomeridiano",
+        "alimenti": [
+          {
+            "nome_alimento": "Yogurt greco",
+            "quantita_g": 100,
+            "misura_casalinga": "1 vasetto piccolo",
+            "sostituti": "140g yogurt greco 0%, 170g yogurt magro",
+            "macronutrienti": {
+              "proteine": 9.9,
+              "carboidrati": 3,
+              "grassi": 2
+            }
+          },
+          {
+            "nome_alimento": "Frutti di bosco",
+            "quantita_g": 80,
+            "misura_casalinga": "1 ciotolina",
+            "sostituti": "80g di kiwi, 110g di arancia",
+            "macronutrienti": {
+              "proteine": 0.8,
+              "carboidrati": 5.2,
+              "grassi": 0.5
+            }
+          },
+          {
+            "nome_alimento": "Muesli",
+            "quantita_g": 30,
+            "misura_casalinga": "3 cucchiai",
+            "sostituti": "30g di fette biscottate, 40g di pan bauletto",
+            "macronutrienti": {
+              "proteine": 2.9,
+              "carboidrati": 21.5,
+              "grassi": 1.8
+            }
+          },
+          {
+            "nome_alimento": "Mandorle",
+            "quantita_g": 10,
+            "misura_casalinga": "7-8 mandorle",
+            "sostituti": "10g di burro di arachidi, 10g di nocciole",
+            "macronutrienti": {
+              "proteine": 2.2,
+              "carboidrati": 0.5,
+              "grassi": 5.5
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 284,
+          "proteine_totali": 15.8,
+          "carboidrati_totali": 30.2,
+          "grassi_totali": 9.8
+        }
       }
     ]
   },
   "conversation_costs": {
     "tokens": {
-      "input": 1803,
-      "output": 3821,
-      "total": 5624
+      "input": 1813,
+      "output": 5590,
+      "total": 7403
     },
     "costs": {
       "input_cost_usd": 0.0036,
-      "output_cost_usd": 0.0306,
-      "total_cost_usd": 0.0342,
-      "total_cost_eur": 0.0314
+      "output_cost_usd": 0.0447,
+      "total_cost_usd": 0.0483,
+      "total_cost_eur": 0.0445
     },
     "usage": {
-      "message_count": 19,
-      "duration_minutes": 9.01,
-      "avg_tokens_per_message": 296.0
+      "message_count": 27,
+      "duration_minutes": 18.56,
+      "avg_tokens_per_message": 274.19
     },
     "model": "gpt-4",
-    "timestamp": "2025-06-24T12:02:25.634872"
+    "timestamp": "2025-06-24T12:11:58.292920"
   },
-  "last_cost_update": "2025-06-24T12:02:25.634872"
+  "last_cost_update": "2025-06-24T12:11:58.292920"
 }
