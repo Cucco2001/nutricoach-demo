@@ -169,23 +169,34 @@ class PDFGenerator:
             spaceAfter=15
         ))
     
-    def _clean_misura_casalinga(self, misura_text: str) -> str:
+    def _clean_misura_casalinga(self, misura_text: str, nome_alimento: str = None, meal_name: str = None, quantita_g: float = None) -> str:
         """
         Rimuove tutto il contenuto tra parentesi dalle misure casalinghe.
+        Gestisce il caso speciale di parmigiano/grana padano negli spuntini convertendo in cubetti.
         
         Args:
             misura_text: Testo della misura casalinga
+            nome_alimento: Nome dell'alimento (opzionale)
+            meal_name: Nome del pasto (opzionale) 
+            quantita_g: Quantità in grammi (opzionale)
             
         Returns:
-            Testo pulito senza contenuto tra parentesi
+            Testo pulito senza contenuto tra parentesi, con conversione in cubetti se necessario
             
         Examples:
             "2 porzioni abbondanti cotte (da 80g secca l'una)" → "2 porzioni abbondanti cotte"
             "1 tazza media (250ml)" → "1 tazza media"
             "3 fette (spesse)" → "3 fette"
+            Parmigiano 30g in spuntino → "2-3 cubetti"
         """
         if not misura_text or misura_text == 'N/A':
             return misura_text
+        
+        # Caso speciale: parmigiano/grana padano negli spuntini
+        if (nome_alimento and meal_name and quantita_g and 
+            self._is_cheese_for_cubes(nome_alimento) and 
+            self._is_snack_meal(meal_name)):
+            return self._convert_grams_to_cubes(quantita_g)
         
         import re
         # Rimuove tutto il contenuto tra parentesi tonde, incluse le parentesi
@@ -195,6 +206,86 @@ class PDFGenerator:
         cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
         
         return cleaned_text if cleaned_text else 'N/A'
+    
+    def _is_cheese_for_cubes(self, nome_alimento: str) -> bool:
+        """
+        Verifica se l'alimento è parmigiano o grana padano utilizzando il sistema di alias di NutriDB.
+        
+        Args:
+            nome_alimento: Nome dell'alimento da verificare
+            
+        Returns:
+            bool: True se è parmigiano o grana padano
+        """
+        if not nome_alimento:
+            return False
+        
+        # Importa NutriDB per utilizzare il sistema di alias esistente
+        try:
+            from agent_tools.nutridb import NutriDB
+            import os
+            
+            # Carica il database se non già disponibile
+            if not hasattr(self, '_nutridb'):
+                dati_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "Dati_processed")
+                self._nutridb = NutriDB(dati_path)
+            
+            # Normalizza il nome come fa NutriDB
+            normalized_name = nome_alimento.lower().replace("_", " ").strip()
+            
+            # Usa il sistema di alias per identificare l'alimento
+            canonical_name = self._nutridb.alias.get(normalized_name)
+            
+            # Verifica se è parmigiano o grana padano
+            return canonical_name in ['parmigiano_reggiano', 'grana_padano']
+            
+        except Exception as e:
+            print(f"[PDF_WARNING] Errore nell'identificazione del formaggio: {str(e)}")
+            # Fallback: controllo semplice sui nomi
+            nome_lower = nome_alimento.lower().strip()
+            return any(cheese in nome_lower for cheese in ['parmigiano', 'grana', 'grana padano', 'parmigiano reggiano'])
+    
+    def _is_snack_meal(self, meal_name: str) -> bool:
+        """
+        Verifica se il pasto è uno spuntino.
+        
+        Args:
+            meal_name: Nome del pasto
+            
+        Returns:
+            bool: True se è uno spuntino
+        """
+        if not meal_name:
+            return False
+        
+        return 'spuntino' in meal_name.lower()
+    
+    def _convert_grams_to_cubes(self, quantita_g: float) -> str:
+        """
+        Converte i grammi di parmigiano/grana padano in cubetti.
+        
+        Args:
+            quantita_g: Quantità in grammi
+            
+        Returns:
+            str: Misura casalinga in cubetti
+        """
+        if not quantita_g or quantita_g <= 0:
+            return "N/A"
+        
+        # Conversione approssimativa: 1 cubetto ≈ 10-15g
+        # Usiamo 12g come media per il calcolo
+        num_cubetti = round(quantita_g / 12)
+        
+        if num_cubetti <= 0:
+            return "1 cubetto piccolo"
+        elif num_cubetti == 1:
+            return "1 cubetto"
+        elif num_cubetti <= 3:
+            return f"{num_cubetti} cubetti"
+        else:
+            # Per quantità più grandi, diamo una stima più generica
+            return f"{num_cubetti} cubetti"
     
     def _clean_sostituti(self, sostituti_text: str) -> str:
         """
@@ -978,7 +1069,12 @@ class PDFGenerator:
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
                     misura_raw = alimento.get('misura_casalinga', 'N/A')
-                    misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
+                    # Converti quantita per passarla alla funzione di pulizia
+                    try:
+                        quantita_num = float(quantita) if quantita != 'N/A' else None
+                    except (ValueError, TypeError):
+                        quantita_num = None
+                    misura = self._clean_misura_casalinga(misura_raw, nome, nome_pasto, quantita_num)  # Pulisce le parentesi e gestisce i cubetti
                     sostituti_raw = alimento.get('sostituti', 'N/A')
                     
                     # Se i sostituti non sono presenti, prepara per la generazione automatica
@@ -1137,7 +1233,12 @@ class PDFGenerator:
                 nome = alimento.get('nome_alimento', 'N/A')
                 quantita = alimento.get('quantita_g', 'N/A')
                 misura_raw = alimento.get('misura_casalinga', 'N/A')
-                misura = self._clean_misura_casalinga(misura_raw)  # Pulisce le parentesi
+                # Converti quantita per passarla alla funzione di pulizia
+                try:
+                    quantita_num = float(quantita) if quantita != 'N/A' else None
+                except (ValueError, TypeError):
+                    quantita_num = None
+                misura = self._clean_misura_casalinga(misura_raw, nome, meal_name, quantita_num)  # Pulisce le parentesi e gestisce i cubetti
                 sostituti_raw = alimento.get('sostituti', 'N/A')
                 
                 # Se i sostituti non sono presenti, prepara per la generazione automatica

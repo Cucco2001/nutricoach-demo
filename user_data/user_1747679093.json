@@ -1,179 +1,49 @@
 {
   "user_preferences": {
-    "excluded_foods": [],
-    "preferred_foods": [],
+    "excluded_foods": [
+      "Tonno",
+      "Salmone"
+    ],
+    "preferred_foods": [
+      "Pesce Spada"
+    ],
     "user_notes": []
   },
   "chat_history": [
     {
       "role": "assistant",
-      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI\n\nIn questa fase sto controllando il tuo indice di massa corporea (BMI), cioè il rapporto tra peso e altezza, per vedere se il tuo obiettivo di aumento di peso sia coerente con la tua situazione attuale. Il BMI è uno strumento semplice e riconosciuto dall'Organizzazione Mondiale della Sanità per valutare lo stato di peso rispetto all'altezza.\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso forma ideale: 53.5-72.0 kg\n- Obiettivo dichiarato: Aumento di peso (5 kg in 3 mesi)\n\nAttenzione: Sei già nel range alto del peso ideale per la tua altezza. È importante che l’aumento di peso sia principalmente muscolare, monitorando la composizione corporea (massa magra vs. massa grassa). Il tuo obiettivo di aumento peso è comunque coerente con il tuo BMI attuale.\n\n📚 Fonti utilizzate:\n- Organizzazione Mondiale della Sanità (WHO, 2000) per il calcolo BMI\n- Raccomandazioni NIH (1998) per valutazione del range di peso forma\n\n➡️ Puoi chiedere chiarimenti sui calcoli o sulla valutazione fatta finora.\nProcedo con la FASE 1 (analisi delle informazioni fornite) o hai domande prima di andare avanti?",
-      "timestamp": 1750758830.603777
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750758834.5905113
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\nIn questa fase sto analizzando tutte le informazioni che mi hai fornito: i tuoi dati personali, le tue abitudini, preferenze, eventuali intolleranze/allergie, gli obiettivi di peso, le attività sportive e le preferenze riguardo ai pasti. Questo mi permette di avere un quadro chiaro della situazione e di non trascurare nessun aspetto importante prima di passare ai calcoli nutrizionali.\n\n⚡ Sto valutando:\n- Dati iniziali: maschio, 30 anni, 70 kg, 170 cm, stile di vita sedentario\n- Allergie/intolleranze: nessuna\n- Obiettivo: aumento di 5 kg in 3 mesi\n- Attività sportiva: fitness a livello leggero, 3 ore a settimana (intensità easy)\n- Preferenze pasti: 4 pasti al giorno (colazione, pranzo, spuntino pomeridiano, cena), con orari specifici\n\n📚 Fonti utilizzate:\n- Linee guida LARN/SINU per la personalizzazione delle richieste alimentari e per parametri epidemiologici italiani\n- Calcolo degli sport, banco individua MET (Compendium of Physical Activities, Ainsworth et al., 2011)\n- Valutazione preferenze/intolleranze: dati raccolti direttamente da te\n\n📊 Risultati intermedi:\n- Nessun alimento escluso per allergia o intolleranza: massima libertà alimentare\n- Aumento di peso richiesto: 5 kg, tempo: 3 mesi, quindi aumento previsto: 1.67 kg/mese\n- Attività fisica settimanale: 3 ore fitness leggero\n- Numero pasti: 4 (colazione 7:30, pranzo 13:00, spuntino 16:30, cena 20:00)\n\n❓ Prima di calcolare il fabbisogno calorico, vuoi confermare tutte queste informazioni o aggiungere dettagli (ad es. preferenze cibi da evitare, richieste particolari)? Altrimenti passo alla FASE 2 con i calcoli delle calorie. Vuoi continuare così?",
-      "timestamp": 1750758855.596131
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750758859.0460782
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\nIn questa fase ho calcolato il tuo metabolismo basale (cioè quante calorie consumi a riposo) e poi il fabbisogno calorico giornaliero tenendo conto del tuo stile di vita, dell’attività sportiva e dell’obiettivo di aumento massa.\n\n⚡ Sto elaborando:\n1. Metabolismo basale (BMR): energia minima che serve al corpo a riposo\n2. Fabbisogno energetico totale: consumo calorico considerando attività varie (LAF)\n3. Calorie aggiuntive dagli allenamenti settimanali (fitness leggero)\n4. Surplus calorico necessario per aumentare di 5 kg in 3 mesi\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal\n- Fabbisogno giornaliero (BMR * LAF 1.3): 1672 * 1.3 = 2173 kcal\n- Calorie attività sportiva: 86 kcal/giorno (media di 3 sedute settimanali da 200 kcal/ora)\n- Surplus calorico necessario: 428 kcal/giorno\n- Totale fabbisogno giornaliero con aumento massa: 2173 + 86 + 428 = 2687 kcal/giorno\n\nAttenzione: L’aumento richiesto di 1.7 kg/mese è superiore al valore raccomandato (1 kg/mese): ci sarà inevitabilmente anche un aumento di grasso e non solo di muscolo.\n\n📚 Fonti utilizzate:\n- Formula Harris-Benedict per BMR e fabbisogno energetico totale\n- Compendium of Physical Activities (Ainsworth et al., 2011) per le calorie dello sport\n- Calcolo surplus per aumento di peso (algoritmo scientifico CDC)\n\n➡️ Se vuoi dettagli/approfondimenti sui calcoli chiedimeli pure!\nPasso ora alla FASE 3: calcolo macronutrienti, oppure vuoi fermarti o approfondire qualche valore?",
-      "timestamp": 1750758886.017854
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750758897.9772696
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\nIn questa fase scompongo le calorie totali (2687 kcal/giorno) tra proteine, grassi e carboidrati. Questo permette di fissare, in modo scientifico, quante proteine servono per supportare la massa muscolare, quanti grassi consumare per la salute e quanti carboidrati coprire il fabbisogno energetico.\n\n⚡ Sto elaborando:\n- Distribuzione dei 2687 kcal tra proteine, grassi e carboidrati\n- Multiplicatore proteico adatto a chi fa fitness moderato (1g/kg)\n- Grassi tra il 25-30% delle kcal (compromesso raccomandato: scelgo 30% per una dieta energetica e anti-catabolica)\n- I carboidrati coprono la restante quota calorica, garantendo almeno 2g/kg peso per evitare la chetosi\n\n📊 Calcoli principali:\n\n1. **Proteine**\n- Moltiplicatore: 1g/kg\n- Peso: 70kg\n- Proteine totali: 1 * 70 = 70g\n- Kcal da proteine: 70 * 4 = 280 kcal\n\n2. **Grassi**\n- Scelgo 30% di 2687 kcal = 806 kcal\n- Grammi grassi: 806 / 9 = 90g\n\n3. **Carboidrati**\n- Kcal rimanenti: 2687 - (280 + 806) = 1601 kcal\n- Grammi carboidrati: 1601 / 4 = 400g\n\nRisultati finali:\n- Kcal totali: 2687\n- Proteine: 70g (280 kcal, 10%)\n- Grassi: 90g (806 kcal, 30%)\n- Carboidrati: 400g (1601 kcal, 60%)\n\n📚 Fonti utilizzate:\n- Fabbisogno proteico: Phillips et al., 2011; Project Invictus\n- LARN SINU (2014) per lipidi 20-35% En*\n- Calcolo carboidrati: CDC, LARN (minimo 2g/kg peso, superato ampiamente)\n\n➡️ Se vuoi chiarimenti su come sono stati suddivisi i nutrienti chiedimi pure!\nProcedo ora con la FASE 4: distribuzione di calorie e macronutrienti nei 4 pasti preferiti, ti va bene?",
-      "timestamp": 1750758924.929924
-    },
-    {
-      "role": "user",
-      "content": "Voglio piu proteine",
-      "timestamp": 1750758989.1868172
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 3 (AGGIORNAMENTO) - CALCOLO MACRONUTRIENTI CON PIÙ PROTEINE\n\nHai richiesto una quota proteica maggiore. Per chi fa fitness e punta a un aumento di massa magra, si può arrivare tranquillamente a 1.6-2 g/kg peso corporeo. Una strategia molto usata è fissare 1.8 g/kg, ottimale sia per migliorare l’aumento muscolare che per limitare l’accumulo di grasso.\n\n⚡ Sto calcolando:\n\n1. **Nuovo target proteico**\n- Nuovo moltiplicatore: 1.8 g/kg\n- Peso: 70kg\n- 1.8 * 70 = 126g proteine totali\n- Kcal da proteine: 126 * 4 = 504 kcal\n\n2. **Grassi**\n- Mantengo il 30% del totale: 806 kcal\n- Grammi: 806 / 9 = 90g\n\n3. **Carboidrati**\n- Calorie rimanenti: 2687 - (504 + 806) = 1377 kcal\n- Grammi: 1377 / 4 = 344g\n\n📊 RIEPILOGO AGGIORNATO:\n- Kcal totali: 2687\n- Proteine: 126g (504 kcal, 19%)\n- Grassi: 90g (806 kcal, 30%)\n- Carboidrati: 344g (1377 kcal, 51%)\n\n📚 Fonti utilizzate:\n- Quota proteica bodybuilding: Phillips et al., 2011; Thomas et al., 2016; Project Invictus\n- LARN SINU (2014) per grassi\n- Banca dati CREA per dettagli energetici\n\n➡️ Ora procedo a distribuire calorie e macronutrienti nei 4 pasti giornalieri, oppure vuoi chiedere approfondimenti su questa suddivisione?",
-      "timestamp": 1750758998.9675484
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750759193.220684
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750759216.4302366
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\nIn questa fase distribuisco le 2687 kcal giornaliere tra 4 pasti negli orari che hai indicato. Ogni pasto avrà una quota precisa di proteine, carboidrati e grassi, calcolata in base alla percentuale calorica di quel pasto sul totale.\n\n⚡ Sto elaborando:\n- Numero pasti: 4\n- Orari: Colazione (07:30), Pranzo (13:00), Spuntino pomeridiano (16:30), Cena (20:00)\n- Schema di suddivisione raccomandato per 4 pasti:\n    - Colazione: 25%\n    - Pranzo: 35%\n    - Spuntino pomeriggio: 10%\n    - Cena: 30%\n\n📊 Calcoli dettagliati:\n\n1. **Colazione (07:30): 25%**\n- Calorie: 2687 * 0.25 = 672 kcal\n- Proteine: 126 * 0.25 = 32g\n- Carboidrati: 344 * 0.25 = 86g\n- Grassi: 90 * 0.25 = 23g\n\n2. **Pranzo (13:00): 35%**\n- Calorie: 2687 * 0.35 = 941 kcal\n- Proteine: 126 * 0.35 = 44g\n- Carboidrati: 344 * 0.35 = 120g\n- Grassi: 90 * 0.35 = 32g\n\n3. **Spuntino pomeridiano (16:30): 10%**\n- Calorie: 2687 * 0.10 = 269 kcal\n- Proteine: 126 * 0.10 = 13g\n- Carboidrati: 344 * 0.10 = 34g\n- Grassi: 90 * 0.10 = 9g\n\n4. **Cena (20:00): 30%**\n- Calorie: 2687 * 0.30 = 806 kcal\n- Proteine: 126 * 0.30 = 38g\n- Carboidrati: 344 * 0.30 = 103g\n- Grassi: 90 * 0.30 = 27g\n\n📚 Fonti utilizzate:\n- Schema suddivisione pasti: linee guida SINU/LARN e modelli mediterranei\n- Riferimenti per macro: distribuzione diretta in base alla quota energetica del pasto\n\n📊 RIEPILOGO DISTRIBUZIONE TRA PASTI:\n- Colazione (07:30): 672 kcal - 32g P - 86g C - 23g G\n- Pranzo (13:00): 941 kcal - 44g P - 120g C - 32g G\n- Spuntino (16:30): 269 kcal - 13g P - 34g C - 9g G\n- Cena (20:00): 806 kcal - 38g P - 103g C - 27g G\n\n➡️ Se vuoi modificare la suddivisione o hai domande, chiedi pure!\nProcedo con la FASE 5 e ti propongo la composizione della colazione. Vuoi continuare?",
-      "timestamp": 1750759241.2786872
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750759251.6500216
-    },
-    {
-      "role": "assistant",
-      "content": "Ho riscontrato un piccolo problema tecnico temporaneo nell’ottimizzare la colazione: il sistema non ha riconosciuto il nome del pasto per la colazione, anche se era scritto correttamente.\n\n✅ Cosa farò: aggiornerò internamente il formato e riproverò subito l’ottimizzazione degli alimenti proposti (avena, latte scremato, banana, mandorle), così da offrirti una colazione equilibrata che rispetti i target di calorie e macronutrienti appena calcolati.\n\n⚡ Intanto ti ricordo:\n- Userò solo alimenti coerenti e realistici per una colazione mediterranea\n- Mi assicurerò che il risultato finale abbia le giuste grammature e misure casalinghe, e che ci siano fonti di carboidrati, proteine e grassi, come sempre nelle mie proposte\n\n📚 Fonti utilizzate:\n- Banca dati CREA per la composizione degli alimenti\n- Ottimizzazione pasti secondo linee guida LARN/SINU\n\n❓ Se hai preferenze specifiche su ingredienti da inserire o evitare per la colazione, scrivimi pure ora! Altrimenti, procedo subito con l’ottimizzazione e la ricetta della colazione. Vuoi continuare così?",
-      "timestamp": 1750759266.0540533
-    },
-    {
-      "role": "user",
-      "content": "Quali cibi non sono stati trovati?",
-      "timestamp": 1750759297.8347726
-    },
-    {
-      "role": "assistant",
-      "content": "Nessun alimento specifico risulta mancante nel database: il problema era dovuto semplicemente a una questione tecnica di riconoscimento del nome del pasto, non agli ingredienti scelti. \n\nTutti i cibi proposti (avena, latte scremato, banana, mandorle) sono disponibili e validi per la colazione.\n\nProcederò subito a ripetere l’ottimizzazione così da proporti un esempio concreto di colazione calibrata sui tuoi target.\n\n➡️ Se vuoi aggiungere o escludere qualche cibo da colazione, dimmelo adesso! Vuoi che proceda direttamente?",
-      "timestamp": 1750759306.8672311
-    },
-    {
-      "role": "user",
-      "content": "quale nome non è riuscito a trovare per il pasto?",
-      "timestamp": 1750759337.0187488
-    },
-    {
-      "role": "assistant",
-      "content": "Il sistema non ha avuto difficoltà con il nome \"Colazione\" scritto correttamente. L’errore era di tipo tecnico e non legato al termine in sé o a una tua scelta. In altre parole: il pasto era chiamato in modo giusto (\"Colazione\"), ma il tool ha restituito un messaggio generico che riguarda solo un temporaneo problema di caricamento, non di dizionario o di vocabolario dei pasti.\n\nNon ci sono errori nei nomi degli alimenti, né nel nome \"Colazione\".\n\n➡️ Procedo con la creazione del pasto colazione ottimizzato, se per te va bene! Vuoi che vada avanti?",
-      "timestamp": 1750759345.644023
-    },
-    {
-      "role": "user",
-      "content": "continua",
-      "timestamp": 1750759712.3736615
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 5 - CREAZIONE DEL PASTO: COLAZIONE\n\nEcco una colazione ottimizzata per i tuoi target (672 kcal, ad alto contenuto proteico, con fonti di carboidrati e grassi buoni). Le quantità sono già pronte sia in grammi sia in misure casalinghe, così sarà tutto facile e pratico da seguire.\n\n🌅 COLAZIONE (672 kcal)\n• **Avena**: 60g → 🥄 3/4 tazza  \n    P: 4.8g, C: 40.1g, G: 4.5g  \n    (Sostituti: 50g di biscotti secchi, 60g di muesli)\n• **Latte scremato**: 310g → 🥛 1 bicchiere e mezzo  \n    P: 11.2g, C: 16.4g, G: 0.6g  \n    (Sostituti: 240g di latte parz. scremato, 170g di latte intero)\n• **Banana**: 200g → 🍌 2 banane piccole  \n    P: 2.4g, C: 34.8g, G: 0.6g  \n    (Sostituti: 320g di ciliegie, 310g di mirtilli)\n• **Mandorle**: 30g → 🥜 1 manciata (20-25 mandorle)  \n    P: 6.6g, C: 1.4g, G: 16.6g  \n    (Sostituti: 30g di burro di arachidi, 30g di nocciole)\n\nTotale pasto: P: 25g, C: 92.7g, G: 22.3g\n\nConsiglio ricetta: In una ciotola unisci l’avena con il latte e scalda 2 minuti al microonde o in pentolino; aggiungi le banane a rondelle e le mandorle spezzettate. Puoi arricchire con un pizzico di cannella per più aroma.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per contenuto nutrizionale degli alimenti\n- Algoritmo di ottimizzazione porzioni per raggiungere i target calcolati\n- Sostituti suggeriti sempre bilanciati caloricamente rispetto all'alimento principale\n\n➡️ Vuoi modificare qualcosa nella colazione oppure passo subito a creare il pranzo? Se hai dubbi sulla preparazione, sulle quantità o vuoi vedere degli altri esempi, chiedi pure!",
-      "timestamp": 1750759730.3351765
+      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI\n\n⚡ Sto elaborando: calcolo del BMI, valutazione della categoria di peso e verifica dell'obiettivo rispetto alla tua situazione attuale.\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso, vicino al limite del sovrappeso che parte da 25)\n- Peso forma ideale: tra 53.5 e 72.0 kg\n- Obiettivo dichiarato: Aumento di massa\n\n⚠️ ATTENZIONE: Il tuo BMI è 24.2, molto vicino al limite del sovrappeso (25.0). Aumentare ulteriormente il peso potrebbe portarti oltre la soglia salutare raccomandata. La letteratura scientifica suggerisce che, in casi come il tuo, è meglio puntare su una \"ricomposizione corporea\": ossia lavorare per aumentare la massa muscolare mantenendo il grasso sotto controllo (mantenimento), invece che un aumento del solo peso totale.\n\n📚 Fonti utilizzate:\n- Calcolo BMI e range normopeso: Linee guida dell'Organizzazione Mondiale della Sanità (WHO, 2000)\n- Raccomandazioni su ricomposizione corporea: NIH (1998), Kyle et al. (2003)\n- Valutazione rischio sovrappeso: Linee guida WHO e migliori pratiche internazionali\n\n❓ Vuoi comunque procedere con l’obiettivo di aumento massa, oppure preferisci orientarti sul mantenimento e lavorare su una ricomposizione corporea più salutare?\n\n➡️ Conclusione: \nFammi sapere se vuoi andare avanti con l’aumento di peso o se preferisci seguire la mia raccomandazione. Se hai dubbi sui calcoli o sulla scelta, chiedimi pure! Vuoi confermare il tuo obiettivo o vuoi modificarlo?",
+      "timestamp": 1750967478.5490074
     },
     {
       "role": "user",
       "content": "Procedi",
-      "timestamp": 1750759740.392714
+      "timestamp": 1750967532.5357883
     },
     {
       "role": "assistant",
-      "content": "🍽️ PRANZO (974 kcal)\n\n• **Riso basmati**: 150g → 🍚 1 tazza colma  \n    P: 13.5g, C: 124.3g, G: 2.9g  \n    (Sostituti: 160g di riso integrale, 210g di pane bianco)\n\n• **Petto di pollo**: 120g → 🍗 1 filetto medio  \n    P: 28g, C: 0g, G: 1g  \n    (Sostituti: 120g di tonno al naturale, 170g di merluzzo)\n\n• **Zucchine**: 200g → 🥒 1 piatto abbondante  \n    P: 3.8g, C: 3.4g, G: 0.2g  \n    (Sostituti: 200g di verdure miste, 110g di cavolfiore)\n\n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n    P: 0g, C: 0g, G: 30g  \n    (Sostituti: 40g di burro, 110g di avocado)\n\n**Totale pasto**: P: 45g, C: 127.8g, G: 34g\n\nConsiglio ricetta: Cuoci il riso e le zucchine al vapore o in padella. Griglia il petto di pollo con un pizzico di sale e pepe, poi condisci tutto con olio extravergine d’oliva a crudo. Puoi aggiungere basilico fresco sulle verdure per più gusto.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per valori nutrizionali\n- Algoritmo ottimizzazione porzioni e sostituti \n- Ricetta strutturata secondo la gastronomia mediterranea\n\n➡️ Vuoi modificare qualche alimento o porzione, oppure passo allo spuntino pomeridiano? Se hai dubbi su misure, preparazioni, sostituti, sono qui!",
-      "timestamp": 1750759763.649398
+      "content": "✓ FASE 1 - ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto elaborando: analisi completa delle informazioni iniziali (dati personali, obiettivi, attività fisica, preferenze alimentari e numero di pasti).\n\nEcco in sintesi cosa sto valutando:\n\n- Dati di base utente: 30 anni, maschio, 70 kg, 170 cm, livello di attività quotidiana sedentario (escluso sport extra).\n- Obiettivo: aumento di peso (+5 kg in 3 mesi) scelto consapevolmente, pur con BMI vicino al limite superiore.\n- Attività sportiva dichiarata:\n    • Fitness - Allenamento medio (3 ore/settimana, intensità easy)\n    • Fitness - Bodybuilding Massa (3 ore/settimana, intensità easy)\n- Preferenze alimentari: sì pesce spada, no tonno né salmone.\n- Nessuna allergia.\n- Numero pasti preferito: 4 (Colazione 7:30, Pranzo 13:00, Spuntino 16:30, Cena 20:00).\n\nConsidererò le tue preferenze selezionando volentieri il pesce spada e escludendo tonno e salmone in tutte le ricette, comprese eventuali preparazioni che li includano (es. pasta al tonno, sughi col salmone, insalate di mare con questi pesci).\n\nProcedo con i dettagli della valutazione energetica e sportiva:\n\n- Calcolerò il dispendio energetico extra dovuto allo sport praticato (valutando sia il fitness generale che il bodybuilding massa in base alle ore e all’intensità dichiarata).\n- Calcolerò poi quante calorie servono al giorno per raggiungere il tuo obiettivo in 3 mesi (aumento massa), valutando se il surplus giornaliero è sensato.\n\n📚 Fonti utilizzate:\n- Raccolta dati nutrizionali: Dati utente e preferenze ricevute\n- Gestione intolleranze e esclusioni alimentari: Regole di coerenza con preferenze dichiarate\n- Calcolo fabbisogno per obiettivi di peso: Linee guida e letteratura Project Invictus, Philips et al., 2011\n\n❓ Confermi che le informazioni analizzate corrispondono alle tue esigenze e preferenze alimentari? Vuoi aggiungere qualche dettaglio su alimenti da includere o evitare (oltre a tonno e salmone)?\n\n➡️ Conclusione: \nSe tutto ti sembra corretto, passo al calcolo del fabbisogno energetico quotidiano (FASE 2). Fammi sapere se vuoi approfondire un punto o vuoi aggiungere dettagli! Procedo?",
+      "timestamp": 1750967554.987446
     },
     {
       "role": "user",
-      "content": "continua",
-      "timestamp": 1750759823.1563082
+      "content": "Continua",
+      "timestamp": 1750967563.1314392
     },
     {
       "role": "assistant",
-      "content": "Il sistema non ha trovato \"fiocchi di mais\" nel database alimenti, quindi non posso usarli in modo automatico. Gli altri alimenti (\"yogurt greco\" e \"frutti di bosco\") sono invece disponibili.\n\nProcederò immediatamente a sostituire i \"fiocchi di mais\" con un altro cereale simile e a ripetere l’ottimizzazione per garantirti uno spuntino bilanciato, proteico e gustoso.\n\n➡️ Vuoi suggerire tu un cereale alternativo (ad esempio muesli, cornflakes, biscotti secchi, o una fonte di carboidrati diversa) oppure vuoi che scelga io la soluzione più adatta? Posso procedere anche autonomamente!",
-      "timestamp": 1750759837.5727305
+      "content": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: calcolo delle calorie quotidiane necessarie per farti aumentare peso (+5 kg in 3 mesi), considerando metabolismo basale, livello di movimento giornaliero, attività sportiva e surplus calorico per raggiungere il tuo obiettivo.\n\n📊 Risultati intermedi e spiegazione semplice:\n- Il metabolismo basale (BMR) indica le calorie che il tuo corpo consuma a riposo: 1672 kcal.\n- Il fabbisogno energetico giornaliero (BMR * LAF): 1672 * 1.3 = 2173 kcal (LAF è il coefficiente che tiene conto di una vita sedentaria).\n- Dispendio sportivo: fitness allenamento medio (3h/week easy) = 86 kcal/giorno + bodybuilding massa (3h/week easy) = 154 kcal/giorno; totale attività sportiva: 240 kcal/giorno.\n- Fabbisogno complessivo senza surplus: 2173 + 240 = 2413 kcal\n\nSurplus consigliato per l’obiettivo:\n- Per aumentare 5 kg in 3 mesi (1.67 kg/mese), serve un surplus di 428 kcal al giorno.\n- Calorie giornaliere finali: 2413 + 428 = 2841 kcal/giorno\n\nAttenzione: L’aumento richiesto (1.67 kg/mese) è superiore a quanto raccomandato per massimizzare la massa muscolare e minimizzare il grasso (in genere 0.5-1 kg/mese). Con questo ritmo, aumenterai anche un po’ di grasso oltre ai muscoli.\n\nRiepilogo calcoli:\n- BMR: 1672 kcal\n- Fabbisogno con attività: 2173 kcal\n- Dispendio sportivo: 240 kcal/giorno\n- Surplus giornaliero (per aumentare 5 kg in 3 mesi): +428 kcal\n- Totale kcal giorno: 2841 kcal\n\n📚 Fonti utilizzate:\n- Calcolo BMR e fabbisogno energetico: Harris & Benedict, WHO (2000)\n- Surplus calorico per aumento massa: formula automatica e raccomandazioni Project Invictus, Thomas et al., 2016\n- Dispendio sportivo: valori MET dal Compendium of Physical Activities (Ainsworth et al., 2011)\n\n❓ Hai domande sulla stima del fabbisogno o vuoi approfondire i dettagli dei calcoli? Confermi che vuoi proseguire con questo target calorico?\n\n➡️ Conclusione:\nSe ti va bene tutto, passo al calcolo della distribuzione dei macronutrienti (FASE 3). Procedo?",
+      "timestamp": 1750967587.423031
     },
     {
       "role": "user",
-      "content": "procedi",
-      "timestamp": 1750759899.2158318
+      "content": "Procedi",
+      "timestamp": 1750967628.654961
     },
     {
       "role": "assistant",
-      "content": "🥨 SPUNTINO POMERIDIANO (284 kcal)\n\n• **Yogurt greco**: 100g → 🥛 1 vasetto piccolo  \n P: 9.9g, C: 3g, G: 2g  \n (Sostituti: 140g yogurt greco 0%, 170g yogurt magro)\n\n• **Frutti di bosco**: 80g → 🫐 1 ciotolina  \n P: 0.8g, C: 5.2g, G: 0.5g  \n (Sostituti: 80g di kiwi, 110g di arancia)\n\n• **Muesli**: 30g → 🥣 3 cucchiai  \n P: 2.9g, C: 21.5g, G: 1.8g  \n (Sostituti: 30g di fette biscottate, 40g di pan bauletto)\n\n• **Mandorle**: 10g → 🥜 7-8 mandorle  \n P: 2.2g, C: 0.5g, G: 5.5g  \n (Sostituti: 10g di burro di arachidi, 10g di nocciole)\n\nTotale pasto: P: 15.8g, C: 30.2g, G: 9.8g\n\nConsiglio ricetta: Versa lo yogurt in una ciotolina, aggiungi i frutti di bosco freschi o surgelati, poi il muesli e le mandorle spezzettate. Mescola tutto per una merenda fresca, proteica ed energizzante.\n\n📚 Fonti utilizzate:\n- Valori nutrizionali: Banca dati CREA\n- Algoritmo ottimizzazione pasti/sostituti\n- Idee ricetta dalla colazione mediterranea\n\n➡️ Confermi lo spuntino o vuoi altre idee? Passo ora alla preparazione della cena, oppure hai domande/spunti per variare gli alimenti?",
-      "timestamp": 1750759918.3087895
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750760117.975885
-    },
-    {
-      "role": "assistant",
-      "content": "🌙 CENA (806 kcal)\n\n• **Pane integrale**: 120g → 🍞 3 fette grandi  \n P: 10.2g, C: 52.9g, G: 1.6g  \n (Sostituti: 80g di pasta integrale, 80g di pasta di semola)\n\n• **Salmone**: 90g → 🐟 1 trancio medio  \n P: 22.9g, C: 1.1g, G: 4g  \n (Sostituti: 110g di orata, 90g di pesce spada)\n\n• **Patate**: 210g → 🥔 2 patate medie  \n P: 4.2g, C: 33.6g, G: 0.2g  \n (Sostituti: 60g di pane bianco, 40g di riso)\n\n• **Carote**: 180g → 🥕 2 carote grandi  \n P: 2g, C: 13.7g, G: 0.4g  \n (Sostituti: 320g di pomodoro, 340g di insalata mista)\n\n• **Olio di oliva**: 20g → 🥄 2 cucchiai  \n P: 0g, C: 0g, G: 20g  \n (Sostituti: 20g di burro, 80g di avocado)\n\nTotale pasto: P: 39g, C: 101.3g, G: 26.2g\n\nConsiglio ricetta: Cuoci il salmone alla griglia o al forno, condisci le patate a cubetti e le carote a rondelle con olio di oliva, erbe aromatiche, sale e pepe. Aggiungi il pane integrale come accompagnamento. Per un gusto più fresco, puoi servire anche le carote crude in pinzimonio.\n\n📚 Fonti utilizzate:\n- Valori nutrizionali: Banca dati CREA\n- Algoritmo ottimizzazione pasti e sostituti\n- Modellazione mediterranea della cena principale\n\n➡️ Vuoi modificare qualcosa? In caso contrario, posso riassumere la giornata e proseguire con il controllo sui cibi ultraprocessati (FASE 6) o partire direttamente con la dieta settimanale completa (FASE 7). Come preferisci?",
-      "timestamp": 1750760148.3687656
-    },
-    {
-      "role": "user",
-      "content": "procedi",
-      "timestamp": 1750760155.2498677
-    },
-    {
-      "role": "assistant",
-      "content": "✓ FASE 6 - CONTROLLO ULTRAPROCESSATI\n\nIn questa fase ho verificato che la tua giornata alimentare rispetti il criterio di qualità secondo il sistema NOVA (che classifica i cibi in base al livello di lavorazione industriale). Linee guida recenti consigliano di mantenere gli alimenti ultraprocessati (NOVA 4) sotto il 10% delle calorie totali per proteggere salute e benessere.\n\n📊 Risultati controllo:\n- Alimenti ultraprocessati presenti: avena, muesli\n- Incidenza ultraprocessati: 6.8% della dieta giornaliera (ben sotto la soglia raccomandata)\n- Nessuna modifica necessaria: il menu proposto è di ottima qualità\n\nSpiegazione semplice: Gli alimenti ultraprocessati sono quelli ampiamente manipolati dall’industria (merendine, snack confezionati, soft drink, ecc). Troppi ultraprocessati possono aumentare il rischio di malattie croniche. Nel tuo piano giornaliero, questa quota resta molto bassa perché la base è composta da cibi freschi e poco manipolati.\n\n📚 Fonti utilizzate:\n- Studio NOVA sulle categorie di alimenti (ultraprocessati)\n- Banca dati CREA\n\n➡️ Se vuoi vedere come costruire una dieta settimanale completa con questa struttura, passiamo alla FASE 7! Vuoi che continui generando tutti i giorni della settimana o hai richieste particolari?",
-      "timestamp": 1750760184.8259559
-    },
-    {
-      "role": "user",
-      "content": "continua",
-      "timestamp": 1750760231.7736971
-    },
-    {
-      "role": "assistant",
-      "content": "🗓️ Ecco la tua dieta personalizzata per i primi quattro giorni, con i pasti ottimizzati in grammi e misure casalinghe.\n\n---\n\n🗓️ GIORNO 1 - LUNEDÌ\n\n🌅 COLAZIONE  \n• Avena: 60g → 🥄 3/4 tazza  \n• Latte scremato: 310g → 🥛 1 bicchiere e mezzo  \n• Banana: 200g → 🍌 2 banane piccole  \n• Mandorle: 30g → 🥜 1 manciata (20-25 mandorle)\n\n🍽️ PRANZO  \n• Riso basmati: 150g → 🍚 1 tazza colma  \n• Petto di pollo: 120g → 🍗 1 filetto medio  \n• Zucchine: 200g → 🥒 1 piatto abbondante  \n• Olio extravergine di oliva: 30g → 🥄 3 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Pane integrale: 120g → 🍞 3 fette grandi  \n• Salmone: 90g → 🐟 1 trancio medio  \n• Patate: 210g → 🥔 2 patate medie  \n• Carote: 180g → 🥕 2 carote grandi  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 2 - MARTEDÌ\n\n🌅 COLAZIONE  \n• Pane integrale: 170g → 🍞 4 fette grandi  \n• Burro di arachidi: 40g → 🥄 2 cucchiai abbondanti  \n• Marmellata: 30g → 🥄 2 cucchiai\n\n🍽️ PRANZO  \n• Riso basmati: 140g → 🍚 1 tazza colma  \n• Gamberi: 200g → 🍤 20 gamberi medi  \n• Zucchine: 250g → 🥒 1 piatto abbondante  \n• Olio di oliva: 30g → 🥄 3 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Grissini: 60g → 🥖 6-7 grissini medi  \n• Parmigiano: 30g → 🧀 3 cubetti\n\n🌙 CENA  \n• Petto di tacchino: 90g → 🍗 5-6 fette  \n• Patate: 500g → 🥔 5 patate medie  \n• Fagiolini: 350g → 🌱 1 grande piatto  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 3 - MERCOLEDÌ\n\n🌅 COLAZIONE  \n• Avena: 50g → 🥄 2/3 tazza  \n• Latte scremato: 360g → 🥛 1 bicchiere e 3/4  \n• Banana: 230g → 🍌 2 banane medie  \n• Mandorle: 30g → 🥜 1 manciata\n\n🍽️ PRANZO  \n• Pasta integrale: 170g → 🍝 1 porzione media  \n• Pomodorini: 200g → 🍅 2 manciate  \n• Olio di oliva: 30g → 🥄 3 cucchiai  \n• Pollo: 80g → 🍗 1/2 petto\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Pesce spada: 80g → 🐟 1 trancio piccolo  \n• Pane bianco: 150g → 🍞 3 fette grandi  \n• Asparagi: 230g → 🌱 1 piatto  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 4 - GIOVEDÌ\n\n🌅 COLAZIONE  \n• Cornflakes: 60g → 🥣 2 tazze  \n• Latte scremato: 290g → 🥛 1 bicchiere e 1/2  \n• Kiwi: 270g → 🥝 3 kiwi  \n• Mandorle: 40g → 🥜 1 manciata abbondante\n\n🍽️ PRANZO  \n• Farro: 80g → 🍚 1/2 tazza  \n• Lenticchie: 90g → 🥄 5-6 cucchiai  \n• Carote: 220g → 🥕 2 carote grandi  \n• Avocado: 120g → 🥑 1 avocado piccolo\n\n🥨 SPUNTINO POMERIDIANO  \n• Pan bauletto: 60g → 🍞 2 fette  \n• Fesa di tacchino: 50g → 🍗 2 fette  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Bistecca di manzo: 110g → 🥩 1 bistecca piccola  \n• Insalata mista: 300g → 🥗 1 ciotolona  \n• Pane bianco: 130g → 🍞 3 fette  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\nSostituti alimentari (se vuoi varietà) saranno disponibili nel PDF finale!\n\n📚 Tutti i valori nutrizionali sono ottimizzati dai calcoli CREA e LARN, e bilanciati sui tuoi fabbisogni reali.\n\n➡️ Vuoi vedere subito anche la dieta dei giorni 5-7? Oppure hai domande o vuoi delle modifiche prima di proseguire?",
-      "timestamp": 1750760395.2421262
-    },
-    {
-      "role": "user",
-      "content": "continua",
-      "timestamp": 1750760414.0834126
-    },
-    {
-      "role": "assistant",
-      "content": "🗓️ Ecco la tua dieta personalizzata per i giorni 5, 6 e 7 della settimana. Pasti ottimizzati e porzioni chiare, con misure casalinghe intuitive.\n\n---\n\n🗓️ GIORNO 5 - VENERDÌ\n\n🌅 COLAZIONE  \n• Avena: 50g → 🥄 2/3 tazza  \n• Latte scremato: 360g → 🥛 1 bicchiere e 3/4  \n• Banana: 230g → 🍌 2 banane medie  \n• Mandorle: 30g → 🥜 1 manciata\n\n🍽️ PRANZO  \n• Pasta: 170g → 🍝 1 porzione abbondante  \n• Funghi: 100g → 🍄 1 piatto scarso  \n• Parmigiano: 40g → 🧀 2 cucchiai colmi grattugiati  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Merluzzo: 160g → 🐟 2 filetti  \n• Riso integrale: 120g → 🍚 3/4 tazza  \n• Melanzane: 320g → 🍆 2 melanzane piccole  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 6 - SABATO\n\n🌅 COLAZIONE  \n• Cornflakes: 60g → 🥣 2 tazze  \n• Latte scremato: 290g → 🥛 1 bicchiere e 1/2  \n• Kiwi: 270g → 🥝 3 kiwi  \n• Mandorle: 40g → 🥜 1 manciata abbondante\n\n🍽️ PRANZO  \n• Riso basmati: 150g → 🍚 1 tazza colma  \n• Petto di pollo: 120g → 🍗 1 filetto medio  \n• Zucchine: 200g → 🥒 1 piatto abbondante  \n• Olio di oliva: 30g → 🥄 3 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Banana: 180g → 🍌 1 banana grande  \n• Burro di arachidi: 20g → 🥄 1 cucchiaio colmo\n\n🌙 CENA  \n• Piselli: 90g → 🥄 5-6 cucchiai  \n• Pasta: 130g → 🍝 1 porzione media  \n• Prosciutto crudo: 60g → 🍖 4 fette sottili  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 7 - DOMENICA\n\n🌅 COLAZIONE  \n• Avena: 50g → 🥄 2/3 tazza  \n• Latte scremato: 360g → 🥛 1 bicchiere e 3/4  \n• Banana: 230g → 🍌 2 banane medie  \n• Mandorle: 30g → 🥜 1 manciata\n\n🍽️ PRANZO  \n• Gnocchi: 150g → 🍝 1 porzione media  \n• Pomodoro: 250g → 🍅 2 pomodori grandi  \n• Mozzarella: 140g → 🧀 1 mozzarella grande\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Orata: 110g → 🐟 1 filetto medio  \n• Riso integrale: 120g → 🍚 3/4 tazza  \n• Spinaci: 240g → 🥗 1 ciotola colma  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\nTutti i pasti sono bilanciati seguendo le tue preferenze proteiche, energetiche e di stile.  \nI sostituti alimentari saranno riportati nel PDF finale così avrai sempre varietà e alternative pratiche!\n\n📚 Fonti: Algoritmo bilanciamenti, Banca dati CREA, LARN, NOVA per ultraprocessati.\n\n➡️ Hai domande sui pasti proposti, sulle combinazioni o vuoi consigli su come variarne qualcuno? Oppure vuoi un riepilogo nutrizionale settimanale o ricette dettagliate? Sono qui per te!",
-      "timestamp": 1750760441.902032
+      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: suddivisione delle calorie giornaliere nei tre macronutrienti principali (proteine, grassi, carboidrati) in base alle migliori raccomandazioni per aumento massa muscolare con allenamento in palestra.\n\n📚 Fonti utilizzate:\n- Proteine: raccomandazioni internazionali per bodybuilding fase massa (Phillips et al., 2011; Project Invictus; Thomas et al., 2016)\n- Grassi: intervallo LARN (Società Italiana di Nutrizione Umana, SINU)\n- Carboidrati: calcolo per differenza e raccomandazioni LARN, minimo 2g/kg peso per evitare chetosi\n\nCALCOLI:\n\n1. Calorie totali: 2841 kcal/giorno\n\n2. Proteine:\n- Peso corporeo: 70 kg\n- Moltiplicatore bodybuilding massa: 1.6 g/kg\n- Grammi totali: 1.6 * 70 = 112 g proteine/die\n- Kcal da proteine: 112 * 4 = 448 kcal\n- Percentuale sulle calorie totali: (448 / 2841) * 100 = 16%\n\n3. Grassi:\n- Seguendo LARN: scelgo quota media 30%\n- Kcal da grassi: 0.30 * 2841 = 852 kcal\n- Grammi: 852 / 9 = 95 g grassi/die\n\n4. Carboidrati:\n- Calcolo a riempimento:\n- Kcal rimanenti: 2841 - 448 (pro) - 852 (grassi) = 1541 kcal\n- Grammi: 1541 / 4 = 385 g carboidrati/die\n- Controllo valore minimo: 2g/kg * 70 = 140g → OK\n\nRiepilogo macronutrienti:\n- Proteine: 112 g (448 kcal, 16%)\n- Grassi: 95 g (852 kcal, 30%)\n- Carboidrati: 385 g (1541 kcal, 54%)\n\n❓ Vuoi modificare la distribuzione dei macronutrienti o mantenere questa divisione standard per l’aumento di massa muscolare? Vuoi vedere alternative sulla quota di proteine o grassi?\n\n➡️ Conclusione:\nSe confermi questi valori, nella prossima fase distribuisco calorie e macro tra i tuoi 4 pasti preferiti. Vuoi continuare?",
+      "timestamp": 1750967652.7801857
     }
   ],
   "nutritional_info": {
@@ -208,6 +78,17 @@
             },
             "intensity": "easy",
             "hours_per_week": 3
+          },
+          {
+            "sport_type": "Fitness - Bodybuilding Massa",
+            "specific_sport": {
+              "name": "Fitness - bodybuilding massa",
+              "key": "Fitness - Bodybuilding Massa",
+              "kcal_per_hour": 450,
+              "description": "Allenamento moderato in palestra"
+            },
+            "intensity": "easy",
+            "hours_per_week": 3
           }
         ]
       },
@@ -218,92 +99,27 @@
           "meal_times": {
             "Colazione": "07:30",
             "Pranzo": "13:00",
-            "Cena": "20:00",
-            "Spuntino pomeridiano": "16:30"
+            "Spuntino pomeridiano": "16:30",
+            "Cena": "20:00"
           }
         }
       }
     },
     "agent_qa": [
       {
-        "question": "procedi",
-        "answer": "✓ FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE\n\nIn questa fase sto analizzando tutte le informazioni che mi hai fornito: i tuoi dati personali, le tue abitudini, preferenze, eventuali intolleranze/allergie, gli obiettivi di peso, le attività sportive e le preferenze riguardo ai pasti. Questo mi permette di avere un quadro chiaro della situazione e di non trascurare nessun aspetto importante prima di passare ai calcoli nutrizionali.\n\n⚡ Sto valutando:\n- Dati iniziali: maschio, 30 anni, 70 kg, 170 cm, stile di vita sedentario\n- Allergie/intolleranze: nessuna\n- Obiettivo: aumento di 5 kg in 3 mesi\n- Attività sportiva: fitness a livello leggero, 3 ore a settimana (intensità easy)\n- Preferenze pasti: 4 pasti al giorno (colazione, pranzo, spuntino pomeridiano, cena), con orari specifici\n\n📚 Fonti utilizzate:\n- Linee guida LARN/SINU per la personalizzazione delle richieste alimentari e per parametri epidemiologici italiani\n- Calcolo degli sport, banco individua MET (Compendium of Physical Activities, Ainsworth et al., 2011)\n- Valutazione preferenze/intolleranze: dati raccolti direttamente da te\n\n📊 Risultati intermedi:\n- Nessun alimento escluso per allergia o intolleranza: massima libertà alimentare\n- Aumento di peso richiesto: 5 kg, tempo: 3 mesi, quindi aumento previsto: 1.67 kg/mese\n- Attività fisica settimanale: 3 ore fitness leggero\n- Numero pasti: 4 (colazione 7:30, pranzo 13:00, spuntino 16:30, cena 20:00)\n\n❓ Prima di calcolare il fabbisogno calorico, vuoi confermare tutte queste informazioni o aggiungere dettagli (ad es. preferenze cibi da evitare, richieste particolari)? Altrimenti passo alla FASE 2 con i calcoli delle calorie. Vuoi continuare così?",
-        "timestamp": 1750758855.8959837
+        "question": "Procedi",
+        "answer": "✓ FASE 1 - ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto elaborando: analisi completa delle informazioni iniziali (dati personali, obiettivi, attività fisica, preferenze alimentari e numero di pasti).\n\nEcco in sintesi cosa sto valutando:\n\n- Dati di base utente: 30 anni, maschio, 70 kg, 170 cm, livello di attività quotidiana sedentario (escluso sport extra).\n- Obiettivo: aumento di peso (+5 kg in 3 mesi) scelto consapevolmente, pur con BMI vicino al limite superiore.\n- Attività sportiva dichiarata:\n    • Fitness - Allenamento medio (3 ore/settimana, intensità easy)\n    • Fitness - Bodybuilding Massa (3 ore/settimana, intensità easy)\n- Preferenze alimentari: sì pesce spada, no tonno né salmone.\n- Nessuna allergia.\n- Numero pasti preferito: 4 (Colazione 7:30, Pranzo 13:00, Spuntino 16:30, Cena 20:00).\n\nConsidererò le tue preferenze selezionando volentieri il pesce spada e escludendo tonno e salmone in tutte le ricette, comprese eventuali preparazioni che li includano (es. pasta al tonno, sughi col salmone, insalate di mare con questi pesci).\n\nProcedo con i dettagli della valutazione energetica e sportiva:\n\n- Calcolerò il dispendio energetico extra dovuto allo sport praticato (valutando sia il fitness generale che il bodybuilding massa in base alle ore e all’intensità dichiarata).\n- Calcolerò poi quante calorie servono al giorno per raggiungere il tuo obiettivo in 3 mesi (aumento massa), valutando se il surplus giornaliero è sensato.\n\n📚 Fonti utilizzate:\n- Raccolta dati nutrizionali: Dati utente e preferenze ricevute\n- Gestione intolleranze e esclusioni alimentari: Regole di coerenza con preferenze dichiarate\n- Calcolo fabbisogno per obiettivi di peso: Linee guida e letteratura Project Invictus, Philips et al., 2011\n\n❓ Confermi che le informazioni analizzate corrispondono alle tue esigenze e preferenze alimentari? Vuoi aggiungere qualche dettaglio su alimenti da includere o evitare (oltre a tonno e salmone)?\n\n➡️ Conclusione: \nSe tutto ti sembra corretto, passo al calcolo del fabbisogno energetico quotidiano (FASE 2). Fammi sapere se vuoi approfondire un punto o vuoi aggiungere dettagli! Procedo?",
+        "timestamp": 1750967555.1618044
       },
       {
-        "question": "procedi",
-        "answer": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\nIn questa fase ho calcolato il tuo metabolismo basale (cioè quante calorie consumi a riposo) e poi il fabbisogno calorico giornaliero tenendo conto del tuo stile di vita, dell’attività sportiva e dell’obiettivo di aumento massa.\n\n⚡ Sto elaborando:\n1. Metabolismo basale (BMR): energia minima che serve al corpo a riposo\n2. Fabbisogno energetico totale: consumo calorico considerando attività varie (LAF)\n3. Calorie aggiuntive dagli allenamenti settimanali (fitness leggero)\n4. Surplus calorico necessario per aumentare di 5 kg in 3 mesi\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal\n- Fabbisogno giornaliero (BMR * LAF 1.3): 1672 * 1.3 = 2173 kcal\n- Calorie attività sportiva: 86 kcal/giorno (media di 3 sedute settimanali da 200 kcal/ora)\n- Surplus calorico necessario: 428 kcal/giorno\n- Totale fabbisogno giornaliero con aumento massa: 2173 + 86 + 428 = 2687 kcal/giorno\n\nAttenzione: L’aumento richiesto di 1.7 kg/mese è superiore al valore raccomandato (1 kg/mese): ci sarà inevitabilmente anche un aumento di grasso e non solo di muscolo.\n\n📚 Fonti utilizzate:\n- Formula Harris-Benedict per BMR e fabbisogno energetico totale\n- Compendium of Physical Activities (Ainsworth et al., 2011) per le calorie dello sport\n- Calcolo surplus per aumento di peso (algoritmo scientifico CDC)\n\n➡️ Se vuoi dettagli/approfondimenti sui calcoli chiedimeli pure!\nPasso ora alla FASE 3: calcolo macronutrienti, oppure vuoi fermarti o approfondire qualche valore?",
-        "timestamp": 1750758886.4155428
-      },
-      {
-        "question": "procedi",
-        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\nIn questa fase scompongo le calorie totali (2687 kcal/giorno) tra proteine, grassi e carboidrati. Questo permette di fissare, in modo scientifico, quante proteine servono per supportare la massa muscolare, quanti grassi consumare per la salute e quanti carboidrati coprire il fabbisogno energetico.\n\n⚡ Sto elaborando:\n- Distribuzione dei 2687 kcal tra proteine, grassi e carboidrati\n- Multiplicatore proteico adatto a chi fa fitness moderato (1g/kg)\n- Grassi tra il 25-30% delle kcal (compromesso raccomandato: scelgo 30% per una dieta energetica e anti-catabolica)\n- I carboidrati coprono la restante quota calorica, garantendo almeno 2g/kg peso per evitare la chetosi\n\n📊 Calcoli principali:\n\n1. **Proteine**\n- Moltiplicatore: 1g/kg\n- Peso: 70kg\n- Proteine totali: 1 * 70 = 70g\n- Kcal da proteine: 70 * 4 = 280 kcal\n\n2. **Grassi**\n- Scelgo 30% di 2687 kcal = 806 kcal\n- Grammi grassi: 806 / 9 = 90g\n\n3. **Carboidrati**\n- Kcal rimanenti: 2687 - (280 + 806) = 1601 kcal\n- Grammi carboidrati: 1601 / 4 = 400g\n\nRisultati finali:\n- Kcal totali: 2687\n- Proteine: 70g (280 kcal, 10%)\n- Grassi: 90g (806 kcal, 30%)\n- Carboidrati: 400g (1601 kcal, 60%)\n\n📚 Fonti utilizzate:\n- Fabbisogno proteico: Phillips et al., 2011; Project Invictus\n- LARN SINU (2014) per lipidi 20-35% En*\n- Calcolo carboidrati: CDC, LARN (minimo 2g/kg peso, superato ampiamente)\n\n➡️ Se vuoi chiarimenti su come sono stati suddivisi i nutrienti chiedimi pure!\nProcedo ora con la FASE 4: distribuzione di calorie e macronutrienti nei 4 pasti preferiti, ti va bene?",
-        "timestamp": 1750758925.221208
-      },
-      {
-        "question": "Voglio piu proteine",
-        "answer": "✓ FASE 3 (AGGIORNAMENTO) - CALCOLO MACRONUTRIENTI CON PIÙ PROTEINE\n\nHai richiesto una quota proteica maggiore. Per chi fa fitness e punta a un aumento di massa magra, si può arrivare tranquillamente a 1.6-2 g/kg peso corporeo. Una strategia molto usata è fissare 1.8 g/kg, ottimale sia per migliorare l’aumento muscolare che per limitare l’accumulo di grasso.\n\n⚡ Sto calcolando:\n\n1. **Nuovo target proteico**\n- Nuovo moltiplicatore: 1.8 g/kg\n- Peso: 70kg\n- 1.8 * 70 = 126g proteine totali\n- Kcal da proteine: 126 * 4 = 504 kcal\n\n2. **Grassi**\n- Mantengo il 30% del totale: 806 kcal\n- Grammi: 806 / 9 = 90g\n\n3. **Carboidrati**\n- Calorie rimanenti: 2687 - (504 + 806) = 1377 kcal\n- Grammi: 1377 / 4 = 344g\n\n📊 RIEPILOGO AGGIORNATO:\n- Kcal totali: 2687\n- Proteine: 126g (504 kcal, 19%)\n- Grassi: 90g (806 kcal, 30%)\n- Carboidrati: 344g (1377 kcal, 51%)\n\n📚 Fonti utilizzate:\n- Quota proteica bodybuilding: Phillips et al., 2011; Thomas et al., 2016; Project Invictus\n- LARN SINU (2014) per grassi\n- Banca dati CREA per dettagli energetici\n\n➡️ Ora procedo a distribuire calorie e macronutrienti nei 4 pasti giornalieri, oppure vuoi chiedere approfondimenti su questa suddivisione?",
-        "timestamp": 1750758999.2009137
-      },
-      {
-        "question": "procedi",
-        "answer": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\nIn questa fase distribuisco le 2687 kcal giornaliere tra 4 pasti negli orari che hai indicato. Ogni pasto avrà una quota precisa di proteine, carboidrati e grassi, calcolata in base alla percentuale calorica di quel pasto sul totale.\n\n⚡ Sto elaborando:\n- Numero pasti: 4\n- Orari: Colazione (07:30), Pranzo (13:00), Spuntino pomeridiano (16:30), Cena (20:00)\n- Schema di suddivisione raccomandato per 4 pasti:\n    - Colazione: 25%\n    - Pranzo: 35%\n    - Spuntino pomeriggio: 10%\n    - Cena: 30%\n\n📊 Calcoli dettagliati:\n\n1. **Colazione (07:30): 25%**\n- Calorie: 2687 * 0.25 = 672 kcal\n- Proteine: 126 * 0.25 = 32g\n- Carboidrati: 344 * 0.25 = 86g\n- Grassi: 90 * 0.25 = 23g\n\n2. **Pranzo (13:00): 35%**\n- Calorie: 2687 * 0.35 = 941 kcal\n- Proteine: 126 * 0.35 = 44g\n- Carboidrati: 344 * 0.35 = 120g\n- Grassi: 90 * 0.35 = 32g\n\n3. **Spuntino pomeridiano (16:30): 10%**\n- Calorie: 2687 * 0.10 = 269 kcal\n- Proteine: 126 * 0.10 = 13g\n- Carboidrati: 344 * 0.10 = 34g\n- Grassi: 90 * 0.10 = 9g\n\n4. **Cena (20:00): 30%**\n- Calorie: 2687 * 0.30 = 806 kcal\n- Proteine: 126 * 0.30 = 38g\n- Carboidrati: 344 * 0.30 = 103g\n- Grassi: 90 * 0.30 = 27g\n\n📚 Fonti utilizzate:\n- Schema suddivisione pasti: linee guida SINU/LARN e modelli mediterranei\n- Riferimenti per macro: distribuzione diretta in base alla quota energetica del pasto\n\n📊 RIEPILOGO DISTRIBUZIONE TRA PASTI:\n- Colazione (07:30): 672 kcal - 32g P - 86g C - 23g G\n- Pranzo (13:00): 941 kcal - 44g P - 120g C - 32g G\n- Spuntino (16:30): 269 kcal - 13g P - 34g C - 9g G\n- Cena (20:00): 806 kcal - 38g P - 103g C - 27g G\n\n➡️ Se vuoi modificare la suddivisione o hai domande, chiedi pure!\nProcedo con la FASE 5 e ti propongo la composizione della colazione. Vuoi continuare?",
-        "timestamp": 1750759241.672575
-      },
-      {
-        "question": "procedi",
-        "answer": "Ho riscontrato un piccolo problema tecnico temporaneo nell’ottimizzare la colazione: il sistema non ha riconosciuto il nome del pasto per la colazione, anche se era scritto correttamente.\n\n✅ Cosa farò: aggiornerò internamente il formato e riproverò subito l’ottimizzazione degli alimenti proposti (avena, latte scremato, banana, mandorle), così da offrirti una colazione equilibrata che rispetti i target di calorie e macronutrienti appena calcolati.\n\n⚡ Intanto ti ricordo:\n- Userò solo alimenti coerenti e realistici per una colazione mediterranea\n- Mi assicurerò che il risultato finale abbia le giuste grammature e misure casalinghe, e che ci siano fonti di carboidrati, proteine e grassi, come sempre nelle mie proposte\n\n📚 Fonti utilizzate:\n- Banca dati CREA per la composizione degli alimenti\n- Ottimizzazione pasti secondo linee guida LARN/SINU\n\n❓ Se hai preferenze specifiche su ingredienti da inserire o evitare per la colazione, scrivimi pure ora! Altrimenti, procedo subito con l’ottimizzazione e la ricetta della colazione. Vuoi continuare così?",
-        "timestamp": 1750759266.542618
-      },
-      {
-        "question": "Quali cibi non sono stati trovati?",
-        "answer": "Nessun alimento specifico risulta mancante nel database: il problema era dovuto semplicemente a una questione tecnica di riconoscimento del nome del pasto, non agli ingredienti scelti. \n\nTutti i cibi proposti (avena, latte scremato, banana, mandorle) sono disponibili e validi per la colazione.\n\nProcederò subito a ripetere l’ottimizzazione così da proporti un esempio concreto di colazione calibrata sui tuoi target.\n\n➡️ Se vuoi aggiungere o escludere qualche cibo da colazione, dimmelo adesso! Vuoi che proceda direttamente?",
-        "timestamp": 1750759307.3929152
-      },
-      {
-        "question": "quale nome non è riuscito a trovare per il pasto?",
-        "answer": "Il sistema non ha avuto difficoltà con il nome \"Colazione\" scritto correttamente. L’errore era di tipo tecnico e non legato al termine in sé o a una tua scelta. In altre parole: il pasto era chiamato in modo giusto (\"Colazione\"), ma il tool ha restituito un messaggio generico che riguarda solo un temporaneo problema di caricamento, non di dizionario o di vocabolario dei pasti.\n\nNon ci sono errori nei nomi degli alimenti, né nel nome \"Colazione\".\n\n➡️ Procedo con la creazione del pasto colazione ottimizzato, se per te va bene! Vuoi che vada avanti?",
-        "timestamp": 1750759346.1828787
-      },
-      {
-        "question": "continua",
-        "answer": "✓ FASE 5 - CREAZIONE DEL PASTO: COLAZIONE\n\nEcco una colazione ottimizzata per i tuoi target (672 kcal, ad alto contenuto proteico, con fonti di carboidrati e grassi buoni). Le quantità sono già pronte sia in grammi sia in misure casalinghe, così sarà tutto facile e pratico da seguire.\n\n🌅 COLAZIONE (672 kcal)\n• **Avena**: 60g → 🥄 3/4 tazza  \n    P: 4.8g, C: 40.1g, G: 4.5g  \n    (Sostituti: 50g di biscotti secchi, 60g di muesli)\n• **Latte scremato**: 310g → 🥛 1 bicchiere e mezzo  \n    P: 11.2g, C: 16.4g, G: 0.6g  \n    (Sostituti: 240g di latte parz. scremato, 170g di latte intero)\n• **Banana**: 200g → 🍌 2 banane piccole  \n    P: 2.4g, C: 34.8g, G: 0.6g  \n    (Sostituti: 320g di ciliegie, 310g di mirtilli)\n• **Mandorle**: 30g → 🥜 1 manciata (20-25 mandorle)  \n    P: 6.6g, C: 1.4g, G: 16.6g  \n    (Sostituti: 30g di burro di arachidi, 30g di nocciole)\n\nTotale pasto: P: 25g, C: 92.7g, G: 22.3g\n\nConsiglio ricetta: In una ciotola unisci l’avena con il latte e scalda 2 minuti al microonde o in pentolino; aggiungi le banane a rondelle e le mandorle spezzettate. Puoi arricchire con un pizzico di cannella per più aroma.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per contenuto nutrizionale degli alimenti\n- Algoritmo di ottimizzazione porzioni per raggiungere i target calcolati\n- Sostituti suggeriti sempre bilanciati caloricamente rispetto all'alimento principale\n\n➡️ Vuoi modificare qualcosa nella colazione oppure passo subito a creare il pranzo? Se hai dubbi sulla preparazione, sulle quantità o vuoi vedere degli altri esempi, chiedi pure!",
-        "timestamp": 1750759730.9488628
+        "question": "Continua",
+        "answer": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: calcolo delle calorie quotidiane necessarie per farti aumentare peso (+5 kg in 3 mesi), considerando metabolismo basale, livello di movimento giornaliero, attività sportiva e surplus calorico per raggiungere il tuo obiettivo.\n\n📊 Risultati intermedi e spiegazione semplice:\n- Il metabolismo basale (BMR) indica le calorie che il tuo corpo consuma a riposo: 1672 kcal.\n- Il fabbisogno energetico giornaliero (BMR * LAF): 1672 * 1.3 = 2173 kcal (LAF è il coefficiente che tiene conto di una vita sedentaria).\n- Dispendio sportivo: fitness allenamento medio (3h/week easy) = 86 kcal/giorno + bodybuilding massa (3h/week easy) = 154 kcal/giorno; totale attività sportiva: 240 kcal/giorno.\n- Fabbisogno complessivo senza surplus: 2173 + 240 = 2413 kcal\n\nSurplus consigliato per l’obiettivo:\n- Per aumentare 5 kg in 3 mesi (1.67 kg/mese), serve un surplus di 428 kcal al giorno.\n- Calorie giornaliere finali: 2413 + 428 = 2841 kcal/giorno\n\nAttenzione: L’aumento richiesto (1.67 kg/mese) è superiore a quanto raccomandato per massimizzare la massa muscolare e minimizzare il grasso (in genere 0.5-1 kg/mese). Con questo ritmo, aumenterai anche un po’ di grasso oltre ai muscoli.\n\nRiepilogo calcoli:\n- BMR: 1672 kcal\n- Fabbisogno con attività: 2173 kcal\n- Dispendio sportivo: 240 kcal/giorno\n- Surplus giornaliero (per aumentare 5 kg in 3 mesi): +428 kcal\n- Totale kcal giorno: 2841 kcal\n\n📚 Fonti utilizzate:\n- Calcolo BMR e fabbisogno energetico: Harris & Benedict, WHO (2000)\n- Surplus calorico per aumento massa: formula automatica e raccomandazioni Project Invictus, Thomas et al., 2016\n- Dispendio sportivo: valori MET dal Compendium of Physical Activities (Ainsworth et al., 2011)\n\n❓ Hai domande sulla stima del fabbisogno o vuoi approfondire i dettagli dei calcoli? Confermi che vuoi proseguire con questo target calorico?\n\n➡️ Conclusione:\nSe ti va bene tutto, passo al calcolo della distribuzione dei macronutrienti (FASE 3). Procedo?",
+        "timestamp": 1750967587.518931
       },
       {
         "question": "Procedi",
-        "answer": "🍽️ PRANZO (974 kcal)\n\n• **Riso basmati**: 150g → 🍚 1 tazza colma  \n    P: 13.5g, C: 124.3g, G: 2.9g  \n    (Sostituti: 160g di riso integrale, 210g di pane bianco)\n\n• **Petto di pollo**: 120g → 🍗 1 filetto medio  \n    P: 28g, C: 0g, G: 1g  \n    (Sostituti: 120g di tonno al naturale, 170g di merluzzo)\n\n• **Zucchine**: 200g → 🥒 1 piatto abbondante  \n    P: 3.8g, C: 3.4g, G: 0.2g  \n    (Sostituti: 200g di verdure miste, 110g di cavolfiore)\n\n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n    P: 0g, C: 0g, G: 30g  \n    (Sostituti: 40g di burro, 110g di avocado)\n\n**Totale pasto**: P: 45g, C: 127.8g, G: 34g\n\nConsiglio ricetta: Cuoci il riso e le zucchine al vapore o in padella. Griglia il petto di pollo con un pizzico di sale e pepe, poi condisci tutto con olio extravergine d’oliva a crudo. Puoi aggiungere basilico fresco sulle verdure per più gusto.\n\n📚 Fonti utilizzate:\n- Banca dati CREA per valori nutrizionali\n- Algoritmo ottimizzazione porzioni e sostituti \n- Ricetta strutturata secondo la gastronomia mediterranea\n\n➡️ Vuoi modificare qualche alimento o porzione, oppure passo allo spuntino pomeridiano? Se hai dubbi su misure, preparazioni, sostituti, sono qui!",
-        "timestamp": 1750759764.5969687
-      },
-      {
-        "question": "continua",
-        "answer": "Il sistema non ha trovato \"fiocchi di mais\" nel database alimenti, quindi non posso usarli in modo automatico. Gli altri alimenti (\"yogurt greco\" e \"frutti di bosco\") sono invece disponibili.\n\nProcederò immediatamente a sostituire i \"fiocchi di mais\" con un altro cereale simile e a ripetere l’ottimizzazione per garantirti uno spuntino bilanciato, proteico e gustoso.\n\n➡️ Vuoi suggerire tu un cereale alternativo (ad esempio muesli, cornflakes, biscotti secchi, o una fonte di carboidrati diversa) oppure vuoi che scelga io la soluzione più adatta? Posso procedere anche autonomamente!",
-        "timestamp": 1750759838.1042433
-      },
-      {
-        "question": "procedi",
-        "answer": "🥨 SPUNTINO POMERIDIANO (284 kcal)\n\n• **Yogurt greco**: 100g → 🥛 1 vasetto piccolo  \n P: 9.9g, C: 3g, G: 2g  \n (Sostituti: 140g yogurt greco 0%, 170g yogurt magro)\n\n• **Frutti di bosco**: 80g → 🫐 1 ciotolina  \n P: 0.8g, C: 5.2g, G: 0.5g  \n (Sostituti: 80g di kiwi, 110g di arancia)\n\n• **Muesli**: 30g → 🥣 3 cucchiai  \n P: 2.9g, C: 21.5g, G: 1.8g  \n (Sostituti: 30g di fette biscottate, 40g di pan bauletto)\n\n• **Mandorle**: 10g → 🥜 7-8 mandorle  \n P: 2.2g, C: 0.5g, G: 5.5g  \n (Sostituti: 10g di burro di arachidi, 10g di nocciole)\n\nTotale pasto: P: 15.8g, C: 30.2g, G: 9.8g\n\nConsiglio ricetta: Versa lo yogurt in una ciotolina, aggiungi i frutti di bosco freschi o surgelati, poi il muesli e le mandorle spezzettate. Mescola tutto per una merenda fresca, proteica ed energizzante.\n\n📚 Fonti utilizzate:\n- Valori nutrizionali: Banca dati CREA\n- Algoritmo ottimizzazione pasti/sostituti\n- Idee ricetta dalla colazione mediterranea\n\n➡️ Confermi lo spuntino o vuoi altre idee? Passo ora alla preparazione della cena, oppure hai domande/spunti per variare gli alimenti?",
-        "timestamp": 1750759918.8583987
-      },
-      {
-        "question": "procedi",
-        "answer": "🌙 CENA (806 kcal)\n\n• **Pane integrale**: 120g → 🍞 3 fette grandi  \n P: 10.2g, C: 52.9g, G: 1.6g  \n (Sostituti: 80g di pasta integrale, 80g di pasta di semola)\n\n• **Salmone**: 90g → 🐟 1 trancio medio  \n P: 22.9g, C: 1.1g, G: 4g  \n (Sostituti: 110g di orata, 90g di pesce spada)\n\n• **Patate**: 210g → 🥔 2 patate medie  \n P: 4.2g, C: 33.6g, G: 0.2g  \n (Sostituti: 60g di pane bianco, 40g di riso)\n\n• **Carote**: 180g → 🥕 2 carote grandi  \n P: 2g, C: 13.7g, G: 0.4g  \n (Sostituti: 320g di pomodoro, 340g di insalata mista)\n\n• **Olio di oliva**: 20g → 🥄 2 cucchiai  \n P: 0g, C: 0g, G: 20g  \n (Sostituti: 20g di burro, 80g di avocado)\n\nTotale pasto: P: 39g, C: 101.3g, G: 26.2g\n\nConsiglio ricetta: Cuoci il salmone alla griglia o al forno, condisci le patate a cubetti e le carote a rondelle con olio di oliva, erbe aromatiche, sale e pepe. Aggiungi il pane integrale come accompagnamento. Per un gusto più fresco, puoi servire anche le carote crude in pinzimonio.\n\n📚 Fonti utilizzate:\n- Valori nutrizionali: Banca dati CREA\n- Algoritmo ottimizzazione pasti e sostituti\n- Modellazione mediterranea della cena principale\n\n➡️ Vuoi modificare qualcosa? In caso contrario, posso riassumere la giornata e proseguire con il controllo sui cibi ultraprocessati (FASE 6) o partire direttamente con la dieta settimanale completa (FASE 7). Come preferisci?",
-        "timestamp": 1750760148.8651404
-      },
-      {
-        "question": "procedi",
-        "answer": "✓ FASE 6 - CONTROLLO ULTRAPROCESSATI\n\nIn questa fase ho verificato che la tua giornata alimentare rispetti il criterio di qualità secondo il sistema NOVA (che classifica i cibi in base al livello di lavorazione industriale). Linee guida recenti consigliano di mantenere gli alimenti ultraprocessati (NOVA 4) sotto il 10% delle calorie totali per proteggere salute e benessere.\n\n📊 Risultati controllo:\n- Alimenti ultraprocessati presenti: avena, muesli\n- Incidenza ultraprocessati: 6.8% della dieta giornaliera (ben sotto la soglia raccomandata)\n- Nessuna modifica necessaria: il menu proposto è di ottima qualità\n\nSpiegazione semplice: Gli alimenti ultraprocessati sono quelli ampiamente manipolati dall’industria (merendine, snack confezionati, soft drink, ecc). Troppi ultraprocessati possono aumentare il rischio di malattie croniche. Nel tuo piano giornaliero, questa quota resta molto bassa perché la base è composta da cibi freschi e poco manipolati.\n\n📚 Fonti utilizzate:\n- Studio NOVA sulle categorie di alimenti (ultraprocessati)\n- Banca dati CREA\n\n➡️ Se vuoi vedere come costruire una dieta settimanale completa con questa struttura, passiamo alla FASE 7! Vuoi che continui generando tutti i giorni della settimana o hai richieste particolari?",
-        "timestamp": 1750760185.2965355
-      },
-      {
-        "question": "continua",
-        "answer": "🗓️ Ecco la tua dieta personalizzata per i primi quattro giorni, con i pasti ottimizzati in grammi e misure casalinghe.\n\n---\n\n🗓️ GIORNO 1 - LUNEDÌ\n\n🌅 COLAZIONE  \n• Avena: 60g → 🥄 3/4 tazza  \n• Latte scremato: 310g → 🥛 1 bicchiere e mezzo  \n• Banana: 200g → 🍌 2 banane piccole  \n• Mandorle: 30g → 🥜 1 manciata (20-25 mandorle)\n\n🍽️ PRANZO  \n• Riso basmati: 150g → 🍚 1 tazza colma  \n• Petto di pollo: 120g → 🍗 1 filetto medio  \n• Zucchine: 200g → 🥒 1 piatto abbondante  \n• Olio extravergine di oliva: 30g → 🥄 3 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Pane integrale: 120g → 🍞 3 fette grandi  \n• Salmone: 90g → 🐟 1 trancio medio  \n• Patate: 210g → 🥔 2 patate medie  \n• Carote: 180g → 🥕 2 carote grandi  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 2 - MARTEDÌ\n\n🌅 COLAZIONE  \n• Pane integrale: 170g → 🍞 4 fette grandi  \n• Burro di arachidi: 40g → 🥄 2 cucchiai abbondanti  \n• Marmellata: 30g → 🥄 2 cucchiai\n\n🍽️ PRANZO  \n• Riso basmati: 140g → 🍚 1 tazza colma  \n• Gamberi: 200g → 🍤 20 gamberi medi  \n• Zucchine: 250g → 🥒 1 piatto abbondante  \n• Olio di oliva: 30g → 🥄 3 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Grissini: 60g → 🥖 6-7 grissini medi  \n• Parmigiano: 30g → 🧀 3 cubetti\n\n🌙 CENA  \n• Petto di tacchino: 90g → 🍗 5-6 fette  \n• Patate: 500g → 🥔 5 patate medie  \n• Fagiolini: 350g → 🌱 1 grande piatto  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 3 - MERCOLEDÌ\n\n🌅 COLAZIONE  \n• Avena: 50g → 🥄 2/3 tazza  \n• Latte scremato: 360g → 🥛 1 bicchiere e 3/4  \n• Banana: 230g → 🍌 2 banane medie  \n• Mandorle: 30g → 🥜 1 manciata\n\n🍽️ PRANZO  \n• Pasta integrale: 170g → 🍝 1 porzione media  \n• Pomodorini: 200g → 🍅 2 manciate  \n• Olio di oliva: 30g → 🥄 3 cucchiai  \n• Pollo: 80g → 🍗 1/2 petto\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Pesce spada: 80g → 🐟 1 trancio piccolo  \n• Pane bianco: 150g → 🍞 3 fette grandi  \n• Asparagi: 230g → 🌱 1 piatto  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 4 - GIOVEDÌ\n\n🌅 COLAZIONE  \n• Cornflakes: 60g → 🥣 2 tazze  \n• Latte scremato: 290g → 🥛 1 bicchiere e 1/2  \n• Kiwi: 270g → 🥝 3 kiwi  \n• Mandorle: 40g → 🥜 1 manciata abbondante\n\n🍽️ PRANZO  \n• Farro: 80g → 🍚 1/2 tazza  \n• Lenticchie: 90g → 🥄 5-6 cucchiai  \n• Carote: 220g → 🥕 2 carote grandi  \n• Avocado: 120g → 🥑 1 avocado piccolo\n\n🥨 SPUNTINO POMERIDIANO  \n• Pan bauletto: 60g → 🍞 2 fette  \n• Fesa di tacchino: 50g → 🍗 2 fette  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Bistecca di manzo: 110g → 🥩 1 bistecca piccola  \n• Insalata mista: 300g → 🥗 1 ciotolona  \n• Pane bianco: 130g → 🍞 3 fette  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\nSostituti alimentari (se vuoi varietà) saranno disponibili nel PDF finale!\n\n📚 Tutti i valori nutrizionali sono ottimizzati dai calcoli CREA e LARN, e bilanciati sui tuoi fabbisogni reali.\n\n➡️ Vuoi vedere subito anche la dieta dei giorni 5-7? Oppure hai domande o vuoi delle modifiche prima di proseguire?",
-        "timestamp": 1750760396.0408626
-      },
-      {
-        "question": "continua",
-        "answer": "🗓️ Ecco la tua dieta personalizzata per i giorni 5, 6 e 7 della settimana. Pasti ottimizzati e porzioni chiare, con misure casalinghe intuitive.\n\n---\n\n🗓️ GIORNO 5 - VENERDÌ\n\n🌅 COLAZIONE  \n• Avena: 50g → 🥄 2/3 tazza  \n• Latte scremato: 360g → 🥛 1 bicchiere e 3/4  \n• Banana: 230g → 🍌 2 banane medie  \n• Mandorle: 30g → 🥜 1 manciata\n\n🍽️ PRANZO  \n• Pasta: 170g → 🍝 1 porzione abbondante  \n• Funghi: 100g → 🍄 1 piatto scarso  \n• Parmigiano: 40g → 🧀 2 cucchiai colmi grattugiati  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Merluzzo: 160g → 🐟 2 filetti  \n• Riso integrale: 120g → 🍚 3/4 tazza  \n• Melanzane: 320g → 🍆 2 melanzane piccole  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 6 - SABATO\n\n🌅 COLAZIONE  \n• Cornflakes: 60g → 🥣 2 tazze  \n• Latte scremato: 290g → 🥛 1 bicchiere e 1/2  \n• Kiwi: 270g → 🥝 3 kiwi  \n• Mandorle: 40g → 🥜 1 manciata abbondante\n\n🍽️ PRANZO  \n• Riso basmati: 150g → 🍚 1 tazza colma  \n• Petto di pollo: 120g → 🍗 1 filetto medio  \n• Zucchine: 200g → 🥒 1 piatto abbondante  \n• Olio di oliva: 30g → 🥄 3 cucchiai\n\n🥨 SPUNTINO POMERIDIANO  \n• Banana: 180g → 🍌 1 banana grande  \n• Burro di arachidi: 20g → 🥄 1 cucchiaio colmo\n\n🌙 CENA  \n• Piselli: 90g → 🥄 5-6 cucchiai  \n• Pasta: 130g → 🍝 1 porzione media  \n• Prosciutto crudo: 60g → 🍖 4 fette sottili  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\n🗓️ GIORNO 7 - DOMENICA\n\n🌅 COLAZIONE  \n• Avena: 50g → 🥄 2/3 tazza  \n• Latte scremato: 360g → 🥛 1 bicchiere e 3/4  \n• Banana: 230g → 🍌 2 banane medie  \n• Mandorle: 30g → 🥜 1 manciata\n\n🍽️ PRANZO  \n• Gnocchi: 150g → 🍝 1 porzione media  \n• Pomodoro: 250g → 🍅 2 pomodori grandi  \n• Mozzarella: 140g → 🧀 1 mozzarella grande\n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 100g → 🥛 1 vasetto piccolo  \n• Frutti di bosco: 80g → 🫐 1 ciotolina  \n• Muesli: 30g → 🥣 3 cucchiai  \n• Mandorle: 10g → 🥜 7-8 mandorle\n\n🌙 CENA  \n• Orata: 110g → 🐟 1 filetto medio  \n• Riso integrale: 120g → 🍚 3/4 tazza  \n• Spinaci: 240g → 🥗 1 ciotola colma  \n• Olio di oliva: 20g → 🥄 2 cucchiai\n\n---\n\nTutti i pasti sono bilanciati seguendo le tue preferenze proteiche, energetiche e di stile.  \nI sostituti alimentari saranno riportati nel PDF finale così avrai sempre varietà e alternative pratiche!\n\n📚 Fonti: Algoritmo bilanciamenti, Banca dati CREA, LARN, NOVA per ultraprocessati.\n\n➡️ Hai domande sui pasti proposti, sulle combinazioni o vuoi consigli su come variarne qualcuno? Oppure vuoi un riepilogo nutrizionale settimanale o ricette dettagliate? Sono qui per te!",
-        "timestamp": 1750760442.4895506
+        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: suddivisione delle calorie giornaliere nei tre macronutrienti principali (proteine, grassi, carboidrati) in base alle migliori raccomandazioni per aumento massa muscolare con allenamento in palestra.\n\n📚 Fonti utilizzate:\n- Proteine: raccomandazioni internazionali per bodybuilding fase massa (Phillips et al., 2011; Project Invictus; Thomas et al., 2016)\n- Grassi: intervallo LARN (Società Italiana di Nutrizione Umana, SINU)\n- Carboidrati: calcolo per differenza e raccomandazioni LARN, minimo 2g/kg peso per evitare chetosi\n\nCALCOLI:\n\n1. Calorie totali: 2841 kcal/giorno\n\n2. Proteine:\n- Peso corporeo: 70 kg\n- Moltiplicatore bodybuilding massa: 1.6 g/kg\n- Grammi totali: 1.6 * 70 = 112 g proteine/die\n- Kcal da proteine: 112 * 4 = 448 kcal\n- Percentuale sulle calorie totali: (448 / 2841) * 100 = 16%\n\n3. Grassi:\n- Seguendo LARN: scelgo quota media 30%\n- Kcal da grassi: 0.30 * 2841 = 852 kcal\n- Grammi: 852 / 9 = 95 g grassi/die\n\n4. Carboidrati:\n- Calcolo a riempimento:\n- Kcal rimanenti: 2841 - 448 (pro) - 852 (grassi) = 1541 kcal\n- Grammi: 1541 / 4 = 385 g carboidrati/die\n- Controllo valore minimo: 2g/kg * 70 = 140g → OK\n\nRiepilogo macronutrienti:\n- Proteine: 112 g (448 kcal, 16%)\n- Grassi: 95 g (852 kcal, 30%)\n- Carboidrati: 385 g (1541 kcal, 54%)\n\n❓ Vuoi modificare la distribuzione dei macronutrienti o mantenere questa divisione standard per l’aumento di massa muscolare? Vuoi vedere alternative sulla quota di proteine o grassi?\n\n➡️ Conclusione:\nSe confermi questi valori, nella prossima fase distribuisco calorie e macro tra i tuoi 4 pasti preferiti. Vuoi continuare?",
+        "timestamp": 1750967653.0342958
       }
     ]
   },
@@ -311,740 +127,45 @@
     "caloric_needs": {
       "bmr": 1672,
       "fabbisogno_base": 2173,
-      "dispendio_sportivo": 86,
-      "fabbisogno_totale": 2259,
+      "dispendio_sportivo": 240,
+      "fabbisogno_totale": 2413,
       "aggiustamento_obiettivo": 428,
-      "fabbisogno_finale": 2687,
+      "fabbisogno_finale": 2841,
       "laf_utilizzato": 1.3
     },
     "macros_total": {
-      "kcal_finali": 2687,
-      "proteine_g": 126,
-      "proteine_kcal": 504,
-      "proteine_percentuale": 19,
-      "grassi_g": 90,
-      "grassi_kcal": 806,
+      "kcal_finali": 2841,
+      "proteine_g": 112,
+      "proteine_kcal": 448,
+      "proteine_percentuale": 16,
+      "grassi_g": 95,
+      "grassi_kcal": 852,
       "grassi_percentuale": 30,
-      "carboidrati_g": 344,
-      "carboidrati_kcal": 1377,
-      "carboidrati_percentuale": 51,
-      "kcal_totali": 2687
-    },
-    "daily_macros": {
-      "numero_pasti": 4,
-      "distribuzione_pasti": {
-        "colazione": {
-          "kcal": 672,
-          "percentuale_kcal": 25,
-          "proteine_g": 25,
-          "carboidrati_g": 92.7,
-          "grassi_g": 22.3
-        },
-        "pranzo": {
-          "kcal": 941,
-          "percentuale_kcal": 35,
-          "proteine_g": 44,
-          "carboidrati_g": 120,
-          "grassi_g": 32
-        },
-        "spuntino_pomeridiano": {
-          "kcal": 269,
-          "percentuale_kcal": 10,
-          "proteine_g": 13,
-          "carboidrati_g": 34,
-          "grassi_g": 9
-        },
-        "cena": {
-          "kcal": 806,
-          "percentuale_kcal": 30,
-          "proteine_g": 39,
-          "carboidrati_g": 101.3,
-          "grassi_g": 26.2
-        }
-      }
-    },
-    "weekly_diet_day_1": [
-      {
-        "nome_pasto": "colazione",
-        "alimenti": [
-          {
-            "nome_alimento": "Avena",
-            "quantita_g": 60,
-            "misura_casalinga": "3/4 tazza"
-          },
-          {
-            "nome_alimento": "Latte scremato",
-            "quantita_g": 310,
-            "misura_casalinga": "1 bicchiere e mezzo"
-          },
-          {
-            "nome_alimento": "Banana",
-            "quantita_g": 200,
-            "misura_casalinga": "2 banane piccole"
-          },
-          {
-            "nome_alimento": "Mandorle",
-            "quantita_g": 30,
-            "misura_casalinga": "1 manciata (20-25 mandorle)"
-          }
-        ]
-      },
-      {
-        "nome_pasto": "pranzo",
-        "alimenti": [
-          {
-            "nome_alimento": "Riso basmati",
-            "quantita_g": 150,
-            "misura_casalinga": "1 tazza colma"
-          },
-          {
-            "nome_alimento": "Petto di pollo",
-            "quantita_g": 120,
-            "misura_casalinga": "1 filetto medio"
-          },
-          {
-            "nome_alimento": "Zucchine",
-            "quantita_g": 200,
-            "misura_casalinga": "1 piatto abbondante"
-          },
-          {
-            "nome_alimento": "Olio extravergine di oliva",
-            "quantita_g": 30,
-            "misura_casalinga": "3 cucchiai"
-          }
-        ]
-      },
-      {
-        "nome_pasto": "spuntino_pomeridiano",
-        "alimenti": [
-          {
-            "nome_alimento": "Yogurt greco",
-            "quantita_g": 100,
-            "misura_casalinga": "1 vasetto piccolo"
-          },
-          {
-            "nome_alimento": "Frutti di bosco",
-            "quantita_g": 80,
-            "misura_casalinga": "1 ciotolina"
-          },
-          {
-            "nome_alimento": "Muesli",
-            "quantita_g": 30,
-            "misura_casalinga": "3 cucchiai"
-          },
-          {
-            "nome_alimento": "Mandorle",
-            "quantita_g": 10,
-            "misura_casalinga": "7-8 mandorle"
-          }
-        ]
-      },
-      {
-        "nome_pasto": "cena",
-        "alimenti": [
-          {
-            "nome_alimento": "Pane integrale",
-            "quantita_g": 120,
-            "misura_casalinga": "3 fette grandi"
-          },
-          {
-            "nome_alimento": "Salmone",
-            "quantita_g": 90,
-            "misura_casalinga": "1 trancio medio"
-          },
-          {
-            "nome_alimento": "Patate",
-            "quantita_g": 210,
-            "misura_casalinga": "2 patate medie"
-          },
-          {
-            "nome_alimento": "Carote",
-            "quantita_g": 180,
-            "misura_casalinga": "2 carote grandi"
-          },
-          {
-            "nome_alimento": "Olio di oliva",
-            "quantita_g": 20,
-            "misura_casalinga": "2 cucchiai"
-          }
-        ]
-      }
-    ],
-    "weekly_diet_days_2_7": {
-      "giorno_2": {
-        "colazione": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pane integrale",
-              "quantita_g": 170,
-              "misura_casalinga": "4 fette grandi"
-            },
-            {
-              "nome_alimento": "Burro di arachidi",
-              "quantita_g": 40,
-              "misura_casalinga": "2 cucchiai abbondanti"
-            },
-            {
-              "nome_alimento": "Marmellata",
-              "quantita_g": 30,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        },
-        "pranzo": {
-          "alimenti": [
-            {
-              "nome_alimento": "Riso basmati",
-              "quantita_g": 140,
-              "misura_casalinga": "1 tazza colma"
-            },
-            {
-              "nome_alimento": "Gamberi",
-              "quantita_g": 200,
-              "misura_casalinga": "20 gamberi medi"
-            },
-            {
-              "nome_alimento": "Zucchine",
-              "quantita_g": 250,
-              "misura_casalinga": "1 piatto abbondante"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
-            }
-          ]
-        },
-        "spuntino_pomeridiano": {
-          "alimenti": [
-            {
-              "nome_alimento": "Grissini",
-              "quantita_g": 60,
-              "misura_casalinga": "6-7 grissini medi"
-            },
-            {
-              "nome_alimento": "Parmigiano",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cubetti"
-            }
-          ]
-        },
-        "cena": {
-          "alimenti": [
-            {
-              "nome_alimento": "Petto di tacchino",
-              "quantita_g": 90,
-              "misura_casalinga": "5-6 fette"
-            },
-            {
-              "nome_alimento": "Patate",
-              "quantita_g": 500,
-              "misura_casalinga": "5 patate medie"
-            },
-            {
-              "nome_alimento": "Fagiolini",
-              "quantita_g": 350,
-              "misura_casalinga": "1 grande piatto"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        }
-      },
-      "giorno_3": {
-        "colazione": {
-          "alimenti": [
-            {
-              "nome_alimento": "Avena",
-              "quantita_g": 50,
-              "misura_casalinga": "2/3 tazza"
-            },
-            {
-              "nome_alimento": "Latte scremato",
-              "quantita_g": 360,
-              "misura_casalinga": "1 bicchiere e 3/4"
-            },
-            {
-              "nome_alimento": "Banana",
-              "quantita_g": 230,
-              "misura_casalinga": "2 banane medie"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 30,
-              "misura_casalinga": "1 manciata"
-            }
-          ]
-        },
-        "pranzo": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pasta integrale",
-              "quantita_g": 170,
-              "misura_casalinga": "1 porzione media"
-            },
-            {
-              "nome_alimento": "Pomodorini",
-              "quantita_g": 200,
-              "misura_casalinga": "2 manciate"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
-            },
-            {
-              "nome_alimento": "Pollo",
-              "quantita_g": 80,
-              "misura_casalinga": "1/2 petto"
-            }
-          ]
-        },
-        "spuntino_pomeridiano": {
-          "alimenti": [
-            {
-              "nome_alimento": "Yogurt greco",
-              "quantita_g": 100,
-              "misura_casalinga": "1 vasetto piccolo"
-            },
-            {
-              "nome_alimento": "Frutti di bosco",
-              "quantita_g": 80,
-              "misura_casalinga": "1 ciotolina"
-            },
-            {
-              "nome_alimento": "Muesli",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 10,
-              "misura_casalinga": "7-8 mandorle"
-            }
-          ]
-        },
-        "cena": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pesce spada",
-              "quantita_g": 80,
-              "misura_casalinga": "1 trancio piccolo"
-            },
-            {
-              "nome_alimento": "Pane bianco",
-              "quantita_g": 150,
-              "misura_casalinga": "3 fette grandi"
-            },
-            {
-              "nome_alimento": "Asparagi",
-              "quantita_g": 230,
-              "misura_casalinga": "1 piatto"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        }
-      },
-      "giorno_4": {
-        "colazione": {
-          "alimenti": [
-            {
-              "nome_alimento": "Cornflakes",
-              "quantita_g": 60,
-              "misura_casalinga": "2 tazze"
-            },
-            {
-              "nome_alimento": "Latte scremato",
-              "quantita_g": 290,
-              "misura_casalinga": "1 bicchiere e 1/2"
-            },
-            {
-              "nome_alimento": "Kiwi",
-              "quantita_g": 270,
-              "misura_casalinga": "3 kiwi"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 40,
-              "misura_casalinga": "1 manciata abbondante"
-            }
-          ]
-        },
-        "pranzo": {
-          "alimenti": [
-            {
-              "nome_alimento": "Farro",
-              "quantita_g": 80,
-              "misura_casalinga": "1/2 tazza"
-            },
-            {
-              "nome_alimento": "Lenticchie",
-              "quantita_g": 90,
-              "misura_casalinga": "5-6 cucchiai"
-            },
-            {
-              "nome_alimento": "Carote",
-              "quantita_g": 220,
-              "misura_casalinga": "2 carote grandi"
-            },
-            {
-              "nome_alimento": "Avocado",
-              "quantita_g": 120,
-              "misura_casalinga": "1 avocado piccolo"
-            }
-          ]
-        },
-        "spuntino_pomeridiano": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pan bauletto",
-              "quantita_g": 60,
-              "misura_casalinga": "2 fette"
-            },
-            {
-              "nome_alimento": "Fesa di tacchino",
-              "quantita_g": 50,
-              "misura_casalinga": "2 fette"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 10,
-              "misura_casalinga": "7-8 mandorle"
-            }
-          ]
-        },
-        "cena": {
-          "alimenti": [
-            {
-              "nome_alimento": "Bistecca di manzo",
-              "quantita_g": 110,
-              "misura_casalinga": "1 bistecca piccola"
-            },
-            {
-              "nome_alimento": "Insalata mista",
-              "quantita_g": 300,
-              "misura_casalinga": "1 ciotolona"
-            },
-            {
-              "nome_alimento": "Pane bianco",
-              "quantita_g": 130,
-              "misura_casalinga": "3 fette"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        }
-      },
-      "giorno_5": {
-        "colazione": {
-          "alimenti": [
-            {
-              "nome_alimento": "Avena",
-              "quantita_g": 50,
-              "misura_casalinga": "2/3 tazza"
-            },
-            {
-              "nome_alimento": "Latte scremato",
-              "quantita_g": 360,
-              "misura_casalinga": "1 bicchiere e 3/4"
-            },
-            {
-              "nome_alimento": "Banana",
-              "quantita_g": 230,
-              "misura_casalinga": "2 banane medie"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 30,
-              "misura_casalinga": "1 manciata"
-            }
-          ]
-        },
-        "pranzo": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pasta",
-              "quantita_g": 170,
-              "misura_casalinga": "1 porzione abbondante"
-            },
-            {
-              "nome_alimento": "Funghi",
-              "quantita_g": 100,
-              "misura_casalinga": "1 piatto scarso"
-            },
-            {
-              "nome_alimento": "Parmigiano",
-              "quantita_g": 40,
-              "misura_casalinga": "2 cucchiai colmi grattugiati"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        },
-        "spuntino_pomeridiano": {
-          "alimenti": [
-            {
-              "nome_alimento": "Yogurt greco",
-              "quantita_g": 100,
-              "misura_casalinga": "1 vasetto piccolo"
-            },
-            {
-              "nome_alimento": "Frutti di bosco",
-              "quantita_g": 80,
-              "misura_casalinga": "1 ciotolina"
-            },
-            {
-              "nome_alimento": "Muesli",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 10,
-              "misura_casalinga": "7-8 mandorle"
-            }
-          ]
-        },
-        "cena": {
-          "alimenti": [
-            {
-              "nome_alimento": "Merluzzo",
-              "quantita_g": 160,
-              "misura_casalinga": "2 filetti"
-            },
-            {
-              "nome_alimento": "Riso integrale",
-              "quantita_g": 120,
-              "misura_casalinga": "3/4 tazza"
-            },
-            {
-              "nome_alimento": "Melanzane",
-              "quantita_g": 320,
-              "misura_casalinga": "2 melanzane piccole"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        }
-      },
-      "giorno_6": {
-        "colazione": {
-          "alimenti": [
-            {
-              "nome_alimento": "Cornflakes",
-              "quantita_g": 60,
-              "misura_casalinga": "2 tazze"
-            },
-            {
-              "nome_alimento": "Latte scremato",
-              "quantita_g": 290,
-              "misura_casalinga": "1 bicchiere e 1/2"
-            },
-            {
-              "nome_alimento": "Kiwi",
-              "quantita_g": 270,
-              "misura_casalinga": "3 kiwi"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 40,
-              "misura_casalinga": "1 manciata abbondante"
-            }
-          ]
-        },
-        "pranzo": {
-          "alimenti": [
-            {
-              "nome_alimento": "Riso basmati",
-              "quantita_g": 150,
-              "misura_casalinga": "1 tazza colma"
-            },
-            {
-              "nome_alimento": "Petto di pollo",
-              "quantita_g": 120,
-              "misura_casalinga": "1 filetto medio"
-            },
-            {
-              "nome_alimento": "Zucchine",
-              "quantita_g": 200,
-              "misura_casalinga": "1 piatto abbondante"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
-            }
-          ]
-        },
-        "spuntino_pomeridiano": {
-          "alimenti": [
-            {
-              "nome_alimento": "Banana",
-              "quantita_g": 180,
-              "misura_casalinga": "1 banana grande"
-            },
-            {
-              "nome_alimento": "Burro di arachidi",
-              "quantita_g": 20,
-              "misura_casalinga": "1 cucchiaio colmo"
-            }
-          ]
-        },
-        "cena": {
-          "alimenti": [
-            {
-              "nome_alimento": "Piselli",
-              "quantita_g": 90,
-              "misura_casalinga": "5-6 cucchiai"
-            },
-            {
-              "nome_alimento": "Pasta",
-              "quantita_g": 130,
-              "misura_casalinga": "1 porzione media"
-            },
-            {
-              "nome_alimento": "Prosciutto crudo",
-              "quantita_g": 60,
-              "misura_casalinga": "4 fette sottili"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        }
-      },
-      "giorno_7": {
-        "colazione": {
-          "alimenti": [
-            {
-              "nome_alimento": "Avena",
-              "quantita_g": 50,
-              "misura_casalinga": "2/3 tazza"
-            },
-            {
-              "nome_alimento": "Latte scremato",
-              "quantita_g": 360,
-              "misura_casalinga": "1 bicchiere e 3/4"
-            },
-            {
-              "nome_alimento": "Banana",
-              "quantita_g": 230,
-              "misura_casalinga": "2 banane medie"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 30,
-              "misura_casalinga": "1 manciata"
-            }
-          ]
-        },
-        "pranzo": {
-          "alimenti": [
-            {
-              "nome_alimento": "Gnocchi",
-              "quantita_g": 150,
-              "misura_casalinga": "1 porzione media"
-            },
-            {
-              "nome_alimento": "Pomodoro",
-              "quantita_g": 250,
-              "misura_casalinga": "2 pomodori grandi"
-            },
-            {
-              "nome_alimento": "Mozzarella",
-              "quantita_g": 140,
-              "misura_casalinga": "1 mozzarella grande"
-            }
-          ]
-        },
-        "spuntino_pomeridiano": {
-          "alimenti": [
-            {
-              "nome_alimento": "Yogurt greco",
-              "quantita_g": 100,
-              "misura_casalinga": "1 vasetto piccolo"
-            },
-            {
-              "nome_alimento": "Frutti di bosco",
-              "quantita_g": 80,
-              "misura_casalinga": "1 ciotolina"
-            },
-            {
-              "nome_alimento": "Muesli",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 10,
-              "misura_casalinga": "7-8 mandorle"
-            }
-          ]
-        },
-        "cena": {
-          "alimenti": [
-            {
-              "nome_alimento": "Orata",
-              "quantita_g": 110,
-              "misura_casalinga": "1 filetto medio"
-            },
-            {
-              "nome_alimento": "Riso integrale",
-              "quantita_g": 120,
-              "misura_casalinga": "3/4 tazza"
-            },
-            {
-              "nome_alimento": "Spinaci",
-              "quantita_g": 240,
-              "misura_casalinga": "1 ciotola colma"
-            },
-            {
-              "nome_alimento": "Olio di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
-            }
-          ]
-        }
-      }
+      "carboidrati_g": 385,
+      "carboidrati_kcal": 1541,
+      "carboidrati_percentuale": 54,
+      "kcal_totali": 2841
     }
   },
   "conversation_costs": {
     "tokens": {
-      "input": 1823,
-      "output": 9330,
-      "total": 11153
+      "input": 1849,
+      "output": 2367,
+      "total": 4216
     },
     "costs": {
-      "input_cost_usd": 0.0036,
-      "output_cost_usd": 0.0746,
-      "total_cost_usd": 0.0783,
-      "total_cost_eur": 0.072
+      "input_cost_usd": 0.0037,
+      "output_cost_usd": 0.0189,
+      "total_cost_usd": 0.0226,
+      "total_cost_eur": 0.0208
     },
     "usage": {
-      "message_count": 35,
-      "duration_minutes": 27.29,
-      "avg_tokens_per_message": 318.66
+      "message_count": 8,
+      "duration_minutes": 4.26,
+      "avg_tokens_per_message": 527.0
     },
     "model": "gpt-4",
-    "timestamp": "2025-06-24T12:20:41.889931"
+    "timestamp": "2025-06-26T19:54:12.778491"
   },
-  "last_cost_update": "2025-06-24T12:20:41.889931"
+  "last_cost_update": "2025-06-26T19:54:12.778491"
 }

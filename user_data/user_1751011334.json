@@ -1,0 +1,27 @@
+{
+  "user_preferences": {
+    "excluded_foods": [],
+    "preferred_foods": [
+      "Frutta",
+      "Verdure",
+      "Pasta",
+      "Legumi",
+      "Latte Avena",
+      "Fette Biscottate",
+      "Pollo",
+      "Carne"
+    ],
+    "user_notes": []
+  },
+  "chat_history": [],
+  "nutritional_info": {
+    "età": 55,
+    "sesso": "Femmina",
+    "peso": 65,
+    "altezza": 160,
+    "attività": "Sedentario",
+    "obiettivo": "Perdita di peso",
+    "nutrition_answers": {},
+    "agent_qa": []
+  }
+}

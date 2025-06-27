@@ -18,7 +18,7 @@
     "email": "c.messuri@temp.local",
     "password_hash": "c74e8a44cdf2d248fd646073de1765356f84263483a1ddb5f4de5a92712d156d",
     "user_id": "user_1749309652",
-    "created_at": 1750838590.881769
+    "created_at": 1751048706.808821
   },
   "claudio": {
     "username": "claudio",
@@ -33,5 +33,19 @@
     "password_hash": "a50c48d90a7d4c4428656fec8102fdf9f5c1bd9a3a8c663c47685e0fdb31f5e3",
     "user_id": "user_1750338063",
     "created_at": 1750338063.686275
+  },
+  "Caterina": {
+    "username": "Caterina",
+    "email": "caterinacuccorese1@gmail.com",
+    "password_hash": "242d10cc5d2532bf7348d09e6d35f8da6ddc7a96fdf2c77daf31890cd29ada27",
+    "user_id": "user_1751010181",
+    "created_at": 1751010181.905572
+  },
+  "Jolemamma": {
+    "username": "Jolemamma",
+    "email": "napolicharmingapart@libero.it",
+    "password_hash": "38f6d29992e5f89ce184d9f87e6afc3ada795130d83cad15a068e8b80205941f",
+    "user_id": "user_1751011334",
+    "created_at": 1751011334.709132
   }
 }

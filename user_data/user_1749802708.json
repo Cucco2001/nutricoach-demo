@@ -4,36 +4,114 @@
     "preferred_foods": [],
     "user_notes": []
   },
-  "chat_history": [],
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI\n\nSto per valutare se il tuo obiettivo nutrizionale (mantenimento) è adatto alla tua situazione fisica attuale, analizzando l’indice di massa corporea (BMI) e la fascia di peso ideale. Il BMI è un indice semplice che mette in relazione peso e altezza, utile come riferimento iniziale per capire se sei sottopeso, normopeso, sovrappeso o obeso. Questa analisi non sostituisce considerazioni più approfondite (come la composizione corporea), ma è un punto di partenza raccomandato dall’Organizzazione Mondiale della Sanità.\n\n📊 Risultati analisi:\n- BMI attuale: 24.2 (Normopeso)\n- Peso ideale: tra 61.3 kg e 82.5 kg\n- Obiettivo dichiarato: Mantenimento\n\nRisultato: Il tuo obiettivo di mantenimento è perfettamente coerente con il tuo BMI attuale, che ricade nella fascia normopeso. Non sono presenti criticità da segnalare.\n\n📚 Fonti utilizzate:\n- Definizione e calcolo BMI: Organizzazione Mondiale della Sanità (WHO, 2000)\n- Valutazione range peso forma: NIH (1998)\n- Raccomandazioni obiettivi: letteratura scientifica internazionale\n\n➡️ Conclusione: Puoi procedere in sicurezza con il tuo obiettivo di mantenimento! Passeremo ora all’analisi più dettagliata delle tue risposte e preferenze.\n\nHai domande riguardo ai calcoli o alla valutazione del BMI? Vuoi procedere con la FASE 1 o vuoi altro chiarimento sulle basi di partenza?",
+      "timestamp": 1750962352.488422
+    },
+    {
+      "role": "user",
+      "content": "ok",
+      "timestamp": 1750962514.28694
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto analizzando:\n- I tuoi dati anagrafici e di base (età, sesso, peso, altezza).\n- Le abitudini alimentari e le preferenze.\n- L’eventuale presenza di allergie o intolleranze.\n- Le attività sportive praticate.\n- Il numero di pasti e gli orari che preferisci.\n\n📊 Risultati intermedi:\n\n- Dati fisici: Maschio, 56 anni, 80 kg, 182 cm\n- Attività quotidiana: Sedentario (esclusa attività sportiva)\n- Allergie/intolleranze: Nessuna segnalata\n- Sport praticato: Tennis, 2 ore a settimana, intensità easy\n- Preferenze pasti: 5 pasti al giorno (Colazione 7:30, Spuntino mattutino 10:30, Pranzo 13:00, Spuntino pomeridiano 16:30, Cena 20:00)\n- Nessun alimento da escludere o preferenze specifiche segnalate\n\nAzioni immediate:\n- Prenderò in considerazione la struttura a 5 pasti negli orari indicati\n- Non sono necessari aggiustamenti per allergie/intolleranze\n- Calcolerò il dispendio energetico dell’attività sportiva (tennis) nella fase successiva\n\n📚 Fonti utilizzate:\n- Preferenze alimentari e abitudini: risposte utente\n- Analisi sport con dispendio energetico: Compendium of Physical Activities (Ainsworth et al., 2011)\n- Linee guida Società Italiana di Nutrizione Umana (SINU, LARN)\n\n❓ Ho bisogno del tuo input su:\nConfermi che non hai altre allergie, intolleranze o cibi da escludere? Confermi che vuoi seguire la struttura a 5 pasti negli orari indicati?\n\n➡️ Conclusione: \nSe confermi quanto sopra, passerò alla FASE 2: calcolo dettagliato del fabbisogno energetico, includendo il consumo calorico del tennis. Vuoi continuare?",
+      "timestamp": 1750962527.3227983
+    }
+  ],
   "nutritional_info": {
-    "età": 30,
+    "età": 56,
     "sesso": "Maschio",
-    "peso": 70,
-    "altezza": 170,
+    "peso": 80,
+    "altezza": 182,
     "attività": "Sedentario",
     "obiettivo": "Mantenimento",
-    "nutrition_answers": {},
-    "agent_qa": []
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Sport aciclici (es: tennis, pallavolo, arti marziali, calcio)",
+            "specific_sport": {
+              "name": "Tennis",
+              "key": "tennis",
+              "kcal_per_hour": 440,
+              "description": "Tennis"
+            },
+            "intensity": "easy",
+            "hours_per_week": 2
+          }
+        ]
+      },
+      "meal_preferences": {
+        "answer": "Sì",
+        "follow_up": {
+          "num_meals": 5,
+          "meal_times": {
+            "Colazione": "07:30",
+            "Spuntino mattutino": "10:30",
+            "Pranzo": "13:00",
+            "Spuntino pomeridiano": "16:30",
+            "Cena": "20:00"
+          }
+        }
+      }
+    },
+    "agent_qa": [
+      {
+        "question": "ok",
+        "answer": "✓ FASE 1 - ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto analizzando:\n- I tuoi dati anagrafici e di base (età, sesso, peso, altezza).\n- Le abitudini alimentari e le preferenze.\n- L’eventuale presenza di allergie o intolleranze.\n- Le attività sportive praticate.\n- Il numero di pasti e gli orari che preferisci.\n\n📊 Risultati intermedi:\n\n- Dati fisici: Maschio, 56 anni, 80 kg, 182 cm\n- Attività quotidiana: Sedentario (esclusa attività sportiva)\n- Allergie/intolleranze: Nessuna segnalata\n- Sport praticato: Tennis, 2 ore a settimana, intensità easy\n- Preferenze pasti: 5 pasti al giorno (Colazione 7:30, Spuntino mattutino 10:30, Pranzo 13:00, Spuntino pomeridiano 16:30, Cena 20:00)\n- Nessun alimento da escludere o preferenze specifiche segnalate\n\nAzioni immediate:\n- Prenderò in considerazione la struttura a 5 pasti negli orari indicati\n- Non sono necessari aggiustamenti per allergie/intolleranze\n- Calcolerò il dispendio energetico dell’attività sportiva (tennis) nella fase successiva\n\n📚 Fonti utilizzate:\n- Preferenze alimentari e abitudini: risposte utente\n- Analisi sport con dispendio energetico: Compendium of Physical Activities (Ainsworth et al., 2011)\n- Linee guida Società Italiana di Nutrizione Umana (SINU, LARN)\n\n❓ Ho bisogno del tuo input su:\nConfermi che non hai altre allergie, intolleranze o cibi da escludere? Confermi che vuoi seguire la struttura a 5 pasti negli orari indicati?\n\n➡️ Conclusione: \nSe confermi quanto sopra, passerò alla FASE 2: calcolo dettagliato del fabbisogno energetico, includendo il consumo calorico del tennis. Vuoi continuare?",
+        "timestamp": 1750962527.5598912
+      }
+    ]
   },
   "conversation_costs": {
     "tokens": {
-      "input": 67,
-      "output": 9781,
-      "total": 9848
+      "input": 1723,
+      "output": 946,
+      "total": 2669
     },
     "costs": {
-      "input_cost_usd": 0.0001,
-      "output_cost_usd": 0.0782,
-      "total_cost_usd": 0.0784,
-      "total_cost_eur": 0.0721
+      "input_cost_usd": 0.0034,
+      "output_cost_usd": 0.0076,
+      "total_cost_usd": 0.011,
+      "total_cost_eur": 0.0101
     },
     "usage": {
-      "message_count": 29,
-      "duration_minutes": 1.44,
-      "avg_tokens_per_message": 339.59
+      "message_count": 4,
+      "duration_minutes": 3.22,
+      "avg_tokens_per_message": 667.25
     },
     "model": "gpt-4",
-    "timestamp": "2025-06-22T14:35:39.087494"
+    "timestamp": "2025-06-26T18:28:47.321366"
   },
-  "last_cost_update": "2025-06-22T14:35:39.087494"
+  "last_cost_update": "2025-06-26T18:28:47.321366",
+  "nutritional_info_extracted": {
+    "daily_macros": {
+      "numero_pasti": 5,
+      "distribuzione_pasti": {
+        "colazione": {
+          "percentuale_kcal": null
+        },
+        "spuntino_mattutino": {
+          "percentuale_kcal": null
+        },
+        "pranzo": {
+          "percentuale_kcal": null
+        },
+        "spuntino_pomeridiano": {
+          "percentuale_kcal": null
+        },
+        "cena": {
+          "percentuale_kcal": null
+        }
+      }
+    }
+  }
 }
