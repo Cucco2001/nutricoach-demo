@@ -57,21 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Gestione submit newsletter (solo per la newsletter, non per la Beta)
-async function handleNewsletterSubmit(event) {
-    event.preventDefault();
-    
-    const email = event.target.querySelector('input[type="email"]').value;
-    
-    if (!email || !isValidEmail(email)) {
-        showNotification('Per favore inserisci un\'email valida', 'error');
-        return;
-    }
-
-    // Qui puoi integrare un servizio di newsletter se vuoi
-    showNotification('Grazie per esserti iscritto alla newsletter!', 'success');
-    event.target.reset();
-}
+// Funzione rimossa: handleNewsletterSubmit - sostituita con link diretto al Google Form
 
 // Validazione email
 function isValidEmail(email) {
