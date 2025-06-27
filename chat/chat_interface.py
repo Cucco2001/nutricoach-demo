@@ -150,7 +150,12 @@ def handle_user_input():
     """
     Gestisce l'input dell'utente e la generazione della risposta.
     """
-    user_input = st.chat_input("Scrivi un messaggio...")
+    # Se l'agente sta generando, mostra un messaggio informativo invece del campo di input
+    if st.session_state.agent_generating:
+        user_input = None
+    else:
+        user_input = st.chat_input("Scrivi un messaggio...")
+    
     if user_input:
         # Se l'agente non sta già generando, inizia il processo
         if not st.session_state.agent_generating:
