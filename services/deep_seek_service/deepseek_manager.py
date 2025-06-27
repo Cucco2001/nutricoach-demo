@@ -24,8 +24,8 @@ class DeepSeekManager:
         """Inizializza il manager DeepSeek."""
         self.extractor = NutritionalDataExtractor()
         self.notification_manager = NotificationManager()
-        # Coda globale thread-safe indipendente da Streamlit
-        self.queue = queue.Queue()
+        # Coda globale thread-safe indipendente da Streamlit (ordinata per conversation_index)
+        self.queue = queue.PriorityQueue()
         # Traccia solo l'indice dell'ultima conversazione processata per evitare duplicati
         self.user_last_conversation_index = {}  # {user_id: index_of_last_processed_conversation}
         # Set per tracciare conversazioni già in coda per evitare duplicati
@@ -105,25 +105,39 @@ class DeepSeekManager:
         total_conversations = len(conversation_history)
         last_processed_index = self.user_last_conversation_index.get(user_id, -1)
         
-        # Processa solo l'ultima conversazione (se è nuova)
+        # Processa le ultime 2 conversazioni (se nuove)
         new_conversations_added = 0
         if total_conversations > 0:
-            latest_conversation_index = total_conversations - 1
+            # Controlla anche la penultima conversazione se esiste
+            if total_conversations > 1:
+                penultimate_index = total_conversations - 2
+                if penultimate_index > last_processed_index:
+                    conversation_key = (user_id, penultimate_index)
+                    if conversation_key not in self.queued_conversations:
+                        self.queue.put((penultimate_index, {
+                            'user_id': user_id,
+                            'user_info': user_info,
+                            'conversation_index': penultimate_index,
+                            'conversation': conversation_history[penultimate_index]
+                        }))
+                        self.queued_conversations.add(conversation_key)
+                        new_conversations_added += 1
+                        print(f"[DEEPSEEK_MANAGER] Accodata penultima conversazione (indice {penultimate_index})")
             
-            # Se l'ultima conversazione è più recente dell'ultima processata
+            # Controlla l'ultima conversazione (logica originale)
+            latest_conversation_index = total_conversations - 1
             if latest_conversation_index > last_processed_index:
                 conversation_key = (user_id, latest_conversation_index)
                 if conversation_key not in self.queued_conversations:
-                    # Aggiungi alla coda solo l'ultima conversazione
-                    self.queue.put({
+                    self.queue.put((latest_conversation_index, {
                         'user_id': user_id,
                         'user_info': user_info,
                         'conversation_index': latest_conversation_index,
                         'conversation': conversation_history[latest_conversation_index]
-                    })
+                    }))
                     self.queued_conversations.add(conversation_key)
-                    new_conversations_added = 1
-                    print(f"[DEEPSEEK_MANAGER] Accodata solo l'ultima conversazione (indice {latest_conversation_index})")
+                    new_conversations_added += 1
+                    print(f"[DEEPSEEK_MANAGER] Accodata ultima conversazione (indice {latest_conversation_index})")
         
         if new_conversations_added > 0:      
             # Se non c'è un'estrazione in corso, avvia il processing della coda
@@ -157,9 +171,9 @@ class DeepSeekManager:
         Chiamato quando un'estrazione finisce per avviare la prossima se presente.
         """
         try:
-            # Prendi una richiesta dalla coda
+            # Prendi una richiesta dalla coda (ordinata per conversation_index)
             if not self.queue.empty():
-                request = self.queue.get_nowait()
+                priority, request = self.queue.get_nowait()
                 
                 user_id = request['user_id']
                 user_info = request['user_info']
@@ -189,8 +203,8 @@ class DeepSeekManager:
                     self.notification_manager.show_extraction_started_info()
                     
                 else:
-                    # Se c'è ancora un'estrazione in corso, rimetti in coda
-                    self.queue.put(request)
+                    # Se c'è ancora un'estrazione in corso, rimetti in coda con stessa priorità
+                    self.queue.put((conversation_index, request))
                     self.queued_conversations.add(conversation_key)
                     print(f"[DEEPSEEK_MANAGER] Estrazione in corso, richiesta rimessa in coda")
                     
@@ -304,12 +318,12 @@ class DeepSeekManager:
         for i in range(last_processed_index + 1, total_conversations):
             conversation_key = (user_id, i)
             if conversation_key not in self.queued_conversations:
-                self.queue.put({
+                self.queue.put((i, {
                     'user_id': user_id,
                     'user_info': user_info,
                     'conversation_index': i,
                     'conversation': conversation_history[i]
-                })
+                }))
                 self.queued_conversations.add(conversation_key)
                 conversations_added += 1
                 

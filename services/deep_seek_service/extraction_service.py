@@ -1332,6 +1332,7 @@ class NutritionalDataExtractor:
     def _meals_are_different(self, meal1: Dict[str, Any], meal2: Dict[str, Any]) -> bool:
         """
         Confronta due pasti per determinare se sono sostanzialmente diversi.
+        Controlla sia i nomi degli alimenti che le quantità.
         
         Args:
             meal1: Primo pasto
@@ -1340,24 +1341,68 @@ class NutritionalDataExtractor:
         Returns:
             True se i pasti sono diversi
         """
-        # Confronto basato sugli alimenti
-        alimenti1 = meal1.get("alimenti", {}) if isinstance(meal1, dict) else {}
-        alimenti2 = meal2.get("alimenti", {}) if isinstance(meal2, dict) else {}
+        # Confronto basato sugli alimenti (struttura: lista di oggetti)
+        alimenti1 = meal1.get("alimenti", []) if isinstance(meal1, dict) else []
+        alimenti2 = meal2.get("alimenti", []) if isinstance(meal2, dict) else []
+        
+        # Gestione dati malformati (None o non-lista)
+        if alimenti1 is None:
+            alimenti1 = []
+        if alimenti2 is None:  
+            alimenti2 = []
+        if not isinstance(alimenti1, list):
+            alimenti1 = []
+        if not isinstance(alimenti2, list):
+            alimenti2 = []
         
         # Se uno dei due è vuoto e l'altro no, sono diversi
         if bool(alimenti1) != bool(alimenti2):
             return True
         
-        # Confronto semplificato delle chiavi degli alimenti
-        if isinstance(alimenti1, dict) and isinstance(alimenti2, dict):
-            keys1 = set(alimenti1.keys())
-            keys2 = set(alimenti2.keys())
-            
-            # Se hanno alimenti diversi, sono diversi
-            if keys1 != keys2:
+        # Confronto dettagliato degli alimenti (nomi e quantità)
+        if isinstance(alimenti1, list) and isinstance(alimenti2, list):
+            # Se hanno numero diverso di alimenti, sono diversi
+            if len(alimenti1) != len(alimenti2):
                 return True
+            
+            # Crea dizionari per confronto basato su nome alimento
+            dict1 = {}
+            dict2 = {}
+            
+            for alimento in alimenti1:
+                if isinstance(alimento, dict) and "nome_alimento" in alimento:
+                    nome = alimento["nome_alimento"].lower().strip()
+                    dict1[nome] = alimento
+                    
+            for alimento in alimenti2:
+                if isinstance(alimento, dict) and "nome_alimento" in alimento:
+                    nome = alimento["nome_alimento"].lower().strip()
+                    dict2[nome] = alimento
+            
+            # Confronto alimento per alimento
+            for nome, alimento1 in dict1.items():
+                if nome not in dict2:
+                    return True
                 
-        # Se sono arrivato qui, considera simili (stesso tipo di alimenti)
+                alimento2 = dict2[nome]
+                
+                # Confronto quantità (con tolleranza del 5% per evitare aggiornamenti inutili)
+                quantita1 = alimento1.get("quantita_g", 0)
+                quantita2 = alimento2.get("quantita_g", 0)
+                
+                try:
+                    q1 = float(quantita1) if quantita1 is not None else 0
+                    q2 = float(quantita2) if quantita2 is not None else 0
+                    
+                    # Tolleranza del 5% per evitare micro-aggiornamenti
+                    if abs(q1 - q2) > max(q1, q2) * 0.05:
+                        return True
+                        
+                except (ValueError, TypeError):
+                    # Se non riesco a confrontare le quantità, considera diversi
+                    return True
+                
+        # Se sono arrivato qui, i pasti sono sostanzialmente simili
         return False
     
     def _is_invalid_zero(self, field_name: str, field_value: Any, section_name: str) -> bool:

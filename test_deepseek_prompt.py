@@ -138,27 +138,35 @@ def test_with_predefined_examples():
     
     # Esempio di conversazione con calcoli calorici
     example_conversation = """
-UTENTE: Inserisci
+UTENTE: Mi cambi cena g 3
 
-AGENTE: ⚠️ Attenzione: la passata di pomodoro non è presente nel database nutrizionale ufficiale, quindi non posso calcolare in modo preciso le quantità e i nutrienti ottimali per inserirla tra gli ingredienti del pranzo.
+AGENTE: 🌙 CENA (Giorno 3) – Pasta, asparagi e carote
 
-Tuttavia, puoi considerare di aggiungere a casa circa 80-100 g di passata di pomodoro (pari a 3-4 cucchiai) per condire 130 g di gnocchi: il suo apporto calorico è molto basso (circa 20 kcal per 100 g) e praticamente irrilevante su proteine e grassi, quindi non altera i bilanci del pasto.
+• Pasta integrale: 120g (peso a crudo) → 🍝 1 porzione abbondante
+P: 16g, C: 78g, G: 2.6g
+Sostituti: 110g farro, 120g pasta di semola
 
-Versione suggerita del pranzo giorno 7:
+• Asparagi: 190g → 🥗 1 piatto colmo di asparagi lessati o saltati
+P: 8.7g, C: 7.6g, G: 0.2g
+Sostituti: 250g cavolfiore, 220g spinaci
 
-🍽️ PRANZO (giorno 7, variante con passata) • Gnocchi: 130 g → 🍠 1 piatto piccolo
-• Passata di pomodoro: 80–100 g → 🥄 3-4 cucchiai
-• Mozzarella: 50 g → 🧀 2 fette
-• Olio extravergine di oliva: 10 g → 🥄 1 cucchiaio
-• Insalata: 290 g → 🥗 2 piatti grandi
+• Carote: 180g → 🥕 2 carote grandi
+P: 2.0g, C: 13.7g, G: 0.4g
+Sostituti: 320g pomodoro, 320g melanzane
 
-👉 Ricetta: Cuoci gli gnocchi, condiscili con la passata riscaldata e l’olio, aggiungi sopra mozzarella a dadini. Accompagna con insalata fresca.
+• Olio extravergine di oliva: 20g → 🫒 2 cucchiai
+P: 0g, C: 0g, G: 20g
+Sostituti: 20g burro, 80g avocado
+
+Totale pasto: P: circa 27g, C: circa 99g, G: circa 23g — circa 726 kcal
+
+Idea ricetta: Cuoci la pasta integrale. Nel frattempo, salta in padella gli asparagi tagliati a rondelle e le carote a julienne con un cucchiaio di olio e un po' di acqua. Unisci la pasta scolata, aggiungi il resto dell’olio a crudo e mescola bene, aggiungendo erbe aromatiche a piacere.
 
 📚 Fonti utilizzate:
 
-Dati CREA (stima per passata di pomodoro)
-Linee guida composizione pasti SINU
-➡️ Conclusione: Così ottieni un pranzo gustoso con passata di pomodoro: l’equilibrio del pasto resta ottimale. Se vuoi altre modifiche ai pasti o domande sulle sostituzioni, chiedi pure! Vuoi modificare altre ricette o giornate della settimana?
+Banca dati CREA (valori nutrizionali alimenti)
+Ottimizzazione automatica porzioni e sostituti
+➡️ Conclusione: Cena vegetariana gustosa, ricca di fibre, vitamine e gusto! Va bene così o vuoi modifiche/integrazioni? Posso procedere con la generazione della dieta dei giorni 5-7?
 """
     
     conversation_history = [
