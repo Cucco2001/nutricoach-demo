@@ -4,19 +4,19 @@
     "reference_amount": "100g",
     "calculation_method": "Equivalenza calorica con priorità per categorie alimentari logiche e similarità macronutrienti dominanti",
     "categories": {
-      "cereali": 10,
+      "cereali": 11,
       "tuberi": 1,
-      "proteine_animali": 15,
-      "verdure": 12,
+      "proteine_animali": 17,
+      "verdure": 13,
       "grassi_aggiunti": 4,
-      "frutta": 10,
+      "frutta": 11,
       "uova": 2,
       "latte": 3,
       "formaggi": 8,
       "legumi": 5,
       "zucchero": 1,
       "frutta_secca": 7,
-      "cereali_colazione": 9,
+      "cereali_colazione": 11,
       "affettati": 3,
       "latticini": 3,
       "insalata": 2,
@@ -56,13 +56,17 @@
         "grams": 103.3,
         "similarity_score": 126.7
       },
+      "orzo": {
+        "grams": 98.6,
+        "similarity_score": 126.7
+      },
       "riso_integrale": {
         "grams": 100.0,
         "similarity_score": 125.3
       },
       "riso": {
         "grams": 92.9,
-        "similarity_score": 125.2
+        "similarity_score": 100.2
       },
       "pane_bianco": {
         "grams": 127.2,
@@ -72,17 +76,13 @@
         "grams": 152.2,
         "similarity_score": 97.9
       },
+      "pane_di_segale": {
+        "grams": 149.6,
+        "similarity_score": 97.5
+      },
       "quinoa": {
         "grams": 90.7,
         "similarity_score": 89.2
-      },
-      "grissini": {
-        "grams": 81.0,
-        "similarity_score": 84.2
-      },
-      "patate": {
-        "grams": 473.6,
-        "similarity_score": 80.2
       }
     },
     "patate": {
@@ -94,6 +94,10 @@
         "grams": 21.1,
         "similarity_score": 125.3
       },
+      "orzo": {
+        "grams": 20.8,
+        "similarity_score": 125.0
+      },
       "riso": {
         "grams": 19.6,
         "similarity_score": 124.8
@@ -104,7 +108,7 @@
       },
       "pasta_di_semola": {
         "grams": 21.1,
-        "similarity_score": 122.3
+        "similarity_score": 92.3
       },
       "pane_integrale": {
         "grams": 32.1,
@@ -114,23 +118,23 @@
         "grams": 20.4,
         "similarity_score": 91.3
       },
+      "pane_di_segale": {
+        "grams": 31.6,
+        "similarity_score": 91.1
+      },
       "pasta_integrale": {
         "grams": 21.8,
         "similarity_score": 89.4
-      },
-      "quinoa": {
-        "grams": 19.1,
-        "similarity_score": 76.8
-      },
-      "grissini": {
-        "grams": 17.1,
-        "similarity_score": 73.2
       }
     },
     "riso": {
       "riso_integrale": {
         "grams": 107.6,
         "similarity_score": 128.6
+      },
+      "orzo": {
+        "grams": 106.1,
+        "similarity_score": 128.4
       },
       "couscous": {
         "grams": 101.7,
@@ -146,7 +150,7 @@
       },
       "farro": {
         "grams": 104.0,
-        "similarity_score": 124.3
+        "similarity_score": 99.3
       },
       "pasta_integrale": {
         "grams": 111.2,
@@ -156,23 +160,23 @@
         "grams": 163.8,
         "similarity_score": 93.2
       },
+      "pane_di_segale": {
+        "grams": 161.0,
+        "similarity_score": 93.1
+      },
       "quinoa": {
         "grams": 97.6,
         "similarity_score": 86.4
-      },
-      "grissini": {
-        "grams": 87.2,
-        "similarity_score": 83.1
-      },
-      "patate": {
-        "grams": 509.7,
-        "similarity_score": 82.6
       }
     },
     "riso_integrale": {
       "riso": {
         "grams": 92.9,
         "similarity_score": 128.7
+      },
+      "orzo": {
+        "grams": 98.6,
+        "similarity_score": 128.2
       },
       "pane_bianco": {
         "grams": 127.2,
@@ -188,7 +192,7 @@
       },
       "farro": {
         "grams": 96.6,
-        "similarity_score": 123.8
+        "similarity_score": 98.8
       },
       "pasta_integrale": {
         "grams": 103.3,
@@ -198,17 +202,13 @@
         "grams": 152.2,
         "similarity_score": 93.9
       },
+      "pane_di_segale": {
+        "grams": 149.6,
+        "similarity_score": 93.7
+      },
       "quinoa": {
         "grams": 90.7,
         "similarity_score": 85.2
-      },
-      "patate": {
-        "grams": 473.6,
-        "similarity_score": 83.2
-      },
-      "grissini": {
-        "grams": 81.0,
-        "similarity_score": 82.0
       }
     },
     "couscous": {
@@ -220,6 +220,10 @@
         "grams": 102.3,
         "similarity_score": 128.1
       },
+      "orzo": {
+        "grams": 104.3,
+        "similarity_score": 126.9
+      },
       "riso": {
         "grams": 98.4,
         "similarity_score": 126.2
@@ -230,7 +234,7 @@
       },
       "riso_integrale": {
         "grams": 105.9,
-        "similarity_score": 125.2
+        "similarity_score": 100.2
       },
       "pane_bianco": {
         "grams": 134.7,
@@ -240,17 +244,13 @@
         "grams": 161.2,
         "similarity_score": 96.4
       },
+      "pane_di_segale": {
+        "grams": 158.3,
+        "similarity_score": 96.1
+      },
       "quinoa": {
         "grams": 96.0,
         "similarity_score": 89.1
-      },
-      "grissini": {
-        "grams": 85.7,
-        "similarity_score": 84.2
-      },
-      "patate": {
-        "grams": 501.4,
-        "similarity_score": 80.7
       }
     },
     "pollo_petto": {
@@ -266,13 +266,17 @@
         "grams": 122.0,
         "similarity_score": 118.0
       },
+      "sgombro_al_naturale": {
+        "grams": 76.9,
+        "similarity_score": 115.5
+      },
       "gamberi": {
         "grams": 140.8,
         "similarity_score": 112.6
       },
       "orata": {
         "grams": 82.6,
-        "similarity_score": 108.7
+        "similarity_score": 83.7
       },
       "salmone_affumicato": {
         "grams": 68.0,
@@ -289,10 +293,6 @@
       "pollo_coscia": {
         "grams": 80.0,
         "similarity_score": 75.9
-      },
-      "fesa_tacchino": {
-        "grams": 93.5,
-        "similarity_score": 70.9
       }
     },
     "pollo_coscia": {
@@ -320,6 +320,10 @@
         "grams": 85.0,
         "similarity_score": 94.0
       },
+      "sgombro_al_naturale": {
+        "grams": 96.2,
+        "similarity_score": 89.6
+      },
       "salmone_al_naturale": {
         "grams": 70.2,
         "similarity_score": 87.8
@@ -331,13 +335,13 @@
       "gamberi": {
         "grams": 176.1,
         "similarity_score": 77.1
-      },
-      "pollo_petto": {
-        "grams": 125.0,
-        "similarity_score": 75.4
       }
     },
     "pollo_ali": {
+      "sgombro": {
+        "grams": 115.3,
+        "similarity_score": 123.4
+      },
       "wurstel": {
         "grams": 78.4,
         "similarity_score": 118.9
@@ -353,10 +357,6 @@
       "tonno_fresco": {
         "grams": 123.3,
         "similarity_score": 97.7
-      },
-      "pollo_coscia": {
-        "grams": 156.8,
-        "similarity_score": 87.2
       },
       "grana_padano": {
         "grams": 50.0,
@@ -603,10 +603,56 @@
         "similarity_score": 60.9
       }
     },
+    "frutti_di_bosco": {
+      "arancia": {
+        "grams": 100.0,
+        "similarity_score": 127.7
+      },
+      "mirtilli": {
+        "grams": 75.5,
+        "similarity_score": 124.2
+      },
+      "ciliegie": {
+        "grams": 77.1,
+        "similarity_score": 123.3
+      },
+      "pere": {
+        "grams": 71.2,
+        "similarity_score": 122.5
+      },
+      "albicocche": {
+        "grams": 88.1,
+        "similarity_score": 122.2
+      },
+      "banana": {
+        "grams": 48.7,
+        "similarity_score": 95.7
+      },
+      "mela": {
+        "grams": 80.4,
+        "similarity_score": 94.7
+      },
+      "kiwi": {
+        "grams": 77.1,
+        "similarity_score": 94.5
+      },
+      "lamponi": {
+        "grams": 75.5,
+        "similarity_score": 91.1
+      },
+      "uva": {
+        "grams": 43.0,
+        "similarity_score": 90.6
+      }
+    },
     "pane_bianco": {
       "riso_integrale": {
         "grams": 78.6,
         "similarity_score": 126.4
+      },
+      "orzo": {
+        "grams": 77.5,
+        "similarity_score": 126.3
       },
       "riso": {
         "grams": 73.0,
@@ -622,11 +668,15 @@
       },
       "farro": {
         "grams": 75.9,
-        "similarity_score": 122.9
+        "similarity_score": 97.9
       },
       "pane_integrale": {
         "grams": 119.6,
         "similarity_score": 97.3
+      },
+      "pane_di_segale": {
+        "grams": 117.5,
+        "similarity_score": 97.1
       },
       "pasta_integrale": {
         "grams": 81.2,
@@ -635,17 +685,13 @@
       "patate": {
         "grams": 372.2,
         "similarity_score": 84.0
-      },
-      "quinoa": {
-        "grams": 71.3,
-        "similarity_score": 83.4
-      },
-      "grissini": {
-        "grams": 63.7,
-        "similarity_score": 80.0
       }
     },
     "pane_integrale": {
+      "pane_di_segale": {
+        "grams": 98.2,
+        "similarity_score": 129.1
+      },
       "pasta_integrale": {
         "grams": 67.9,
         "similarity_score": 125.7
@@ -664,7 +710,11 @@
       },
       "pane_bianco": {
         "grams": 83.6,
-        "similarity_score": 122.6
+        "similarity_score": 97.6
+      },
+      "orzo": {
+        "grams": 64.7,
+        "similarity_score": 96.8
       },
       "riso": {
         "grams": 61.0,
@@ -677,14 +727,6 @@
       "quinoa": {
         "grams": 59.6,
         "similarity_score": 88.0
-      },
-      "grissini": {
-        "grams": 53.2,
-        "similarity_score": 83.2
-      },
-      "patate": {
-        "grams": 311.1,
-        "similarity_score": 78.3
       }
     },
     "mela": {
@@ -716,6 +758,10 @@
         "grams": 124.3,
         "similarity_score": 95.2
       },
+      "frutti_di_bosco": {
+        "grams": 124.3,
+        "similarity_score": 94.2
+      },
       "kiwi": {
         "grams": 95.8,
         "similarity_score": 89.9
@@ -723,13 +769,13 @@
       "lamponi": {
         "grams": 93.9,
         "similarity_score": 86.1
-      },
-      "marmellata_hero_light": {
-        "grams": 95.8,
-        "similarity_score": 72.1
       }
     },
     "uova": {
+      "sgombro": {
+        "grams": 75.3,
+        "similarity_score": 96.2
+      },
       "ricotta": {
         "grams": 87.7,
         "similarity_score": 90.7
@@ -748,7 +794,7 @@
       },
       "parmigiano_reggiano": {
         "grams": 32.2,
-        "similarity_score": 88.3
+        "similarity_score": 63.3
       },
       "mozzarella": {
         "grams": 50.6,
@@ -764,10 +810,6 @@
       },
       "fiocchi_latte": {
         "grams": 128.0,
-        "similarity_score": 57.5
-      },
-      "wurstel": {
-        "grams": 51.2,
         "similarity_score": 57.5
       }
     },
@@ -1020,6 +1062,10 @@
         "grams": 22.9,
         "similarity_score": 61.8
       },
+      "fette_biscottate_integrali": {
+        "grams": 21.8,
+        "similarity_score": 60.7
+      },
       "cracker_integrali": {
         "grams": 21.4,
         "similarity_score": 59.2
@@ -1031,10 +1077,6 @@
       "grissini": {
         "grams": 20.4,
         "similarity_score": 57.1
-      },
-      "pan_bauletto": {
-        "grams": 31.6,
-        "similarity_score": 57.0
       }
     },
     "banana": {
@@ -1066,6 +1108,10 @@
         "grams": 205.4,
         "similarity_score": 92.0
       },
+      "frutti_di_bosco": {
+        "grams": 205.4,
+        "similarity_score": 90.3
+      },
       "kiwi": {
         "grams": 158.3,
         "similarity_score": 89.3
@@ -1073,10 +1119,6 @@
       "lamponi": {
         "grams": 155.1,
         "similarity_score": 86.0
-      },
-      "marmellata_hero_light": {
-        "grams": 158.3,
-        "similarity_score": 66.8
       }
     },
     "lamponi": {
@@ -1100,6 +1142,10 @@
         "grams": 102.1,
         "similarity_score": 115.4
       },
+      "frutti_di_bosco": {
+        "grams": 132.4,
+        "similarity_score": 90.3
+      },
       "banana": {
         "grams": 64.5,
         "similarity_score": 88.0
@@ -1115,10 +1161,6 @@
       "uva": {
         "grams": 57.0,
         "similarity_score": 81.7
-      },
-      "mais": {
-        "grams": 46.7,
-        "similarity_score": 66.7
       }
     },
     "mozzarella": {
@@ -1252,16 +1294,20 @@
         "grams": 33.5,
         "similarity_score": 60.0
       },
+      "fette_biscottate_integrali": {
+        "grams": 23.1,
+        "similarity_score": 59.9
+      },
       "biscotti_integrali": {
         "grams": 21.7,
         "similarity_score": 59.4
-      },
-      "pane_integrale": {
-        "grams": 40.6,
-        "similarity_score": 58.6
       }
     },
     "carote": {
+      "peperoni": {
+        "grams": 120.6,
+        "similarity_score": 125.1
+      },
       "pomodoro": {
         "grams": 178.3,
         "similarity_score": 112.3
@@ -1278,13 +1324,13 @@
         "grams": 170.8,
         "similarity_score": 95.3
       },
-      "bieta": {
-        "grams": 273.3,
-        "similarity_score": 89.5
-      },
       "arancia": {
         "grams": 110.8,
         "similarity_score": 70.6
+      },
+      "frutti_di_bosco": {
+        "grams": 110.8,
+        "similarity_score": 70.4
       },
       "kiwi": {
         "grams": 85.4,
@@ -1297,10 +1343,6 @@
       "pere": {
         "grams": 78.8,
         "similarity_score": 67.2
-      },
-      "ciliegie": {
-        "grams": 85.4,
-        "similarity_score": 66.8
       }
     },
     "mais": {
@@ -1320,6 +1362,10 @@
         "grams": 134.6,
         "similarity_score": 104.7
       },
+      "pane_di_segale": {
+        "grams": 46.1,
+        "similarity_score": 66.9
+      },
       "pan_bauletto": {
         "grams": 38.6,
         "similarity_score": 66.7
@@ -1335,10 +1381,6 @@
       "muesli": {
         "grams": 28.1,
         "similarity_score": 66.1
-      },
-      "pasta_integrale": {
-        "grams": 31.8,
-        "similarity_score": 65.6
       }
     },
     "tonno_sottolio_sgocciolato": {
@@ -1366,21 +1408,21 @@
         "grams": 130.6,
         "similarity_score": 87.4
       },
+      "sgombro": {
+        "grams": 112.9,
+        "similarity_score": 85.6
+      },
       "orata": {
         "grams": 158.7,
         "similarity_score": 85.1
       },
+      "sgombro_al_naturale": {
+        "grams": 147.7,
+        "similarity_score": 80.2
+      },
       "spigola": {
         "grams": 234.1,
         "similarity_score": 68.0
-      },
-      "prosciutto_crudo": {
-        "grams": 81.7,
-        "similarity_score": 65.4
-      },
-      "pollo_petto": {
-        "grams": 192.0,
-        "similarity_score": 63.6
       }
     },
     "tonno_fresco": {
@@ -1412,17 +1454,17 @@
         "grams": 131.4,
         "similarity_score": 89.1
       },
+      "sgombro_al_naturale": {
+        "grams": 122.3,
+        "similarity_score": 84.0
+      },
+      "sgombro": {
+        "grams": 93.5,
+        "similarity_score": 83.9
+      },
       "spigola": {
         "grams": 193.9,
         "similarity_score": 73.3
-      },
-      "gamberi": {
-        "grams": 223.9,
-        "similarity_score": 68.5
-      },
-      "pollo_petto": {
-        "grams": 159.0,
-        "similarity_score": 68.1
       }
     },
     "biscotti_secchi": {
@@ -1450,6 +1492,10 @@
         "grams": 148.5,
         "similarity_score": 96.3
       },
+      "fette_biscottate_integrali": {
+        "grams": 102.5,
+        "similarity_score": 93.9
+      },
       "cracker_integrali": {
         "grams": 100.5,
         "similarity_score": 93.2
@@ -1458,13 +1504,9 @@
         "grams": 110.1,
         "similarity_score": 92.2
       },
-      "pasta_integrale": {
-        "grams": 122.4,
-        "similarity_score": 67.8
-      },
-      "farro": {
-        "grams": 114.4,
-        "similarity_score": 66.1
+      "grissini": {
+        "grams": 96.0,
+        "similarity_score": 91.6
       }
     },
     "spinaci": {
@@ -1518,6 +1560,10 @@
         "grams": 64.7,
         "similarity_score": 66.4
       },
+      "sgombro_al_naturale": {
+        "grams": 116.9,
+        "similarity_score": 65.3
+      },
       "pollo_petto": {
         "grams": 152.0,
         "similarity_score": 65.2
@@ -1533,10 +1579,6 @@
       "spigola": {
         "grams": 185.4,
         "similarity_score": 61.2
-      },
-      "salmone_affumicato": {
-        "grams": 103.4,
-        "similarity_score": 60.3
       }
     },
     "fesa_tacchino": {
@@ -1560,18 +1602,22 @@
         "grams": 130.5,
         "similarity_score": 65.6
       },
+      "sgombro_al_naturale": {
+        "grams": 82.3,
+        "similarity_score": 63.9
+      },
       "merluzzo": {
         "grams": 150.7,
         "similarity_score": 63.8
-      },
-      "iso_fuji_yamamoto": {
-        "grams": 30.9,
-        "similarity_score": 61.4
       }
     },
     "pomodoro": {
       "melanzane": {
         "grams": 100.0,
+        "similarity_score": 119.7
+      },
+      "peperoni": {
+        "grams": 67.6,
         "similarity_score": 119.7
       },
       "carote": {
@@ -1588,7 +1634,7 @@
       },
       "broccoli": {
         "grams": 69.7,
-        "similarity_score": 105.8
+        "similarity_score": 80.8
       },
       "insalata": {
         "grams": 104.5,
@@ -1605,10 +1651,6 @@
       "lenticchie": {
         "grams": 25.3,
         "similarity_score": 63.2
-      },
-      "kiwi": {
-        "grams": 47.9,
-        "similarity_score": 63.0
       }
     },
     "melanzane": {
@@ -1628,9 +1670,13 @@
         "grams": 69.7,
         "similarity_score": 113.3
       },
+      "peperoni": {
+        "grams": 67.6,
+        "similarity_score": 109.4
+      },
       "carote": {
         "grams": 56.1,
-        "similarity_score": 105.4
+        "similarity_score": 80.4
       },
       "zucchine": {
         "grams": 135.3,
@@ -1647,10 +1693,6 @@
       "cavolfiore": {
         "grams": 76.7,
         "similarity_score": 74.0
-      },
-      "spinaci": {
-        "grams": 65.7,
-        "similarity_score": 70.1
       }
     },
     "ricotta": {
@@ -1690,9 +1732,9 @@
         "grams": 114.1,
         "similarity_score": 65.5
       },
-      "wurstel": {
-        "grams": 58.4,
-        "similarity_score": 63.7
+      "sgombro": {
+        "grams": 85.9,
+        "similarity_score": 64.1
       }
     },
     "fiocchi_latte": {
@@ -1788,6 +1830,10 @@
         "grams": 132.0,
         "similarity_score": 70.2
       },
+      "sgombro": {
+        "grams": 138.2,
+        "similarity_score": 65.6
+      },
       "tonno_sottolio_sgocciolato": {
         "grams": 122.4,
         "similarity_score": 65.1
@@ -1799,13 +1845,13 @@
       "mozzarella": {
         "grams": 92.9,
         "similarity_score": 60.4
-      },
-      "tonno_fresco": {
-        "grams": 147.8,
-        "similarity_score": 60.2
       }
     },
     "wurstel": {
+      "sgombro": {
+        "grams": 147.1,
+        "similarity_score": 111.3
+      },
       "salmone_al_naturale": {
         "grams": 140.4,
         "similarity_score": 104.8
@@ -1856,13 +1902,17 @@
         "grams": 123.2,
         "similarity_score": 115.7
       },
+      "sgombro_al_naturale": {
+        "grams": 77.7,
+        "similarity_score": 113.5
+      },
       "gamberi": {
         "grams": 142.3,
         "similarity_score": 110.3
       },
       "orata": {
         "grams": 83.5,
-        "similarity_score": 106.7
+        "similarity_score": 81.7
       },
       "salmone_affumicato": {
         "grams": 68.7,
@@ -1879,10 +1929,6 @@
       "pollo_coscia": {
         "grams": 80.8,
         "similarity_score": 73.8
-      },
-      "fesa_tacchino": {
-        "grams": 94.4,
-        "similarity_score": 68.9
       }
     },
     "ceci": {
@@ -1906,6 +1952,10 @@
         "grams": 29.5,
         "similarity_score": 60.5
       },
+      "fette_biscottate_integrali": {
+        "grams": 28.2,
+        "similarity_score": 59.4
+      },
       "cracker_integrali": {
         "grams": 27.6,
         "similarity_score": 58.9
@@ -1917,10 +1967,6 @@
       "cracker": {
         "grams": 28.8,
         "similarity_score": 55.9
-      },
-      "biscotti_integrali": {
-        "grams": 26.5,
-        "similarity_score": 55.1
       }
     },
     "pere": {
@@ -1948,6 +1994,10 @@
         "grams": 113.0,
         "similarity_score": 96.8
       },
+      "frutti_di_bosco": {
+        "grams": 140.5,
+        "similarity_score": 96.4
+      },
       "kiwi": {
         "grams": 108.3,
         "similarity_score": 96.3
@@ -1959,10 +2009,6 @@
       "lamponi": {
         "grams": 106.1,
         "similarity_score": 93.0
-      },
-      "marmellata_hero_light": {
-        "grams": 108.3,
-        "similarity_score": 69.4
       }
     },
     "albicocche": {
@@ -1994,6 +2040,10 @@
         "grams": 48.8,
         "similarity_score": 97.3
       },
+      "frutti_di_bosco": {
+        "grams": 113.5,
+        "similarity_score": 97.1
+      },
       "kiwi": {
         "grams": 87.5,
         "similarity_score": 90.9
@@ -2001,10 +2051,6 @@
       "lamponi": {
         "grams": 85.7,
         "similarity_score": 87.1
-      },
-      "marmellata_hero_light": {
-        "grams": 87.5,
-        "similarity_score": 73.0
       }
     },
     "pasta_integrale": {
@@ -2020,13 +2066,21 @@
         "grams": 91.4,
         "similarity_score": 125.5
       },
+      "pane_di_segale": {
+        "grams": 144.7,
+        "similarity_score": 124.5
+      },
       "pane_integrale": {
         "grams": 147.3,
         "similarity_score": 124.1
       },
+      "orzo": {
+        "grams": 95.4,
+        "similarity_score": 98.8
+      },
       "riso_integrale": {
         "grams": 96.8,
-        "similarity_score": 122.7
+        "similarity_score": 97.7
       },
       "riso": {
         "grams": 89.9,
@@ -2039,14 +2093,6 @@
       "quinoa": {
         "grams": 87.8,
         "similarity_score": 91.9
-      },
-      "grissini": {
-        "grams": 78.4,
-        "similarity_score": 86.6
-      },
-      "patate": {
-        "grams": 458.3,
-        "similarity_score": 77.2
       }
     },
     "farro": {
@@ -2062,13 +2108,17 @@
         "grams": 107.0,
         "similarity_score": 126.8
       },
+      "orzo": {
+        "grams": 102.0,
+        "similarity_score": 125.5
+      },
       "riso": {
         "grams": 96.2,
         "similarity_score": 124.3
       },
       "riso_integrale": {
         "grams": 103.5,
-        "similarity_score": 123.8
+        "similarity_score": 98.8
       },
       "pane_integrale": {
         "grams": 157.6,
@@ -2078,24 +2128,16 @@
         "grams": 131.7,
         "similarity_score": 97.1
       },
+      "pane_di_segale": {
+        "grams": 154.8,
+        "similarity_score": 97.1
+      },
       "quinoa": {
         "grams": 93.9,
         "similarity_score": 90.4
-      },
-      "grissini": {
-        "grams": 83.8,
-        "similarity_score": 84.6
-      },
-      "patate": {
-        "grams": 490.3,
-        "similarity_score": 79.3
       }
     },
     "quinoa": {
-      "grissini": {
-        "grams": 89.3,
-        "similarity_score": 124.2
-      },
       "pasta_integrale": {
         "grams": 113.9,
         "similarity_score": 116.8
@@ -2112,9 +2154,17 @@
         "grams": 104.2,
         "similarity_score": 114.1
       },
+      "orzo": {
+        "grams": 108.7,
+        "similarity_score": 111.5
+      },
       "riso": {
         "grams": 102.5,
         "similarity_score": 86.4
+      },
+      "pane_di_segale": {
+        "grams": 164.9,
+        "similarity_score": 85.9
       },
       "pane_integrale": {
         "grams": 167.9,
@@ -2127,10 +2177,6 @@
       "pane_bianco": {
         "grams": 140.3,
         "similarity_score": 82.3
-      },
-      "cracker_integrali": {
-        "grams": 93.5,
-        "similarity_score": 71.6
       }
     },
     "biscotti_integrali": {
@@ -2142,17 +2188,25 @@
         "grams": 104.2,
         "similarity_score": 125.9
       },
+      "fette_biscottate_integrali": {
+        "grams": 106.3,
+        "similarity_score": 125.2
+      },
+      "grissini": {
+        "grams": 99.5,
+        "similarity_score": 125.0
+      },
       "avena": {
         "grams": 114.2,
         "similarity_score": 123.0
       },
       "biscotti_secchi": {
         "grams": 103.7,
-        "similarity_score": 121.5
+        "similarity_score": 96.5
       },
       "fette_biscottate": {
         "grams": 108.3,
-        "similarity_score": 120.8
+        "similarity_score": 95.8
       },
       "muesli": {
         "grams": 112.0,
@@ -2165,14 +2219,6 @@
       "cornflakes": {
         "grams": 114.2,
         "similarity_score": 83.9
-      },
-      "grissini": {
-        "grams": 99.5,
-        "similarity_score": 70.0
-      },
-      "quinoa": {
-        "grams": 111.4,
-        "similarity_score": 68.7
       }
     },
     "yogurt_magro": {
@@ -2296,9 +2342,9 @@
         "grams": 42.9,
         "similarity_score": 79.3
       },
-      "carote": {
-        "grams": 36.6,
-        "similarity_score": 75.5
+      "peperoni": {
+        "grams": 44.1,
+        "similarity_score": 78.5
       }
     },
     "insalata": {
@@ -2366,13 +2412,17 @@
         "grams": 107.5,
         "similarity_score": 126.3
       },
+      "sgombro_al_naturale": {
+        "grams": 110.8,
+        "similarity_score": 121.8
+      },
       "pollo_coscia": {
         "grams": 115.2,
         "similarity_score": 120.6
       },
       "tonno_fresco": {
         "grams": 90.6,
-        "similarity_score": 117.4
+        "similarity_score": 92.4
       },
       "tonno_sottolio_sgocciolato": {
         "grams": 75.0,
@@ -2389,10 +2439,6 @@
       "pollo_petto": {
         "grams": 144.0,
         "similarity_score": 81.3
-      },
-      "tonno_naturale": {
-        "grams": 142.6,
-        "similarity_score": 79.3
       }
     },
     "merluzzo": {
@@ -2412,9 +2458,13 @@
         "grams": 100.0,
         "similarity_score": 114.0
       },
+      "sgombro_al_naturale": {
+        "grams": 54.6,
+        "similarity_score": 110.6
+      },
       "orata": {
         "grams": 58.7,
-        "similarity_score": 103.7
+        "similarity_score": 78.7
       },
       "salmone_affumicato": {
         "grams": 48.3,
@@ -2431,13 +2481,13 @@
       "pollo_coscia": {
         "grams": 56.8,
         "similarity_score": 70.9
-      },
-      "tonno_fresco": {
-        "grams": 44.7,
-        "similarity_score": 65.8
       }
     },
     "spigola": {
+      "sgombro_al_naturale": {
+        "grams": 63.1,
+        "similarity_score": 122.8
+      },
       "gamberi": {
         "grams": 115.5,
         "similarity_score": 121.4
@@ -2456,7 +2506,7 @@
       },
       "tonno_naturale": {
         "grams": 81.2,
-        "similarity_score": 116.2
+        "similarity_score": 91.2
       },
       "merluzzo": {
         "grams": 115.5,
@@ -2473,16 +2523,16 @@
       "pollo_coscia": {
         "grams": 65.6,
         "similarity_score": 83.1
-      },
-      "tonno_fresco": {
-        "grams": 51.6,
-        "similarity_score": 77.8
       }
     },
     "gamberi": {
       "spigola": {
         "grams": 86.6,
         "similarity_score": 121.6
+      },
+      "sgombro_al_naturale": {
+        "grams": 54.6,
+        "similarity_score": 118.4
       },
       "orata": {
         "grams": 58.7,
@@ -2498,7 +2548,7 @@
       },
       "pollo_petto": {
         "grams": 71.0,
-        "similarity_score": 113.8
+        "similarity_score": 88.8
       },
       "pesce_spada": {
         "grams": 49.3,
@@ -2515,10 +2565,6 @@
       "pollo_coscia": {
         "grams": 56.8,
         "similarity_score": 80.4
-      },
-      "tonno_fresco": {
-        "grams": 44.7,
-        "similarity_score": 75.3
       }
     },
     "orata": {
@@ -2534,13 +2580,17 @@
         "grams": 90.3,
         "similarity_score": 125.0
       },
+      "sgombro_al_naturale": {
+        "grams": 93.1,
+        "similarity_score": 121.9
+      },
       "pollo_coscia": {
         "grams": 96.8,
         "similarity_score": 120.8
       },
       "spigola": {
         "grams": 147.6,
-        "similarity_score": 115.5
+        "similarity_score": 90.5
       },
       "tonno_fresco": {
         "grams": 76.1,
@@ -2557,10 +2607,6 @@
       "pollo_petto": {
         "grams": 121.0,
         "similarity_score": 83.4
-      },
-      "tonno_naturale": {
-        "grams": 119.8,
-        "similarity_score": 81.3
       }
     },
     "salmone_affumicato": {
@@ -2576,13 +2622,17 @@
         "grams": 109.7,
         "similarity_score": 124.5
       },
+      "sgombro_al_naturale": {
+        "grams": 113.1,
+        "similarity_score": 121.9
+      },
       "pollo_coscia": {
         "grams": 117.6,
         "similarity_score": 118.7
       },
       "tonno_fresco": {
         "grams": 92.5,
-        "similarity_score": 115.9
+        "similarity_score": 90.9
       },
       "tonno_sottolio_sgocciolato": {
         "grams": 76.6,
@@ -2599,10 +2649,6 @@
       "pollo_petto": {
         "grams": 147.0,
         "similarity_score": 81.4
-      },
-      "tonno_naturale": {
-        "grams": 145.5,
-        "similarity_score": 79.4
       }
     },
     "fagiolini": {
@@ -2642,9 +2688,9 @@
         "grams": 104.3,
         "similarity_score": 86.8
       },
-      "carote": {
-        "grams": 58.5,
-        "similarity_score": 73.2
+      "peperoni": {
+        "grams": 70.6,
+        "similarity_score": 77.2
       }
     },
     "uva": {
@@ -2676,6 +2722,10 @@
         "grams": 232.4,
         "similarity_score": 83.7
       },
+      "frutti_di_bosco": {
+        "grams": 232.4,
+        "similarity_score": 83.1
+      },
       "kiwi": {
         "grams": 179.2,
         "similarity_score": 81.7
@@ -2683,10 +2733,6 @@
       "lamponi": {
         "grams": 175.5,
         "similarity_score": 78.5
-      },
-      "marmellata": {
-        "grams": 37.9,
-        "similarity_score": 67.2
       }
     },
     "cavolfiore": {
@@ -2812,6 +2858,10 @@
       }
     },
     "arancia": {
+      "frutti_di_bosco": {
+        "grams": 100.0,
+        "similarity_score": 127.7
+      },
       "mirtilli": {
         "grams": 75.5,
         "similarity_score": 125.2
@@ -2830,7 +2880,7 @@
       },
       "banana": {
         "grams": 48.7,
-        "similarity_score": 122.4
+        "similarity_score": 97.4
       },
       "mela": {
         "grams": 80.4,
@@ -2847,10 +2897,6 @@
       "uva": {
         "grams": 43.0,
         "similarity_score": 91.3
-      },
-      "carote": {
-        "grams": 90.2,
-        "similarity_score": 70.7
       }
     },
     "miele": {
@@ -2874,9 +2920,9 @@
         "grams": 82.8,
         "similarity_score": 62.8
       },
-      "couscous": {
-        "grams": 84.2,
-        "similarity_score": 60.1
+      "orzo": {
+        "grams": 87.9,
+        "similarity_score": 62.6
       }
     },
     "kiwi": {
@@ -2900,6 +2946,10 @@
         "grams": 100.0,
         "similarity_score": 119.2
       },
+      "frutti_di_bosco": {
+        "grams": 129.7,
+        "similarity_score": 93.8
+      },
       "banana": {
         "grams": 63.2,
         "similarity_score": 91.4
@@ -2915,10 +2965,6 @@
       "uva": {
         "grams": 55.8,
         "similarity_score": 85.2
-      },
-      "carote": {
-        "grams": 117.1,
-        "similarity_score": 68.5
       }
     },
     "ciliegie": {
@@ -2946,6 +2992,10 @@
         "grams": 129.7,
         "similarity_score": 98.6
       },
+      "frutti_di_bosco": {
+        "grams": 129.7,
+        "similarity_score": 97.6
+      },
       "uva": {
         "grams": 55.8,
         "similarity_score": 96.0
@@ -2957,10 +3007,6 @@
       "lamponi": {
         "grams": 98.0,
         "similarity_score": 90.4
-      },
-      "marmellata_hero_light": {
-        "grams": 100.0,
-        "similarity_score": 73.1
       }
     },
     "mirtilli": {
@@ -2988,6 +3034,10 @@
         "grams": 106.5,
         "similarity_score": 99.3
       },
+      "frutti_di_bosco": {
+        "grams": 132.4,
+        "similarity_score": 98.4
+      },
       "kiwi": {
         "grams": 102.1,
         "similarity_score": 95.1
@@ -2999,10 +3049,6 @@
       "lamponi": {
         "grams": 100.0,
         "similarity_score": 91.8
-      },
-      "marmellata_hero_light": {
-        "grams": 102.1,
-        "similarity_score": 71.7
       }
     },
     "marmellata": {
@@ -3026,9 +3072,9 @@
         "grams": 61.9,
         "similarity_score": 60.8
       },
-      "pane_integrale": {
-        "grams": 101.3,
-        "similarity_score": 59.1
+      "orzo": {
+        "grams": 65.6,
+        "similarity_score": 60.4
       }
     },
     "marmellata_hero_light": {
@@ -3078,27 +3124,283 @@
         "grams": 92.4,
         "similarity_score": 95.8
       },
+      "fette_biscottate_integrali": {
+        "grams": 98.2,
+        "similarity_score": 95.3
+      },
       "cracker_integrali": {
         "grams": 96.3,
         "similarity_score": 94.2
       },
+      "grissini": {
+        "grams": 91.9,
+        "similarity_score": 92.1
+      },
       "cornflakes": {
         "grams": 105.4,
         "similarity_score": 91.6
+      }
+    },
+    "fette_biscottate_integrali": {
+      "cracker_integrali": {
+        "grams": 98.0,
+        "similarity_score": 128.1
       },
-      "pasta_integrale": {
-        "grams": 117.3,
-        "similarity_score": 69.1
+      "cracker": {
+        "grams": 102.1,
+        "similarity_score": 126.2
+      },
+      "grissini": {
+        "grams": 93.6,
+        "similarity_score": 125.7
+      },
+      "biscotti_integrali": {
+        "grams": 94.0,
+        "similarity_score": 125.3
+      },
+      "avena": {
+        "grams": 107.4,
+        "similarity_score": 121.5
+      },
+      "fette_biscottate": {
+        "grams": 101.8,
+        "similarity_score": 95.3
+      },
+      "muesli": {
+        "grams": 105.3,
+        "similarity_score": 94.6
+      },
+      "biscotti_secchi": {
+        "grams": 97.5,
+        "similarity_score": 93.9
+      },
+      "pan_bauletto": {
+        "grams": 144.9,
+        "similarity_score": 92.1
+      },
+      "cornflakes": {
+        "grams": 107.4,
+        "similarity_score": 81.8
+      }
+    },
+    "orzo": {
+      "riso": {
+        "grams": 94.3,
+        "similarity_score": 128.4
+      },
+      "riso_integrale": {
+        "grams": 101.5,
+        "similarity_score": 128.2
+      },
+      "couscous": {
+        "grams": 95.8,
+        "similarity_score": 126.9
+      },
+      "pasta_di_semola": {
+        "grams": 101.5,
+        "similarity_score": 126.7
+      },
+      "pane_bianco": {
+        "grams": 129.1,
+        "similarity_score": 125.6
       },
       "farro": {
-        "grams": 109.6,
-        "similarity_score": 67.4
+        "grams": 98.0,
+        "similarity_score": 100.5
+      },
+      "pasta_integrale": {
+        "grams": 104.8,
+        "similarity_score": 98.8
+      },
+      "pane_integrale": {
+        "grams": 154.5,
+        "similarity_score": 94.9
+      },
+      "pane_di_segale": {
+        "grams": 151.8,
+        "similarity_score": 94.8
+      },
+      "quinoa": {
+        "grams": 92.0,
+        "similarity_score": 86.6
+      }
+    },
+    "sgombro": {
+      "salmone_al_naturale": {
+        "grams": 95.5,
+        "similarity_score": 122.4
+      },
+      "wurstel": {
+        "grams": 68.0,
+        "similarity_score": 112.8
+      },
+      "tonno_sottolio_sgocciolato": {
+        "grams": 88.5,
+        "similarity_score": 110.7
+      },
+      "tonno_fresco": {
+        "grams": 106.9,
+        "similarity_score": 108.9
+      },
+      "pollo_coscia": {
+        "grams": 136.0,
+        "similarity_score": 98.8
+      },
+      "uova": {
+        "grams": 132.8,
+        "similarity_score": 70.3
+      },
+      "prosciutto_crudo": {
+        "grams": 72.3,
+        "similarity_score": 66.6
+      },
+      "carne_manzo": {
+        "grams": 126.9,
+        "similarity_score": 65.5
+      },
+      "grana_padano": {
+        "grams": 43.4,
+        "similarity_score": 64.6
+      },
+      "ricotta": {
+        "grams": 116.4,
+        "similarity_score": 63.9
+      }
+    },
+    "sgombro_al_naturale": {
+      "salmone_affumicato": {
+        "grams": 88.4,
+        "similarity_score": 122.1
+      },
+      "pesce_spada": {
+        "grams": 90.3,
+        "similarity_score": 121.9
+      },
+      "orata": {
+        "grams": 107.4,
+        "similarity_score": 121.9
+      },
+      "spigola": {
+        "grams": 158.5,
+        "similarity_score": 120.6
+      },
+      "carne_manzo": {
+        "grams": 97.0,
+        "similarity_score": 119.6
+      },
+      "pollo_petto": {
+        "grams": 130.0,
+        "similarity_score": 89.8
+      },
+      "pollo_coscia": {
+        "grams": 104.0,
+        "similarity_score": 89.6
+      },
+      "gamberi": {
+        "grams": 183.1,
+        "similarity_score": 89.6
+      },
+      "tonno_naturale": {
+        "grams": 128.7,
+        "similarity_score": 87.8
+      },
+      "tonno_fresco": {
+        "grams": 81.8,
+        "similarity_score": 84.4
+      }
+    },
+    "pane_di_segale": {
+      "pane_integrale": {
+        "grams": 101.8,
+        "similarity_score": 129.1
+      },
+      "pasta_integrale": {
+        "grams": 69.1,
+        "similarity_score": 125.9
+      },
+      "pasta_di_semola": {
+        "grams": 66.9,
+        "similarity_score": 124.1
+      },
+      "farro": {
+        "grams": 64.6,
+        "similarity_score": 124.1
+      },
+      "couscous": {
+        "grams": 63.2,
+        "similarity_score": 123.3
+      },
+      "pane_bianco": {
+        "grams": 85.1,
+        "similarity_score": 97.4
+      },
+      "orzo": {
+        "grams": 65.9,
+        "similarity_score": 96.5
+      },
+      "riso": {
+        "grams": 62.1,
+        "similarity_score": 95.4
+      },
+      "riso_integrale": {
+        "grams": 66.9,
+        "similarity_score": 95.4
+      },
+      "quinoa": {
+        "grams": 60.6,
+        "similarity_score": 88.5
+      }
+    },
+    "peperoni": {
+      "carote": {
+        "grams": 82.9,
+        "similarity_score": 125.5
+      },
+      "pomodoro": {
+        "grams": 147.8,
+        "similarity_score": 118.2
+      },
+      "melanzane": {
+        "grams": 147.8,
+        "similarity_score": 107.8
+      },
+      "broccoli": {
+        "grams": 103.0,
+        "similarity_score": 101.5
+      },
+      "fagiolini": {
+        "grams": 141.7,
+        "similarity_score": 101.0
+      },
+      "bieta": {
+        "grams": 226.7,
+        "similarity_score": 71.4
+      },
+      "kiwi": {
+        "grams": 70.8,
+        "similarity_score": 70.1
+      },
+      "arancia": {
+        "grams": 91.9,
+        "similarity_score": 68.1
+      },
+      "frutti_di_bosco": {
+        "grams": 91.9,
+        "similarity_score": 68.0
+      },
+      "lamponi": {
+        "grams": 69.4,
+        "similarity_score": 66.7
       }
     },
     "cracker": {
       "biscotti_integrali": {
         "grams": 92.1,
         "similarity_score": 127.9
+      },
+      "fette_biscottate_integrali": {
+        "grams": 98.0,
+        "similarity_score": 126.2
       },
       "cracker_integrali": {
         "grams": 96.0,
@@ -3108,13 +3410,17 @@
         "grams": 105.2,
         "similarity_score": 125.0
       },
+      "grissini": {
+        "grams": 91.7,
+        "similarity_score": 123.7
+      },
       "fette_biscottate": {
         "grams": 99.7,
-        "similarity_score": 122.9
+        "similarity_score": 97.9
       },
       "muesli": {
         "grams": 103.2,
-        "similarity_score": 122.7
+        "similarity_score": 97.7
       },
       "biscotti_secchi": {
         "grams": 95.5,
@@ -3127,17 +3433,17 @@
       "cornflakes": {
         "grams": 105.2,
         "similarity_score": 85.3
-      },
-      "quinoa": {
-        "grams": 102.7,
-        "similarity_score": 70.1
-      },
-      "grissini": {
-        "grams": 91.7,
-        "similarity_score": 68.7
       }
     },
     "cracker_integrali": {
+      "fette_biscottate_integrali": {
+        "grams": 102.0,
+        "similarity_score": 128.1
+      },
+      "grissini": {
+        "grams": 95.5,
+        "similarity_score": 127.6
+      },
       "biscotti_integrali": {
         "grams": 95.9,
         "similarity_score": 125.9
@@ -3152,11 +3458,11 @@
       },
       "fette_biscottate": {
         "grams": 103.9,
-        "similarity_score": 119.2
+        "similarity_score": 94.2
       },
       "muesli": {
         "grams": 107.5,
-        "similarity_score": 118.5
+        "similarity_score": 93.5
       },
       "biscotti_secchi": {
         "grams": 99.5,
@@ -3169,56 +3475,48 @@
       "cornflakes": {
         "grams": 109.5,
         "similarity_score": 80.7
-      },
-      "grissini": {
-        "grams": 95.5,
-        "similarity_score": 72.6
-      },
-      "quinoa": {
-        "grams": 106.9,
-        "similarity_score": 71.5
       }
     },
     "grissini": {
-      "quinoa": {
-        "grams": 112.0,
-        "similarity_score": 124.1
-      },
-      "pasta_integrale": {
-        "grams": 127.6,
-        "similarity_score": 111.0
-      },
-      "farro": {
-        "grams": 119.3,
-        "similarity_score": 109.3
-      },
-      "couscous": {
-        "grams": 116.6,
-        "similarity_score": 109.0
-      },
-      "pasta_di_semola": {
-        "grams": 123.5,
-        "similarity_score": 108.7
-      },
-      "riso": {
-        "grams": 114.7,
-        "similarity_score": 82.9
-      },
-      "riso_integrale": {
-        "grams": 123.5,
-        "similarity_score": 81.6
-      },
-      "pane_integrale": {
-        "grams": 187.9,
-        "similarity_score": 79.1
-      },
-      "pane_bianco": {
-        "grams": 157.1,
-        "similarity_score": 77.9
-      },
       "cracker_integrali": {
         "grams": 104.7,
-        "similarity_score": 72.6
+        "similarity_score": 127.6
+      },
+      "fette_biscottate_integrali": {
+        "grams": 106.9,
+        "similarity_score": 125.6
+      },
+      "biscotti_integrali": {
+        "grams": 100.5,
+        "similarity_score": 125.0
+      },
+      "cracker": {
+        "grams": 109.1,
+        "similarity_score": 123.6
+      },
+      "avena": {
+        "grams": 114.7,
+        "similarity_score": 118.6
+      },
+      "fette_biscottate": {
+        "grams": 108.8,
+        "similarity_score": 92.0
+      },
+      "muesli": {
+        "grams": 112.6,
+        "similarity_score": 91.7
+      },
+      "biscotti_secchi": {
+        "grams": 104.2,
+        "similarity_score": 91.6
+      },
+      "pan_bauletto": {
+        "grams": 154.8,
+        "similarity_score": 88.0
+      },
+      "cornflakes": {
+        "grams": 114.7,
+        "similarity_score": 78.9
       }
     },
     "gelato_fiordilatte": {
@@ -3252,6 +3550,10 @@
         "grams": 43.0,
         "similarity_score": 62.9
       },
+      "fette_biscottate_integrali": {
+        "grams": 43.9,
+        "similarity_score": 61.2
+      },
       "biscotti_integrali": {
         "grams": 41.3,
         "similarity_score": 60.7
@@ -3259,10 +3561,6 @@
       "quinoa": {
         "grams": 46.0,
         "similarity_score": 60.4
-      },
-      "cracker": {
-        "grams": 44.8,
-        "similarity_score": 60.0
       }
     },
     "burro": {
@@ -3408,17 +3706,17 @@
         "grams": 87.6,
         "similarity_score": 84.1
       },
+      "fette_biscottate_integrali": {
+        "grams": 93.1,
+        "similarity_score": 81.9
+      },
       "cracker_integrali": {
         "grams": 91.3,
         "similarity_score": 80.8
       },
-      "riso": {
-        "grams": 100.0,
-        "similarity_score": 71.0
-      },
-      "riso_integrale": {
-        "grams": 107.6,
-        "similarity_score": 70.7
+      "grissini": {
+        "grams": 87.2,
+        "similarity_score": 79.1
       }
     },
     "avena": {
@@ -3446,21 +3744,21 @@
         "grams": 87.6,
         "similarity_score": 98.2
       },
+      "fette_biscottate_integrali": {
+        "grams": 93.1,
+        "similarity_score": 96.6
+      },
       "cracker_integrali": {
         "grams": 91.3,
         "similarity_score": 95.5
       },
+      "grissini": {
+        "grams": 87.2,
+        "similarity_score": 93.8
+      },
       "cornflakes": {
         "grams": 100.0,
         "similarity_score": 90.3
-      },
-      "quinoa": {
-        "grams": 97.6,
-        "similarity_score": 67.0
-      },
-      "pasta_integrale": {
-        "grams": 111.2,
-        "similarity_score": 66.8
       }
     },
     "muesli": {
@@ -3488,6 +3786,10 @@
         "grams": 89.3,
         "similarity_score": 95.6
       },
+      "fette_biscottate_integrali": {
+        "grams": 94.9,
+        "similarity_score": 94.6
+      },
       "cracker_integrali": {
         "grams": 93.0,
         "similarity_score": 93.5
@@ -3496,13 +3798,9 @@
         "grams": 101.9,
         "similarity_score": 92.3
       },
-      "pasta_integrale": {
-        "grams": 113.3,
-        "similarity_score": 69.4
-      },
-      "farro": {
-        "grams": 105.9,
-        "similarity_score": 67.6
+      "grissini": {
+        "grams": 88.8,
+        "similarity_score": 91.8
       }
     },
     "pro_milk_20g_proteine": {
@@ -3589,6 +3887,10 @@
       "gamberi": {
         "grams": 60.6,
         "similarity_score": 52.0
+      },
+      "sgombro_al_naturale": {
+        "grams": 33.1,
+        "similarity_score": 50.4
       }
     },
     "burro_arachidi": {
@@ -3848,6 +4150,10 @@
         "grams": 92.7,
         "similarity_score": 124.6
       },
+      "sgombro": {
+        "grams": 104.7,
+        "similarity_score": 122.4
+      },
       "tonno_fresco": {
         "grams": 111.9,
         "similarity_score": 121.8
@@ -3862,7 +4168,7 @@
       },
       "carne_manzo": {
         "grams": 132.8,
-        "similarity_score": 103.3
+        "similarity_score": 78.3
       },
       "pesce_spada": {
         "grams": 123.6,
@@ -3879,10 +4185,6 @@
       "orata": {
         "grams": 147.1,
         "similarity_score": 68.3
-      },
-      "uova": {
-        "grams": 139.1,
-        "similarity_score": 62.6
       }
     },
     "broccoli": {
@@ -3922,9 +4224,9 @@
         "grams": 143.5,
         "similarity_score": 79.5
       },
-      "carote": {
-        "grams": 80.5,
-        "similarity_score": 72.0
+      "peperoni": {
+        "grams": 97.1,
+        "similarity_score": 76.5
       }
     },
     "pan_bauletto": {
@@ -3952,21 +4254,21 @@
         "grams": 64.9,
         "similarity_score": 93.6
       },
+      "fette_biscottate_integrali": {
+        "grams": 69.0,
+        "similarity_score": 93.5
+      },
       "cracker_integrali": {
         "grams": 67.7,
         "similarity_score": 92.1
       },
+      "grissini": {
+        "grams": 64.6,
+        "similarity_score": 89.9
+      },
       "cornflakes": {
         "grams": 74.1,
         "similarity_score": 88.4
-      },
-      "pasta_integrale": {
-        "grams": 82.4,
-        "similarity_score": 68.6
-      },
-      "pane_integrale": {
-        "grams": 121.4,
-        "similarity_score": 67.3
       }
     },
     "carne_manzo": {
@@ -3990,6 +4292,10 @@
         "grams": 84.3,
         "similarity_score": 119.7
       },
+      "sgombro_al_naturale": {
+        "grams": 103.1,
+        "similarity_score": 94.6
+      },
       "tonno_sottolio_sgocciolato": {
         "grams": 69.8,
         "similarity_score": 92.0
@@ -4005,10 +4311,6 @@
       "pollo_petto": {
         "grams": 134.0,
         "similarity_score": 79.4
-      },
-      "salmone_al_naturale": {
-        "grams": 75.3,
-        "similarity_score": 79.1
       }
     }
   }

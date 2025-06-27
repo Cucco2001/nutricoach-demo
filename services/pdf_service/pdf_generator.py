@@ -171,7 +171,7 @@ class PDFGenerator:
     
     def _clean_misura_casalinga(self, misura_text: str, nome_alimento: str = None, meal_name: str = None, quantita_g: float = None) -> str:
         """
-        Rimuove tutto il contenuto tra parentesi dalle misure casalinghe.
+        Pulisce le misure casalinghe rimuovendo contenuto tra parentesi e alternative dopo "o".
         Gestisce il caso speciale di parmigiano/grana padano negli spuntini convertendo in cubetti.
         
         Args:
@@ -181,12 +181,13 @@ class PDFGenerator:
             quantita_g: Quantità in grammi (opzionale)
             
         Returns:
-            Testo pulito senza contenuto tra parentesi, con conversione in cubetti se necessario
+            Testo pulito senza contenuto tra parentesi e senza alternative, con conversione in cubetti se necessario
             
         Examples:
             "2 porzioni abbondanti cotte (da 80g secca l'una)" → "2 porzioni abbondanti cotte"
             "1 tazza media (250ml)" → "1 tazza media"
-            "3 fette (spesse)" → "3 fette"
+            "2 banane piccole o 1 banana grande" → "2 banane piccole"
+            "2 grandi zucchine intere o 1 ciotola colma di zucchine a rondelle" → "2 grandi zucchine intere"
             Parmigiano 30g in spuntino → "2-3 cubetti"
         """
         if not misura_text or misura_text == 'N/A':
@@ -199,8 +200,19 @@ class PDFGenerator:
             return self._convert_grams_to_cubes(quantita_g)
         
         import re
-        # Rimuove tutto il contenuto tra parentesi tonde, incluse le parentesi
+        
+        # Prima rimuove tutto il contenuto tra parentesi tonde, incluse le parentesi
         cleaned_text = re.sub(r'\([^)]*\)', '', misura_text)
+        
+        # Poi rimuove tutto dopo " o " (incluso " o ") per prendere solo la prima opzione
+        # Usa regex per essere più preciso con gli spazi
+        if ' o ' in cleaned_text.lower():
+            # Trova la posizione di " o " case-insensitive e prende solo la parte prima
+            import re
+            # Cerca " o " case-insensitive con word boundary per evitare false corrispondenze
+            match = re.search(r'\s+o\s+', cleaned_text, re.IGNORECASE)
+            if match:
+                cleaned_text = cleaned_text[:match.start()].strip()
         
         # Rimuove spazi multipli e spazi all'inizio/fine
         cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
@@ -327,6 +339,9 @@ class PDFGenerator:
             cleaned_text = cleaned_text.replace("affumicati", "aff")
             cleaned_text = cleaned_text.replace("affumicato", "aff")
             cleaned_text = cleaned_text.replace("affumicati", "aff")
+            cleaned_text = cleaned_text.replace("miste", "mst")
+            cleaned_text = cleaned_text.replace("mista", "mst")
+            cleaned_text = cleaned_text.replace("bauletto", "baul.")
             cleaned_text = cleaned_text.replace("intero", "int")
             cleaned_text = cleaned_text.replace("greco", "gr")
             cleaned_text = cleaned_text.replace("hero", "")
@@ -347,6 +362,21 @@ class PDFGenerator:
             cleaned_text = cleaned_text.replace("tacchino", "tacch.")
             cleaned_text = cleaned_text.replace("pro_milk_20g_proteine", "pro_milk")
             cleaned_text = cleaned_text.replace("proteine", "")
+            cleaned_text = cleaned_text.replace("sottolio", "s.olio")
+            cleaned_text = cleaned_text.replace("naturale", "nat.")
+            cleaned_text = cleaned_text.replace("naturale", "nat.")
+            cleaned_text = cleaned_text.replace("verdure", "verd.")
+            cleaned_text = cleaned_text.replace("verdura", "verd.")
+            cleaned_text = cleaned_text.replace("biscottate", "bisc.")
+            cleaned_text = cleaned_text.replace("cannellini", "cann.")
+            cleaned_text = cleaned_text.replace("mozzarella", "mozz.")
+            cleaned_text = cleaned_text.replace("marmellata", "marm.")
+            cleaned_text = cleaned_text.replace("melanzane", "melanz.")
+            cleaned_text = cleaned_text.replace("sott'olio", "s.olio")
+            cleaned_text = cleaned_text.replace("prosciutto", "prosc")
+            cleaned_text = cleaned_text.replace("parzialmente", "prz")
+
+
         
         return cleaned_text if cleaned_text else 'N/A'
     
@@ -399,9 +429,61 @@ class PDFGenerator:
         shortened = shortened.replace("tacchino", "tacch.")        
         shortened = shortened.replace("proteine", "")
         shortened = shortened.replace("pro_milk_20g_proteine", "pro_milk")
-
-        
+        shortened = shortened.replace("miste", "mst")
+        shortened = shortened.replace("mista", "mst")
+        shortened = shortened.replace("bauletto", "baul.")
+        shortened = shortened.replace("intero", "int")
+        shortened = shortened.replace("greco", "gr")
+        shortened = shortened.replace("hero", "")
+        shortened = shortened.replace("Hero", "")
+        shortened = shortened.replace("sott'olio", "s.olio")
+        shortened = shortened.replace("prosciutto", "prosc")
+        shortened = shortened.replace("sottolio", "s.olio")
+        shortened = shortened.replace("naturale", "nat.")
+        shortened = shortened.replace("naturale", "nat.")
+        shortened = shortened.replace("verdure", "verd.")
+        shortened = shortened.replace("verdura", "verd.")
+        shortened = shortened.replace("biscottate", "bisc.")
+        shortened = shortened.replace("melanzane", "melanz.")
+        shortened = shortened.replace("cannellini", "cann.")
+        shortened = shortened.replace("mozzarella", "mozz.")
+        shortened = shortened.replace("marmellata", "marm.")
+        shortened = shortened.replace("prosciutto", "prosc")
+        shortened = shortened.replace("sottolio", "s.olio")
+        shortened = shortened.replace("naturale", "nat.")
+        shortened = shortened.replace("yogurt", "yog.")
+        shortened = shortened.replace("albicocche", "albic.")
+        shortened = shortened.replace("cavolfiore", "cavolf.")
+        shortened = shortened.replace("padano", "pad.")
+        shortened = shortened.replace("sgocciolato", "")
+        shortened = shortened.replace("sgocciolati", "" )
+        shortened = shortened.replace("sgocciolata", "")
+    
         return shortened
+    
+    def _clean_alimento_name(self, nome_alimento: str) -> str:
+        """
+        Abbrevia specificamente i nomi degli alimenti per la colonna "Alimento" del PDF.
+        
+        Args:
+            nome_alimento: Nome dell'alimento da abbreviare
+            
+        Returns:
+            Nome dell'alimento con abbreviazioni specifiche per la colonna Alimento
+            
+        Examples:
+            "Latte parzialmente scremato" → "Latte prz scremato"
+            "Yogurt parzialmente scremato" → "Yogurt prz scremato"
+        """
+        if not nome_alimento or nome_alimento == 'N/A':
+            return nome_alimento
+        
+        # Abbreviazione specifica per la colonna Alimento
+        cleaned_name = nome_alimento.replace("parzialmente", "prz")
+        cleaned_name = cleaned_name.replace("spalmabile ", "")
+        cleaned_name = cleaned_name.replace("naturale ", "nat.")
+        
+        return cleaned_name
     
     def _generate_substitutes_for_meal(self, meal_name: str, alimenti_dict: Dict[str, float], user_id: str = None) -> str:
         """
@@ -891,7 +973,10 @@ class PDFGenerator:
                     quantita = alimento.get('quantita_g', 'N/A')
                     misura = alimento.get('misura_casalinga', 'N/A')
                     
-                    ingredients_data.append([nome, f"{quantita}g", misura])
+                    # Applica abbreviazioni specifiche per la colonna Alimento
+                    nome_pulito = self._clean_alimento_name(nome)
+                    
+                    ingredients_data.append([nome_pulito, f"{quantita}g", misura])
                 
                 ingredients_table = Table(ingredients_data, colWidths=[2.7*inch, 1.2*inch, 2.7*inch])
                 ingredients_table.setStyle(TableStyle([
@@ -1062,6 +1147,8 @@ class PDFGenerator:
                 # Raccogli gli alimenti per generare sostituti automatici se necessario
                 meal_alimenti_dict = {}
                 has_missing_substitutes = False
+                # Mappa per tenere traccia dei nomi originali (abbreviato -> originale)
+                nome_mapping = {}
                 
                 for alimento in meal["alimenti"]:
                     if not alimento:
@@ -1088,7 +1175,13 @@ class PDFGenerator:
                             pass
                     
                     sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
-                    ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
+                    
+                    # Applica abbreviazioni specifiche per la colonna Alimento
+                    nome_pulito = self._clean_alimento_name(nome)
+                    # Tieni traccia del mapping abbreviato -> originale
+                    nome_mapping[nome_pulito] = nome
+                    
+                    ingredients_data.append([nome_pulito, f"{quantita}g", misura, sostituti])
                 
                 # Se ci sono sostituti mancanti, genera automaticamente per ogni singolo alimento
                 if has_missing_substitutes:
@@ -1099,22 +1192,39 @@ class PDFGenerator:
                         # Genera sostituti specifici per ogni alimento che ne ha bisogno
                         for i, row in enumerate(ingredients_data[1:], 1):  # Salta l'header
                             if row[3] == 'N/A':  # Colonna sostituti
-                                alimento_nome = row[0]  # Nome alimento
+                                alimento_nome_abbreviato = row[0]  # Nome alimento abbreviato
+                                # Recupera il nome originale dal mapping
+                                alimento_nome_originale = nome_mapping.get(alimento_nome_abbreviato, alimento_nome_abbreviato)
                                 try:
                                     # Estrai la quantità dall'alimento (rimuovi 'g' e converti)
                                     quantita_str = row[1].replace('g', '')
                                     quantita = float(quantita_str) if quantita_str != 'N/A' else 0
                                     
                                     if quantita > 0:
-                                        # Genera sostituti solo per questo alimento specifico
-                                        single_food_dict = {alimento_nome: quantita}
+                                        # Genera sostituti usando il nome ORIGINALE
+                                        single_food_dict = {alimento_nome_originale: quantita}
                                         substitutes_result = self._generate_substitutes_for_meal(nome_pasto, single_food_dict, user_id)
+                                        
+                                        # DEBUG per capire perché non si aggiorna
+                                        if "latte" in alimento_nome_originale.lower():
+                                            print(f"[PDF_DEBUG] Check conditions:")
+                                            print(f"[PDF_DEBUG]   - substitutes_result: '{substitutes_result}'")
+                                            print(f"[PDF_DEBUG]   - bool(substitutes_result): {bool(substitutes_result)}")
+                                            print(f"[PDF_DEBUG]   - substitutes_result != 'N/A': {substitutes_result != 'N/A'}")
+                                            print(f"[PDF_DEBUG]   - row[3] before: '{row[3]}'")
                                         
                                         if substitutes_result and substitutes_result != 'N/A':
                                             row[3] = substitutes_result
+                                            
+                                            # DEBUG per confermare l'aggiornamento
+                                            if "latte" in alimento_nome_originale.lower():
+                                                print(f"[PDF_DEBUG]   - row[3] after: '{row[3]}'")
+                                        else:
+                                            if "latte" in alimento_nome_originale.lower():
+                                                print(f"[PDF_DEBUG]   - Condizione fallita, row[3] rimane: '{row[3]}'")
                                         
                                 except (ValueError, TypeError) as ve:
-                                    print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome}: {str(ve)}")
+                                    print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome_originale}: {str(ve)}")
                                     continue
                                     
                     except Exception as e:
@@ -1223,6 +1333,8 @@ class PDFGenerator:
         # Raccogli gli alimenti per generare sostituti automatici se necessario
         meal_alimenti_dict = {}
         has_missing_substitutes = False
+        # Mappa per tenere traccia dei nomi originali (abbreviato -> originale)
+        nome_mapping = {}
         
         # Gestisce sia formato lista che formato dizionario
         if isinstance(alimenti, list):
@@ -1252,7 +1364,13 @@ class PDFGenerator:
                         pass
                 
                 sostituti = self._clean_sostituti(sostituti_raw)  # Pulisce le parentesi
-                ingredients_data.append([nome, f"{quantita}g", misura, sostituti])
+                
+                # Applica abbreviazioni specifiche per la colonna Alimento
+                nome_pulito = self._clean_alimento_name(nome)
+                # Tieni traccia del mapping abbreviato -> originale
+                nome_mapping[nome_pulito] = nome
+                
+                ingredients_data.append([nome_pulito, f"{quantita}g", misura, sostituti])
         
         elif isinstance(alimenti, dict):
             # Formato dizionario: {"alimento": quantita}
@@ -1260,7 +1378,13 @@ class PDFGenerator:
             for nome_alimento, quantita in alimenti.items():
                 if quantita and quantita > 0:
                     meal_alimenti_dict[nome_alimento] = float(quantita)
-                    ingredients_data.append([nome_alimento, f"{quantita}g", "N/A", "N/A"])
+                    
+                    # Applica abbreviazioni specifiche per la colonna Alimento
+                    nome_pulito = self._clean_alimento_name(nome_alimento)
+                    # Tieni traccia del mapping abbreviato -> originale
+                    nome_mapping[nome_pulito] = nome_alimento
+                    
+                    ingredients_data.append([nome_pulito, f"{quantita}g", "N/A", "N/A"])
         
         # Se ci sono sostituti mancanti, genera automaticamente per ogni singolo alimento
         if has_missing_substitutes:

@@ -113,7 +113,9 @@ class NutriDB:
             "fresco", "freschi", "fresca", "fresche", "secco", "secchi", "secca", "secche",
             "integrale", "integrali", "bianco", "bianchi", "bianca", "bianche", "filetto di", "tostate", "tostato",
             "fiocchi", "fiocchi di", "fiocchi d'", "mista", "miste", "passata", "passate", "passato", "passati", 
-            "passata d'", "passato d'", "passate d'", "passati d'", "passata di", "passato di", "passate di", "passati di"
+            "passata d'", "passato d'", "passate d'", "passati d'", "passata di", "passato di", "passate di", "passati di",
+            "spalmabile", "spalmabili", "light", "magro", "magra", "magri", "magre", "grigliato", "grigliati", "grigliata", "grigliate",
+            "Jasmine", "Jasmin"
         ]
         
         # Base mapping dalle chiavi del database
@@ -137,6 +139,7 @@ class NutriDB:
             "riso normale": "riso",
             "riso basmati": "riso",
             "riso bianco": "riso",
+            "riso jasmine": "riso",
             "pan bauletto": "pan_bauletto",
             "basmati riso": "riso",
             "riso integrale": "riso_integrale",
@@ -159,6 +162,15 @@ class NutriDB:
             "filetto di tonno": "tonno_fresco",
             "filetto tonno": "tonno_fresco",
             "tonno filetto": "tonno_fresco",
+            "pane ai 5 cereali": "pane_di_segale",
+            "pane 5 cereali": "pane_di_segale",
+            "pane 5 cereali integrale": "pane_di_segale",
+            "confettura di frutta": "marmellata",
+            "confettura di frutta secca": "mandorle",
+            "confettura di frutti rossi": "frutti_di_bosco",
+            "filetto di pesce": "pesce_spada",
+            "filetto di sgombro al naturale": "sgombro_al_naturale",
+            "frutti rossi": "frutti_di_bosco",
             "tonno sottolio sgocciolato": "tonno_sottolio_sgocciolato",
             "tonno sgocciolato": "tonno_sottolio_sgocciolato",
             "tonno sottolio": "tonno_sottolio_sgocciolato",
@@ -263,6 +275,7 @@ class NutriDB:
             "insalata mista": "insalata",   
             "lattuga": "insalata",
             "rucola": "insalata",
+
             "latte mandorla": "latte_scremato",
             "pesce": "pesce_spada",    
             "gambero": "gamberi",    
@@ -276,6 +289,8 @@ class NutriDB:
             "cracker integrali": "cracker_integrali",
             "crackers integrali": "cracker_integrali",
             "crackers": "cracker",
+            "orzo pelato": "orzo",
+            "orzo perlato": "orzo",
             "grana": "grana_padano",  
             "fiocchi di latte": "fiocchi_latte",
             "frutta": "frutti_di_bosco",
