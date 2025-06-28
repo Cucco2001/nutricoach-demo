@@ -1,0 +1,12 @@
+[theme]
+# FORZA IL TEMA CHIARO - Risolve il problema di visualizzazione inconsistente sui dispositivi
+base = "light"
+
+# Colori principali basati sul design NutriCoach
+# primaryColor = "#27ae60"  # Verde primario per bottoni e elementi interattivi
+# backgroundColor = "#f7fcf9"  # Sfondo principale dell'app
+# secondaryBackgroundColor = "#ffffff"  # Sfondo sidebar e elementi secondari
+# textColor = "#2c3e50"  # Colore del testo principale
+
+# Font
+# font = "sans serif" 
