@@ -215,6 +215,7 @@ class NutriDB:
             "latte scremato": "latte_scremato",
             "latte": "latte_intero",
             "latte parzialmente scremato": "latte_parzialmente_scremato",
+            "latte prz scremato": "latte_parzialmente_scremato",
             "latte intero": "latte_intero",
             "crostata di marmellata": "marmellata",
             "crostata alla marmellata": "marmellata",

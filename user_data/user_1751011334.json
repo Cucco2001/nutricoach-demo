@@ -21,7 +21,27 @@
     "altezza": 160,
     "attività": "Sedentario",
     "obiettivo": "Perdita di peso",
-    "nutrition_answers": {},
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "weight_goal": {
+        "answer": {
+          "kg": 5,
+          "months": 3
+        },
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "meal_preferences": {
+        "answer": "No",
+        "follow_up": null
+      }
+    },
     "agent_qa": []
   }
 }
