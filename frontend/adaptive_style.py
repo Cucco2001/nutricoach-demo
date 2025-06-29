@@ -15,8 +15,6 @@ def setup_responsive_app():
     else:
         load_css()
     
-    add_responsive_meta_tags()
-    
     if is_mobile():
         add_mobile_optimizations()
 
