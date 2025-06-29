@@ -101,6 +101,8 @@ def load_user_meal_targets(user_id: str, meal_name: str) -> Dict[str, float]:
         "merenda_pomeridiana": "spuntino_pomeridiano",
         "merenda_pomeriggio": "spuntino_pomeridiano",
         "merenda": "spuntino_pomeridiano",
+        "spuntino": "spuntino_pomeridiano",  # Spuntino generico = pomeridiano per default
+        "snack": "spuntino_pomeridiano",     # Snack generico = pomeridiano per default
         "snack_pomeridiano": "spuntino_pomeridiano",
         "snack_pomeriggio": "spuntino_pomeridiano",
         "break_pomeridiano": "spuntino_pomeridiano",

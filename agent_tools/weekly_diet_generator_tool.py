@@ -143,6 +143,8 @@ def get_canonical_meal_name(meal_name: str) -> str:
         "merenda_pomeridiana": "spuntino_pomeridiano",
         "merenda_pomeriggio": "spuntino_pomeridiano",
         "merenda": "spuntino_pomeridiano",
+        "spuntino": "spuntino_pomeridiano",  # Spuntino generico = pomeridiano per default
+        "snack": "spuntino_pomeridiano",     # Snack generico = pomeridiano per default
         "snack_pomeridiano": "spuntino_pomeridiano",
         "snack_pomeriggio": "spuntino_pomeridiano",
         "break_pomeridiano": "spuntino_pomeridiano",

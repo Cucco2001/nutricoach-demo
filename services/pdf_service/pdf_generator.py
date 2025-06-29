@@ -458,7 +458,7 @@ class PDFGenerator:
         shortened = shortened.replace("sgocciolato", "")
         shortened = shortened.replace("sgocciolati", "" )
         shortened = shortened.replace("sgocciolata", "")
-    
+        
         return shortened
     
     def _clean_alimento_name(self, nome_alimento: str) -> str:
@@ -1093,7 +1093,7 @@ class PDFGenerator:
                 day_key = f"giorno_{day_num}"
                 if day_key in weekly_diet_days_2_7 and weekly_diet_days_2_7[day_key]:
                     day_data = weekly_diet_days_2_7[day_key]
-                    self._add_weekly_diet_day_to_pdf(story, day_data)
+                    self._add_weekly_diet_day_to_pdf(story, day_data, day_num)
                 else:
                     story.append(Paragraph("📝 Nessun piano disponibile per questo giorno", self.styles['CustomBodyText']))
             else:
@@ -1268,14 +1268,197 @@ class PDFGenerator:
             space_after_meal = 6 if is_compact else 15
             story.append(Spacer(1, space_after_meal))
     
-    def _add_weekly_diet_day_to_pdf(self, story: list, day_data: Dict[str, Any]):
+    def _get_canonical_meal_name(self, meal_name: str) -> str:
+        """
+        Converte un nome di pasto in forma canonica usando lo stesso mapping degli agent_tools.
+        
+        Args:
+            meal_name: Nome del pasto da normalizzare
+            
+        Returns:
+            Nome canonico del pasto
+        """
+        def normalize_meal_name(name):
+            """Normalizza un nome di pasto per il confronto"""
+            return name.lower().strip().replace(" ", "_").replace("-", "_")
+        
+        # Mapping completo con tutte le varianti possibili (sincronizzato con agent_tools)
+        meal_mappings = {
+            # COLAZIONE
+            "colazione": "colazione",
+            "breakfast": "colazione",
+            "prima_colazione": "colazione",
+            
+            # SPUNTINO MATTUTINO
+            "spuntino_mattutino": "spuntino_mattutino",
+            "spuntino_mattina": "spuntino_mattutino",
+            "spuntino_del_mattino": "spuntino_mattutino",
+            "spuntino_di_mattina": "spuntino_mattutino",
+            "merenda_mattutina": "spuntino_mattutino",
+            "merenda_mattina": "spuntino_mattutino",
+            "snack_mattutino": "spuntino_mattutino",
+            "snack_mattina": "spuntino_mattutino",
+            "break_mattutino": "spuntino_mattutino",
+            "break_mattina": "spuntino_mattutino",
+            
+            # PRANZO
+            "pranzo": "pranzo",
+            "lunch": "pranzo",
+            "pasto_principale": "pranzo",
+            
+            # SPUNTINO POMERIDIANO
+            "spuntino_pomeridiano": "spuntino_pomeridiano",
+            "spuntino_pomeriggio": "spuntino_pomeridiano",
+            "spuntino_del_pomeriggio": "spuntino_pomeridiano",
+            "spuntino_di_pomeriggio": "spuntino_pomeridiano",
+            "merenda_pomeridiana": "spuntino_pomeridiano",
+            "merenda_pomeriggio": "spuntino_pomeridiano",
+            "merenda": "spuntino_pomeridiano",
+            "spuntino": "spuntino_pomeridiano",  # Spuntino generico = pomeridiano per default
+            "snack": "spuntino_pomeridiano",     # Snack generico = pomeridiano per default
+            "snack_pomeridiano": "spuntino_pomeridiano",
+            "snack_pomeriggio": "spuntino_pomeridiano",
+            "break_pomeridiano": "spuntino_pomeridiano",
+            "break_pomeriggio": "spuntino_pomeridiano",
+            
+            # CENA
+            "cena": "cena",
+            "dinner": "cena",
+            "secondo_pasto": "cena",
+            
+            # EXTRA (eventuali altri pasti che potrebbero essere nei dati)
+            "spuntino_serale": "cena",  # fallback se qualcuno cerca uno spuntino serale
+            "merenda_serale": "cena",
+        }
+        
+        # Normalizza il nome del pasto in input
+        normalized_input = normalize_meal_name(meal_name)
+        
+        # Cerca prima nel mapping
+        canonical_meal_name = meal_mappings.get(normalized_input)
+        
+        # Se non trovato nel mapping, prova una ricerca più flessibile
+        if not canonical_meal_name:
+            # Prova con parole chiave parziali
+            input_words = normalized_input.replace("_", " ").split()
+            
+            for key_words in [
+                ["colazione"], 
+                ["spuntino", "mattutino", "mattina"],
+                ["pranzo"],
+                ["spuntino", "pomeridiano", "pomeriggio", "merenda"],
+                ["cena"]
+            ]:
+                # Se almeno una parola chiave è presente nell'input
+                if any(word in input_words for word in key_words):
+                    if "mattut" in normalized_input or "mattina" in normalized_input:
+                        canonical_meal_name = "spuntino_mattutino"
+                        break
+                    elif "pomer" in normalized_input or "merenda" in normalized_input:
+                        canonical_meal_name = "spuntino_pomeridiano"
+                        break
+                    elif "colazione" in key_words:
+                        canonical_meal_name = "colazione"
+                        break
+                    elif "pranzo" in key_words:
+                        canonical_meal_name = "pranzo"
+                        break
+                    elif "cena" in key_words:
+                        canonical_meal_name = "cena"
+                        break
+        
+        # Se ancora non trovato, restituisce il nome normalizzato originale
+        if not canonical_meal_name:
+            canonical_meal_name = normalized_input
+        
+        return canonical_meal_name
+
+    def _ensure_complete_day_meals(self, day_data: Dict[str, Any], day_number: int) -> Dict[str, Any]:
+        """
+        Controlla se nel giorno mancano pasti e li genera automaticamente se necessario.
+        
+        Args:
+            day_data: Dati del giorno dalla weekly_diet_days_2_7
+            day_number: Numero del giorno (2-7)
+            
+        Returns:
+            Dati del giorno completi con tutti i pasti necessari
+        """
+        try:
+            # Importa la funzione per generare giorni aggiuntivi
+            from agent_tools.weekly_diet_generator_tool import generate_6_additional_days, extract_day1_meal_structure
+            
+            # Estrai l'user_id dal nome del file, se disponibile
+            user_id = getattr(self, '_current_user_id', None)
+            if not user_id:
+                print("[PDF_WARNING] User ID non disponibile - impossibile generare pasti mancanti")
+                return day_data
+            
+            # Ottieni la struttura del giorno 1 per capire quali pasti dovrebbero esserci
+            day1_structure = extract_day1_meal_structure(user_id)
+            if not day1_structure:
+                print("[PDF_WARNING] Impossibile estrarre struttura del giorno 1 - impossibile verificare pasti mancanti")
+                return day_data
+            
+            # Lista dei pasti che dovrebbero esserci (basati sul giorno 1)
+            expected_meals = set(day1_structure.keys())
+            
+            # Lista dei pasti attualmente presenti nel giorno (usando mapping dei nomi)
+            existing_meals = set()
+            for meal_name in day_data:
+                if day_data[meal_name] and isinstance(day_data[meal_name], dict) and day_data[meal_name].get('alimenti'):
+                    # Usa il mapping dei nomi per normalizzare
+                    canonical_meal_name = self._get_canonical_meal_name(meal_name)
+                    existing_meals.add(canonical_meal_name)
+            
+            # Trova i pasti mancanti
+            missing_meals = expected_meals - existing_meals
+            
+            if missing_meals:
+                print(f"[PDF_INFO] Trovati pasti mancanti nel giorno {day_number}: {missing_meals}")
+                print(f"[PDF_INFO] Generazione automatica pasti mancanti per giorno {day_number}...")
+                
+                # Genera il giorno completo utilizzando il tool
+                generation_result = generate_6_additional_days(user_id=user_id, day_range=str(day_number))
+                
+                if generation_result.get('success', False):
+                    day_key = f"giorno_{day_number}"
+                    generated_day_data = generation_result.get('giorni_generati', {}).get(day_key, {})
+                    
+                    if generated_day_data:
+                        # Aggiungi solo i pasti mancanti al day_data esistente
+                        for missing_meal in missing_meals:
+                            if missing_meal in generated_day_data and generated_day_data[missing_meal]:
+                                day_data[missing_meal] = generated_day_data[missing_meal] 
+                                print(f"[PDF_INFO] Aggiunto pasto mancante: {missing_meal}")
+                        
+                        print(f"[PDF_INFO] Completata generazione automatica per giorno {day_number}")
+                    else:
+                        print(f"[PDF_WARNING] Nessun dato generato per il giorno {day_number}")
+                else:
+                    error_msg = generation_result.get('error', 'Errore sconosciuto')
+                    print(f"[PDF_WARNING] Errore nella generazione automatica del giorno {day_number}: {error_msg}")
+                    
+            return day_data
+            
+        except Exception as e:
+            print(f"[PDF_WARNING] Errore durante il controllo/generazione pasti mancanti per giorno {day_number}: {str(e)}")
+            return day_data
+
+    def _add_weekly_diet_day_to_pdf(self, story: list, day_data: Dict[str, Any], day_number: int = None):
         """
         Aggiunge i pasti di un giorno dalla weekly_diet_days_2_7 al PDF.
+        Controlla se mancano pasti e li genera automaticamente se necessario.
         
         Args:
             story: Lista degli elementi del PDF
             day_data: Dati del giorno dalla weekly_diet_days_2_7
+            day_number: Numero del giorno (opzionale, per generazione automatica pasti mancanti)
         """
+        # Controllo e generazione automatica pasti mancanti
+        if day_number is not None:
+            day_data = self._ensure_complete_day_meals(day_data, day_number)
+        
         # Ordine dei pasti
         meal_order = ['colazione', 'spuntino_mattutino', 'pranzo', 'spuntino_pomeridiano', 'cena', 'spuntino_serale']
         
