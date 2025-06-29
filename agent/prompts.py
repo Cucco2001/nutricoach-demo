@@ -548,7 +548,7 @@ FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
    - Usa compute_Harris_Benedict_Equation per calcolare il metabolismo basale e il fabbisogno energetico totale
         - La funzione restituirà:
             * bmr: metabolismo basale in kcal
-            * fabbisogno_giornaliero: fabbisogno giornaliero in kcal
+            * fabbisogno_base: fabbisogno giornaliero in kcal
             * laf_utilizzato: il LAF effettivamente applicato
    - Aggiusta il fabbisogno in base all'obiettivo:
         - Calcola il deficit/surplus calorico giornaliero usando calculate_weight_goal_calories, poi procedi con:

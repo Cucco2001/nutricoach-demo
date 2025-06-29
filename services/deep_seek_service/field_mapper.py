@@ -69,7 +69,7 @@ class FieldMapper:
         # Fabbisogno Base
         'fabbisogno_base': [
             'fabbisogno_base', 'fabbisogno base', 'fabbisogno-base',
-            'fabbisogno_giornaliero', 'fabbisogno giornaliero', 'fabbisogno-giornaliero',
+            'fabbisogno_base', 'fabbisogno giornaliero', 'fabbisogno-giornaliero',
             'fabbisogno_quotidiano', 'fabbisogno quotidiano', 'fabbisogno-quotidiano',
             'calorie_giornaliere', 'calorie giornaliere', 'calorie-giornaliere',
             'calorie_quotidiane', 'calorie quotidiane', 'calorie-quotidiane',

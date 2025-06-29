@@ -83,7 +83,7 @@ class CaloricDataCompleter:
                     set_field(caloric_data, 'laf_utilizzato', harris_benedict_result.get('laf_utilizzato'))
                 
                 if not has_field(caloric_data, 'fabbisogno_base'):
-                    set_field(caloric_data, 'fabbisogno_base', harris_benedict_result.get('fabbisogno_giornaliero'))
+                    set_field(caloric_data, 'fabbisogno_base', harris_benedict_result.get('fabbisogno_base'))
             
             # Calcola dispendio sportivo usando la funzione originale dell'agente
             if not has_field(caloric_data, 'dispendio_sportivo'):
@@ -100,13 +100,12 @@ class CaloricDataCompleter:
             
             # Calcola fabbisogno finale SOLO se mancante (e include aggiustamento obiettivo)
             if not has_field(caloric_data, 'fabbisogno_finale'):
-                fabbisogno_base = get_field(caloric_data, 'fabbisogno_base', 0)
-                dispendio_sportivo = get_field(caloric_data, 'dispendio_sportivo', 0)
+                fabbisogno_totale = get_field(caloric_data, 'fabbisogno_totale', 0)
                 aggiustamento_obiettivo = get_field(caloric_data, 'aggiustamento_obiettivo', 0)
                 
-                if fabbisogno_base:
-                    # FORMULA CORRETTA: include anche l'aggiustamento per l'obiettivo
-                    fabbisogno_finale = fabbisogno_base + dispendio_sportivo + aggiustamento_obiettivo
+                if fabbisogno_totale:
+                    # FORMULA CORRETTA: fabbisogno_totale già include BMR*LAF+sport, aggiungiamo solo l'aggiustamento obiettivo
+                    fabbisogno_finale = fabbisogno_totale + aggiustamento_obiettivo
                     set_field(caloric_data, 'fabbisogno_finale', fabbisogno_finale)
         
         # Completa macros_total se presente ma incompleto (sempre, indipendentemente da caloric_needs)

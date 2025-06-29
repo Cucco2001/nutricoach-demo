@@ -605,12 +605,12 @@ def compute_Harris_Benedict_Equation(user_id: Optional[str] = None) -> Dict[str,
 
         # Applica il fattore di attività fisica
         laf = convert_activity_to_laf(livello_attività)
-        fabbisogno_giornaliero = bmr * laf
+        fabbisogno_base = bmr * laf
 
-        logger.info(f"Risultato Harris-Benedict: BMR={bmr:.0f} kcal, Fabbisogno={fabbisogno_giornaliero:.0f} kcal")
+        logger.info(f"Risultato Harris-Benedict: BMR={bmr:.0f} kcal, Fabbisogno={fabbisogno_base:.0f} kcal")
         return {
             "bmr": round(bmr),
-            "fabbisogno_giornaliero": round(fabbisogno_giornaliero),
+            "fabbisogno_base": round(fabbisogno_base),
             "laf_utilizzato": laf,
             "user_id": user_id
         }
