@@ -93,9 +93,29 @@ def main():
     # Configura l'app con stili adattivi
     setup_responsive_app()
     
-    # Rimuovi il titolo principale di Streamlit, lo gestiremo con HTML custom
-    # st.title("NutriCoach - Il tuo assistente nutrizionale personale 🥗")
-    
+    # Se l'utente ha appena completato il form iniziale su mobile, chiudi la sidebar.
+    if st.session_state.get('just_completed_initial_info', False):
+        if st.session_state.get('device_type') == 'mobile':
+            from streamlit_js_eval import streamlit_js_eval
+            
+            # Esegui JS per trovare e cliccare il bottone di chiusura della sidebar.
+            # Viene usato un timeout per dare a Streamlit il tempo di renderizzare la sidebar.
+            js_code = """
+            setTimeout(() => {
+                const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
+                if (sidebar) {
+                    const closeButton = sidebar.querySelector('button');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                }
+            }, 300);
+            """
+            streamlit_js_eval(js_code)
+        
+        # Rimuovi il flag per evitare che venga eseguito di nuovo.
+        del st.session_state.just_completed_initial_info
+
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione
     is_authenticated = handle_login_registration(st.session_state.user_data_manager)

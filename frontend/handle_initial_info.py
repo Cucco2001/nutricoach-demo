@@ -97,6 +97,10 @@ class InitialInfoHandler:
                     user_id, età, sesso, peso, altezza, attività, obiettivo, 
                     user_preferences, nutritional_info
                 )
+                
+                # Imposta il flag per chiudere la sidebar al prossimo rerun
+                st.session_state.just_completed_initial_info = True
+                
                 st.rerun()
     
     def display_user_info(self, user_info):
