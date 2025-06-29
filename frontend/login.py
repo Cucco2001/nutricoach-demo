@@ -25,7 +25,8 @@ def handle_login_form(user_data_manager):
         password = st.text_input("Password", type="password")
         
         if st.form_submit_button("Accedi"):
-            success, result = user_data_manager.login_user(username, password)
+            # Converti l'username in minuscolo per il confronto case-insensitive
+            success, result = user_data_manager.login_user(username.lower(), password)
             if success:
                 # Carica le informazioni nutrizionali salvate
                 nutritional_info = user_data_manager.get_nutritional_info(result)
@@ -138,10 +139,14 @@ def handle_registration_form(user_data_manager):
                 st.error("Le password non coincidono")
                 return False
             else:
-                success, result = user_data_manager.register_user(new_username, new_email, new_password)
+                # Converti l'username in minuscolo prima di registrarlo
+                success, result = user_data_manager.register_user(new_username.lower(), new_email, new_password)
                 if success:
                     st.success("Registrazione completata! Ora puoi accedere.")
-                    return True
+                    # Imposta la vista su 'Accedi' per il redirect
+                    st.session_state.login_view = 'Accedi'
+                    st.rerun() # Forza il rerender per mostrare il form di login
+                    return True # Anche se il rerun ferma l'esecuzione, è buona pratica
                 else:
                     st.error(result)
                     return False
@@ -162,7 +167,18 @@ def handle_login_registration(user_data_manager):
     # Inizializza user_info se non esiste
     if "user_info" not in st.session_state:
         st.session_state.user_info = None
+        
+    # Inizializza la vista di login/registrazione
+    if 'login_view' not in st.session_state:
+        st.session_state.login_view = 'Accedi'
+
+    # Funzioni per cambiare vista
+    def go_to_register():
+        st.session_state.login_view = 'Registrati'
     
+    def go_to_login():
+        st.session_state.login_view = 'Accedi'
+
     # Se l'utente non è autenticato, mostra form di login/registrazione
     if not st.session_state.user_info:
         
@@ -181,14 +197,21 @@ def handle_login_registration(user_data_manager):
             unsafe_allow_html=True
         )
         
-        # Tabs per Login/Registrazione con stile migliorato
-        tab1, tab2 = st.tabs(["🔐 Accedi", "✨ Registrati"])
-        
-        with tab1:
+        if st.session_state.login_view == 'Accedi':
             handle_login_form(user_data_manager)
+            st.write("---")
+            st.write("Non hai un account?")
+            if st.button("✨ Registrati ora", key="go_to_register_btn"):
+                go_to_register()
+                st.rerun()
         
-        with tab2:
+        elif st.session_state.login_view == 'Registrati':
             handle_registration_form(user_data_manager)
+            st.write("---")
+            st.write("Hai già un account?")
+            if st.button("🔐 Accedi", key="go_to_login_btn"):
+                go_to_login()
+                st.rerun()
             
         st.markdown('</div>', unsafe_allow_html=True)
 
