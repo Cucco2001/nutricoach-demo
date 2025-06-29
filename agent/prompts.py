@@ -705,7 +705,7 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
    - Usa il tool generate_6_additional_days per generare automaticamente i 6 giorni aggiuntivi di dieta in base alla struttura e ai target nutrizionali del giorno 1 nel seguente modo:  
         * Genera prima i giorni 2-4, poi i giorni 5-7.
             * Usa il parametro day_range per generare solo specifici giorni (day_range="2,3,4" o day_range="5,6,7")
-            * Non mostrare i sostituti nell'output finale, dei giorni aggiuntivi e SPECIFICA CHE I SOSTITUTI SARANNO PRESENTI NEL PDF FINALE
+            * Non mostrare i sostituti nell'output finale, dei giorni aggiuntivi e SPECIFICA CHE I SOSTITUTI SARANNO PRESENTI NEL PDF FINALE NELLA SEZIONE PIANO NUTRIZIONALE.
 
 2. **Adattamento alle preferenze e intolleranze dell'utente**:
    - Confronta TUTTI gli alimenti generati con le intolleranze/allergie e con le preferenze dichiarate dall'utente
@@ -784,7 +784,7 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 - Devi SEMPRE generare TUTTI i giorni e TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7, SENZA APPROSSIMARE NESSUN GIORNO E NESSUN PASTO
 - MAI utilizzare riferimenti come "Pranzo giorno 5 (come giorno 2)" - ogni pasto deve essere scritto per esteso
 - DEVI SEMPRE mostrare all'utente prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
-- Specifica che i sostituti saranno presenti nel PDF finale
+- Specifica che i sostituti saranno presenti nel PDF finale nella sezione Piano Nutrizionale
 """
 
 
