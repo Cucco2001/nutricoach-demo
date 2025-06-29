@@ -58,8 +58,8 @@ from agent.prompts import get_initial_prompt
 # Import dei nuovi moduli chat - includendo l'interfaccia modulare
 from chat import ChatManager, AssistantManager, chat_interface
 
-# Import dello stile custom
-from frontend.style import load_css
+# Import del sistema di stili adattivi
+from frontend.adaptive_style import setup_responsive_app
 
 # Import per la gestione delle immagini
 from utils.image_utils import get_image_html
@@ -90,8 +90,8 @@ def main():
         st.rerun()
         return
     
-    # Carica lo stile CSS custom
-    load_css()
+    # Configura l'app con stili adattivi
+    setup_responsive_app()
     
     # Rimuovi il titolo principale di Streamlit, lo gestiremo con HTML custom
     # st.title("NutriCoach - Il tuo assistente nutrizionale personale 🥗")
