@@ -91,9 +91,9 @@ NUTRITION_QUESTIONS = [
     },
     {
         "id": "meal_preferences",
-        "question": "Vuoi decidere tu il numero di pasti giornalieri?",
+        "question": "Configurazione pasti:",
         "type": "radio",
-        "options": ["No", "Sì"],
+        "options": ["Personalizza"],
         "follow_up": {
             "type": "meal_schedule",
             "fields": [
@@ -121,6 +121,6 @@ NUTRITION_QUESTIONS = [
                 }
             ]
         },
-        "show_follow_up_on": "Sì"
+        "show_follow_up_on": "Personalizza"
     }
 ] 

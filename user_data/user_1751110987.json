@@ -1,0 +1,39 @@
+{
+  "user_preferences": {
+    "excluded_foods": [],
+    "preferred_foods": [],
+    "user_notes": []
+  },
+  "chat_history": [],
+  "nutritional_info": {
+    "età": 30,
+    "sesso": "Maschio",
+    "peso": 70,
+    "altezza": 170,
+    "attività": "Sedentario",
+    "obiettivo": "Mantenimento",
+    "nutrition_answers": {},
+    "agent_qa": []
+  },
+  "conversation_costs": {
+    "tokens": {
+      "input": 43,
+      "output": 7111,
+      "total": 7154
+    },
+    "costs": {
+      "input_cost_usd": 0.0001,
+      "output_cost_usd": 0.0569,
+      "total_cost_usd": 0.057,
+      "total_cost_eur": 0.0524
+    },
+    "usage": {
+      "message_count": 19,
+      "duration_minutes": 37.64,
+      "avg_tokens_per_message": 376.53
+    },
+    "model": "gpt-4",
+    "timestamp": "2025-06-28T17:44:40.865860"
+  },
+  "last_cost_update": "2025-06-28T17:44:40.865860"
+}

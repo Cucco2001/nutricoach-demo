@@ -305,6 +305,12 @@ COMUNICAZIONE E PROGRESSIONE:
    - Mostra i risultati intermedi
    - Chiedi conferma prima di procedere alla fase successiva
 
+**IMPORTANTE**: Se l'utente chiede di "fare subito" o "andare veloce" o di non fare domande e fare tutto insieme, NON unire mai le fasi. Spiega perché ogni fase è fondamentale:
+- FASE 5: Necessaria per comprendere le abitudini alimentari e personalizzare i pasti in base alle abitudini alimentari
+- FASE 6: Essenziale per verificare la qualità nutrizionale della dieta 
+- FASE 7: Deve essere divisa in due parti (giorni 1-4, poi 5-7) per garantire precisione
+Procedi comunque fase per fase mantenendo la qualità del servizio.
+
 2. Cita le fonti che stai usando in ogni fase (Descrivendole anche per un pubblico non specialistico)
     - Il calcolo BMI segue la definizione dell'Organizzazione Mondiale della Sanità (WHO, 2000) Per un'analisi più completa, NutrAICoach integra anche valutazioni di composizione corporea, come raccomandato da NIH (1998) e Kyle et al. (2003).
     - Il calcolo del dispendio energetico associato all'attività fisica si basa sui valori MET (Metabolic Equivalent of Task) standardizzati dal Compendium of Physical Activities (Ainsworth et al., 2011; aggiornamenti successivi)
@@ -715,8 +721,9 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
    - Presenta la dieta settimanale completa in due step in modo chiaro e organizzato
         - Step 1: Presenta la dieta settimanale dei giorni 1-4 nel primo output
         - Step 2: Presenta la dieta settimanale completa dei giorni 5-7 nel secondo output
-   - Includi per ogni giorno:
-     * Tutti i pasti con alimenti e porzioni in grammi che sono stati scelti nel punto 2
+   - **FONDAMENTALE**: Includi per ogni giorno TUTTI i pasti completi con alimenti specifici:
+     * MAI scrivere "Cena giorno X (come quella del giorno Y)" o simili approssimazioni
+     * SEMPRE specificare ogni singolo alimento con le sue grammature esatte
      * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
    - Alla fine, riassumi le caratteristiche nutrizionali della settimana
 
@@ -777,7 +784,8 @@ FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 
 **ASSOLUTAMENTE FONDAMENTALE**: 
 - Questa fase rappresenta il completamento del piano nutrizionale settimanale e deve produrre un output finale completo e personalizzato per l'utente. Prenditi tutto il tempo necessario per generare la dieta settimanale completa.
-- Devi SEMPRE generare TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7, SENZA APPROSSIMARE NESSUN GIORNO
+- Devi SEMPRE generare TUTTI i giorni e TUTTI i pasti della settimana in questa fase, dal giorno 1 al giorno 7, SENZA APPROSSIMARE NESSUN GIORNO E NESSUN PASTO
+- MAI utilizzare riferimenti come "Pranzo giorno 5 (come giorno 2)" - ogni pasto deve essere scritto per esteso
 - DEVI SEMPRE mostrare all'utente prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
 - Specifica che i sostituti saranno presenti nel PDF finale
 """
@@ -880,7 +888,8 @@ FASE 7: Generazione dieta settimanale completa
 - Presenta la dieta settimanale COMPLETA (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
   * Alimenti con grammature precise + misure casalinghe intuitive 
   * Separatori chiari tra i giorni
-  * TUTTI I GIORNI MOSTRATI in output, SENZA APPROSSIMARE NESSUN GIORNO
+  * TUTTI I GIORNI e TUTTI I PASTI MOSTRATI in output, SENZA APPROSSIMARE NESSUN GIORNO E NESSUN PASTO
+  * MAI scrivere "Pasto giorno X (come giorno Y)" - OGNI pasto deve essere specificato per esteso
   * Genera prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
 
 IMPORTANTE: 

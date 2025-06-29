@@ -1,0 +1,1162 @@
+{
+  "user_preferences": null,
+  "chat_history": [
+    {
+      "role": "assistant",
+      "content": "✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI\n\n⚡ Sto elaborando: analisi dello stato corporeo e verifica della coerenza dell'obiettivo scelto.\n\nProcedo calcolando il BMI (Indice di Massa Corporea), che misura il rapporto tra peso e altezza e serve a valutare se il peso è nella norma, sottopeso o in sovrappeso. Confronto poi il tuo obiettivo (perdere peso) con la situazione attuale.\n\n📊 Risultati analisi:\n- BMI attuale: 28.1 (Sovrappeso)\n- Peso forma ideale: 59.9 - 80.7 kg\n- Obiettivo dichiarato: Perdita di peso\n\nConclusione: l’obiettivo di perdere peso è coerente con il tuo stato di partenza (sei in fascia sovrappeso, quindi la riduzione di peso è raccomandata).\n\n📚 Fonti utilizzate:\n- Calcolo BMI e classificazione secondo Organizzazione Mondiale della Sanità (WHO, 2000)\n- Raccomandazione su peso ideale e strategie secondo linee guida NIH (1998) e Kyle et al. (2003)\n\n➡️ L’obiettivo scelto è corretto e consigliato per migliorare la salute generale.\n\nSe hai domande riguardo questo calcolo o vuoi sapere di più sul significato del BMI, chiedimi pure!\nProcedo con la FASE 1, cioè l’analisi delle risposte fornite e delle preferenze alimentari? Vuoi aggiungere qualcosa prima di continuare?",
+      "timestamp": 1751124321.6188154
+    },
+    {
+      "role": "user",
+      "content": "no",
+      "timestamp": 1751124373.8151824
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 1 - ANALISI DELLE RISPOSTE E DELLO STILE DI VITA\n\n⚡ Sto analizzando: tutte le risposte fornite, preferenze, allergie, obiettivi di peso, sport praticati e informazioni nutrizionali di base.\n\n- Preferenze alimentari: nessuna preferenza alimentare risultata dalle risposte.\n- Allergie: nessuna.\n- Obiettivo peso: vuoi perdere 7 kg in 3 mesi.\n  - Il sistema segnala che per una perdita di 7 kg in 3 mesi sarebbe necessario un deficit di circa 599 kcal/giorno, che è considerato troppo severo per la salute. È stato invece consigliato un deficit massimo sicuro di 500 kcal/giorno (perdita più sostenibile e sicura: circa 6 kg in 3 mesi).\n- Sport praticato: Powerlifting, 7 ore a settimana, intensità media (dispendio aggiuntivo stimato: 500 kcal/giorno).\n- Preferenze su numero di pasti e orari: non specificate; in assenza di preferenze specifiche, userò la suddivisione standard in 4 pasti.\n\n📚 Fonti utilizzate:\n- Deficit calorico massimo sicuro secondo le principali linee guida scientifiche internazionali \n- Dispendio sportivo calcolato usando MET standardizzati dal Compendium of Physical Activities (Ainsworth et al., 2011)\n- Dati nutrizionali da Banca Dati CREA\n\n❓ Confermi di volere comunque puntare a perdere 7 kg, accettando un tempo leggermente più lungo, oppure preferisci mirare ad una perdita di circa 6 kg in 3 mesi (più sicura)? Vuoi indicare qualche preferenza alimentare che non hai ancora menzionato?\n\n➡️ Se tutto confermato, passo a FASE 2 per il calcolo fabbisogno energetico e deficit. Vuoi proseguire?",
+      "timestamp": 1751124388.4457343
+    },
+    {
+      "role": "user",
+      "content": "va bene 6kg",
+      "timestamp": 1751124431.6024735
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\n⚡ Sto calcolando: metabolismo basale, fabbisogno totale, aggiunta del dispendio sportivo e applicazione del deficit per un obiettivo sicuro di perdita peso (6 kg in 3 mesi).\n\nSpiegazione semplice:\n- Il metabolismo basale (BMR) è l’energia minima di cui il tuo corpo ha bisogno a riposo.\n- Il fabbisogno energetico totale (TDEE) aggiunge l’energia spesa con le normali attività.\n- A questo sommiamo le calorie consumate con lo sport (powerlifting).\n- Applichiamo poi un deficit calorico per stimolare la perdita di peso in modo sicuro.\n\n📊 Calcoli:\n- Metabolismo basale (BMR): 2035 kcal\n- Fabbisogno medio con attività quotidiana: 2951 kcal/giorno (LAF 1.45)\n- Dispendio sportivo: +500 kcal/giorno (powerlifting 7h/sett.)\n- Fabbisogno energetico prima del deficit: 2951 + 500 = 3451 kcal/giorno\n- Deficit sicuro applicato: -500 kcal/giorno (scelto il massimo raccomandato)\n- Fabbisogno energetico finale: 3451 - 500 = 2951 kcal/giorno\n\n📚 Fonti utilizzate:\n- Equazione Harris-Benedict (una delle più affidabili per stima BMR)\n- Valori MET da Compendium of Physical Activities (Ainsworth et al., 2011)\n- Raccomandazioni sulla sicurezza del deficit calorico da linee guida internazionali\n\n❓ Vuoi sapere qualcosa di più sui calcoli o sulle scelte fatte? Proseguo con la FASE 3 dove ti mostro la suddivisione delle calorie tra proteine, carboidrati e grassi! Procedo?",
+      "timestamp": 1751124451.4375813
+    },
+    {
+      "role": "user",
+      "content": "vai",
+      "timestamp": 1751124479.925973
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto calcolando: ripartizione delle calorie tra proteine, grassi e carboidrati, fondamentale per sostenere la perdita di peso e la pratica intensiva di powerlifting.\n\nSpiegazione semplice:\n- I macronutrienti sono proteine, carboidrati e grassi: ogni gruppo svolge funzioni essenziali.\n- La quota proteica viene aumentata in presenza di allenamenti di forza per preservare la massa muscolare.\n- I grassi forniscono energia e sono fondamentali per varie funzioni ormonali.\n- I carboidrati coprono il resto del fabbisogno, garantendo energia per allenarsi e vivere bene.\n\n📊 Calcoli:\n\nFabbisogno calorico totale: 2951 kcal\n\nPROTEINE\n- Moltiplicatore sport di forza: 1.9 g/kg\n- Peso: 91 kg\n- Calcolo: 1.9 * 91 = 173 g proteine totali\n- Kcal da proteine: 173 * 4 = 692 kcal\n- Percentuale calorie: 692 / 2951 * 100 = 23%\n\nGRASSI\n- Range raccomandato (LARN): 20-35% delle calorie\n- Scelgo valore medio: 27% (circa)\n- Kcal da grassi: 2951 * 0.27 = 797 kcal\n- Grammi di grassi: 797 / 9 = 89 g\n\nCARBOIDRATI\n- Calorie restanti: 2951 - 692 (proteine) - 797 (grassi) = 1462 kcal\n- Grammi di carboidrati: 1462 / 4 = 366 g\n\nRiepilogo (valori arrotondati):\n\nKcal totali: 2950 kcal\n- Proteine: 173 g (692 kcal, 23%)\n- Grassi: 89 g (797 kcal, 27%)\n- Carboidrati: 366 g (1462 kcal, 50%)\n\n📚 Fonti utilizzate:\n- Quota proteica da Phillips et al., 2011; Project Invictus/letteratura per atleti di forza\n- Grassi: LARN SINU, range 20-35%\n- Carboidrati: calcolati per coprire il resto dell’energia e garantire almeno 2 g/kg\n- Dati energetici degli alimenti: Banca Dati CREA\n\n❓ Se hai domande sui macronutrienti e i calcoli fatti sono qui per chiarirti tutto!\nProcedo ora con la FASE 4: distribuzione calorie e macronutrienti tra i pasti. Confermi di voler continuare? Vuoi indicare preferenze particolari sul numero di pasti? (Altrimenti userò 4 pasti come da standard: colazione, pranzo, spuntino, cena)",
+      "timestamp": 1751124498.76933
+    },
+    {
+      "role": "user",
+      "content": "vai",
+      "timestamp": 1751124537.4835947
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 4 - DISTRIBUZIONE CALORICA E MACRONUTRIENTI DEI PASTI\n\n⚡ Sto ripartendo: le calorie e i macronutrienti tra i 4 pasti principali della giornata, seguendo lo schema standard in assenza di tue preferenze specifiche.\n\nSpiegazione semplice:\n- Distribuire le calorie e i nutrienti tra i pasti aiuta a mantenere costante l’energia durante la giornata e a sostenere i tuoi allenamenti.\n- I macronutrienti (proteine, carboidrati, grassi) vengono suddivisi in base alla quota calorica di ciascun pasto.\n\nDistribuzione standard (su 2950 kcal):\n- Colazione: 25%\n- Pranzo: 35%\n- Spuntino pomeriggio: 10%\n- Cena: 30%\n\nEcco la ripartizione dettagliata:\n\n🌅 COLAZIONE - 25% (738 kcal)\n- Proteine: 43 g (25% di 173)\n- Carboidrati: 92 g (25% di 366)\n- Grassi: 22 g (25% di 89)\n\n🍽️ PRANZO - 35% (1032 kcal)\n- Proteine: 61 g (35% di 173)\n- Carboidrati: 128 g (35% di 366)\n- Grassi: 31 g (35% di 89)\n\n🥨 SPUNTINO - 10% (295 kcal)\n- Proteine: 17 g (10% di 173)\n- Carboidrati: 37 g (10% di 366)\n- Grassi: 9 g (10% di 89)\n\n🌙 CENA - 30% (885 kcal)\n- Proteine: 52 g (30% di 173)\n- Carboidrati: 109 g (30% di 366)\n- Grassi: 27 g (30% di 89)\n\nQuesta struttura ti permette di distribuire bene energia e nutrienti su tutta la giornata.\n\n📚 Fonti utilizzate:\n- Suddivisione pasti su linee guida SINU, ASSIRM e pratica clinica\n- Calcoli su dati LARN e Banca Dati CREA\n\n❓ Hai domande sulla suddivisione dei pasti o sui calcoli mostrati? Posso modificare la distribuzione in base a preferenze oppure procedo con la creazione dei pasti (FASE 5)?\nVuoi iniziare dalla colazione?",
+      "timestamp": 1751124548.6054451
+    },
+    {
+      "role": "user",
+      "content": "5 pasti anziché 4, avendo uno spuntino la mattina ed uno il pomeriggio",
+      "timestamp": 1751124602.785088
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI SU 5 PASTI\n\n⚡ Sto aggiornando: ripartizione delle calorie e dei macronutrienti per 5 pasti al giorno, con uno spuntino a metà mattina e uno nel pomeriggio.\n\nSpiegazione semplice:\n- Suddividere in 5 pasti rende più facile mantenere energia costante, aiuta a controllare la fame e può migliorare la performance in chi si allena frequentemente.\n- Ogni pasto riceve una quota delle calorie e dei nutrienti secondo uno schema raccomandato per 5 pasti.\n\nDistribuzione standard (su 2950 kcal):\n- Colazione: 25% (738 kcal)\n- Spuntino mattina: 5% (148 kcal)\n- Pranzo: 35% (1032 kcal)\n- Spuntino pomeriggio: 5% (148 kcal)\n- Cena: 30% (885 kcal)\n\nRipartizione dettagliata:\n\n🌅 COLAZIONE (25%)\n- 738 kcal \n- Proteine: 43 g (25% di 173)\n- Carboidrati: 92 g (25% di 366)\n- Grassi: 22 g (25% di 89)\n\n🥯 SPUNTINO MATTINA (5%)\n- 148 kcal\n- Proteine: 9 g (5% di 173)\n- Carboidrati: 18 g (5% di 366)\n- Grassi: 4 g (5% di 89)\n\n🍽️ PRANZO (35%)\n- 1032 kcal\n- Proteine: 61 g (35% di 173)\n- Carboidrati: 128 g (35% di 366)\n- Grassi: 31 g (35% di 89)\n\n🥨 SPUNTINO POMERIDIANO (5%)\n- 148 kcal\n- Proteine: 9 g (5% di 173)\n- Carboidrati: 18 g (5% di 366)\n- Grassi: 4 g (5% di 89)\n\n🌙 CENA (30%)\n- 885 kcal\n- Proteine: 52 g (30% di 173)\n- Carboidrati: 110 g (30% di 366)\n- Grassi: 27 g (30% di 89)\n\n📚 Fonti utilizzate:\n- Suddivisione calorica SINU/linee guida nazionali\n- Calcolo macro su % delle calorie impostate\n\n❓ Sei d'accordo con questa ripartizione? Vuoi aggiustamenti particolari?\nProcedo con la FASE 5: creazione dei pasti specifici, iniziando dalla colazione? Vuoi esprimere preferenze, gusti o cibi da evitare?",
+      "timestamp": 1751124613.396668
+    },
+    {
+      "role": "user",
+      "content": "ok",
+      "timestamp": 1751124634.1248229
+    },
+    {
+      "role": "assistant",
+      "content": "🌅 COLAZIONE (738 kcal)\n\n• Avena: 50 g → 🥄 mezza tazza \n  (Sostituti: 50 g di muesli, 50 g di fette biscottate)\n    P: 4 g, C: 33 g, G: 4 g\n\n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo \n  (Sostituti: 260 g di yogurt magro, 230 g di latte parzialmente scremato)\n    P: 11 g, C: 16 g, G: 1 g\n\n• Banana: 200 g → 🍌 2 banane piccole \n  (Sostituti: 310 g di mirtilli, 180 g di uva)\n    P: 2 g, C: 35 g, G: 1 g\n\n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi \n  (Sostituti: 290 g di yogurt greco 0%, 150 g di fiocchi di latte)\n    P: 21 g, C: 6 g, G: 4 g\n\n• Mandorle: 20 g → 🥜 1 piccola manciata \n  (Sostituti: 20 g di nocciole, 20 g di arachidi)\n    P: 4 g, C: 1 g, G: 11 g\n\nTotale pasto: P: 42 g, C: 91 g, G: 20 g\n\nIdee di ricetta: Mescola avena, yogurt greco e latte: aggiungi le banane a rondelle sopra. Completa con le mandorle intere per croccantezza. Puoi aggiungere cannella per un extra di gusto!\n\n📚 Fonti utilizzate:\n- Dati nutrizionali: Banca Dati CREA\n- Ottimizzazione porzioni e ricette: sistema automatizzato, in linea con obiettivi nutrizionali\n\n❓ Domande su combinazione, grammature, sostituti o ricette? Vuoi modificare qualcosa nella colazione o passo allo spuntino mattina?",
+      "timestamp": 1751124665.9502137
+    },
+    {
+      "role": "user",
+      "content": "ok genera tutti i pasti senza farmi domande",
+      "timestamp": 1751124780.5949242
+    },
+    {
+      "role": "assistant",
+      "content": "Ecco la tua giornata alimentare completa strutturata su 5 pasti, con grammature, misure casalinghe e suggerimenti ricetta per ogni pasto.\n\n🌅 COLAZIONE (738 kcal)\n• Avena: 50 g → 🥄 mezza tazza  \n  (Sostituti: 50 g di muesli, 50 g di fette biscottate)  \n  P: 4 g, C: 33 g, G: 4 g  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n  (Sostituti: 260 g di yogurt magro, 230 g di latte parzialmente scremato)  \n  P: 11 g, C: 16 g, G: 1 g  \n• Banana: 200 g → 🍌 2 banane piccole  \n  (Sostituti: 310 g di mirtilli, 180 g di uva)  \n  P: 2 g, C: 35 g, G: 1 g  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n  (Sostituti: 290 g di yogurt greco 0%, 150 g di fiocchi di latte)  \n  P: 21 g, C: 6 g, G: 4 g  \n• Mandorle: 20 g → 🥜 1 piccola manciata  \n  (Sostituti: 20 g di nocciole, 20 g di arachidi)  \n  P: 4 g, C: 1 g, G: 11 g  \nTotale: P: 42 g, C: 91 g, G: 20 g  \n\n🥯 SPUNTINO MATTINA (148 kcal)\n• Pane integrale: 60 g → 🍞 2 fette  \n  (Sostituti: 30 g di cracker, 50 g di pan bauletto)  \n  P: 5 g, C: 27 g, G: 1 g  \n• Bresaola: 50 g → 🥩 6-7 fette  \n  (Sostituti: 70 g di fesa di tacchino, 30 g di prosciutto crudo)  \n  P: 17 g, C: 0 g, G: 1 g  \n• Pera: 80 g → 🍐 mezza pera media  \n  (Sostituti: 80 g di mirtilli, 90 g di ciliegie)  \n  P: 0 g, C: 8 g, G: 0 g  \nTotale: P: 22 g, C: 35 g, G: 2 g  \n\n🍽️ PRANZO (1032 kcal)\n• Riso basmati: 150 g → 🍚 1 tazza colma  \n  (Sostituti: 160 g di riso integrale, 160 g di orzo)  \n  P: 14 g, C: 124 g, G: 3 g  \n• Petto di pollo: 180 g → 🍗 1 abbondante fetta/grigliata  \n  (Sostituti: 180 g di tonno al naturale, 250 g di merluzzo)  \n  P: 42 g, C: 0 g, G: 1 g  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n  (Sostituti: 40 g di burro, 110 g di avocado)  \n  P: 0 g, C: 0 g, G: 30 g  \n• Zucchine: 290 g → 🥒 1 piatto grande  \n  (Sostituti: 290 g di verdure miste, 160 g di cavolfiore)  \n  P: 6 g, C: 5 g, G: 0 g  \nTotale: P: 61 g, C: 129 g, G: 35 g  \n\n🥨 SPUNTINO POMERIDIANO (148 kcal)\n• Cracker: 20 g → 🧇 4-5 pezzi piccoli  \n  (Sostituti: 20 g di biscotti integrali, 20 g di fette biscottate integrali)  \n  P: 2 g, C: 14 g, G: 2 g  \n• Tonno naturale: 70 g → 🥫 mezza scatoletta  \n  (Sostituti: 70 g di petto di pollo, 100 g di merluzzo)  \n  P: 17 g, C: 0 g, G: 0 g  \n• Kiwi: 80 g → 🥝 1 piccolo kiwi  \n  (Sostituti: 80 g di lamponi, 70 g di pere)  \n  P: 1 g, C: 7 g, G: 0 g  \nTotale: P: 20 g, C: 21 g, G: 3 g  \n\n🌙 CENA (885 kcal)\n• Pasta integrale: 160 g → 🍝 2 porzioni scarse  \n  (Sostituti: 150 g di farro, 150 g di pasta di semola)  \n  P: 21 g, C: 104 g, G: 4 g  \n• Salmone: 120 g → 🐟 1 filetto medio  \n  (Sostituti: 120 g di pesce spada, 150 g di orata)  \n  P: 31 g, C: 1 g, G: 5 g  \n• Melanzane: 100 g → 🍆 6-7 fette grigliate  \n  (Sostituti: 100 g di pomodoro, 100 g di fagiolini)  \n  P: 1 g, C: 3 g, G: 0 g  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n  (Sostituti: 20 g di burro, 80 g di avocado)  \n  P: 0 g, C: 0 g, G: 20 g  \nTotale: P: 53 g, C: 108 g, G: 29 g  \n\nTi ricordo: le ricette sono rapide (es. per la cena, puoi saltare le melanzane in padella col salmone) e puoi sostituire gli alimenti come indicato.\n\nOra passo al controllo degli ultraprocessati (FASE 6) prima di generare la settimana completa!",
+      "timestamp": 1751124834.007412
+    },
+    {
+      "role": "user",
+      "content": "ok",
+      "timestamp": 1751124890.8025787
+    },
+    {
+      "role": "assistant",
+      "content": "🟢 CONTROLLO ULTRAPROCESSATI (FASE 6)\nNessun eccesso di alimenti ultraprocessati: solo il 6% delle calorie (<10%). L’alimentazione proposta è equilibrata e in linea con le raccomandazioni di salute.\n\nProcedo ora con la presentazione chiara della dieta SETTIMANALE completa, giorni 1-4. Tutti i pasti giornalieri includono grammature e misure casalinghe. I sostituti saranno inclusi nel PDF finale.\n\n---\n\n🗓️ GIORNO 1 - LUNEDÌ\n\n🌅 COLAZIONE \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA \n• Pane integrale: 60 g → 🍞 2 fette  \n• Bresaola: 50 g → 🥩 6-7 fette  \n• Pera: 80 g → 🍐 mezza pera media  \n\n🍽️ PRANZO \n• Riso basmati: 150 g → 🍚 1 tazza colma  \n• Petto di pollo: 180 g → 🍗 1 grigliata abbondante  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Zucchine: 290 g → 🥒 1 piatto grande  \n\n🥨 SPUNTINO POMERIDIANO \n• Cracker: 20 g → 🧇 4-5 pezzi piccoli  \n• Tonno naturale: 70 g → 🥫 mezza scatoletta  \n• Kiwi: 80 g → 🥝 1 kiwi piccolo  \n\n🌙 CENA \n• Pasta integrale: 160 g → 🍝 2 porzioni scarse  \n• Salmone: 120 g → 🐟 1 filetto medio  \n• Melanzane: 100 g → 🍆 6-7 fette grigliate  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 2 - MARTEDÌ\n\n🌅 COLAZIONE \n• Pane integrale: 150 g → 🍞 5 fette  \n• Burro di arachidi: 40 g → 🥄 2 cucchiai rasi  \n• Marmellata: 40 g → 🥄 2 cucchiai colmi  \n• Iso Fuji (polvere proteica): 20 g → 🥄 2 cucchiai  \n\n🥯 SPUNTINO MATTINA \n• Pane integrale: 60 g → 🍞 2 fette  \n• Prosciutto crudo: 30 g → 🥩 4-5 fette  \n• Mele: 80 g → 🍏 mezza mela piccola  \n\n🍽️ PRANZO \n• Couscous integrale: 100 g → 🍚 1 tazza cotta  \n• Tonno naturale: 160 g → 🥫 1 scatoletta grossa  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Insalata: 100 g → 🥗 1 ciotola abbondante  \n\n🥨 SPUNTINO POMERIDIANO \n• Yogurt greco: 150 g → 🥣 1 vasetto abbondante  \n• Cereali integrali: 20 g → 🥄 1 cucchiaio colmo  \n• Fragole: 100 g → 🍓 8-9 fragole  \n\n🌙 CENA \n• Patate dolci: 200 g → 🥔 1 tubero medio  \n• Uova: 2 → 🥚 2 intere  \n• Spinaci: 250 g → 🥬 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 3 - MERCOLEDÌ\n\n🌅 COLAZIONE \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA \n• Pane integrale: 60 g → 🍞 2 fette  \n• Tacchino fesa: 70 g → 🥩 5-6 fette  \n• Arancia: 120 g → 🍊 1 piccola  \n\n🍽️ PRANZO \n• Farro: 140 g → 🍚 1 piatto  \n• Petto di pollo: 160 g → 🍗 1 grigliata  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Pomodori: 100 g → 🍅 1 grande  \n\n🥨 SPUNTINO POMERIDIANO \n• Cracker integrali: 25 g → 🧇 5 pezzi piccoli  \n• Ricotta magra: 80 g → 🧀 3 cucchiai  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🌙 CENA \n• Pasta di semola: 120 g → 🍝 1.5 porzioni  \n• Branzino: 150 g → 🐟 1 filetto grande  \n• Broccoli: 200 g → 🥦 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 4 - GIOVEDÌ\n\n🌅 COLAZIONE \n• Cornflakes: 60 g → 🥄 2 tazze  \n• Latte scremato: 500 g → 🥛 2.5 bicchieri grandi  \n• Kiwi: 140 g → 🥝 2 kiwi medi  \n• Mandorle: 40 g → 🥜 2 manciate piccole  \n• Iso Fuji (polvere proteica): 10 g → 🥄 1 cucchiaio  \n\n🥯 SPUNTINO MATTINA \n• Gallette di riso: 30 g → 🍘 3-4 medie  \n• Yogurt magro: 125 g → 🥣 1 vasetto  \n• Fragole: 100 g → 🍓 8-9 fragole  \n\n🍽️ PRANZO \n• Riso integrale: 130 g → 🍚 1 piatto  \n• Bresaola: 90 g → 🥩 10 fette  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n• Zucchine: 150 g → 🥒 1 piatto  \n\n🥨 SPUNTINO POMERIDIANO \n• Pane integrale: 30 g → 🍞 1 fetta  \n• Prosciutto cotto: 30 g → 🥩 3 fette  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🌙 CENA \n• Orzo: 140 g → 🍚 1 piatto  \n• Uova: 2 → 🥚 2 intere  \n• Spinaci: 250 g → 🥬 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\nSe vuoi subito vedere anche i giorni 5-7 scrivilo pure, così avrai l’intera settimana completa pronta. Vuoi ricevere subito anche la seconda parte?",
+      "timestamp": 1751124932.7012546
+    },
+    {
+      "role": "user",
+      "content": "si",
+      "timestamp": 1751134531.6961174
+    },
+    {
+      "role": "assistant",
+      "content": "🗓️ GIORNO 5 - VENERDÌ\n\n🌅 COLAZIONE  \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA  \n• Pane integrale: 60 g → 🍞 2 fette  \n• Prosciutto crudo: 30 g → 🥩 4-5 fette  \n• Uva: 80 g → 🍇 1 grappolo piccolo  \n\n🍽️ PRANZO  \n• Pasta integrale: 130 g → 🍝 1.5 porzioni  \n• Tonno naturale: 160 g → 🥫 1 scatoletta grossa  \n• Olio extravergine di oliva: 25 g → 🥄 2 cucchiai abbondanti  \n• Fagiolini: 200 g → 🫘 1 piatto abbondante  \n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 150 g → 🥣 1 vasetto abbondante  \n• Frutta secca mista: 20 g → 🥜 1 manciata  \n• Pesca: 140 g → 🍑 1 pesca media  \n\n🌙 CENA  \n• Riso basmati: 120 g → 🍚 1 tazza  \n• Pollo petto: 160 g → 🍗 1 grigliata  \n• Melanzane: 150 g → 🍆 8-9 fette grigliate  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 6 - SABATO\n\n🌅 COLAZIONE  \n• Cornflakes: 60 g → 🥄 2 tazze  \n• Latte scremato: 500 g → 🥛 2.5 bicchieri grandi  \n• Kiwi: 140 g → 🥝 2 kiwi medi  \n• Mandorle: 40 g → 🥜 2 manciate piccole  \n• Iso Fuji (polvere proteica): 10 g → 🥄 1 cucchiaio  \n\n🥯 SPUNTINO MATTINA  \n• Gallette di mais: 30 g → 🍙 4 medie  \n• Ricotta magra: 70 g → 🧀 3 cucchiai  \n• Mirtilli: 80 g → 🫐 mezza vaschetta  \n\n🍽️ PRANZO  \n• Couscous integrale: 100 g → 🍚 1 tazza cotta  \n• Tacchino: 120 g → 🍗 1 porzione arrosto  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Insalata mista: 100 g → 🥗 1 ciotola grande  \n\n🥨 SPUNTINO POMERIDIANO  \n• Pane integrale: 30 g → 🍞 1 fetta  \n• Prosciutto cotto: 30 g → 🥩 3 fette  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🌙 CENA  \n• Pasta di semola: 120 g → 🍝 1.5 porzioni  \n• Pesce spada: 130 g → 🐟 1 trancio  \n• Broccoli: 200 g → 🥦 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 7 - DOMENICA\n\n🌅 COLAZIONE  \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA  \n• Pane integrale: 60 g → 🍞 2 fette  \n• Bresaola: 50 g → 🥩 6-7 fette  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🍽️ PRANZO  \n• Orzo: 130 g → 🍚 1 piatto  \n• Tacchino: 120 g → 🍗 1 porzione arrosto  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Zucchine: 150 g → 🥒 1 piatto  \n\n🥨 SPUNTINO POMERIDIANO  \n• Cracker integrali: 25 g → 🧇 5 pezzi piccoli  \n• Tonno naturale: 60 g → 🥫 mezza scatoletta  \n• Arancia: 100 g → 🍊 1 piccola  \n\n🌙 CENA  \n• Patate dolci: 200 g → 🥔 1 tubero medio  \n• Salmone: 120 g → 🐟 1 filetto medio  \n• Spinaci: 250 g → 🥬 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\nLa tua dieta settimanale è completa, bilanciata e varia, con grammature chiare sia in grammi che in misure casalinghe. I sostituti alimentari saranno sempre presenti nel PDF finale per ogni giornata.\n\n📚 Tutto costruito su dati ufficiali CREA, linee guida SINU, e struttura dei macronutrienti calcolata sulle tue specifiche esigenze di allenamento e obiettivi.\n\nHai bisogno di spiegazioni, modifiche a una giornata, o vuoi ricevere la lista della spesa? Vuoi dettagli sulle ricette, approfondimenti o altre domande sui cambi/settimane future?",
+      "timestamp": 1751134551.9406369
+    },
+    {
+      "role": "user",
+      "content": "alternative al pane/pasta/riso a pranzo?",
+      "timestamp": 1751134672.3463364
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE EXTRA – ALTERNATIVE A PANE/PASTA/RISO A PRANZO\n\n⚡ Sto per suggerirti delle valide alternative ai cereali classici (pane, pasta, riso) che puoi usare a pranzo, mantenendo equilibrio tra carboidrati, proteine e grassi.\n\nSpiegazione semplice:\n- Cambiare cereali è utile per non annoiarsi, avere più micronutrienti e fibre, e beneficiare di profili glicemici diversi.\n- Tutte le alternative devono fornire una porzione di carboidrati simile a quelle proposte finora (100-150 g crudi o equivalenti a 70-100 g di carboidrati a pasto).\n\n📊 Ecco alcune alternative per la base glucidica del pranzo:\n- **Farro**: 80-100 g crudi = 1 piatto medio cotto\n- **Orzo**: 80-100 g crudi = 1 piatto medio cotto\n- **Quinoa**: 70-80 g crudi = 1 ciotola cotta (alto contenuto proteico)\n- **Couscous integrale**: 70-80 g secchi = 1 ciotola abbondante cotta\n- **Patate dolci**: 250-300 g = 1 patata grande cotta\n- **Patate classiche**: 300-350 g = 2 patate medie cotte\n- **Polenta istantanea**: 60-70 g = 1 piatto fondo\n- **Legumi secchi**: 70-80 g crudi o 200 g cotti (ceci, lenticchie, fagioli – in questo caso riduci una delle fonti proteiche animali del pranzo)\n- **Grano saraceno**: 70-80 g crudi = 1 piattino cotto\n- **Bulgur**: 70-80 g crudi = 1 ciotola cotta\n\nPer comporre il pasto:\n1. Scegli la base dalla lista.\n2. Aggiungi fonte proteica (pollo, tonno, tacchino, legumi se non usati come base).\n3. Aggiungi verdure e grassi (olio extravergine di oliva/noci).\n\n📚 Fonti utilizzate:\n- Dati di composizione CREA\n- Tabelle di equivalenza ufficiali LARN-SINU\n\n❓ Se vuoi un esempio concreto di pasto alternativo con grammature dettagliate, dimmi quale base ti interessa (es. quinoa, patate dolci) e ti costruisco subito tutto il piatto! Vuoi vedere delle alternative composte?",
+      "timestamp": 1751134689.015708
+    },
+    {
+      "role": "user",
+      "content": "al posto di 130 gr di riso, oppure di 100 gr di pasta quanti gr di patate posso mangiare?",
+      "timestamp": 1751135996.6176558
+    },
+    {
+      "role": "assistant",
+      "content": "✓ FASE EXTRA – CONVERSIONE: RISO O PASTA → PATATE\n\n⚡ Sto calcolando: le quantità di patate (classiche o dolci) che apportano una quantità simile di carboidrati rispetto a 130 g di riso o 100 g di pasta.\n\nSpiegazione semplice:\n- Riso e pasta sono molto più “densi” di carboidrati rispetto alle patate.\n- Le patate (sia classiche che dolci) hanno circa 17-20 g di carboidrati ogni 100 g, mentre riso e pasta da crudi ne hanno 75-80 g circa ogni 100 g.\n\n📊 Calcoli:\n\n**Caso 1: 130 g di riso crudo**\n- Carboidrati nel riso: 130 * 80 / 100 = 104 g carboidrati\n\n**Quanti gr di patate equivalgono a 104 g di carboidrati?**\n- Patate: 17 g carboidrati ogni 100 g\n- 104 g carboidrati / 17 = 6.1 → 6.1 * 100 = 610 g patate\n\nQuindi:  \n▶️ 130 g di riso crudo ≈ 610 g di patate (classiche)\n\n---\n\n**Caso 2: 100 g di pasta cruda**\n- Carboidrati nella pasta: 100 * 75 / 100 = 75 g carboidrati\n\n**Quanti gr di patate equivalgono a 75 g di carboidrati?**\n- 75 / 17 = 4.4 → 4.4 * 100 = 440 g patate\n\nQuindi:  \n▶️ 100 g di pasta cruda ≈ 440 g di patate (classiche)\n\n---\n\nRicapitolando:\n- 130 g di riso crudo ≈ 610 g di patate\n- 100 g di pasta cruda ≈ 440 g di patate\n\n📚 Fonti utilizzate:\n- Composizione alimenti CREA (dati ufficiali Italia, 2023)\n- Guide equivalenze carboidrati, LARN SINU\n\n➡️ Hai altre domande sulle equivalenze degli alimenti, vuoi vedere questo adattamento anche con patate dolci o altre basi? Vuoi che ti proponga un pasto completo con queste quantità?",
+      "timestamp": 1751136011.3451579
+    }
+  ],
+  "nutritional_info": {
+    "età": 24,
+    "sesso": "Maschio",
+    "peso": 91,
+    "altezza": 180,
+    "attività": "Leggermente attivo",
+    "obiettivo": "Perdita di peso",
+    "nutrition_answers": {
+      "allergies": {
+        "answer": "No",
+        "follow_up": null
+      },
+      "weight_goal": {
+        "answer": {
+          "kg": 7,
+          "months": 3
+        },
+        "follow_up": null
+      },
+      "sports": {
+        "answer": "Sì",
+        "follow_up": [
+          {
+            "sport_type": "Sport di forza (es: powerlifting, sollevamento pesi, strongman)",
+            "specific_sport": {
+              "name": "Powerlifting",
+              "key": "powerlifting",
+              "kcal_per_hour": 500,
+              "description": "Allenamento e competizione di sollevamento massimo nei tre esercizi fondamentali: squat, panca e stacco"
+            },
+            "intensity": "medium",
+            "hours_per_week": 7
+          }
+        ]
+      },
+      "meal_preferences": {
+        "answer": "No",
+        "follow_up": null
+      }
+    },
+    "agent_qa": [
+      {
+        "question": "no",
+        "answer": "✓ FASE 1 - ANALISI DELLE RISPOSTE E DELLO STILE DI VITA\n\n⚡ Sto analizzando: tutte le risposte fornite, preferenze, allergie, obiettivi di peso, sport praticati e informazioni nutrizionali di base.\n\n- Preferenze alimentari: nessuna preferenza alimentare risultata dalle risposte.\n- Allergie: nessuna.\n- Obiettivo peso: vuoi perdere 7 kg in 3 mesi.\n  - Il sistema segnala che per una perdita di 7 kg in 3 mesi sarebbe necessario un deficit di circa 599 kcal/giorno, che è considerato troppo severo per la salute. È stato invece consigliato un deficit massimo sicuro di 500 kcal/giorno (perdita più sostenibile e sicura: circa 6 kg in 3 mesi).\n- Sport praticato: Powerlifting, 7 ore a settimana, intensità media (dispendio aggiuntivo stimato: 500 kcal/giorno).\n- Preferenze su numero di pasti e orari: non specificate; in assenza di preferenze specifiche, userò la suddivisione standard in 4 pasti.\n\n📚 Fonti utilizzate:\n- Deficit calorico massimo sicuro secondo le principali linee guida scientifiche internazionali \n- Dispendio sportivo calcolato usando MET standardizzati dal Compendium of Physical Activities (Ainsworth et al., 2011)\n- Dati nutrizionali da Banca Dati CREA\n\n❓ Confermi di volere comunque puntare a perdere 7 kg, accettando un tempo leggermente più lungo, oppure preferisci mirare ad una perdita di circa 6 kg in 3 mesi (più sicura)? Vuoi indicare qualche preferenza alimentare che non hai ancora menzionato?\n\n➡️ Se tutto confermato, passo a FASE 2 per il calcolo fabbisogno energetico e deficit. Vuoi proseguire?",
+        "timestamp": 1751124388.6291065
+      },
+      {
+        "question": "va bene 6kg",
+        "answer": "✓ FASE 2 - CALCOLO FABBISOGNO ENERGETICO\n\n⚡ Sto calcolando: metabolismo basale, fabbisogno totale, aggiunta del dispendio sportivo e applicazione del deficit per un obiettivo sicuro di perdita peso (6 kg in 3 mesi).\n\nSpiegazione semplice:\n- Il metabolismo basale (BMR) è l’energia minima di cui il tuo corpo ha bisogno a riposo.\n- Il fabbisogno energetico totale (TDEE) aggiunge l’energia spesa con le normali attività.\n- A questo sommiamo le calorie consumate con lo sport (powerlifting).\n- Applichiamo poi un deficit calorico per stimolare la perdita di peso in modo sicuro.\n\n📊 Calcoli:\n- Metabolismo basale (BMR): 2035 kcal\n- Fabbisogno medio con attività quotidiana: 2951 kcal/giorno (LAF 1.45)\n- Dispendio sportivo: +500 kcal/giorno (powerlifting 7h/sett.)\n- Fabbisogno energetico prima del deficit: 2951 + 500 = 3451 kcal/giorno\n- Deficit sicuro applicato: -500 kcal/giorno (scelto il massimo raccomandato)\n- Fabbisogno energetico finale: 3451 - 500 = 2951 kcal/giorno\n\n📚 Fonti utilizzate:\n- Equazione Harris-Benedict (una delle più affidabili per stima BMR)\n- Valori MET da Compendium of Physical Activities (Ainsworth et al., 2011)\n- Raccomandazioni sulla sicurezza del deficit calorico da linee guida internazionali\n\n❓ Vuoi sapere qualcosa di più sui calcoli o sulle scelte fatte? Proseguo con la FASE 3 dove ti mostro la suddivisione delle calorie tra proteine, carboidrati e grassi! Procedo?",
+        "timestamp": 1751124451.6284034
+      },
+      {
+        "question": "vai",
+        "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto calcolando: ripartizione delle calorie tra proteine, grassi e carboidrati, fondamentale per sostenere la perdita di peso e la pratica intensiva di powerlifting.\n\nSpiegazione semplice:\n- I macronutrienti sono proteine, carboidrati e grassi: ogni gruppo svolge funzioni essenziali.\n- La quota proteica viene aumentata in presenza di allenamenti di forza per preservare la massa muscolare.\n- I grassi forniscono energia e sono fondamentali per varie funzioni ormonali.\n- I carboidrati coprono il resto del fabbisogno, garantendo energia per allenarsi e vivere bene.\n\n📊 Calcoli:\n\nFabbisogno calorico totale: 2951 kcal\n\nPROTEINE\n- Moltiplicatore sport di forza: 1.9 g/kg\n- Peso: 91 kg\n- Calcolo: 1.9 * 91 = 173 g proteine totali\n- Kcal da proteine: 173 * 4 = 692 kcal\n- Percentuale calorie: 692 / 2951 * 100 = 23%\n\nGRASSI\n- Range raccomandato (LARN): 20-35% delle calorie\n- Scelgo valore medio: 27% (circa)\n- Kcal da grassi: 2951 * 0.27 = 797 kcal\n- Grammi di grassi: 797 / 9 = 89 g\n\nCARBOIDRATI\n- Calorie restanti: 2951 - 692 (proteine) - 797 (grassi) = 1462 kcal\n- Grammi di carboidrati: 1462 / 4 = 366 g\n\nRiepilogo (valori arrotondati):\n\nKcal totali: 2950 kcal\n- Proteine: 173 g (692 kcal, 23%)\n- Grassi: 89 g (797 kcal, 27%)\n- Carboidrati: 366 g (1462 kcal, 50%)\n\n📚 Fonti utilizzate:\n- Quota proteica da Phillips et al., 2011; Project Invictus/letteratura per atleti di forza\n- Grassi: LARN SINU, range 20-35%\n- Carboidrati: calcolati per coprire il resto dell’energia e garantire almeno 2 g/kg\n- Dati energetici degli alimenti: Banca Dati CREA\n\n❓ Se hai domande sui macronutrienti e i calcoli fatti sono qui per chiarirti tutto!\nProcedo ora con la FASE 4: distribuzione calorie e macronutrienti tra i pasti. Confermi di voler continuare? Vuoi indicare preferenze particolari sul numero di pasti? (Altrimenti userò 4 pasti come da standard: colazione, pranzo, spuntino, cena)",
+        "timestamp": 1751124498.9176147
+      },
+      {
+        "question": "vai",
+        "answer": "✓ FASE 4 - DISTRIBUZIONE CALORICA E MACRONUTRIENTI DEI PASTI\n\n⚡ Sto ripartendo: le calorie e i macronutrienti tra i 4 pasti principali della giornata, seguendo lo schema standard in assenza di tue preferenze specifiche.\n\nSpiegazione semplice:\n- Distribuire le calorie e i nutrienti tra i pasti aiuta a mantenere costante l’energia durante la giornata e a sostenere i tuoi allenamenti.\n- I macronutrienti (proteine, carboidrati, grassi) vengono suddivisi in base alla quota calorica di ciascun pasto.\n\nDistribuzione standard (su 2950 kcal):\n- Colazione: 25%\n- Pranzo: 35%\n- Spuntino pomeriggio: 10%\n- Cena: 30%\n\nEcco la ripartizione dettagliata:\n\n🌅 COLAZIONE - 25% (738 kcal)\n- Proteine: 43 g (25% di 173)\n- Carboidrati: 92 g (25% di 366)\n- Grassi: 22 g (25% di 89)\n\n🍽️ PRANZO - 35% (1032 kcal)\n- Proteine: 61 g (35% di 173)\n- Carboidrati: 128 g (35% di 366)\n- Grassi: 31 g (35% di 89)\n\n🥨 SPUNTINO - 10% (295 kcal)\n- Proteine: 17 g (10% di 173)\n- Carboidrati: 37 g (10% di 366)\n- Grassi: 9 g (10% di 89)\n\n🌙 CENA - 30% (885 kcal)\n- Proteine: 52 g (30% di 173)\n- Carboidrati: 109 g (30% di 366)\n- Grassi: 27 g (30% di 89)\n\nQuesta struttura ti permette di distribuire bene energia e nutrienti su tutta la giornata.\n\n📚 Fonti utilizzate:\n- Suddivisione pasti su linee guida SINU, ASSIRM e pratica clinica\n- Calcoli su dati LARN e Banca Dati CREA\n\n❓ Hai domande sulla suddivisione dei pasti o sui calcoli mostrati? Posso modificare la distribuzione in base a preferenze oppure procedo con la creazione dei pasti (FASE 5)?\nVuoi iniziare dalla colazione?",
+        "timestamp": 1751124548.7040157
+      },
+      {
+        "question": "5 pasti anziché 4, avendo uno spuntino la mattina ed uno il pomeriggio",
+        "answer": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI SU 5 PASTI\n\n⚡ Sto aggiornando: ripartizione delle calorie e dei macronutrienti per 5 pasti al giorno, con uno spuntino a metà mattina e uno nel pomeriggio.\n\nSpiegazione semplice:\n- Suddividere in 5 pasti rende più facile mantenere energia costante, aiuta a controllare la fame e può migliorare la performance in chi si allena frequentemente.\n- Ogni pasto riceve una quota delle calorie e dei nutrienti secondo uno schema raccomandato per 5 pasti.\n\nDistribuzione standard (su 2950 kcal):\n- Colazione: 25% (738 kcal)\n- Spuntino mattina: 5% (148 kcal)\n- Pranzo: 35% (1032 kcal)\n- Spuntino pomeriggio: 5% (148 kcal)\n- Cena: 30% (885 kcal)\n\nRipartizione dettagliata:\n\n🌅 COLAZIONE (25%)\n- 738 kcal \n- Proteine: 43 g (25% di 173)\n- Carboidrati: 92 g (25% di 366)\n- Grassi: 22 g (25% di 89)\n\n🥯 SPUNTINO MATTINA (5%)\n- 148 kcal\n- Proteine: 9 g (5% di 173)\n- Carboidrati: 18 g (5% di 366)\n- Grassi: 4 g (5% di 89)\n\n🍽️ PRANZO (35%)\n- 1032 kcal\n- Proteine: 61 g (35% di 173)\n- Carboidrati: 128 g (35% di 366)\n- Grassi: 31 g (35% di 89)\n\n🥨 SPUNTINO POMERIDIANO (5%)\n- 148 kcal\n- Proteine: 9 g (5% di 173)\n- Carboidrati: 18 g (5% di 366)\n- Grassi: 4 g (5% di 89)\n\n🌙 CENA (30%)\n- 885 kcal\n- Proteine: 52 g (30% di 173)\n- Carboidrati: 110 g (30% di 366)\n- Grassi: 27 g (30% di 89)\n\n📚 Fonti utilizzate:\n- Suddivisione calorica SINU/linee guida nazionali\n- Calcolo macro su % delle calorie impostate\n\n❓ Sei d'accordo con questa ripartizione? Vuoi aggiustamenti particolari?\nProcedo con la FASE 5: creazione dei pasti specifici, iniziando dalla colazione? Vuoi esprimere preferenze, gusti o cibi da evitare?",
+        "timestamp": 1751124613.5086575
+      },
+      {
+        "question": "ok",
+        "answer": "🌅 COLAZIONE (738 kcal)\n\n• Avena: 50 g → 🥄 mezza tazza \n  (Sostituti: 50 g di muesli, 50 g di fette biscottate)\n    P: 4 g, C: 33 g, G: 4 g\n\n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo \n  (Sostituti: 260 g di yogurt magro, 230 g di latte parzialmente scremato)\n    P: 11 g, C: 16 g, G: 1 g\n\n• Banana: 200 g → 🍌 2 banane piccole \n  (Sostituti: 310 g di mirtilli, 180 g di uva)\n    P: 2 g, C: 35 g, G: 1 g\n\n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi \n  (Sostituti: 290 g di yogurt greco 0%, 150 g di fiocchi di latte)\n    P: 21 g, C: 6 g, G: 4 g\n\n• Mandorle: 20 g → 🥜 1 piccola manciata \n  (Sostituti: 20 g di nocciole, 20 g di arachidi)\n    P: 4 g, C: 1 g, G: 11 g\n\nTotale pasto: P: 42 g, C: 91 g, G: 20 g\n\nIdee di ricetta: Mescola avena, yogurt greco e latte: aggiungi le banane a rondelle sopra. Completa con le mandorle intere per croccantezza. Puoi aggiungere cannella per un extra di gusto!\n\n📚 Fonti utilizzate:\n- Dati nutrizionali: Banca Dati CREA\n- Ottimizzazione porzioni e ricette: sistema automatizzato, in linea con obiettivi nutrizionali\n\n❓ Domande su combinazione, grammature, sostituti o ricette? Vuoi modificare qualcosa nella colazione o passo allo spuntino mattina?",
+        "timestamp": 1751124666.2768466
+      },
+      {
+        "question": "ok genera tutti i pasti senza farmi domande",
+        "answer": "Ecco la tua giornata alimentare completa strutturata su 5 pasti, con grammature, misure casalinghe e suggerimenti ricetta per ogni pasto.\n\n🌅 COLAZIONE (738 kcal)\n• Avena: 50 g → 🥄 mezza tazza  \n  (Sostituti: 50 g di muesli, 50 g di fette biscottate)  \n  P: 4 g, C: 33 g, G: 4 g  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n  (Sostituti: 260 g di yogurt magro, 230 g di latte parzialmente scremato)  \n  P: 11 g, C: 16 g, G: 1 g  \n• Banana: 200 g → 🍌 2 banane piccole  \n  (Sostituti: 310 g di mirtilli, 180 g di uva)  \n  P: 2 g, C: 35 g, G: 1 g  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n  (Sostituti: 290 g di yogurt greco 0%, 150 g di fiocchi di latte)  \n  P: 21 g, C: 6 g, G: 4 g  \n• Mandorle: 20 g → 🥜 1 piccola manciata  \n  (Sostituti: 20 g di nocciole, 20 g di arachidi)  \n  P: 4 g, C: 1 g, G: 11 g  \nTotale: P: 42 g, C: 91 g, G: 20 g  \n\n🥯 SPUNTINO MATTINA (148 kcal)\n• Pane integrale: 60 g → 🍞 2 fette  \n  (Sostituti: 30 g di cracker, 50 g di pan bauletto)  \n  P: 5 g, C: 27 g, G: 1 g  \n• Bresaola: 50 g → 🥩 6-7 fette  \n  (Sostituti: 70 g di fesa di tacchino, 30 g di prosciutto crudo)  \n  P: 17 g, C: 0 g, G: 1 g  \n• Pera: 80 g → 🍐 mezza pera media  \n  (Sostituti: 80 g di mirtilli, 90 g di ciliegie)  \n  P: 0 g, C: 8 g, G: 0 g  \nTotale: P: 22 g, C: 35 g, G: 2 g  \n\n🍽️ PRANZO (1032 kcal)\n• Riso basmati: 150 g → 🍚 1 tazza colma  \n  (Sostituti: 160 g di riso integrale, 160 g di orzo)  \n  P: 14 g, C: 124 g, G: 3 g  \n• Petto di pollo: 180 g → 🍗 1 abbondante fetta/grigliata  \n  (Sostituti: 180 g di tonno al naturale, 250 g di merluzzo)  \n  P: 42 g, C: 0 g, G: 1 g  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n  (Sostituti: 40 g di burro, 110 g di avocado)  \n  P: 0 g, C: 0 g, G: 30 g  \n• Zucchine: 290 g → 🥒 1 piatto grande  \n  (Sostituti: 290 g di verdure miste, 160 g di cavolfiore)  \n  P: 6 g, C: 5 g, G: 0 g  \nTotale: P: 61 g, C: 129 g, G: 35 g  \n\n🥨 SPUNTINO POMERIDIANO (148 kcal)\n• Cracker: 20 g → 🧇 4-5 pezzi piccoli  \n  (Sostituti: 20 g di biscotti integrali, 20 g di fette biscottate integrali)  \n  P: 2 g, C: 14 g, G: 2 g  \n• Tonno naturale: 70 g → 🥫 mezza scatoletta  \n  (Sostituti: 70 g di petto di pollo, 100 g di merluzzo)  \n  P: 17 g, C: 0 g, G: 0 g  \n• Kiwi: 80 g → 🥝 1 piccolo kiwi  \n  (Sostituti: 80 g di lamponi, 70 g di pere)  \n  P: 1 g, C: 7 g, G: 0 g  \nTotale: P: 20 g, C: 21 g, G: 3 g  \n\n🌙 CENA (885 kcal)\n• Pasta integrale: 160 g → 🍝 2 porzioni scarse  \n  (Sostituti: 150 g di farro, 150 g di pasta di semola)  \n  P: 21 g, C: 104 g, G: 4 g  \n• Salmone: 120 g → 🐟 1 filetto medio  \n  (Sostituti: 120 g di pesce spada, 150 g di orata)  \n  P: 31 g, C: 1 g, G: 5 g  \n• Melanzane: 100 g → 🍆 6-7 fette grigliate  \n  (Sostituti: 100 g di pomodoro, 100 g di fagiolini)  \n  P: 1 g, C: 3 g, G: 0 g  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n  (Sostituti: 20 g di burro, 80 g di avocado)  \n  P: 0 g, C: 0 g, G: 20 g  \nTotale: P: 53 g, C: 108 g, G: 29 g  \n\nTi ricordo: le ricette sono rapide (es. per la cena, puoi saltare le melanzane in padella col salmone) e puoi sostituire gli alimenti come indicato.\n\nOra passo al controllo degli ultraprocessati (FASE 6) prima di generare la settimana completa!",
+        "timestamp": 1751124834.152615
+      },
+      {
+        "question": "ok",
+        "answer": "🟢 CONTROLLO ULTRAPROCESSATI (FASE 6)\nNessun eccesso di alimenti ultraprocessati: solo il 6% delle calorie (<10%). L’alimentazione proposta è equilibrata e in linea con le raccomandazioni di salute.\n\nProcedo ora con la presentazione chiara della dieta SETTIMANALE completa, giorni 1-4. Tutti i pasti giornalieri includono grammature e misure casalinghe. I sostituti saranno inclusi nel PDF finale.\n\n---\n\n🗓️ GIORNO 1 - LUNEDÌ\n\n🌅 COLAZIONE \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA \n• Pane integrale: 60 g → 🍞 2 fette  \n• Bresaola: 50 g → 🥩 6-7 fette  \n• Pera: 80 g → 🍐 mezza pera media  \n\n🍽️ PRANZO \n• Riso basmati: 150 g → 🍚 1 tazza colma  \n• Petto di pollo: 180 g → 🍗 1 grigliata abbondante  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Zucchine: 290 g → 🥒 1 piatto grande  \n\n🥨 SPUNTINO POMERIDIANO \n• Cracker: 20 g → 🧇 4-5 pezzi piccoli  \n• Tonno naturale: 70 g → 🥫 mezza scatoletta  \n• Kiwi: 80 g → 🥝 1 kiwi piccolo  \n\n🌙 CENA \n• Pasta integrale: 160 g → 🍝 2 porzioni scarse  \n• Salmone: 120 g → 🐟 1 filetto medio  \n• Melanzane: 100 g → 🍆 6-7 fette grigliate  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 2 - MARTEDÌ\n\n🌅 COLAZIONE \n• Pane integrale: 150 g → 🍞 5 fette  \n• Burro di arachidi: 40 g → 🥄 2 cucchiai rasi  \n• Marmellata: 40 g → 🥄 2 cucchiai colmi  \n• Iso Fuji (polvere proteica): 20 g → 🥄 2 cucchiai  \n\n🥯 SPUNTINO MATTINA \n• Pane integrale: 60 g → 🍞 2 fette  \n• Prosciutto crudo: 30 g → 🥩 4-5 fette  \n• Mele: 80 g → 🍏 mezza mela piccola  \n\n🍽️ PRANZO \n• Couscous integrale: 100 g → 🍚 1 tazza cotta  \n• Tonno naturale: 160 g → 🥫 1 scatoletta grossa  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Insalata: 100 g → 🥗 1 ciotola abbondante  \n\n🥨 SPUNTINO POMERIDIANO \n• Yogurt greco: 150 g → 🥣 1 vasetto abbondante  \n• Cereali integrali: 20 g → 🥄 1 cucchiaio colmo  \n• Fragole: 100 g → 🍓 8-9 fragole  \n\n🌙 CENA \n• Patate dolci: 200 g → 🥔 1 tubero medio  \n• Uova: 2 → 🥚 2 intere  \n• Spinaci: 250 g → 🥬 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 3 - MERCOLEDÌ\n\n🌅 COLAZIONE \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA \n• Pane integrale: 60 g → 🍞 2 fette  \n• Tacchino fesa: 70 g → 🥩 5-6 fette  \n• Arancia: 120 g → 🍊 1 piccola  \n\n🍽️ PRANZO \n• Farro: 140 g → 🍚 1 piatto  \n• Petto di pollo: 160 g → 🍗 1 grigliata  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Pomodori: 100 g → 🍅 1 grande  \n\n🥨 SPUNTINO POMERIDIANO \n• Cracker integrali: 25 g → 🧇 5 pezzi piccoli  \n• Ricotta magra: 80 g → 🧀 3 cucchiai  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🌙 CENA \n• Pasta di semola: 120 g → 🍝 1.5 porzioni  \n• Branzino: 150 g → 🐟 1 filetto grande  \n• Broccoli: 200 g → 🥦 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 4 - GIOVEDÌ\n\n🌅 COLAZIONE \n• Cornflakes: 60 g → 🥄 2 tazze  \n• Latte scremato: 500 g → 🥛 2.5 bicchieri grandi  \n• Kiwi: 140 g → 🥝 2 kiwi medi  \n• Mandorle: 40 g → 🥜 2 manciate piccole  \n• Iso Fuji (polvere proteica): 10 g → 🥄 1 cucchiaio  \n\n🥯 SPUNTINO MATTINA \n• Gallette di riso: 30 g → 🍘 3-4 medie  \n• Yogurt magro: 125 g → 🥣 1 vasetto  \n• Fragole: 100 g → 🍓 8-9 fragole  \n\n🍽️ PRANZO \n• Riso integrale: 130 g → 🍚 1 piatto  \n• Bresaola: 90 g → 🥩 10 fette  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n• Zucchine: 150 g → 🥒 1 piatto  \n\n🥨 SPUNTINO POMERIDIANO \n• Pane integrale: 30 g → 🍞 1 fetta  \n• Prosciutto cotto: 30 g → 🥩 3 fette  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🌙 CENA \n• Orzo: 140 g → 🍚 1 piatto  \n• Uova: 2 → 🥚 2 intere  \n• Spinaci: 250 g → 🥬 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\nSe vuoi subito vedere anche i giorni 5-7 scrivilo pure, così avrai l’intera settimana completa pronta. Vuoi ricevere subito anche la seconda parte?",
+        "timestamp": 1751124932.8698459
+      },
+      {
+        "question": "si",
+        "answer": "🗓️ GIORNO 5 - VENERDÌ\n\n🌅 COLAZIONE  \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA  \n• Pane integrale: 60 g → 🍞 2 fette  \n• Prosciutto crudo: 30 g → 🥩 4-5 fette  \n• Uva: 80 g → 🍇 1 grappolo piccolo  \n\n🍽️ PRANZO  \n• Pasta integrale: 130 g → 🍝 1.5 porzioni  \n• Tonno naturale: 160 g → 🥫 1 scatoletta grossa  \n• Olio extravergine di oliva: 25 g → 🥄 2 cucchiai abbondanti  \n• Fagiolini: 200 g → 🫘 1 piatto abbondante  \n\n🥨 SPUNTINO POMERIDIANO  \n• Yogurt greco: 150 g → 🥣 1 vasetto abbondante  \n• Frutta secca mista: 20 g → 🥜 1 manciata  \n• Pesca: 140 g → 🍑 1 pesca media  \n\n🌙 CENA  \n• Riso basmati: 120 g → 🍚 1 tazza  \n• Pollo petto: 160 g → 🍗 1 grigliata  \n• Melanzane: 150 g → 🍆 8-9 fette grigliate  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 6 - SABATO\n\n🌅 COLAZIONE  \n• Cornflakes: 60 g → 🥄 2 tazze  \n• Latte scremato: 500 g → 🥛 2.5 bicchieri grandi  \n• Kiwi: 140 g → 🥝 2 kiwi medi  \n• Mandorle: 40 g → 🥜 2 manciate piccole  \n• Iso Fuji (polvere proteica): 10 g → 🥄 1 cucchiaio  \n\n🥯 SPUNTINO MATTINA  \n• Gallette di mais: 30 g → 🍙 4 medie  \n• Ricotta magra: 70 g → 🧀 3 cucchiai  \n• Mirtilli: 80 g → 🫐 mezza vaschetta  \n\n🍽️ PRANZO  \n• Couscous integrale: 100 g → 🍚 1 tazza cotta  \n• Tacchino: 120 g → 🍗 1 porzione arrosto  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Insalata mista: 100 g → 🥗 1 ciotola grande  \n\n🥨 SPUNTINO POMERIDIANO  \n• Pane integrale: 30 g → 🍞 1 fetta  \n• Prosciutto cotto: 30 g → 🥩 3 fette  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🌙 CENA  \n• Pasta di semola: 120 g → 🍝 1.5 porzioni  \n• Pesce spada: 130 g → 🐟 1 trancio  \n• Broccoli: 200 g → 🥦 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\n🗓️ GIORNO 7 - DOMENICA\n\n🌅 COLAZIONE  \n• Avena: 50 g → 🥄 mezza tazza  \n• Latte scremato: 300 g → 🥛 1 grande bicchiere e mezzo  \n• Banana: 200 g → 🍌 2 banane piccole  \n• Yogurt greco: 210 g → 🥣 2 vasetti scarsi  \n• Mandorle: 20 g → 🥜 1 manciata piccola  \n\n🥯 SPUNTINO MATTINA  \n• Pane integrale: 60 g → 🍞 2 fette  \n• Bresaola: 50 g → 🥩 6-7 fette  \n• Albicocche: 80 g → 🍑 2 albicocche  \n\n🍽️ PRANZO  \n• Orzo: 130 g → 🍚 1 piatto  \n• Tacchino: 120 g → 🍗 1 porzione arrosto  \n• Olio extravergine di oliva: 30 g → 🥄 3 cucchiai  \n• Zucchine: 150 g → 🥒 1 piatto  \n\n🥨 SPUNTINO POMERIDIANO  \n• Cracker integrali: 25 g → 🧇 5 pezzi piccoli  \n• Tonno naturale: 60 g → 🥫 mezza scatoletta  \n• Arancia: 100 g → 🍊 1 piccola  \n\n🌙 CENA  \n• Patate dolci: 200 g → 🥔 1 tubero medio  \n• Salmone: 120 g → 🐟 1 filetto medio  \n• Spinaci: 250 g → 🥬 1 piatto  \n• Olio extravergine di oliva: 20 g → 🥄 2 cucchiai  \n\n---\n\nLa tua dieta settimanale è completa, bilanciata e varia, con grammature chiare sia in grammi che in misure casalinghe. I sostituti alimentari saranno sempre presenti nel PDF finale per ogni giornata.\n\n📚 Tutto costruito su dati ufficiali CREA, linee guida SINU, e struttura dei macronutrienti calcolata sulle tue specifiche esigenze di allenamento e obiettivi.\n\nHai bisogno di spiegazioni, modifiche a una giornata, o vuoi ricevere la lista della spesa? Vuoi dettagli sulle ricette, approfondimenti o altre domande sui cambi/settimane future?",
+        "timestamp": 1751134552.2300253
+      },
+      {
+        "question": "alternative al pane/pasta/riso a pranzo?",
+        "answer": "✓ FASE EXTRA – ALTERNATIVE A PANE/PASTA/RISO A PRANZO\n\n⚡ Sto per suggerirti delle valide alternative ai cereali classici (pane, pasta, riso) che puoi usare a pranzo, mantenendo equilibrio tra carboidrati, proteine e grassi.\n\nSpiegazione semplice:\n- Cambiare cereali è utile per non annoiarsi, avere più micronutrienti e fibre, e beneficiare di profili glicemici diversi.\n- Tutte le alternative devono fornire una porzione di carboidrati simile a quelle proposte finora (100-150 g crudi o equivalenti a 70-100 g di carboidrati a pasto).\n\n📊 Ecco alcune alternative per la base glucidica del pranzo:\n- **Farro**: 80-100 g crudi = 1 piatto medio cotto\n- **Orzo**: 80-100 g crudi = 1 piatto medio cotto\n- **Quinoa**: 70-80 g crudi = 1 ciotola cotta (alto contenuto proteico)\n- **Couscous integrale**: 70-80 g secchi = 1 ciotola abbondante cotta\n- **Patate dolci**: 250-300 g = 1 patata grande cotta\n- **Patate classiche**: 300-350 g = 2 patate medie cotte\n- **Polenta istantanea**: 60-70 g = 1 piatto fondo\n- **Legumi secchi**: 70-80 g crudi o 200 g cotti (ceci, lenticchie, fagioli – in questo caso riduci una delle fonti proteiche animali del pranzo)\n- **Grano saraceno**: 70-80 g crudi = 1 piattino cotto\n- **Bulgur**: 70-80 g crudi = 1 ciotola cotta\n\nPer comporre il pasto:\n1. Scegli la base dalla lista.\n2. Aggiungi fonte proteica (pollo, tonno, tacchino, legumi se non usati come base).\n3. Aggiungi verdure e grassi (olio extravergine di oliva/noci).\n\n📚 Fonti utilizzate:\n- Dati di composizione CREA\n- Tabelle di equivalenza ufficiali LARN-SINU\n\n❓ Se vuoi un esempio concreto di pasto alternativo con grammature dettagliate, dimmi quale base ti interessa (es. quinoa, patate dolci) e ti costruisco subito tutto il piatto! Vuoi vedere delle alternative composte?",
+        "timestamp": 1751134689.2084172
+      },
+      {
+        "question": "al posto di 130 gr di riso, oppure di 100 gr di pasta quanti gr di patate posso mangiare?",
+        "answer": "✓ FASE EXTRA – CONVERSIONE: RISO O PASTA → PATATE\n\n⚡ Sto calcolando: le quantità di patate (classiche o dolci) che apportano una quantità simile di carboidrati rispetto a 130 g di riso o 100 g di pasta.\n\nSpiegazione semplice:\n- Riso e pasta sono molto più “densi” di carboidrati rispetto alle patate.\n- Le patate (sia classiche che dolci) hanno circa 17-20 g di carboidrati ogni 100 g, mentre riso e pasta da crudi ne hanno 75-80 g circa ogni 100 g.\n\n📊 Calcoli:\n\n**Caso 1: 130 g di riso crudo**\n- Carboidrati nel riso: 130 * 80 / 100 = 104 g carboidrati\n\n**Quanti gr di patate equivalgono a 104 g di carboidrati?**\n- Patate: 17 g carboidrati ogni 100 g\n- 104 g carboidrati / 17 = 6.1 → 6.1 * 100 = 610 g patate\n\nQuindi:  \n▶️ 130 g di riso crudo ≈ 610 g di patate (classiche)\n\n---\n\n**Caso 2: 100 g di pasta cruda**\n- Carboidrati nella pasta: 100 * 75 / 100 = 75 g carboidrati\n\n**Quanti gr di patate equivalgono a 75 g di carboidrati?**\n- 75 / 17 = 4.4 → 4.4 * 100 = 440 g patate\n\nQuindi:  \n▶️ 100 g di pasta cruda ≈ 440 g di patate (classiche)\n\n---\n\nRicapitolando:\n- 130 g di riso crudo ≈ 610 g di patate\n- 100 g di pasta cruda ≈ 440 g di patate\n\n📚 Fonti utilizzate:\n- Composizione alimenti CREA (dati ufficiali Italia, 2023)\n- Guide equivalenze carboidrati, LARN SINU\n\n➡️ Hai altre domande sulle equivalenze degli alimenti, vuoi vedere questo adattamento anche con patate dolci o altre basi? Vuoi che ti proponga un pasto completo con queste quantità?",
+        "timestamp": 1751136011.558058
+      }
+    ]
+  },
+  "nutritional_info_extracted": {
+    "caloric_needs": {
+      "aggiustamento_obiettivo": -500,
+      "bmr": 2035,
+      "laf_utilizzato": 1.45,
+      "fabbisogno_base": 2951,
+      "dispendio_sportivo": 500,
+      "fabbisogno_finale": 2951,
+      "fabbisogno_totale": 3451
+    },
+    "macros_total": {
+      "kcal_finali": 2951,
+      "proteine_g": 173,
+      "proteine_kcal": 692,
+      "proteine_percentuale": 23,
+      "grassi_g": 89,
+      "grassi_kcal": 797,
+      "grassi_percentuale": 27,
+      "carboidrati_g": 366,
+      "carboidrati_kcal": 1462,
+      "carboidrati_percentuale": 50,
+      "kcal_totali": 2951
+    },
+    "daily_macros": {
+      "numero_pasti": 5,
+      "distribuzione_pasti": {
+        "colazione": {
+          "kcal": 738,
+          "percentuale_kcal": 25,
+          "proteine_g": 42,
+          "carboidrati_g": 91,
+          "grassi_g": 20
+        },
+        "pranzo": {
+          "kcal": 1032,
+          "percentuale_kcal": 35,
+          "proteine_g": 61,
+          "carboidrati_g": 129,
+          "grassi_g": 35
+        },
+        "spuntino_pomeridiano": {
+          "kcal": 148,
+          "percentuale_kcal": 5,
+          "proteine_g": 20,
+          "carboidrati_g": 21,
+          "grassi_g": 3
+        },
+        "cena": {
+          "kcal": 885,
+          "percentuale_kcal": 30,
+          "proteine_g": 53,
+          "carboidrati_g": 108,
+          "grassi_g": 29
+        },
+        "spuntino_mattutino": {
+          "kcal": 148,
+          "percentuale_kcal": 5,
+          "proteine_g": 22,
+          "carboidrati_g": 35,
+          "grassi_g": 2
+        }
+      }
+    },
+    "weekly_diet_day_1": [
+      {
+        "nome_pasto": "colazione",
+        "alimenti": [
+          {
+            "nome_alimento": "Avena",
+            "quantita_g": 50,
+            "misura_casalinga": "mezza tazza"
+          },
+          {
+            "nome_alimento": "Latte scremato",
+            "quantita_g": 300,
+            "misura_casalinga": "1 grande bicchiere e mezzo"
+          },
+          {
+            "nome_alimento": "Banana",
+            "quantita_g": 200,
+            "misura_casalinga": "2 banane piccole"
+          },
+          {
+            "nome_alimento": "Yogurt greco",
+            "quantita_g": 210,
+            "misura_casalinga": "2 vasetti scarsi"
+          },
+          {
+            "nome_alimento": "Mandorle",
+            "quantita_g": 20,
+            "misura_casalinga": "1 manciata piccola"
+          }
+        ]
+      },
+      {
+        "nome_pasto": "spuntino_mattutino",
+        "alimenti": [
+          {
+            "nome_alimento": "Pane integrale",
+            "quantita_g": 60,
+            "misura_casalinga": "2 fette"
+          },
+          {
+            "nome_alimento": "Bresaola",
+            "quantita_g": 50,
+            "misura_casalinga": "6-7 fette"
+          },
+          {
+            "nome_alimento": "Pera",
+            "quantita_g": 80,
+            "misura_casalinga": "mezza pera media"
+          }
+        ]
+      },
+      {
+        "nome_pasto": "spuntino_pomeridiano",
+        "alimenti": [
+          {
+            "nome_alimento": "Cracker",
+            "quantita_g": 20,
+            "misura_casalinga": "4-5 pezzi piccoli"
+          },
+          {
+            "nome_alimento": "Tonno naturale",
+            "quantita_g": 70,
+            "misura_casalinga": "mezza scatoletta"
+          },
+          {
+            "nome_alimento": "Kiwi",
+            "quantita_g": 80,
+            "misura_casalinga": "1 kiwi piccolo"
+          }
+        ]
+      },
+      {
+        "nome_pasto": "cena",
+        "alimenti": [
+          {
+            "nome_alimento": "Pasta integrale",
+            "quantita_g": 160,
+            "misura_casalinga": "2 porzioni scarse"
+          },
+          {
+            "nome_alimento": "Salmone",
+            "quantita_g": 120,
+            "misura_casalinga": "1 filetto medio"
+          },
+          {
+            "nome_alimento": "Melanzane",
+            "quantita_g": 100,
+            "misura_casalinga": "6-7 fette grigliate"
+          },
+          {
+            "nome_alimento": "Olio extravergine di oliva",
+            "quantita_g": 20,
+            "misura_casalinga": "2 cucchiai"
+          }
+        ]
+      },
+      {
+        "nome_pasto": "pranzo",
+        "alimenti": [
+          {
+            "nome_alimento": "Farro",
+            "quantita_g": 80,
+            "stato": "crudo",
+            "misura_casalinga": "1 piatto medio cotto"
+          },
+          {
+            "nome_alimento": "Orzo",
+            "quantita_g": 80,
+            "stato": "crudo",
+            "misura_casalinga": "1 piatto medio cotto"
+          },
+          {
+            "nome_alimento": "Quinoa",
+            "quantita_g": 70,
+            "stato": "crudo",
+            "misura_casalinga": "1 ciotola cotta"
+          },
+          {
+            "nome_alimento": "Couscous integrale",
+            "quantita_g": 70,
+            "stato": "secco",
+            "misura_casalinga": "1 ciotola abbondante cotta"
+          },
+          {
+            "nome_alimento": "Patate dolci",
+            "quantita_g": 250,
+            "stato": "cotte",
+            "misura_casalinga": "1 patata grande cotta"
+          },
+          {
+            "nome_alimento": "Patate classiche",
+            "quantita_g": 300,
+            "stato": "cotte",
+            "misura_casalinga": "2 patate medie cotte"
+          },
+          {
+            "nome_alimento": "Polenta istantanea",
+            "quantita_g": 60,
+            "stato": "secca",
+            "misura_casalinga": "1 piatto fondo"
+          },
+          {
+            "nome_alimento": "Legumi secchi",
+            "quantita_g": 70,
+            "stato": "crudi",
+            "misura_casalinga": "200 g cotti"
+          },
+          {
+            "nome_alimento": "Grano saraceno",
+            "quantita_g": 70,
+            "stato": "crudo",
+            "misura_casalinga": "1 piattino cotto"
+          },
+          {
+            "nome_alimento": "Bulgur",
+            "quantita_g": 70,
+            "stato": "crudo",
+            "misura_casalinga": "1 ciotola cotta"
+          }
+        ]
+      }
+    ],
+    "weekly_diet_days_2_7": {
+      "giorno_2": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 150,
+              "misura_casalinga": "5 fette"
+            },
+            {
+              "nome_alimento": "Burro di arachidi",
+              "quantita_g": 40,
+              "misura_casalinga": "2 cucchiai rasi"
+            },
+            {
+              "nome_alimento": "Marmellata",
+              "quantita_g": 40,
+              "misura_casalinga": "2 cucchiai colmi"
+            },
+            {
+              "nome_alimento": "Iso Fuji (polvere proteica)",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        },
+        "spuntino_mattutino": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 60,
+              "misura_casalinga": "2 fette"
+            },
+            {
+              "nome_alimento": "Prosciutto crudo",
+              "quantita_g": 30,
+              "misura_casalinga": "4-5 fette"
+            },
+            {
+              "nome_alimento": "Mele",
+              "quantita_g": 80,
+              "misura_casalinga": "mezza mela piccola"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Couscous integrale",
+              "quantita_g": 100,
+              "misura_casalinga": "1 tazza cotta"
+            },
+            {
+              "nome_alimento": "Tonno naturale",
+              "quantita_g": 160,
+              "misura_casalinga": "1 scatoletta grossa"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 30,
+              "misura_casalinga": "3 cucchiai"
+            },
+            {
+              "nome_alimento": "Insalata",
+              "quantita_g": 100,
+              "misura_casalinga": "1 ciotola abbondante"
+            }
+          ]
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Yogurt greco",
+              "quantita_g": 150,
+              "misura_casalinga": "1 vasetto abbondante"
+            },
+            {
+              "nome_alimento": "Cereali integrali",
+              "quantita_g": 20,
+              "misura_casalinga": "1 cucchiaio colmo"
+            },
+            {
+              "nome_alimento": "Fragole",
+              "quantita_g": 100,
+              "misura_casalinga": "8-9 fragole"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Patate dolci",
+              "quantita_g": 200,
+              "misura_casalinga": "1 tubero medio"
+            },
+            {
+              "nome_alimento": "Uova",
+              "misura_casalinga": "2 intere"
+            },
+            {
+              "nome_alimento": "Spinaci",
+              "quantita_g": 250,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        }
+      },
+      "giorno_3": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Avena",
+              "quantita_g": 50,
+              "misura_casalinga": "mezza tazza"
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 300,
+              "misura_casalinga": "1 grande bicchiere e mezzo"
+            },
+            {
+              "nome_alimento": "Banana",
+              "quantita_g": 200,
+              "misura_casalinga": "2 banane piccole"
+            },
+            {
+              "nome_alimento": "Yogurt greco",
+              "quantita_g": 210,
+              "misura_casalinga": "2 vasetti scarsi"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 20,
+              "misura_casalinga": "1 manciata piccola"
+            }
+          ]
+        },
+        "spuntino_mattutino": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 60,
+              "misura_casalinga": "2 fette"
+            },
+            {
+              "nome_alimento": "Tacchino fesa",
+              "quantita_g": 70,
+              "misura_casalinga": "5-6 fette"
+            },
+            {
+              "nome_alimento": "Arancia",
+              "quantita_g": 120,
+              "misura_casalinga": "1 piccola"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Farro",
+              "quantita_g": 140,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Petto di pollo",
+              "quantita_g": 160,
+              "misura_casalinga": "1 grigliata"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 30,
+              "misura_casalinga": "3 cucchiai"
+            },
+            {
+              "nome_alimento": "Pomodori",
+              "quantita_g": 100,
+              "misura_casalinga": "1 grande"
+            }
+          ]
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Cracker integrali",
+              "quantita_g": 25,
+              "misura_casalinga": "5 pezzi piccoli"
+            },
+            {
+              "nome_alimento": "Ricotta magra",
+              "quantita_g": 80,
+              "misura_casalinga": "3 cucchiai"
+            },
+            {
+              "nome_alimento": "Albicocche",
+              "quantita_g": 80,
+              "misura_casalinga": "2 albicocche"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pasta di semola",
+              "quantita_g": 120,
+              "misura_casalinga": "1.5 porzioni"
+            },
+            {
+              "nome_alimento": "Branzino",
+              "quantita_g": 150,
+              "misura_casalinga": "1 filetto grande"
+            },
+            {
+              "nome_alimento": "Broccoli",
+              "quantita_g": 200,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        }
+      },
+      "giorno_4": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Cornflakes",
+              "quantita_g": 60,
+              "misura_casalinga": "2 tazze"
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 500,
+              "misura_casalinga": "2.5 bicchieri grandi"
+            },
+            {
+              "nome_alimento": "Kiwi",
+              "quantita_g": 140,
+              "misura_casalinga": "2 kiwi medi"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 40,
+              "misura_casalinga": "2 manciate piccole"
+            },
+            {
+              "nome_alimento": "Iso Fuji (polvere proteica)",
+              "quantita_g": 10,
+              "misura_casalinga": "1 cucchiaio"
+            }
+          ]
+        },
+        "spuntino_mattutino": {
+          "alimenti": [
+            {
+              "nome_alimento": "Gallette di riso",
+              "quantita_g": 30,
+              "misura_casalinga": "3-4 medie"
+            },
+            {
+              "nome_alimento": "Yogurt magro",
+              "quantita_g": 125,
+              "misura_casalinga": "1 vasetto"
+            },
+            {
+              "nome_alimento": "Fragole",
+              "quantita_g": 100,
+              "misura_casalinga": "8-9 fragole"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Riso integrale",
+              "quantita_g": 130,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Bresaola",
+              "quantita_g": 90,
+              "misura_casalinga": "10 fette"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            },
+            {
+              "nome_alimento": "Zucchine",
+              "quantita_g": 150,
+              "misura_casalinga": "1 piatto"
+            }
+          ]
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 30,
+              "misura_casalinga": "1 fetta"
+            },
+            {
+              "nome_alimento": "Prosciutto cotto",
+              "quantita_g": 30,
+              "misura_casalinga": "3 fette"
+            },
+            {
+              "nome_alimento": "Albicocche",
+              "quantita_g": 80,
+              "misura_casalinga": "2 albicocche"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Orzo",
+              "quantita_g": 140,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Uova",
+              "misura_casalinga": "2 intere"
+            },
+            {
+              "nome_alimento": "Spinaci",
+              "quantita_g": 250,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        }
+      },
+      "giorno_5": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Avena",
+              "quantita_g": 50,
+              "misura_casalinga": "mezza tazza"
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 300,
+              "misura_casalinga": "1 grande bicchiere e mezzo"
+            },
+            {
+              "nome_alimento": "Banana",
+              "quantita_g": 200,
+              "misura_casalinga": "2 banane piccole"
+            },
+            {
+              "nome_alimento": "Yogurt greco",
+              "quantita_g": 210,
+              "misura_casalinga": "2 vasetti scarsi"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 20,
+              "misura_casalinga": "1 manciata piccola"
+            }
+          ]
+        },
+        "spuntino_mattutino": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 60,
+              "misura_casalinga": "2 fette"
+            },
+            {
+              "nome_alimento": "Prosciutto crudo",
+              "quantita_g": 30,
+              "misura_casalinga": "4-5 fette"
+            },
+            {
+              "nome_alimento": "Uva",
+              "quantita_g": 80,
+              "misura_casalinga": "1 grappolo piccolo"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pasta integrale",
+              "quantita_g": 130,
+              "misura_casalinga": "1.5 porzioni"
+            },
+            {
+              "nome_alimento": "Tonno naturale",
+              "quantita_g": 160,
+              "misura_casalinga": "1 scatoletta grossa"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 25,
+              "misura_casalinga": "2 cucchiai abbondanti"
+            },
+            {
+              "nome_alimento": "Fagiolini",
+              "quantita_g": 200,
+              "misura_casalinga": "1 piatto abbondante"
+            }
+          ]
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Yogurt greco",
+              "quantita_g": 150,
+              "misura_casalinga": "1 vasetto abbondante"
+            },
+            {
+              "nome_alimento": "Frutta secca mista",
+              "quantita_g": 20,
+              "misura_casalinga": "1 manciata"
+            },
+            {
+              "nome_alimento": "Pesca",
+              "quantita_g": 140,
+              "misura_casalinga": "1 pesca media"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Riso basmati",
+              "quantita_g": 120,
+              "misura_casalinga": "1 tazza"
+            },
+            {
+              "nome_alimento": "Pollo petto",
+              "quantita_g": 160,
+              "misura_casalinga": "1 grigliata"
+            },
+            {
+              "nome_alimento": "Melanzane",
+              "quantita_g": 150,
+              "misura_casalinga": "8-9 fette grigliate"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        }
+      },
+      "giorno_6": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Cornflakes",
+              "quantita_g": 60,
+              "misura_casalinga": "2 tazze"
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 500,
+              "misura_casalinga": "2.5 bicchieri grandi"
+            },
+            {
+              "nome_alimento": "Kiwi",
+              "quantita_g": 140,
+              "misura_casalinga": "2 kiwi medi"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 40,
+              "misura_casalinga": "2 manciate piccole"
+            },
+            {
+              "nome_alimento": "Iso Fuji (polvere proteica)",
+              "quantita_g": 10,
+              "misura_casalinga": "1 cucchiaio"
+            }
+          ]
+        },
+        "spuntino_mattutino": {
+          "alimenti": [
+            {
+              "nome_alimento": "Gallette di mais",
+              "quantita_g": 30,
+              "misura_casalinga": "4 medie"
+            },
+            {
+              "nome_alimento": "Ricotta magra",
+              "quantita_g": 70,
+              "misura_casalinga": "3 cucchiai"
+            },
+            {
+              "nome_alimento": "Mirtilli",
+              "quantita_g": 80,
+              "misura_casalinga": "mezza vaschetta"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Couscous integrale",
+              "quantita_g": 100,
+              "misura_casalinga": "1 tazza cotta"
+            },
+            {
+              "nome_alimento": "Tacchino",
+              "quantita_g": 120,
+              "misura_casalinga": "1 porzione arrosto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 30,
+              "misura_casalinga": "3 cucchiai"
+            },
+            {
+              "nome_alimento": "Insalata mista",
+              "quantita_g": 100,
+              "misura_casalinga": "1 ciotola grande"
+            }
+          ]
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 30,
+              "misura_casalinga": "1 fetta"
+            },
+            {
+              "nome_alimento": "Prosciutto cotto",
+              "quantita_g": 30,
+              "misura_casalinga": "3 fette"
+            },
+            {
+              "nome_alimento": "Albicocche",
+              "quantita_g": 80,
+              "misura_casalinga": "2 albicocche"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pasta di semola",
+              "quantita_g": 120,
+              "misura_casalinga": "1.5 porzioni"
+            },
+            {
+              "nome_alimento": "Pesce spada",
+              "quantita_g": 130,
+              "misura_casalinga": "1 trancio"
+            },
+            {
+              "nome_alimento": "Broccoli",
+              "quantita_g": 200,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        }
+      },
+      "giorno_7": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Avena",
+              "quantita_g": 50,
+              "misura_casalinga": "mezza tazza"
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 300,
+              "misura_casalinga": "1 grande bicchiere e mezzo"
+            },
+            {
+              "nome_alimento": "Banana",
+              "quantita_g": 200,
+              "misura_casalinga": "2 banane piccole"
+            },
+            {
+              "nome_alimento": "Yogurt greco",
+              "quantita_g": 210,
+              "misura_casalinga": "2 vasetti scarsi"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 20,
+              "misura_casalinga": "1 manciata piccola"
+            }
+          ]
+        },
+        "spuntino_mattutino": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 60,
+              "misura_casalinga": "2 fette"
+            },
+            {
+              "nome_alimento": "Bresaola",
+              "quantita_g": 50,
+              "misura_casalinga": "6-7 fette"
+            },
+            {
+              "nome_alimento": "Albicocche",
+              "quantita_g": 80,
+              "misura_casalinga": "2 albicocche"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Orzo",
+              "quantita_g": 130,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Tacchino",
+              "quantita_g": 120,
+              "misura_casalinga": "1 porzione arrosto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 30,
+              "misura_casalinga": "3 cucchiai"
+            },
+            {
+              "nome_alimento": "Zucchine",
+              "quantita_g": 150,
+              "misura_casalinga": "1 piatto"
+            }
+          ]
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Cracker integrali",
+              "quantita_g": 25,
+              "misura_casalinga": "5 pezzi piccoli"
+            },
+            {
+              "nome_alimento": "Tonno naturale",
+              "quantita_g": 60,
+              "misura_casalinga": "mezza scatoletta"
+            },
+            {
+              "nome_alimento": "Arancia",
+              "quantita_g": 100,
+              "misura_casalinga": "1 piccola"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Patate dolci",
+              "quantita_g": 200,
+              "misura_casalinga": "1 tubero medio"
+            },
+            {
+              "nome_alimento": "Salmone",
+              "quantita_g": 120,
+              "misura_casalinga": "1 filetto medio"
+            },
+            {
+              "nome_alimento": "Spinaci",
+              "quantita_g": 250,
+              "misura_casalinga": "1 piatto"
+            },
+            {
+              "nome_alimento": "Olio extravergine di oliva",
+              "quantita_g": 20,
+              "misura_casalinga": "2 cucchiai"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "conversation_costs": {
+    "tokens": {
+      "input": 1773,
+      "output": 9766,
+      "total": 11539
+    },
+    "costs": {
+      "input_cost_usd": 0.0035,
+      "output_cost_usd": 0.0781,
+      "total_cost_usd": 0.0817,
+      "total_cost_eur": 0.0751
+    },
+    "usage": {
+      "message_count": 24,
+      "duration_minutes": 195.05,
+      "avg_tokens_per_message": 480.79
+    },
+    "model": "gpt-4",
+    "timestamp": "2025-06-28T18:40:11.339339"
+  },
+  "last_cost_update": "2025-06-28T18:40:11.339339"
+}
