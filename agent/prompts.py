@@ -675,7 +675,7 @@ Se utente chiede di modificare un pasto, usa sempre il tool optimize_meal_portio
    - SEMPRE specificare macronutrienti per ogni alimento
    - SEMPRE utilizzare i dati del tool optimize_meal_portions per macro_single_foods
 
-   **FORMATO ESATTO DA SEGUIRE:**
+   **FORMATO ESATTO DA SEGUIRE SEMPRE:**
    
    🌅 **COLAZIONE** (500 kcal)
    • **Avena**: 80g → 🥄 1 tazza  (Sostituti: 50g di cornflakes, 70g di biscotti integrali)
