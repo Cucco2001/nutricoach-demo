@@ -143,10 +143,9 @@ def handle_registration_form(user_data_manager):
                 success, result = user_data_manager.register_user(new_username.lower(), new_email, new_password)
                 if success:
                     st.success("Registrazione completata! Ora puoi accedere.")
-                    # Imposta la vista su 'Accedi' per il redirect
-                    st.session_state.login_view = 'Accedi'
-                    st.rerun() # Forza il rerender per mostrare il form di login
-                    return True # Anche se il rerun ferma l'esecuzione, è buona pratica
+                    # Imposta il flag per il redirect via JS e fai un rerun
+                    st.session_state.registration_successful = True
+                    st.rerun()
                 else:
                     st.error(result)
                     return False
@@ -164,20 +163,25 @@ def handle_login_registration(user_data_manager):
     Returns:
         bool: True se l'utente è autenticato, False altrimenti
     """
+    # Se la registrazione è appena avvenuta, esegui JS per switchare al tab di login
+    if st.session_state.get('registration_successful', False):
+        from streamlit_js_eval import streamlit_js_eval
+        
+        js_to_click_tab = """
+        setTimeout(() => {
+            const allTabs = window.parent.document.querySelectorAll('button[data-baseweb="tab"]');
+            const loginTab = Array.from(allTabs).find(tab => tab.innerText.includes("Accedi"));
+            if (loginTab) {
+                loginTab.click();
+            }
+        }, 100);
+        """
+        streamlit_js_eval(js_expressions=js_to_click_tab, key="click_login_tab")
+        del st.session_state.registration_successful # Rimuovi il flag
+
     # Inizializza user_info se non esiste
     if "user_info" not in st.session_state:
         st.session_state.user_info = None
-        
-    # Inizializza la vista di login/registrazione
-    if 'login_view' not in st.session_state:
-        st.session_state.login_view = 'Accedi'
-
-    # Funzioni per cambiare vista
-    def go_to_register():
-        st.session_state.login_view = 'Registrati'
-    
-    def go_to_login():
-        st.session_state.login_view = 'Accedi'
 
     # Se l'utente non è autenticato, mostra form di login/registrazione
     if not st.session_state.user_info:
@@ -197,21 +201,14 @@ def handle_login_registration(user_data_manager):
             unsafe_allow_html=True
         )
         
-        if st.session_state.login_view == 'Accedi':
-            handle_login_form(user_data_manager)
-            st.write("---")
-            st.write("Non hai un account?")
-            if st.button("✨ Registrati ora", key="go_to_register_btn"):
-                go_to_register()
-                st.rerun()
+        # Tabs per Login/Registrazione con stile migliorato
+        tab1, tab2 = st.tabs(["🔐 Accedi", "✨ Registrati"])
         
-        elif st.session_state.login_view == 'Registrati':
+        with tab1:
+            handle_login_form(user_data_manager)
+        
+        with tab2:
             handle_registration_form(user_data_manager)
-            st.write("---")
-            st.write("Hai già un account?")
-            if st.button("🔐 Accedi", key="go_to_login_btn"):
-                go_to_login()
-                st.rerun()
             
         st.markdown('</div>', unsafe_allow_html=True)
 
