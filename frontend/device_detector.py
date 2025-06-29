@@ -1,5 +1,7 @@
 import streamlit as st
 import re
+import streamlit.components.v1 as components
+from streamlit_js_eval import streamlit_js_eval
 
 def is_mobile_user_agent():
     """
@@ -24,81 +26,38 @@ def is_mobile_user_agent():
     except:
         return False
 
-def detect_mobile_via_css():
-    """
-    Utilizza CSS media queries per rilevare dispositivi mobile.
-    Questo è il metodo più affidable in Streamlit.
-    """
-    # CSS con media query per rilevazione mobile
-    mobile_detection_css = """
-    <style>
-        .device-detector {
-            display: none;
-        }
-        
-        .device-type {
-            display: none;
-        }
-        
-        /* Desktop indicator */
-        .desktop-indicator {
-            display: block;
-        }
-        
-        /* Mobile indicators */
-        @media screen and (max-width: 768px) {
-            .mobile-indicator {
-                display: block;
-            }
-            .desktop-indicator {
-                display: none;
-            }
-        }
-        
-        @media screen and (max-width: 480px) {
-            .phone-indicator {
-                display: block;
-            }
-        }
-        
-        @media screen and (min-width: 481px) and (max-width: 768px) {
-            .tablet-indicator {
-                display: block;
-            }
-        }
-    </style>
-    
-    <!-- Indicators nascosti per la rilevazione -->
-    <div class="device-detector">
-        <div class="mobile-indicator device-type" data-device="mobile"></div>
-        <div class="phone-indicator device-type" data-device="phone"></div>
-        <div class="tablet-indicator device-type" data-device="tablet"></div>
-        <div class="desktop-indicator device-type" data-device="desktop"></div>
-    </div>
-    """
-    
-    st.markdown(mobile_detection_css, unsafe_allow_html=True)
+
 
 def get_device_type():
     """
-    Determina il tipo di dispositivo usando una logica semplificata.
+    Rileva il tipo di dispositivo in modo robusto usando streamlit-js-eval.
+    
+    Logica:
+    1. Usa streamlit_js_eval per leggere window.innerWidth.
+    2. Determina il tipo di dispositivo ('desktop' o 'mobile').
+    3. Salva il risultato in st.session_state per coerenza.
     """
-    # Inizializza le informazioni del dispositivo se non esistono
-    if 'device_type' not in st.session_state:
-        st.session_state.device_type = 'desktop'  # Default
-    
-    # Controlla se è stato forzato manualmente
-    if 'force_device_type' in st.session_state:
-        return st.session_state.force_device_type
-    
-    return st.session_state.device_type
+    # Rilevamento robusto con streamlit_js_eval
+    width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
+
+    # Gestisci il caso in cui `width` è None al primo rendering
+    if width is None:
+        return st.session_state.get('device_type', 'desktop') # Default sicuro
+
+    # Determina il tipo di dispositivo in base alla larghezza
+    device_type = 'desktop' if width > 768 else 'mobile'
+
+    # Salva in session_state se cambia
+    if st.session_state.get('device_type') != device_type:
+        print(f"✅ Dispositivo rilevato: {device_type.upper()} (Larghezza: {width}px)")
+        st.session_state.device_type = device_type
+
+    return device_type
 
 def is_mobile():
-    """
-    Restituisce True se il dispositivo è considerato mobile (phone o tablet).
-    """
-    device_type = get_device_type()
-    return device_type in ['mobile', 'phone', 'tablet']
+    """Restituisce True se il dispositivo è considerato mobile."""
+    # Ora si basa su un valore affidabile in session_state.
+    return st.session_state.get('device_type') == 'mobile'
 
 def is_phone():
     """
@@ -117,42 +76,6 @@ def is_desktop():
     Restituisce True se il dispositivo è desktop.
     """
     return get_device_type() == 'desktop'
-
-def force_mobile():
-    """
-    Forza la modalità mobile per testing.
-    """
-    st.session_state.force_device_type = 'mobile'
-
-def force_desktop():
-    """
-    Forza la modalità desktop per testing.
-    """
-    st.session_state.force_device_type = 'desktop'
-
-def reset_device_detection():
-    """
-    Resetta la rilevazione del dispositivo.
-    """
-    if 'force_device_type' in st.session_state:
-        del st.session_state.force_device_type
-
-def auto_detect_device():
-    """
-    Tenta di rilevare automaticamente il tipo di dispositivo.
-    Utilizza una combinazione di approcci per massimizzare l'accuratezza.
-    """
-    # Applica CSS per rilevazione
-    detect_mobile_via_css()
-    
-    # Utilizza una euristica basata su viewport comune
-    # In assenza di JavaScript, assume mobile se non specificato diversamente
-    
-    # Se non è stata fatta una scelta manuale, usa logica euristica
-    if 'device_choice_made' not in st.session_state:
-        # Default intelligente: se in sidebar c'è poco spazio, probabilmente è mobile
-        # Questo è un approccio approssimativo ma funzionale
-        pass
 
 def show_device_selector():
     """
