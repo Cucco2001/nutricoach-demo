@@ -7,4 +7,4 @@ requirements.txt
 *.pyz
 aws
 secrets.toml
-user_data/
+user_data
