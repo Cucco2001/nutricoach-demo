@@ -25,8 +25,11 @@ def load_mobile_css():
     }
     
     .main .block-container {
-        padding: 1rem 0.5rem 0.5rem !important;
+        /* Padding ridotto per un look più pulito, soprattutto in chat */
+        padding: 0.5rem 0.5rem 6rem !important; /* Aggiunto padding-bottom per l'input fisso */
         max-width: 100% !important;
+        padding-top: 2rem;
+        padding-bottom: 1rem;
     }
     
     /* --- Header App Mobile --- */
@@ -76,9 +79,7 @@ def load_mobile_css():
     }
 
     /* --- Sidebar Mobile --- */
-    .css-1d391kg {
-        width: 280px !important;
-    }
+    /* La regola con selettore generato è stata rimossa perché instabile */
     
     /* --- Input Fields Mobile --- */
     .stTextInput > div > div > input,
@@ -89,43 +90,64 @@ def load_mobile_css():
         border-radius: var(--border-radius) !important;
     }
 
-    /* --- Chat Mobile --- */
+    /* --- CHAT MIGLIORATA PER MOBILE --- */
+    
+    /* Contenitore dei messaggi */
     div[data-testid="stChatMessage"] {
-        margin-bottom: 1rem !important;
+        margin-bottom: 0.75rem !important;
+        padding: 0 0.25rem; /* Leggero padding laterale */
     }
     
+    /* Messaggi dell'assistente */
     div[data-testid="stChatMessage"]:has([aria-label="assistant avatar"]) [data-testid="stChatMessageContent"] {
         background-color: #f0f2f6;
-        border-radius: var(--border-radius);
-        padding: 1rem !important;
-        font-size: 0.95rem !important;
+        border-radius: 20px; /* Bordi più arrotondati */
+        border-bottom-left-radius: 5px; /* Angolo "appuntito" */
+        padding: 0.75rem 1rem !important;
+        font-size: 1rem !important; /* Font più leggibile */
         line-height: 1.5 !important;
     }
 
+    /* Messaggi dell'utente */
     div[data-testid="stChatMessage"]:has([aria-label="user avatar"]) [data-testid="stChatMessageContent"] {
-        background-color: #e1ffc7;
-        border-radius: var(--border-radius);
-        padding: 1rem !important;
-        font-size: 0.95rem !important;
+        background-color: #dcf8c6; /* Verde più "WhatsApp-like" */
+        border-radius: 20px; /* Bordi più arrotondati */
+        border-bottom-right-radius: 5px; /* Angolo "appuntito" */
+        padding: 0.75rem 1rem !important;
+        font-size: 1rem !important; /* Font più leggibile */
         line-height: 1.5 !important;
     }
 
-    /* --- Chat Input Mobile --- */
+    /* --- INPUT CHAT FISSO IN BASSO --- */
+    .stChatInput {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--background-color);
+        padding: 1rem 0.5rem !important;
+        border-top: 1px solid var(--border-color);
+        z-index: 1000;
+    }
+    
     .stChatInput > div {
-        padding: 0.5rem !important;
+        background-color: white;
+        border-radius: 20px !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     
     .stChatInput input {
         font-size: 16px !important;
         padding: 0.75rem 1rem !important;
-        border-radius: var(--border-radius) !important;
-        min-height: 44px !important;
+        border-radius: 20px !important;
+        border: none !important;
+        min-height: 44px;
     }
     
     /* --- Titoli Mobile --- */
     h1, h2, h3 {
         color: var(--text-color-dark);
-        line-height: 1.3 !important;
+        line-height: 1.4;
     }
     
     h1 {
@@ -171,7 +193,10 @@ def load_mobile_css():
         margin-bottom: 0;
         line-height: 1.4;
     }
-    
+
+    /* Le vecchie regole per la chat sono state rimosse per pulizia.
+       Quelle nuove sono state applicate sopra. */
+
     /* --- Cards Mobile --- */
     .stExpander {
         border-radius: var(--border-radius) !important;
@@ -254,6 +279,12 @@ def load_mobile_css():
         padding: 1rem !important;
         border-radius: var(--border-radius) !important;
         font-size: 0.95rem !important;
+    }
+
+    /* Rendi la sidebar (colonna sinistra) più stretta */
+    section[data-testid="stSidebar"] {
+        width: 200px !important;
+        min-width: 200px !important;
     }
     """
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True) 
