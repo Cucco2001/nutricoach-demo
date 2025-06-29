@@ -111,7 +111,7 @@ def main():
                 }
             }, 300);
             """
-            streamlit_js_eval(js_code)
+            streamlit_js_eval(js_expressions=js_code, key="close_sidebar_js")
         
         # Rimuovi il flag per evitare che venga eseguito di nuovo.
         del st.session_state.just_completed_initial_info
