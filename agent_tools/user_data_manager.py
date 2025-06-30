@@ -381,10 +381,11 @@ class UserDataManager:
         """Salva i dati dell'utente su file preservando sempre i dati DeepSeek e sincronizza con Supabase"""
         user_file = self.data_dir / f"{user_id}.json"
         
-        # PRESERVA i dati DeepSeek e costi esistenti se presenti
+        # PRESERVA i dati DeepSeek, costi e privacy esistenti se presenti
         existing_deepseek_data = None
         existing_cost_data = None
         existing_last_cost_update = None
+        existing_privacy_consent = None
         if user_file.exists():
             try:
                 with open(user_file, 'r', encoding='utf-8') as f:
@@ -392,6 +393,7 @@ class UserDataManager:
                     existing_deepseek_data = existing_data.get("nutritional_info_extracted")
                     existing_cost_data = existing_data.get("conversation_costs")
                     existing_last_cost_update = existing_data.get("last_cost_update")
+                    existing_privacy_consent = existing_data.get("privacy_consent")
             except Exception as e:
                 print(f"[USER_DATA_MANAGER] Errore nel leggere dati esistenti: {str(e)}")
         
@@ -421,6 +423,10 @@ class UserDataManager:
         if existing_cost_data:
             data["conversation_costs"] = existing_cost_data
             data["last_cost_update"] = existing_last_cost_update
+        
+        # RESTAURA il consenso privacy se esisteva
+        if existing_privacy_consent:
+            data["privacy_consent"] = existing_privacy_consent
  
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)

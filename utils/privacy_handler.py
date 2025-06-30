@@ -34,24 +34,55 @@ class PrivacyHandler:
             print(f"Errore nel salvataggio consenso privacy: {str(e)}")
     
     def has_user_accepted(self, user_id: str = "default") -> bool:
-        """Verifica se l'utente ha accettato privacy e disclaimer."""
-        return self.consent_data.get(user_id, {}).get("accepted", False)
+        """Verifica se l'utente ha accettato privacy e disclaimer controllando nel file utente."""
+        # Per utenti veri, controlla SEMPRE nel file utente
+        user_file_path = f"user_data/{user_id}.json"
+        
+        if not os.path.exists(user_file_path):
+            return False
+            
+        try:
+            with open(user_file_path, 'r', encoding='utf-8') as f:
+                user_data = json.load(f)
+                privacy_consent = user_data.get("privacy_consent", {})
+                return privacy_consent.get("accepted", False)
+        except Exception:
+            return False
     
     def accept_privacy(self, user_id: str = "default"):
-        """Registra l'accettazione dell'utente."""
+        """Registra l'accettazione dell'utente salvando SEMPRE nel file utente."""
         from datetime import datetime
         
-        if user_id not in self.consent_data:
-            self.consent_data[user_id] = {}
-        
-        self.consent_data[user_id] = {
+        consent_info = {
             "accepted": True,
             "timestamp": datetime.now().isoformat(),
             "version": "1.0"
         }
         
-        self._save_consent_data()
-    
+        # Salva SEMPRE nel file utente
+        user_file_path = f"user_data/{user_id}.json"
+        
+        try:
+            # Carica dati utente esistenti o crea struttura vuota
+            if os.path.exists(user_file_path):
+                with open(user_file_path, 'r', encoding='utf-8') as f:
+                    user_data = json.load(f)
+            else:
+                user_data = {}
+            
+            # Aggiorna il consenso privacy
+            user_data["privacy_consent"] = consent_info
+            
+            # Assicurati che la directory esista
+            os.makedirs(os.path.dirname(user_file_path), exist_ok=True)
+            
+            # Salva il file utente aggiornato
+            with open(user_file_path, 'w', encoding='utf-8') as f:
+                json.dump(user_data, f, indent=2, ensure_ascii=False)
+                
+        except Exception as e:
+            print(f"Errore nel salvataggio consenso privacy per {user_id}: {str(e)}")
+
     def get_privacy_text(self) -> str:
         """Restituisce il testo di privacy e disclaimer."""
         return """
@@ -81,6 +112,7 @@ Prima di seguire il piano nutrizionale generato:
 
 Utilizzando NutrAICoach accetti di aver compreso queste limitazioni e di utilizzare il servizio in modo responsabile.
         """.strip()
+    
     def get_reminder_text(self) -> str:
         """Restituisce il testo di reminder breve."""
         return "⚕️ Questi consigli non sostituiscono un consulto medico/nutrizionale professionale."
