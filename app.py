@@ -64,6 +64,9 @@ from frontend.adaptive_style import setup_responsive_app
 # Import per la gestione delle immagini
 from utils.image_utils import get_image_html
 
+# Import del sistema privacy
+from utils.privacy_handler import check_privacy_acceptance, accept_privacy_terms, get_privacy_disclaimer_text
+
 import threading
 import queue
 
@@ -115,6 +118,19 @@ def main():
         
         # Rimuovi il flag per evitare che venga eseguito di nuovo.
         del st.session_state.just_completed_initial_info
+
+    # === PRIVACY & DISCLAIMER CHECK ===
+    # Controlla se l'utente ha accettato privacy e disclaimer
+    if not check_privacy_acceptance():
+        st.markdown("# 🥗 NutrAiCoach")
+        st.markdown(get_privacy_disclaimer_text())
+        
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            if st.button("✅ Accetto e Continuo", type="primary", use_container_width=True):
+                accept_privacy_terms()
+                st.rerun()
+        st.stop()
 
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione
