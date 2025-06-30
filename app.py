@@ -119,25 +119,27 @@ def main():
         # Rimuovi il flag per evitare che venga eseguito di nuovo.
         del st.session_state.just_completed_initial_info
 
-    # === PRIVACY & DISCLAIMER CHECK ===
-    # Controlla se l'utente ha accettato privacy e disclaimer
-    if not check_privacy_acceptance():
-        st.markdown("# 🥗 NutrAiCoach")
-        st.markdown(get_privacy_disclaimer_text())
-        
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            if st.button("✅ Accetto e Continuo", type="primary", use_container_width=True):
-                accept_privacy_terms()
-                st.rerun()
-        st.stop()
-
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione
     is_authenticated = handle_login_registration(st.session_state.user_data_manager)
     
     # Se l'utente è autenticato, mostra l'interfaccia principale
     if is_authenticated:
+        # === PRIVACY & DISCLAIMER CHECK PER UTENTE ===
+        user_id = st.session_state.user_info["id"]
+        if not check_privacy_acceptance(user_id):
+            st.markdown("# 🥗 NutrAICoach - Privacy & Disclaimer")
+            st.markdown(f"**Benvenuto, {st.session_state.user_info['username']}!**")
+            st.markdown("Prima di utilizzare il servizio, è necessario accettare i seguenti termini:")
+            st.markdown(get_privacy_disclaimer_text())
+            
+            col1, col2, col3 = st.columns([1, 1, 1])
+            with col2:
+                if st.button("✅ Accetto e Continuo", type="primary", use_container_width=True):
+                    accept_privacy_terms(user_id)
+                    st.rerun()
+            st.stop()
+        
         # Sidebar per le funzionalità utente
         with st.sidebar:
             st.header("Menu")

@@ -57,7 +57,7 @@ class PrivacyHandler:
         return """
 **Privacy & Disclaimer**
 
-📋 **Informativa sulla Privacy**
+**Informativa sulla Privacy**
 NutrAICoach è progettato per rispettare la tua privacy. Raccogliamo esclusivamente i dati necessari per personalizzare i tuoi piani nutrizionali:
 - Informazioni personali di base (età, peso, altezza, sesso, livello di attività)
 - Preferenze alimentari e restrizioni dietetiche
@@ -66,19 +66,17 @@ NutrAICoach è progettato per rispettare la tua privacy. Raccogliamo esclusivame
 
 I tuoi dati vengono gestiti in modo anonimo e sicuro. Non condividiamo mai le tue informazioni personali con terze parti. I dati vengono utilizzati esclusivamente per fornire consigli nutrizionali personalizzati e migliorare l'esperienza utente.
 
-⚕️ **Disclaimer Medico Importante**
+**Disclaimer Medico Importante**
 I consigli nutrizionali forniti da NutrAICoach sono di natura puramente informativa ed educativa. Questo strumento:
 - NON sostituisce in alcun modo il parere di un medico, nutrizionista o dietista qualificato
 - NON fornisce diagnosi mediche o trattamenti terapeutici
 - NON è adatto per persone con patologie specifiche senza supervisione medica
-- È basato su linee guida nutrizionali generali e potrebbe non essere appropriato per tutti
 
-🚨 **Avvertenze Importanti**
-Prima di seguire qualsiasi piano nutrizionale generato:
+**Avvertenze Importanti**
+Prima di seguire il piano nutrizionale generato:
 - Consulta sempre un professionista sanitario qualificato se hai patologie croniche (diabete, ipertensione, malattie cardiovascolari, disturbi alimentari, etc.)
 - Informa il tuo medico se stai assumendo farmaci che potrebbero interagire con cambiamenti dietetici
 - Non utilizzare questo strumento se sei in gravidanza, allattamento o hai disturbi alimentari senza supervisione medica
-- Interrompi immediatamente se noti effetti negativi e consulta un medico
 
 
 Utilizzando NutrAICoach accetti di aver compreso queste limitazioni e di utilizzare il servizio in modo responsabile.
