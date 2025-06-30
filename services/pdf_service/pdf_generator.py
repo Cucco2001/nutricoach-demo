@@ -480,9 +480,11 @@ class PDFGenerator:
         
         # Abbreviazione specifica per la colonna Alimento
         cleaned_name = nome_alimento.replace("parzialmente", "prz")
-        cleaned_name = cleaned_name.replace("spalmabile ", "")
-        cleaned_name = cleaned_name.replace("naturale ", "nat.")
-        
+        cleaned_name = cleaned_name.replace("spalmabile", "")
+        cleaned_name = cleaned_name.replace("naturale", "nat.")
+        cleaned_name = cleaned_name.replace("aggiunti", "")
+        cleaned_name = cleaned_name.replace("aggiunto", "")
+        cleaned_name = cleaned_name.replace("aggiunta", "")
         return cleaned_name
     
     def _generate_substitutes_for_meal(self, meal_name: str, alimenti_dict: Dict[str, float], user_id: str = None) -> str:
