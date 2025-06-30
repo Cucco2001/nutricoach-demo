@@ -8,6 +8,9 @@ logout e caricamento delle informazioni utente salvate.
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
 
+# Import del nuovo state manager
+from services.state_service import app_state, UserInfo
+
 
 def handle_login_form(user_data_manager):
     """
@@ -35,16 +38,20 @@ def handle_login_form(user_data_manager):
                 chat_history = user_data_manager.get_chat_history(result)
                 has_chat_messages = len(chat_history) > 0
                 
-                # Imposta le informazioni dell'utente
-                st.session_state.user_info = {
+                # Imposta le informazioni dell'utente nel nostro state manager
+                user_info_data = {
                     "id": result,
                     "username": username
                 }
                 
+                # Sincronizza con entrambi per ora (compatibilità)
+                st.session_state.user_info = user_info_data
+                app_state.set_user_info(UserInfo(**user_info_data))
+                
                 # Se ci sono informazioni nutrizionali salvate, caricale
                 if nutritional_info:
                     # Aggiorna le informazioni dell'utente
-                    st.session_state.user_info.update({
+                    user_info_data.update({
                         "età": nutritional_info.età,
                         "sesso": nutritional_info.sesso,
                         "peso": nutritional_info.peso,
@@ -53,6 +60,10 @@ def handle_login_form(user_data_manager):
                         "obiettivo": nutritional_info.obiettivo,
                         "preferences": user_data_manager.get_user_preferences(result)
                     })
+                    
+                    # Sincronizza con entrambi
+                    st.session_state.user_info = user_info_data
+                    app_state.set_user_info(UserInfo(**user_info_data))
                     
                     # Se ha messaggi in chat, carica normalmente e salta il tutorial
                     if has_chat_messages:
@@ -184,7 +195,7 @@ def handle_login_registration(user_data_manager):
         st.session_state.user_info = None
 
     # Se l'utente non è autenticato, mostra form di login/registrazione
-    if not st.session_state.user_info:
+    if not app_state.is_user_authenticated():
         
         st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
 
@@ -241,11 +252,18 @@ def handle_logout():
         )
         handler._reset_user_session()
     
-    # Poi effettua il logout normale
+    # Poi effettua il logout normale - sincronizza entrambi
     st.session_state.user_info = None
+    app_state.set_user_info(None)
+    
     st.session_state.messages = []
+    app_state.clear_messages()
+    
     st.session_state.current_question = 0
+    app_state.set_current_question(0)
+    
     st.session_state.nutrition_answers = {}
+    app_state.set_nutrition_answers({})
     
     # Reset anche altri stati che potrebbero essere presenti
     if "thread_id" in st.session_state:
@@ -276,7 +294,8 @@ def get_current_user():
     Returns:
         dict or None: Informazioni dell'utente se autenticato, None altrimenti
     """
-    return st.session_state.get("user_info", None)
+    user_info = app_state.get_user_info()
+    return user_info.__dict__ if user_info else None
 
 
 def is_user_authenticated():
@@ -286,7 +305,7 @@ def is_user_authenticated():
     Returns:
         bool: True se l'utente è autenticato, False altrimenti
     """
-    return st.session_state.get("user_info", None) is not None
+    return app_state.is_user_authenticated()
 
 
 def get_user_id():
@@ -296,8 +315,8 @@ def get_user_id():
     Returns:
         str or None: ID dell'utente se autenticato, None altrimenti
     """
-    user_info = get_current_user()
-    return user_info.get("id") if user_info else None
+    user_info = app_state.get_user_info()
+    return user_info.id if user_info else None
 
 
 def get_username():
@@ -307,5 +326,5 @@ def get_username():
     Returns:
         str or None: Username se autenticato, None altrimenti
     """
-    user_info = get_current_user()
-    return user_info.get("username") if user_info else None 
+    user_info = app_state.get_user_info()
+    return user_info.username if user_info else None 

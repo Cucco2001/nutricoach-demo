@@ -17,6 +17,12 @@ from agent_tools.user_data_manager import UserDataManager
 from services.deep_seek_service import DeepSeekManager
 from services.preferences_service import PreferencesManager
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
+# Import del device detector
+from frontend.device_detector import detect_device_type
+
 
 def initialize_app():
     """
@@ -43,14 +49,20 @@ def initialize_app():
     # Carica le variabili d'ambiente
     load_dotenv()
     
+    # === DEVICE DETECTION INIZIALE ===
+    # Rileva il tipo di dispositivo solo se non è già stato fatto
+    if not app_state.get('device_detection_done', False):
+        detect_device_type()
     
     # === INIZIALIZZAZIONE VARIABILI BASE ===
+    # Inizializza le variabili nel nostro state manager (già fatto nel constructor)
+    # Manteniamo compatibilità con Streamlit per ora
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+        st.session_state.messages = app_state.get_messages()
     if "user_info" not in st.session_state:
         st.session_state.user_info = None
     if "diet_plan" not in st.session_state:
-        st.session_state.diet_plan = None
+        st.session_state.diet_plan = app_state.get('diet_plan')
     if "openai_client" not in st.session_state:
         # Per Streamlit Cloud, usa st.secrets, altrimenti usa variabile d'ambiente
         try:
@@ -65,9 +77,9 @@ def initialize_app():
     if "current_run_id" not in st.session_state:
         st.session_state.current_run_id = None
     if "current_question" not in st.session_state:
-        st.session_state.current_question = 0
+        st.session_state.current_question = app_state.get_current_question()
     if "nutrition_answers" not in st.session_state:
-        st.session_state.nutrition_answers = {}
+        st.session_state.nutrition_answers = app_state.get_nutrition_answers()
     if "user_data_manager" not in st.session_state:
         st.session_state.user_data_manager = UserDataManager()
 
@@ -102,20 +114,21 @@ def initialize_app():
         st.session_state.supabase_service = SupabaseUserService()
 
     # === VARIABILI PER GESTIONE AGENTE IN BACKGROUND ===
+    # Sincronizza con il nostro state manager
     if "agent_generating" not in st.session_state:
-        st.session_state.agent_generating = False
+        st.session_state.agent_generating = app_state.is_agent_generating()
     if "agent_response_ready" not in st.session_state:
-        st.session_state.agent_response_ready = False
+        st.session_state.agent_response_ready = app_state.get('agent_response_ready', False)
     if "agent_response_text" not in st.session_state:
-        st.session_state.agent_response_text = None
+        st.session_state.agent_response_text = app_state.get('agent_response_text')
     if "agent_user_input" not in st.session_state:
         st.session_state.agent_user_input = None
     if "agent_thread_id" not in st.session_state:
         st.session_state.agent_thread_id = None
     if "current_page" not in st.session_state:
-        st.session_state.current_page = "Chat"
+        st.session_state.current_page = app_state.get_current_page()
     if "pending_user_input" not in st.session_state:
-        st.session_state.pending_user_input = None
+        st.session_state.pending_user_input = app_state.get('pending_user_input')
 
     # === INIZIALIZZAZIONE CLIENT DEEPSEEK LEGACY ===
     # NOTA: Questo è mantenuto per compatibilità con codice esistente

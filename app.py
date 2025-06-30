@@ -67,6 +67,9 @@ from utils.image_utils import get_image_html
 # Import del sistema privacy
 from utils.privacy_handler import check_privacy_acceptance, accept_privacy_terms, get_privacy_disclaimer_text
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 import threading
 import queue
 
@@ -97,8 +100,8 @@ def main():
     setup_responsive_app()
     
     # Se l'utente ha appena completato il form iniziale su mobile, chiudi la sidebar.
-    if st.session_state.get('just_completed_initial_info', False):
-        if st.session_state.get('device_type') == 'mobile':
+    if app_state.get('just_completed_initial_info', False):
+        if app_state.get('device_type') == 'mobile':
             from streamlit_js_eval import streamlit_js_eval
             
             # Esegui JS per trovare e cliccare il bottone di chiusura della sidebar.
@@ -117,7 +120,7 @@ def main():
             streamlit_js_eval(js_expressions=js_code, key="close_sidebar_js")
         
         # Rimuovi il flag per evitare che venga eseguito di nuovo.
-        del st.session_state.just_completed_initial_info
+        app_state.delete('just_completed_initial_info')
 
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione
@@ -126,10 +129,11 @@ def main():
     # Se l'utente è autenticato, mostra l'interfaccia principale
     if is_authenticated:
         # === PRIVACY & DISCLAIMER CHECK PER UTENTE ===
-        user_id = st.session_state.user_info["id"]
+        user_info = app_state.get_user_info()
+        user_id = user_info.id if user_info else None
         if not check_privacy_acceptance(user_id):
             st.markdown("# 🥗 NutrAICoach - Privacy & Disclaimer")
-            st.markdown(f"**Benvenuto, {st.session_state.user_info['username']}!**")
+            st.markdown(f"**Benvenuto, {user_info.username if user_info else 'Utente'}!**")
             st.markdown("Prima di utilizzare il servizio, è necessario accettare i seguenti termini:")
             st.markdown(get_privacy_disclaimer_text())
             
@@ -145,15 +149,13 @@ def main():
             st.header("Menu")
             
             # Controlla se l'agente sta generando
-            is_agent_generating = getattr(st.session_state, 'agent_generating', False)
+            is_agent_generating = app_state.is_agent_generating()
             
             if is_agent_generating:
                 # Mostra un messaggio informativo e blocca la navigazione
                 st.info("🤖 L'assistente sta elaborando la risposta, attendi completamento per accedere ad altri tab")
                 # Mantieni la selezione corrente senza permettere cambiamenti
-                if 'current_page' not in st.session_state:
-                    st.session_state.current_page = "Chat"
-                page = st.session_state.current_page
+                page = app_state.get_current_page()
                 st.write(f"**Sezione corrente:** {page}")
             else:
                 # Navigazione normale quando l'agente non sta generando
@@ -162,7 +164,7 @@ def main():
                     ["Chat", "Preferenze", "Piano Nutrizionale"]
                 )
                 # Salva la selezione corrente
-                st.session_state.current_page = page
+                app_state.set_current_page(page)
             
             # Usa il nuovo modulo per gestire il logout
             show_logout_button()
@@ -171,7 +173,7 @@ def main():
             # Usa l'interfaccia chat modulare
             chat_interface()
         elif page == "Preferenze":
-            st.session_state.preferences_manager.handle_user_preferences(st.session_state.user_info["id"])
+            st.session_state.preferences_manager.handle_user_preferences(user_id)
         elif page == "Piano Nutrizionale":
             handle_user_data()
 

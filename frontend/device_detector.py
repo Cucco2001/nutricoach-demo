@@ -3,6 +3,16 @@ import re
 import streamlit.components.v1 as components
 from streamlit_js_eval import streamlit_js_eval
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
+def detect_device_type():
+    """
+    Funzione per rilevare il device type SOLO all'inizializzazione.
+    Restituisce il device type rilevato senza stampare messaggi ripetuti.
+    """
+    return get_device_type()
+
 def is_mobile_user_agent():
     """
     Rileva se l'user agent corrisponde a un dispositivo mobile.
@@ -35,29 +45,41 @@ def get_device_type():
     Logica:
     1. Usa streamlit_js_eval per leggere window.innerWidth.
     2. Determina il tipo di dispositivo ('desktop' o 'mobile').
-    3. Salva il risultato in st.session_state per coerenza.
+    3. Salva il risultato nel nostro state manager.
     """
+    # Controllo se è già stato rilevato e salvato nel nostro state manager
+    stored_device_type = app_state.get('device_type')
+    device_detected = app_state.get('device_detection_done', False)
+    
+    # Se abbiamo già fatto la detection, restituisci il valore salvato
+    if device_detected and stored_device_type:
+        return stored_device_type
+    
     # Rilevamento robusto con streamlit_js_eval
     width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
 
     # Gestisci il caso in cui `width` è None al primo rendering
     if width is None:
-        return st.session_state.get('device_type', 'desktop') # Default sicuro
+        return stored_device_type or 'desktop'  # Default sicuro
 
     # Determina il tipo di dispositivo in base alla larghezza
     device_type = 'desktop' if width > 768 else 'mobile'
 
-    # Salva in session_state se cambia
-    if st.session_state.get('device_type') != device_type:
-        print(f"✅ Dispositivo rilevato: {device_type.upper()} (Larghezza: {width}px)")
+    # Salva nel nostro state manager solo se è diverso dal precedente o non è ancora stato fatto
+    if stored_device_type != device_type or not device_detected:
+        if not device_detected:  # Stampa solo la prima volta
+            print(f"✅ Dispositivo rilevato: {device_type.upper()} (Larghezza: {width}px)")
+        app_state.set('device_type', device_type)
+        app_state.set('device_detection_done', True)
+        # Mantieni compatibilità con st.session_state per ora
         st.session_state.device_type = device_type
 
     return device_type
 
 def is_mobile():
     """Restituisce True se il dispositivo è considerato mobile."""
-    # Ora si basa su un valore affidabile in session_state.
-    return st.session_state.get('device_type') == 'mobile'
+    # Ora si basa su un valore affidabile nel nostro state manager.
+    return app_state.get('device_type') == 'mobile'
 
 def is_phone():
     """
