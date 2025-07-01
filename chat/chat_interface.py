@@ -154,7 +154,16 @@ def handle_user_input():
     if st.session_state.agent_generating:
         user_input = None
     else:
+        # Bottone "Continua" sopra al chat input
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            continue_clicked = st.button("▶️ Continua", type="secondary", use_container_width=True)
+        
         user_input = st.chat_input("Scrivi un messaggio...")
+        
+        # Se viene premuto il bottone "Continua", simula l'invio di "continua"
+        if continue_clicked:
+            user_input = "continua"
     
     if user_input:
         # Se l'agente non sta già generando, inizia il processo
