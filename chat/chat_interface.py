@@ -154,10 +154,21 @@ def handle_user_input():
     if st.session_state.agent_generating:
         user_input = None
     else:
-        # Bottone "Continua" sopra al chat input
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            continue_clicked = st.button("▶️ Continua", type="secondary", use_container_width=True)
+        # Bottone "Continua" sopra al chat input con spazio ridotto
+        st.markdown("""
+        <style>
+        .continue-section {
+            margin-bottom: -1rem !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        with st.container():
+            st.markdown('<div class="continue-section">', unsafe_allow_html=True)
+            col1, col2, col3 = st.columns([1, 1, 1])
+            with col2:
+                continue_clicked = st.button("▶️ Continua", type="secondary", use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True)
         
         user_input = st.chat_input("Scrivi un messaggio...")
         
