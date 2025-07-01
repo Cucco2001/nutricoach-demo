@@ -159,6 +159,9 @@ def handle_user_input():
         <style>
         .stButton > button {
             margin-bottom: -12px !important;
+            padding: 8px 16px !important;
+            height: 36px !important;
+            font-size: 14px !important;
         }
         </style>
         """, unsafe_allow_html=True)
