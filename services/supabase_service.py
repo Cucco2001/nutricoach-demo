@@ -13,6 +13,7 @@ from datetime import datetime
 import pandas as pd
 from supabase import create_client, Client
 import logging
+from services.state_service import app_state
 
 # Configurazione logging
 logging.basicConfig(level=logging.WARNING)
@@ -424,25 +425,38 @@ class SupabaseUserService:
 
 def get_supabase_service() -> SupabaseUserService:
     """
-    Ottiene un'istanza del servizio Supabase, utilizzando il caching di Streamlit.
-    Gestisce anche i casi in cui session_state non è disponibile.
+    Ottiene un'istanza del servizio Supabase, utilizzando il caching dello stato dell'app.
+    Gestisce anche i casi in cui lo stato non è disponibile.
     
     Returns:
         SupabaseUserService: Istanza del servizio
     """
     try:
-        # Verifica se siamo in un contesto Streamlit valido
-        if hasattr(st, 'session_state') and st.session_state is not None:
-            if "supabase_service" not in st.session_state:
-                st.session_state.supabase_service = SupabaseUserService()
-            return st.session_state.supabase_service
-        else:
-            # Fallback: crea una nuova istanza senza caching
-            logger.warning("⚠️ session_state non disponibile, creando istanza temporanea SupabaseService")
-            return SupabaseUserService()
+        # Usa il nuovo sistema di stato dell'app
+        service = app_state.get('supabase_service')
+        if service is None:
+            service = SupabaseUserService()
+            app_state.set('supabase_service', service)
+        return service
+        
+    except ImportError:
+        # Fallback 1: prova con Streamlit se disponibile
+        try:
+            import streamlit as st
+            if hasattr(st, 'session_state') and st.session_state is not None:
+                if "supabase_service" not in st.session_state:
+                    st.session_state.supabase_service = SupabaseUserService()
+                return st.session_state.supabase_service
+        except:
+            pass
+        
+        # Fallback 2: crea una nuova istanza senza caching
+        logger.warning("⚠️ Sistema di stato non disponibile, creando istanza temporanea SupabaseService")
+        return SupabaseUserService()
+        
     except Exception as e:
         # Fallback di sicurezza: crea sempre una nuova istanza
-        logger.warning(f"⚠️ Errore nell'accesso a session_state: {str(e)}, creando istanza temporanea")
+        logger.warning(f"⚠️ Errore nell'accesso al sistema di stato: {str(e)}, creando istanza temporanea")
         return SupabaseUserService()
 
 

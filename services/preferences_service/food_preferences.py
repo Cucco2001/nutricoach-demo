@@ -7,6 +7,8 @@ alimentari dell'utente, inclusi alimenti esclusi, preferiti e note speciali.
 
 import streamlit as st
 from typing import List, Dict, Optional, Tuple
+from agent_tools.user_data_manager import UserDataManager
+from services.state_service import app_state
 
 
 class FoodPreferences:
@@ -35,20 +37,15 @@ class FoodPreferences:
     
     def initialize_session_preferences(self, user_id: str):
         """
-        Inizializza le preferenze nella sessione corrente.
+        Inizializza le preferenze nello stato dell'applicazione.
         
         Args:
             user_id: ID dell'utente
         """
         user_preferences = self.load_user_preferences(user_id)
         
-        # Inizializza alimenti esclusi nella sessione se non esistono
-        if 'excluded_foods_list' not in st.session_state:
-            st.session_state.excluded_foods_list = user_preferences.get("excluded_foods", [])
-        
-        # Inizializza alimenti preferiti nella sessione se non esistono
-        if 'preferred_foods_list' not in st.session_state:
-            st.session_state.preferred_foods_list = user_preferences.get("preferred_foods", [])
+        # Usa il nuovo sistema di stato per inizializzare le preferenze
+        app_state.initialize_food_preferences(user_preferences)
     
     def add_excluded_food(self, food_name: str) -> bool:
         """
@@ -65,8 +62,9 @@ class FoodPreferences:
             
         food_name = food_name.strip().lower().title()  # Normalizza il nome
         
-        if food_name not in st.session_state.excluded_foods_list:
-            st.session_state.excluded_foods_list.append(food_name)
+        excluded_foods = app_state.get_excluded_foods()
+        if food_name not in excluded_foods:
+            app_state.add_excluded_food(food_name)
             return True
         return False
     
@@ -80,13 +78,7 @@ class FoodPreferences:
         Returns:
             bool: True se rimosso con successo, False altrimenti
         """
-        try:
-            if 0 <= index < len(st.session_state.excluded_foods_list):
-                st.session_state.excluded_foods_list.pop(index)
-                return True
-        except (IndexError, KeyError):
-            pass
-        return False
+        return app_state.remove_excluded_food(index)
     
     def add_preferred_food(self, food_name: str) -> bool:
         """
@@ -103,8 +95,9 @@ class FoodPreferences:
             
         food_name = food_name.strip().lower().title()  # Normalizza il nome
         
-        if food_name not in st.session_state.preferred_foods_list:
-            st.session_state.preferred_foods_list.append(food_name)
+        preferred_foods = app_state.get_preferred_foods()
+        if food_name not in preferred_foods:
+            app_state.add_preferred_food(food_name)
             return True
         return False
     
@@ -118,13 +111,7 @@ class FoodPreferences:
         Returns:
             bool: True se rimosso con successo, False altrimenti
         """
-        try:
-            if 0 <= index < len(st.session_state.preferred_foods_list):
-                st.session_state.preferred_foods_list.pop(index)
-                return True
-        except (IndexError, KeyError):
-            pass
-        return False
+        return app_state.remove_preferred_food(index)
     
     def get_excluded_foods(self) -> List[str]:
         """
@@ -133,7 +120,7 @@ class FoodPreferences:
         Returns:
             List[str]: Lista degli alimenti esclusi
         """
-        return st.session_state.get('excluded_foods_list', [])
+        return app_state.get_excluded_foods()
     
     def get_preferred_foods(self) -> List[str]:
         """
@@ -142,7 +129,7 @@ class FoodPreferences:
         Returns:
             List[str]: Lista degli alimenti preferiti
         """
-        return st.session_state.get('preferred_foods_list', [])
+        return app_state.get_preferred_foods()
     
     def generate_preferences_prompt(self) -> str:
         """
@@ -188,8 +175,8 @@ class FoodPreferences:
             # Genera e salva il prompt per il prossimo messaggio
             prompt = self.generate_preferences_prompt()
             if prompt:
-                st.session_state.preferences_prompt = prompt
-                st.session_state.prompt_to_add_at_next_message = True
+                app_state.set('preferences_prompt', prompt)
+                app_state.set('prompt_to_add_at_next_message', True)
 
             return True
         except Exception as e:
@@ -237,11 +224,9 @@ class FoodPreferences:
         Args:
             user_id: ID dell'utente
         """
-        # Cancella dalla sessione
-        if 'excluded_foods_list' in st.session_state:
-            del st.session_state.excluded_foods_list
-        if 'preferred_foods_list' in st.session_state:
-            del st.session_state.preferred_foods_list
+        # Cancella dallo stato dell'applicazione
+        app_state.set_excluded_foods([])
+        app_state.set_preferred_foods([])
         
         # Cancella dal sistema di persistenza
         self.user_data_manager.clear_user_preferences(user_id) 

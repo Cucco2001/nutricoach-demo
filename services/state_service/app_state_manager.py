@@ -188,6 +188,63 @@ class AppStateManager:
         answers[question_id] = answer
         self.set('nutrition_answers', answers)
     
+    # === METODI PER PREFERENZE ALIMENTARI ===
+    
+    def get_excluded_foods(self) -> list:
+        """Ottiene la lista degli alimenti esclusi"""
+        return self.get('excluded_foods_list', [])
+    
+    def set_excluded_foods(self, foods: list) -> None:
+        """Imposta la lista degli alimenti esclusi"""
+        self.set('excluded_foods_list', foods)
+    
+    def add_excluded_food(self, food_name: str) -> None:
+        """Aggiunge un alimento alla lista degli esclusi"""
+        excluded = self.get_excluded_foods()
+        if food_name not in excluded:
+            excluded.append(food_name)
+            self.set_excluded_foods(excluded)
+    
+    def remove_excluded_food(self, index: int) -> bool:
+        """Rimuove un alimento dalla lista degli esclusi"""
+        excluded = self.get_excluded_foods()
+        if 0 <= index < len(excluded):
+            excluded.pop(index)
+            self.set_excluded_foods(excluded)
+            return True
+        return False
+    
+    def get_preferred_foods(self) -> list:
+        """Ottiene la lista degli alimenti preferiti"""
+        return self.get('preferred_foods_list', [])
+    
+    def set_preferred_foods(self, foods: list) -> None:
+        """Imposta la lista degli alimenti preferiti"""
+        self.set('preferred_foods_list', foods)
+    
+    def add_preferred_food(self, food_name: str) -> None:
+        """Aggiunge un alimento alla lista dei preferiti"""
+        preferred = self.get_preferred_foods()
+        if food_name not in preferred:
+            preferred.append(food_name)
+            self.set_preferred_foods(preferred)
+    
+    def remove_preferred_food(self, index: int) -> bool:
+        """Rimuove un alimento dalla lista dei preferiti"""
+        preferred = self.get_preferred_foods()
+        if 0 <= index < len(preferred):
+            preferred.pop(index)
+            self.set_preferred_foods(preferred)
+            return True
+        return False
+    
+    def initialize_food_preferences(self, user_preferences: Dict) -> None:
+        """Inizializza le preferenze alimentari dai dati utente"""
+        if 'excluded_foods_list' not in self._state:
+            self.set_excluded_foods(user_preferences.get("excluded_foods", []))
+        if 'preferred_foods_list' not in self._state:
+            self.set_preferred_foods(user_preferences.get("preferred_foods", []))
+
     # === METODI DEBUG ===
     
     def get_all_state(self) -> Dict[str, Any]:
