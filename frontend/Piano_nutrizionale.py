@@ -16,6 +16,9 @@ from datetime import datetime
 # Import del servizio PDF
 from services.pdf_service import PDFGenerator
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 
 class PianoNutrizionale:
     """Gestisce la visualizzazione del piano nutrizionale e dei dati estratti"""
@@ -47,7 +50,7 @@ class PianoNutrizionale:
             # Metodo 2: Controlla il session state per indicatori di elaborazione recente
             if hasattr(st.session_state, 'deepseek_manager'):
                 # Controlla se c'è stata un'estrazione recente (negli ultimi 30 secondi)
-                last_extraction_time = st.session_state.get(f"last_extraction_start_{user_id}", 0)
+                last_extraction_time = app_state.get_last_extraction_start(user_id)
                 current_time = time.time()
                 if current_time - last_extraction_time < 30:  # 30 secondi di grazia
                     return True
@@ -58,7 +61,9 @@ class PianoNutrizionale:
             return False
     
     def _display_deepseek_loading_indicator(self):
-        """Mostra l'indicatore di caricamento per l'elaborazione DeepSeek."""
+        """
+        Mostra un indicatore di caricamento per l'elaborazione DeepSeek.
+        """
         st.markdown("""
         <div class="loading-container">
             <div class="loading-spinner"></div>
@@ -69,17 +74,18 @@ class PianoNutrizionale:
         """, unsafe_allow_html=True)
         
         # Mostra informazioni aggiuntive se disponibili
-        if hasattr(st.session_state, 'deepseek_manager'):
-            # Ottieni user_id dal session_state
-            user_id = None
-            if hasattr(st.session_state, 'user_info') and st.session_state.user_info:
-                user_id = st.session_state.user_info.get('id')
-            
-            if user_id:
-                status = st.session_state.deepseek_manager.get_extraction_status(user_id)
-                if status.get('available', False):
-                    interactions_since_last = status.get('interactions_since_last', 0)
-                    st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
+        deepseek_manager = app_state.get_deepseek_manager()
+        if deepseek_manager:
+            # Ottieni user_id dal nuovo state manager
+            user_info = app_state.get_user_info()
+            if user_info:
+                user_id = user_info.id
+                
+                if user_id:
+                    status = deepseek_manager.get_extraction_status(user_id)
+                    if status.get('available', False):
+                        interactions_since_last = status.get('interactions_since_last', 0)
+                        st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
 
     def display_nutritional_plan(self, user_id):
         """
@@ -101,12 +107,15 @@ class PianoNutrizionale:
         if is_processing:
             self._display_deepseek_loading_indicator()
             # Auto-refresh ogni 5 secondi solo se è la prima volta che vediamo il processing
-            if not st.session_state.get(f"deepseek_processing_shown_{user_id}", False):
+            if not app_state.get_deepseek_processing_shown(user_id):
+                app_state.set_deepseek_processing_shown(user_id, True)
+                # Mantieni compatibilità con session_state per ora
                 st.session_state[f"deepseek_processing_shown_{user_id}"] = True
                 time.sleep(2)
                 st.rerun()
         else:
             # Reset del flag quando il processing è finito
+            app_state.clear_deepseek_processing_shown(user_id)
             if f"deepseek_processing_shown_{user_id}" in st.session_state:
                 del st.session_state[f"deepseek_processing_shown_{user_id}"]
         
@@ -172,11 +181,16 @@ class PianoNutrizionale:
             else:
                 # Genera PDF e crea download button diretto
                 try:
-                    # Ottieni le informazioni dell'utente da session_state
-                    user_info = st.session_state.get('user_info', {}).copy()
+                    # Ottieni le informazioni dell'utente dal nuovo state manager
+                    user_info_obj = app_state.get_user_info()
+                    if not user_info_obj:
+                        st.error("❌ Nessun utente autenticato")
+                        return
+                    
+                    user_info = user_info_obj.__dict__.copy()
                     
                     # Aggiungi nutrition_answers se disponibile
-                    nutrition_answers = st.session_state.get('nutrition_answers', {})
+                    nutrition_answers = app_state.get_nutrition_answers()
                     if nutrition_answers:
                         user_info['nutrition_answers'] = nutrition_answers
                     
@@ -953,9 +967,10 @@ def handle_user_data():
     Funzione wrapper per compatibilità con app.py.
     Gestisce la visualizzazione dei dati utente estratti da DeepSeek.
     """
-    if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
+    user_info = app_state.get_user_info()
+    if not user_info or not user_info.id:
         st.warning("⚠️ Nessun utente autenticato.")
         return
     
     piano_nutrizionale = PianoNutrizionale()
-    piano_nutrizionale.display_nutritional_plan(st.session_state.user_info["id"]) 
+    piano_nutrizionale.display_nutritional_plan(user_info.id) 

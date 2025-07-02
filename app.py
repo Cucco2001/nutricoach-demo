@@ -124,7 +124,16 @@ def main():
 
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione
-    is_authenticated = handle_login_registration(st.session_state.user_data_manager)
+    user_data_manager = app_state.get_user_data_manager()
+    
+    # Protezione contro inizializzazione non completa
+    if user_data_manager is None:
+        st.error("🔄 Inizializzazione in corso, ricarica automatica...")
+        time.sleep(1)
+        st.rerun()
+        return
+    
+    is_authenticated = handle_login_registration(user_data_manager)
     
     # Se l'utente è autenticato, mostra l'interfaccia principale
     if is_authenticated:
@@ -173,7 +182,7 @@ def main():
             # Usa l'interfaccia chat modulare
             chat_interface()
         elif page == "Preferenze":
-            st.session_state.preferences_manager.handle_user_preferences(user_id)
+            app_state.get_preferences_manager().handle_user_preferences(user_id)
         elif page == "Piano Nutrizionale":
             handle_user_data()
 

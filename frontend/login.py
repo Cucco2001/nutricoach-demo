@@ -71,10 +71,15 @@ def handle_login_form(user_data_manager):
                         if nutritional_info.nutrition_answers:
                             st.session_state.nutrition_answers = nutritional_info.nutrition_answers
                             st.session_state.current_question = len(NUTRITION_QUESTIONS)
+                            # Sincronizza con app_state
+                            app_state.set_nutrition_answers(nutritional_info.nutrition_answers)
+                            app_state.set_current_question(len(NUTRITION_QUESTIONS))
                         
                         # Salta il tutorial perché l'utente ha già una conversazione
                         tutorial_key = f"tutorial_completed_{result}"
                         st.session_state[tutorial_key] = True
+                        # Sincronizza anche con il nuovo state manager
+                        app_state.set_tutorial_completed(result, True)
                     else:
                         # Se non ha messaggi in chat ma ha nutrition_answers,
                         # significa che era nelle domande iniziali, quindi resetta
@@ -82,6 +87,9 @@ def handle_login_form(user_data_manager):
                             # Resetta solo i dati utente relativi alle domande
                             st.session_state.current_question = 0
                             st.session_state.nutrition_answers = {}
+                            # Sincronizza con app_state
+                            app_state.set_current_question(0)
+                            app_state.set_nutrition_answers({})
                             
                             # Resetta le informazioni nutrizionali ai valori di default
                             user_data_manager.save_nutritional_info(
@@ -118,6 +126,8 @@ def handle_login_form(user_data_manager):
                             # Resetta il tutorial per farlo ripartire
                             from frontend.tutorial import reset_tutorial
                             reset_tutorial(result)
+                            # Sincronizza anche con il nuovo state manager
+                            app_state.reset_tutorial(result)
                 
                 st.rerun()
                 return True
@@ -156,6 +166,7 @@ def handle_registration_form(user_data_manager):
                     st.success("Registrazione completata! Ora puoi accedere.")
                     # Imposta il flag per il redirect via JS e fai un rerun
                     st.session_state.registration_successful = True
+                    app_state.set_registration_successful(True)
                     st.rerun()
                 else:
                     st.error(result)
@@ -175,7 +186,7 @@ def handle_login_registration(user_data_manager):
         bool: True se l'utente è autenticato, False altrimenti
     """
     # Se la registrazione è appena avvenuta, esegui JS per switchare al tab di login
-    if st.session_state.get('registration_successful', False):
+    if app_state.is_registration_successful():
         from streamlit_js_eval import streamlit_js_eval
         
         js_to_click_tab = """
@@ -188,7 +199,10 @@ def handle_login_registration(user_data_manager):
         }, 100);
         """
         streamlit_js_eval(js_expressions=js_to_click_tab, key="click_login_tab")
-        del st.session_state.registration_successful # Rimuovi il flag
+        # Rimuovi il flag da entrambi
+        if 'registration_successful' in st.session_state:
+            del st.session_state.registration_successful
+        app_state.set_registration_successful(False)
 
     # Inizializza user_info se non esiste
     if "user_info" not in st.session_state:
@@ -236,12 +250,12 @@ def handle_logout():
     # Controlla se l'utente era ancora nel mezzo delle domande iniziali
     # (se non aveva ancora iniziato la conversazione con l'agente)
     user_was_in_questions = (
-        st.session_state.get("current_question", 0) < len(NUTRITION_QUESTIONS) and
-        len(st.session_state.get("messages", [])) == 0
+        app_state.get_current_question() < len(NUTRITION_QUESTIONS) and
+        len(app_state.get_messages()) == 0
     )
     
     # Se era ancora nelle domande, effettua prima un "Ricomincia"
-    if user_was_in_questions and st.session_state.get("user_info"):
+    if user_was_in_questions and app_state.get_user_info():
         from frontend.buttons import ButtonHandler
         
         # Crea un handler dei bottoni e chiama la funzione di reset
@@ -270,6 +284,10 @@ def handle_logout():
         del st.session_state.thread_id
     if "current_run_id" in st.session_state:
         st.session_state.current_run_id = None
+    
+    # Resetta lo stato di generazione dell'agente - sincronizza entrambi
+    st.session_state.agent_generating = False
+    app_state.set_agent_generating(False)
     
     st.rerun()
 

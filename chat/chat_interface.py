@@ -15,6 +15,9 @@ from frontend.tutorial import show_app_tutorial, is_tutorial_completed, are_all_
 from agent.prompts import get_initial_prompt
 from services.token_cost_service import TokenCostTracker
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 
 
 def render_user_sidebar():
@@ -27,25 +30,31 @@ def render_user_sidebar():
     with st.sidebar:
         st.markdown("## 👤 Le Tue Info", unsafe_allow_html=True)
         
-        # Se il tutorial non è completato, mostra sempre il form anche se ci sono dati salvati
-        tutorial_completed = is_tutorial_completed(st.session_state.user_info['id'])
+        # Ottieni user_info dal nuovo state manager
+        user_info = app_state.get_user_info()
+        if not user_info:
+            st.warning("⚠️ Nessun utente autenticato.")
+            return
         
-        if not st.session_state.user_info.get("età") or not tutorial_completed:
+        # Se il tutorial non è completato, mostra sempre il form anche se ci sono dati salvati
+        tutorial_completed = is_tutorial_completed(user_info.id)
+        
+        if not user_info.età or not tutorial_completed:
             # Usa il modulo frontend per gestire il form delle informazioni utente
             handle_user_info_form(
-                user_id=st.session_state.user_info["id"],
-                user_data_manager=st.session_state.user_data_manager,
-                create_new_thread_func=st.session_state.chat_manager.create_new_thread
+                user_id=user_info.id,
+                        user_data_manager=app_state.get_user_data_manager(),
+        create_new_thread_func=app_state.get_chat_manager().create_new_thread
             )
         else:
             # Usa il modulo frontend per mostrare le informazioni utente
-            handle_user_info_display(st.session_state.user_info)
+            handle_user_info_display(user_info.__dict__)
             
             # Usa il modulo frontend per gestire il bottone "Ricomincia"
             handle_restart_button(
-                user_data_manager=st.session_state.user_data_manager,
-                deepseek_manager=st.session_state.deepseek_manager,
-                create_new_thread_func=st.session_state.chat_manager.create_new_thread
+                        user_data_manager=app_state.get_user_data_manager(),
+        deepseek_manager=app_state.get_deepseek_manager(),
+        create_new_thread_func=app_state.get_chat_manager().create_new_thread
             )
             
 
@@ -58,12 +67,15 @@ def handle_nutrition_questions_flow():
     Returns:
         bool: True se ci sono ancora domande da gestire, False altrimenti
     """
-    if st.session_state.current_question < len(NUTRITION_QUESTIONS):
+    current_question = app_state.get_current_question()
+    user_info = app_state.get_user_info()
+    
+    if current_question < len(NUTRITION_QUESTIONS):
         # Usa il modulo frontend per gestire le domande nutrizionali
         has_more_questions = handle_nutrition_questions(
-            user_info=st.session_state.user_info,
-            user_id=st.session_state.user_info["id"],
-            user_data_manager=st.session_state.user_data_manager
+            user_info=user_info.__dict__ if user_info else {},
+            user_id=user_info.id if user_info else "",
+            user_data_manager=app_state.get_user_data_manager()
         )
         
         # Se non ci sono più domande, passa alla chat
@@ -79,59 +91,83 @@ def initialize_chat_history():
     """
     Inizializza la chat history caricando messaggi esistenti o creando il prompt iniziale.
     """
-    # Inizializza il token tracker se non esiste
-    if 'token_tracker' not in st.session_state:
-        st.session_state.token_tracker = TokenCostTracker(model="gpt-4")
+    # Inizializza il token tracker se non esiste (ora gestito in initialization.py)
+    token_tracker = app_state.get_token_tracker()
+    if not token_tracker:
+        from services.token_cost_service import TokenCostTracker
+        token_tracker = TokenCostTracker(model="gpt-4")
+        app_state.set_token_tracker(token_tracker)
+        st.session_state.token_tracker = token_tracker
     
-    if not st.session_state.messages:
-        chat_history = st.session_state.user_data_manager.get_chat_history(st.session_state.user_info["id"])
+    messages = app_state.get_messages()
+    user_info = app_state.get_user_info()
+    
+    if not messages:
+        user_data_manager = app_state.get_user_data_manager()
+        if not user_data_manager:
+            st.error("❌ User data manager non disponibile")
+            return
+            
+        chat_history = user_data_manager.get_chat_history(user_info.id)
         if chat_history:
-            st.session_state.messages = [
+            messages = [
                 {"role": msg.role, "content": msg.content}
                 for msg in chat_history
             ]
+            app_state.set('messages', messages)
+            st.session_state.messages = messages
             # Traccia i messaggi esistenti per avere statistiche accurate
-            for msg in st.session_state.messages:
-                st.session_state.token_tracker.track_message(msg["role"], msg["content"])
+            for msg in messages:
+                token_tracker.track_message(msg["role"], msg["content"])
         else:
             # Se non c'è history, invia il prompt iniziale
+            nutrition_answers = app_state.get_nutrition_answers()
             initial_prompt = get_initial_prompt(
-                user_info=st.session_state.user_info,
-                nutrition_answers=st.session_state.nutrition_answers,
-                user_preferences=st.session_state.user_info['preferences']
+                user_info=user_info.__dict__,
+                nutrition_answers=nutrition_answers,
+                user_preferences=user_info.preferences or {}
             )
             
             # Traccia il prompt iniziale come input
             st.session_state.token_tracker.track_message("user", initial_prompt)
             
             # Crea un nuovo thread solo se non esiste già
-            if not hasattr(st.session_state, 'thread_id'):
-                st.session_state.chat_manager.create_new_thread()
+            chat_manager = app_state.get_chat_manager()
+            if not chat_manager:
+                st.error("❌ Chat manager non disponibile")
+                return
+                
+            if not app_state.get_thread_id():
+                chat_manager.create_new_thread()
             
-            # Imposta lo stato di generazione prima di chiamare l'agente
+            # Imposta lo stato di generazione prima di chiamare l'agente - sincronizza entrambi
             st.session_state.agent_generating = True
+            app_state.set_agent_generating(True)
             
             try:
                 # Invia il prompt iniziale usando il manager
-                response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
+                response = chat_manager.chat_with_assistant(initial_prompt)
+                app_state.add_message("assistant", response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
                 
                 # Traccia la risposta dell'assistente
-                st.session_state.token_tracker.track_message("assistant", response)
+                token_tracker.track_message("assistant", response)
                 
                 # Salva il messaggio nella history
-                st.session_state.user_data_manager.save_chat_message(
-                    st.session_state.user_info["id"],
+                user_data_manager.save_chat_message(
+                    user_info.id,
                     "assistant",
                     response
                 )
                 
-                # Rimuovi lo stato di generazione dopo aver completato tutto
+                # Rimuovi lo stato di generazione dopo aver completato tutto - sincronizza entrambi
                 st.session_state.agent_generating = False
+                app_state.set_agent_generating(False)
                 
             except Exception as e:
-                # In caso di errore, assicurati di resettare lo stato
+                # In caso di errore, assicurati di resettare lo stato - sincronizza entrambi
                 st.session_state.agent_generating = False
+                app_state.set_agent_generating(False)
                 raise e
             
             st.rerun()
@@ -141,7 +177,8 @@ def display_chat_messages():
     """
     Mostra la cronologia dei messaggi della chat.
     """
-    for message in st.session_state.messages:
+    messages = app_state.get_messages()
+    for message in messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
 
@@ -160,21 +197,29 @@ def handle_user_input():
         # Se l'agente non sta già generando, inizia il processo
         if not st.session_state.agent_generating:
             # Aggiungi il messaggio dell'utente
+            app_state.add_message("user", user_input)
             st.session_state.messages.append({"role": "user", "content": user_input})
             
             # Traccia il messaggio dell'utente
-            if 'token_tracker' in st.session_state:
-                st.session_state.token_tracker.track_message("user", user_input)
+            token_tracker = app_state.get_token_tracker()
+            if token_tracker:
+                token_tracker.track_message("user", user_input)
+            
+            # Ottieni user_info dal nuovo state manager
+            user_info = app_state.get_user_info()
             
             # Salva il messaggio dell'utente nella history
-            st.session_state.user_data_manager.save_chat_message(
-                st.session_state.user_info["id"],
-                "user",
-                user_input
-            )
+            user_data_manager = app_state.get_user_data_manager()
+            if user_data_manager:
+                user_data_manager.save_chat_message(
+                    user_info.id,
+                    "user",
+                    user_input
+                )
             
-            # Imposta lo stato di generazione e salva l'input per il processing
+            # Imposta lo stato di generazione e salva l'input per il processing - sincronizza entrambi
             st.session_state.agent_generating = True
+            app_state.set_agent_generating(True)
             st.session_state.pending_user_input = user_input
             
             # Fai immediatamente un rerun per aggiornare l'interfaccia
@@ -190,48 +235,66 @@ def handle_user_input():
         
         with st.spinner("L'assistente sta elaborando la risposta..."):
             try:
+                # Ottieni user_info dal nuovo state manager
+                user_info = app_state.get_user_info()
+                
                 # Usa il chat manager per la conversazione
-                response = st.session_state.chat_manager.chat_with_assistant(user_input)
+                chat_manager = app_state.get_chat_manager()
+                if not chat_manager:
+                    st.error("❌ Chat manager non disponibile")
+                    return
+                    
+                response = chat_manager.chat_with_assistant(user_input)
+                app_state.add_message("assistant", response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
                 
                 # Traccia la risposta dell'assistente
-                if 'token_tracker' in st.session_state:
-                    st.session_state.token_tracker.track_message("assistant", response)
+                token_tracker = app_state.get_token_tracker()
+                if token_tracker:
+                    token_tracker.track_message("assistant", response)
                     
                     # Salva le statistiche dei costi nel file utente
-                    stats = st.session_state.token_tracker.get_conversation_stats()
-                    st.session_state.user_data_manager.save_cost_stats(
-                        st.session_state.user_info["id"],
-                        stats
-                    )
+                    stats = token_tracker.get_conversation_stats()
+                    user_data_manager = app_state.get_user_data_manager()
+                    if user_data_manager:
+                        user_data_manager.save_cost_stats(
+                            user_info.id,
+                            stats
+                        )
                 
                 # Salva la risposta dell'assistente nella history
-                st.session_state.user_data_manager.save_chat_message(
-                    st.session_state.user_info["id"],
-                    "assistant",
-                    response
-                )
-                
-                # Salva la domanda e risposta dell'agente
-                st.session_state.user_data_manager.save_agent_qa(
-                    st.session_state.user_info["id"],
-                    user_input,
-                    response
-                )
+                user_data_manager = app_state.get_user_data_manager()
+                if user_data_manager:
+                    user_data_manager.save_chat_message(
+                        user_info.id,
+                        "assistant",
+                        response
+                    )
+                    
+                    # Salva la domanda e risposta dell'agente
+                    user_data_manager.save_agent_qa(
+                        user_info.id,
+                        user_input,
+                        response
+                    )
                 
                 # Controlla se è necessario estrarre dati nutrizionali con DeepSeek
-                st.session_state.deepseek_manager.check_and_extract_if_needed(
-                    user_id=st.session_state.user_info["id"],
-                    user_data_manager=st.session_state.user_data_manager,
-                    user_info=st.session_state.user_info
-                )
+                deepseek_manager = app_state.get_deepseek_manager()
+                if deepseek_manager:
+                    deepseek_manager.check_and_extract_if_needed(
+                        user_id=user_info.id,
+                        user_data_manager=app_state.get_user_data_manager(),
+                        user_info=user_info.__dict__
+                    )
                 
-                # Rimuovi lo stato di generazione dopo aver completato tutto
+                # Rimuovi lo stato di generazione dopo aver completato tutto - sincronizza entrambi
                 st.session_state.agent_generating = False
+                app_state.set_agent_generating(False)
                 
             except Exception as e:
-                # In caso di errore, assicurati di resettare lo stato
+                # In caso di errore, assicurati di resettare lo stato - sincronizza entrambi
                 st.session_state.agent_generating = False
+                app_state.set_agent_generating(False)
                 raise e
         
         # Fai un rerun finale per aggiornare l'interfaccia
@@ -244,13 +307,19 @@ def render_chat_area():
     
     Gestisce il flusso tra tutorial, domande nutrizionali e chat vera e propria.
     """
+    # Ottieni user_info dal nuovo state manager
+    user_info = app_state.get_user_info()
+    if not user_info:
+        st.warning("⚠️ Nessun utente autenticato.")
+        return
+    
     # Prima controlla se il tutorial è stato completato, indipendentemente dai dati salvati
-    if not is_tutorial_completed(st.session_state.user_info['id']):
+    if not is_tutorial_completed(user_info.id):
         # Mostra il tutorial se non è stato completato
         show_app_tutorial()
         return
     
-    if st.session_state.user_info.get("età"):
+    if user_info.età:
         # Se ci sono ancora domande nutrizionali da gestire
         if handle_nutrition_questions_flow():
             return
@@ -262,7 +331,9 @@ def render_chat_area():
         display_chat_messages()
         
         # Mostra notifiche DeepSeek se presenti
-        st.session_state.deepseek_manager.show_notifications()
+        deepseek_manager = app_state.get_deepseek_manager()
+        if deepseek_manager:
+            deepseek_manager.show_notifications()
         
         # Gestisci l'input dell'utente
         handle_user_input()
@@ -282,9 +353,11 @@ def chat_interface():
     - Sidebar informazioni utente
     - Area principale della chat
     """
-    # Controlla risultati DeepSeek in background
-    st.session_state.deepseek_manager.check_and_process_results()
-    st.session_state.deepseek_manager.show_notifications()
+    # Controlla risultati DeepSeek in background - con protezione
+    deepseek_manager = app_state.get_deepseek_manager()
+    if deepseek_manager:
+        deepseek_manager.check_and_process_results()
+        deepseek_manager.show_notifications()
     
     # L'assistente è ora creato in initialization.py
     

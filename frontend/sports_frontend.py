@@ -9,6 +9,9 @@ import streamlit as st
 import json
 import os
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 
 def load_sports_data():
     """Carica i dati degli sport dal file JSON e li organizza per categoria."""
@@ -57,23 +60,27 @@ def get_sports_by_category(category_name):
         "Altro": None
     }
     
-    # Carica i dati degli sport se non sono già in session_state
-    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
-        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
+    # Carica i dati degli sport se non sono già disponibili
+    sports_data = app_state.get_sports_data()
+    sports_by_category = app_state.get_sports_by_category()
+    
+    if not sports_data or not sports_by_category:
+        sports_data, sports_by_category = load_sports_data()
+        app_state.set_sports_data(sports_data, sports_by_category)
     
     mapped_category = category_map.get(category_name)
     
     # Debug: stampa le categorie disponibili
     print(f"Categoria selezionata: {category_name}")
     print(f"Categoria mappata: {mapped_category}")
-    print(f"Categorie disponibili: {list(st.session_state.sports_by_category.keys())}")
+    print(f"Categorie disponibili: {list(sports_by_category.keys())}")
     
-    if mapped_category and mapped_category in st.session_state.sports_by_category:
-        return st.session_state.sports_by_category[mapped_category]
+    if mapped_category and mapped_category in sports_by_category:
+        return sports_by_category[mapped_category]
     else:
         # Se la categoria non esiste o è "Altro", mostra tutti gli sport
         all_sports = []
-        for category, sports in st.session_state.sports_by_category.items():
+        for category, sports in sports_by_category.items():
             all_sports.extend(sports)
         # Rimuovi duplicati e ordina
         return sorted(all_sports, key=lambda x: x["name"])
@@ -94,17 +101,25 @@ def on_sport_category_change(i):
         del st.session_state[f"specific_sport_{i}"]
     
     # Assicurati che i dati degli sport siano caricati
-    if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
-        st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
+    sports_data = app_state.get_sports_data()
+    sports_by_category = app_state.get_sports_by_category()
     
-    # Aggiorna la lista degli sport in session_state
-    if "sports_list" in st.session_state and i < len(st.session_state.sports_list):
+    if not sports_data or not sports_by_category:
+        sports_data, sports_by_category = load_sports_data()
+        app_state.set_sports_data(sports_data, sports_by_category)
+    
+    # Aggiorna la lista degli sport
+    sports_list = app_state.get_sports_list()
+    if i < len(sports_list):
         selected_category = st.session_state[f"sport_type_{i}"]
         print(f"Nuova categoria selezionata: {selected_category}")
         
         # Aggiorna la categoria nello sports_list
-        st.session_state.sports_list[i]["sport_type"] = selected_category
+        sports_list[i]["sport_type"] = selected_category
         
         # Rimuovi lo sport specifico selezionato precedentemente
-        if "specific_sport" in st.session_state.sports_list[i]:
-            del st.session_state.sports_list[i]["specific_sport"] 
+        if "specific_sport" in sports_list[i]:
+            del sports_list[i]["specific_sport"]
+        
+        # Salva la lista aggiornata
+        app_state.set_sports_list(sports_list) 

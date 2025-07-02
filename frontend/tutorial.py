@@ -7,6 +7,9 @@ le quattro sezioni principali dell'applicazione.
 
 import streamlit as st
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 
 def show_app_tutorial():
     """
@@ -16,22 +19,21 @@ def show_app_tutorial():
     Returns:
         bool: True se il tutorial è stato completato, False se ancora in corso
     """
-    # Controlla se il tutorial è già stato completato per questo utente
-    tutorial_key = f"tutorial_completed_{st.session_state.user_info['id']}"
+    # Ottieni user_id dal nuovo state manager
+    user_info = app_state.get_user_info()
+    if not user_info:
+        return False
     
-    if st.session_state.get(tutorial_key, False):
+    user_id = user_info.id
+    
+    # Controlla se il tutorial è già stato completato per questo utente
+    if app_state.is_tutorial_completed(user_id):
         return True
     
-    # Inizializza le chiavi per tracciare i passaggi del tutorial
-    user_id = st.session_state.user_info['id']
-    chat_visited_key = f"tutorial_chat_visited_{user_id}"
-    preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
-    plan_visited_key = f"tutorial_plan_visited_{user_id}"
-    
-    # Inizializza i valori se non esistono
-    chat_visited = st.session_state.get(chat_visited_key, False)
-    preferences_visited = st.session_state.get(preferences_visited_key, False)
-    plan_visited = st.session_state.get(plan_visited_key, False)
+    # Ottieni lo stato delle sezioni visitate
+    chat_visited = app_state.is_tutorial_section_visited(user_id, 'chat')
+    preferences_visited = app_state.is_tutorial_section_visited(user_id, 'preferences')
+    plan_visited = app_state.is_tutorial_section_visited(user_id, 'plan')
     
     # Header del tutorial
     st.markdown("---")
@@ -63,7 +65,8 @@ def show_app_tutorial():
                 "Fai domande su nutrizione, ricette e obiettivi",
                 "L'agente ti guiderà passo dopo passo"
             ],
-            chat_visited_key,
+            user_id,
+            "chat",
             chat_visited
         )
         
@@ -78,7 +81,8 @@ def show_app_tutorial():
                 "Scegli i tuoi cibi preferiti e quelli da evitare",
                 "Modifica le impostazioni quando necessario"
             ],
-            preferences_visited_key,
+            user_id,
+            "preferences",
             preferences_visited
         )
         
@@ -93,7 +97,8 @@ def show_app_tutorial():
                 "Accedi a tutti i dettagli nutrizionali",
                 "Stampa le ricette e le porzioni"
             ],
-            plan_visited_key,
+            user_id,
+            "plan",
             plan_visited
         )
         
@@ -143,7 +148,7 @@ def show_app_tutorial():
     return False
 
 
-def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_visited):
+def _display_tutorial_section(emoji, title, subtitle, features, user_id, section, is_visited):
     """
     Mostra una singola sezione del tutorial in formato interattivo e semplificato.
     Utilizza un expander per un'esperienza più fluida, preservando la logica di completamento.
@@ -153,7 +158,8 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
         title: Titolo della sezione
         subtitle: Sottotitolo descrittivo
         features: Lista delle caratteristiche da mostrare
-        session_key: Chiave per salvare lo stato nella sessione
+        user_id: ID dell'utente
+        section: Nome della sezione (chat, preferences, plan)
         is_visited: Se la sezione è già stata visitata
     """
     label = f"{emoji} {title}"
@@ -173,7 +179,7 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
         # Se la sezione viene aperta per la prima volta, la marchiamo come visitata
         # e attiviamo un rerun per aggiornare la UI.
         if not is_visited:
-            st.session_state[session_key] = True
+            app_state.set_tutorial_section_visited(user_id, section, True)
             st.rerun()
 
 
@@ -187,13 +193,7 @@ def are_all_sections_visited(user_id: str) -> bool:
     Returns:
         bool: True se tutte le sezioni sono state visitate, False altrimenti
     """
-    chat_visited_key = f"tutorial_chat_visited_{user_id}"
-    preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
-    plan_visited_key = f"tutorial_plan_visited_{user_id}"
-    
-    return (st.session_state.get(chat_visited_key, False) and
-            st.session_state.get(preferences_visited_key, False) and
-            st.session_state.get(plan_visited_key, False))
+    return app_state.are_all_tutorial_sections_visited(user_id)
 
 
 def is_tutorial_completed(user_id: str) -> bool:
@@ -206,8 +206,7 @@ def is_tutorial_completed(user_id: str) -> bool:
     Returns:
         bool: True se il tutorial è completato, False altrimenti
     """
-    tutorial_key = f"tutorial_completed_{user_id}"
-    return st.session_state.get(tutorial_key, False)
+    return app_state.is_tutorial_completed(user_id)
 
 
 def reset_tutorial(user_id: str):
@@ -217,19 +216,7 @@ def reset_tutorial(user_id: str):
     Args:
         user_id: ID dell'utente
     """
-    tutorial_key = f"tutorial_completed_{user_id}"
-    chat_visited_key = f"tutorial_chat_visited_{user_id}"
-    preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
-    plan_visited_key = f"tutorial_plan_visited_{user_id}"
-
-    if tutorial_key in st.session_state:
-        del st.session_state[tutorial_key]
-    if chat_visited_key in st.session_state:
-        del st.session_state[chat_visited_key]
-    if preferences_visited_key in st.session_state:
-        del st.session_state[preferences_visited_key]
-    if plan_visited_key in st.session_state:
-        del st.session_state[plan_visited_key]
+    app_state.reset_tutorial(user_id)
 
 
 def check_tutorial_in_chat():
@@ -239,11 +226,13 @@ def check_tutorial_in_chat():
     Returns:
         bool: True se il tutorial deve essere mostrato, False altrimenti
     """
+    # Ottieni user_info dal nuovo state manager
+    user_info = app_state.get_user_info()
+    if not user_info:
+        return False
+    
     # Mostra il tutorial solo se l'utente è autenticato ma non ha ancora inserito i dati
-    if (st.session_state.user_info.get("id") and 
-        not st.session_state.user_info.get("età")):
-        
-        tutorial_key = f"tutorial_completed_{st.session_state.user_info['id']}"
-        return not st.session_state.get(tutorial_key, False)
+    if user_info.id and not user_info.età:
+        return not app_state.is_tutorial_completed(user_info.id)
     
     return False 

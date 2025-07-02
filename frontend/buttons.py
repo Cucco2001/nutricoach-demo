@@ -45,17 +45,25 @@ class ButtonHandler:
         Cancella tutti i dati, preferenze, chat history e riporta
         l'utente al punto di partenza iniziale.
         """
-        user_id = st.session_state.user_info["id"]
-        username = st.session_state.user_info["username"]
+        from services.state_service import app_state
+        user_info = app_state.get_user_info()
+        user_id = user_info.id
+        username = user_info.username
         
         # Resetta il tutorial
         reset_tutorial(user_id)
+        # Sincronizza anche con il nuovo state manager
+        app_state.reset_tutorial(user_id)
         
-        # Resetta le informazioni di sessione
+        # Resetta le informazioni di sessione - sincronizza entrambi
         st.session_state.user_info = {
             "id": user_id, 
             "username": username
         }
+        app_state.set_current_question(0)
+        app_state.set_nutrition_answers({})
+        app_state.clear_messages()
+        
         st.session_state.current_question = 0
         st.session_state.nutrition_answers = {}
         st.session_state.messages = []
@@ -99,6 +107,11 @@ class ButtonHandler:
         if 'token_tracker' in st.session_state:
             from services.token_cost_service import TokenCostTracker
             st.session_state.token_tracker = TokenCostTracker(model="gpt-4")
+            app_state.set_token_tracker(st.session_state.token_tracker)
+        
+        # Resetta lo stato di generazione dell'agente - sincronizza entrambi
+        st.session_state.agent_generating = False
+        app_state.set_agent_generating(False)
         
         # Crea un nuovo thread
         self.create_new_thread_func()

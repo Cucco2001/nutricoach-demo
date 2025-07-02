@@ -9,6 +9,7 @@ import streamlit as st
 from datetime import datetime
 from .nutrition_questions import NUTRITION_QUESTIONS
 from .sports_frontend import load_sports_data, get_sports_by_category, on_sport_category_change
+from services.state_service import app_state
 
 
 class NutritionQuestionHandler:
@@ -128,18 +129,21 @@ class NutritionQuestionHandler:
             list: Lista dei dati sport
         """
         # Gestione sport multipli
-        if "sports_list" not in st.session_state:
-            st.session_state.sports_list = [{}]
+        sports_list = app_state.get_sports_list()
+        if not sports_list:
+            sports_list = [{}]
+            app_state.set_sports_list(sports_list)
         
         follow_up_answer = []
         
-        for i, sport in enumerate(st.session_state.sports_list):
+        for i, sport in enumerate(sports_list):
             st.markdown(f"### Sport {i+1}")
             sport_data = {}
             
             # Precarica i dati degli sport
-            if "sports_data" not in st.session_state or "sports_by_category" not in st.session_state:
-                st.session_state.sports_data, st.session_state.sports_by_category = load_sports_data()
+            if not app_state.get_sports_data() or not app_state.get_sports_by_category():
+                sports_data, sports_by_category = load_sports_data()
+                app_state.set_sports_data(sports_data, sports_by_category)
             
             for field in question["follow_up"]["fields"]:
                 show_field = True
@@ -161,11 +165,13 @@ class NutritionQuestionHandler:
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Aggiungi altro sport"):
-                st.session_state.sports_list.append({})
+                sports_list.append({})
+                app_state.set_sports_list(sports_list)
                 st.rerun()
         with col2:
-            if len(st.session_state.sports_list) > 1 and st.button("Rimuovi ultimo sport"):
-                st.session_state.sports_list.pop()
+            if len(sports_list) > 1 and st.button("Rimuovi ultimo sport"):
+                sports_list.pop()
+                app_state.set_sports_list(sports_list)
                 st.rerun()
         
         return follow_up_answer
@@ -242,7 +248,12 @@ class NutritionQuestionHandler:
         if not selected_category and f"sport_type_{index}" in st.session_state:
             selected_category = st.session_state[f"sport_type_{index}"]
         
-        sports_options = get_sports_by_category(selected_category)
+        # Usa i dati degli sport dall'app_state
+        sports_by_category = app_state.get_sports_by_category()
+        if sports_by_category and selected_category in sports_by_category:
+            sports_options = sports_by_category[selected_category]
+        else:
+            sports_options = []
         sport_names = [s["name"] for s in sports_options]
         
         # Se non ci sono sport disponibili, mostra un messaggio
@@ -413,21 +424,28 @@ class NutritionQuestionHandler:
             user_info: Informazioni dell'utente
         """
         # Salva la risposta
-        st.session_state.nutrition_answers[question_id] = {
+        nutrition_answers = app_state.get_nutrition_answers()
+        nutrition_answers[question_id] = {
             "answer": answer,
             "follow_up": follow_up_answer
         }
+        
+        # Sincronizza con entrambi i sistemi
+        st.session_state.nutrition_answers = nutrition_answers
+        app_state.set_nutrition_answers(nutrition_answers)
         
         # Salva le risposte nutrizionali
         self.user_data_manager.save_nutritional_info(
             user_id,
             {
                 **{k: v for k, v in user_info.items() if k not in ["id", "username"]},
-                "nutrition_answers": st.session_state.nutrition_answers
+                "nutrition_answers": nutrition_answers
             }
         )
         
-        st.session_state.current_question += 1
+        current_question = app_state.get_current_question() + 1
+        st.session_state.current_question = current_question
+        app_state.set_current_question(current_question)
     
     def handle_current_question(self, user_info, user_id):
         """
@@ -440,15 +458,20 @@ class NutritionQuestionHandler:
         Returns:
             bool: True se ci sono ancora domande da processare
         """
-        if st.session_state.current_question >= len(NUTRITION_QUESTIONS):
+        current_question = app_state.get_current_question()
+        if current_question >= len(NUTRITION_QUESTIONS):
             return False
         
-        current_q = NUTRITION_QUESTIONS[st.session_state.current_question]
+        current_q = NUTRITION_QUESTIONS[current_question]
+        # Sincronizza anche st.session_state per compatibilità
+        st.session_state.current_question = current_question
         
         # Verifica se la domanda deve essere mostrata
         if not self.should_show_question(current_q, user_info):
             # Salta la domanda se non deve essere mostrata
-            st.session_state.current_question += 1
+            current_question += 1
+            st.session_state.current_question = current_question
+            app_state.set_current_question(current_question)
             st.rerun()
             return True
         

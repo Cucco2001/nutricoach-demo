@@ -7,6 +7,8 @@ e la visualizzazione delle informazioni già inserite.
 
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
+from services.state_service import app_state
+from services.state_service.app_state_manager import UserInfo
 from frontend.tutorial import are_all_sections_visited, is_tutorial_completed
 
 
@@ -92,14 +94,17 @@ class InitialInfoHandler:
                 # Segna il tutorial come completato definitivamente
                 tutorial_key = f"tutorial_completed_{user_id}"
                 st.session_state[tutorial_key] = True
+                # Sincronizza con app_state
+                app_state.set_tutorial_completed(user_id, True)
 
                 self._save_user_info(
                     user_id, età, sesso, peso, altezza, attività, obiettivo, 
                     user_preferences, nutritional_info
                 )
                 
-                # Imposta il flag per chiudere la sidebar al prossimo rerun
+                # Imposta il flag per indicare che l'utente ha appena completato le info iniziali
                 st.session_state.just_completed_initial_info = True
+                app_state.set_just_completed_initial_info(True)
                 
                 st.rerun()
     
@@ -196,6 +201,24 @@ class InitialInfoHandler:
         }
         st.session_state.user_info.update(user_info)
         
+        # Sincronizza con app_state - prima otteniamo i dati utente correnti
+        current_user_info = app_state.get_user_info()
+        if current_user_info:
+            # Aggiorna l'oggetto UserInfo esistente
+            updated_user_info = UserInfo(
+                id=current_user_info.id,
+                username=current_user_info.username,
+                email=current_user_info.email,
+                età=età,
+                sesso=sesso,
+                peso=peso,
+                altezza=altezza,
+                attività=attività,
+                obiettivo=obiettivo,
+                preferences=user_preferences
+            )
+            app_state.set_user_info(updated_user_info)
+        
         # Salva le informazioni nutrizionali
         self.user_data_manager.save_nutritional_info(user_id, user_info)
         
@@ -203,6 +226,10 @@ class InitialInfoHandler:
         if nutritional_info and nutritional_info.nutrition_answers:
             st.session_state.nutrition_answers = nutritional_info.nutrition_answers
             st.session_state.current_question = len(NUTRITION_QUESTIONS)
+            
+            # Sincronizza con app_state
+            app_state.set_nutrition_answers(nutritional_info.nutrition_answers)
+            app_state.set_current_question(len(NUTRITION_QUESTIONS))
         
         # Crea un nuovo thread quando si inizia una nuova consulenza
         self.create_new_thread_func()

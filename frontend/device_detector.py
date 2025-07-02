@@ -125,6 +125,9 @@ def show_device_selector():
     if selected_device != current_device:
         st.session_state.force_device_type = selected_device
         st.session_state.device_choice_made = True
+        # Sincronizza con app_state
+        app_state.set_force_device_type(selected_device)
+        app_state.set_device_choice_made(True)
         st.rerun()
     
     return selected_device
@@ -151,4 +154,8 @@ def device_info_display():
     if is_forced:
         if st.button("🔄 Reset Rilevazione"):
             reset_device_detection()
-            st.rerun() 
+            st.rerun()
+
+    # Salva il tipo di dispositivo rilevato
+    st.session_state.device_type = device_type
+    app_state.set_device_type(device_type) 

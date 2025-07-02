@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-07-01T18:58:50.762974",
+  "timestamp": "2025-07-02T22:29:14.308794",
   "user_id": "user_1747679093",
   "debug_type": "conversazione_completa_con_estrazione",
   "interazioni": {
@@ -35,38 +35,23 @@
       },
       "agent_qa": [
         {
-          "question": "continua",
-          "answer": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del tuo metabolismo basale (BMR), del tuo fabbisogno energetico base e fabbisogno totale giornaliero per il mantenimento del peso, considerando che non pratichi attività sportiva.\n\nCosa sto facendo?\n- Calcolo quanto il tuo corpo consuma ogni giorno a riposo (Metabolismo Basale, BMR)\n- Sommo le calorie necessarie a sostenere le normali attività quotidiane (LAF - Livello di Attività Fisica)\n- Come non pratichi sport regolare, non aggiungo calorie da attività sportiva\n- Stabilisco il fabbisogno calorico giornaliero necessario per mantenere il peso\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal (cioè la spesa energetica minima a riposo)\n- Fabbisogno energetico base: 2173 kcal (tiene conto della tua attività quotidiana, con LAF=1.3 per stile di vita sedentario)\n- Fabbisogno energetico totale giornaliero: 2173 kcal (senza sport aggiuntivi)\n- Nessun deficit o surplus aggiunto, dato che l'obiettivo è mantenimento\n\nEsempio di calcolo (semplificato):\nFabbisogno totale = BMR * LAF\nFabbisogno totale = 1672 * 1.3 = 2173 kcal/giorno\n\n📚 Fonti utilizzate:\n- Calcolo secondo la formula di Harris e Benedict, validata e utilizzata in ambito scientifico internazionale\n- Livelli LAF secondo le indicazioni SINU (Società Italiana di Nutrizione Umana)\n\n➡️ Conclusione: Per mantenere il tuo attuale peso, il tuo fabbisogno giornaliero stimato è 2173 kcal.\n\n❓ Hai domande sul calcolo o vuoi continuare con la FASE 3, dove distribuiremo queste calorie tra le diverse categorie di macronutrienti (proteine, carboidrati, grassi)?",
-          "timestamp": 1751382822.480807
+          "question": "procedi",
+          "answer": "✓ FASE 1 – ANALISI DELLE RISPOSTE FORNITE\n\n⚡ Sto elaborando: Raccolta e valutazione di tutti i dettagli su abitudini, preferenze, allergie, attività sportiva e pasti per impostare un piano alimentare veramente su misura.\n\n📊 Risultati intermedi:\n- Dati base:\n  • Età: 30 anni\n  • Sesso: Maschio\n  • Peso: 70 kg\n  • Altezza: 170 cm\n  • Livello attività quotidiana: Sedentario (cioè nessun movimento fisico regolare nell’arco della giornata lavorativa)\n- Allergie/intolleranze: Nessuna\n- Attività sportiva: Nessuna\n- Numero e orari pasti preferiti:\n  • Colazione: 07:30\n  • Pranzo: 13:00\n  • Spuntino pomeridiano: 16:30\n  • Cena: 20:00\n- Preferenze alimentari: Nessun alimento escluso, nessuna preferenza particolare segnalata\n\nSpiegazione semplice:\nHo raccolto tutti i dati forniti: non risultano allergie né cibi da escludere o preferire, non pratichi attività sportiva, e mi hai indicato che vuoi fare 4 pasti con orari precisi. Queste informazioni sono la base per calcolare il fabbisogno e poi elaborare i pasti più adatti a te.\n\n📚 Fonti utilizzate:\n- Preferenze, intolleranze e storia alimentare: informazioni raccolte tramite la tua intervista personale\n\n➡️ Conclusione: Sono pronto a passare alla FASE 2, dove calcolerò il tuo fabbisogno calorico giornaliero dettagliato, includendo i calcoli passo passo. Se hai domande sulla raccolta dati finora, chiedimi pure! Vuoi andare avanti?",
+          "timestamp": 1751488107.5323746
         },
         {
-          "question": "continua",
-          "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Suddivisione delle tue calorie giornaliere tra proteine, grassi e carboidrati, in base al tuo stile di vita sedentario, secondo le principali raccomandazioni nutrizionali.\n\nCosa sto facendo?\n- Definisco quante proteine ti servono ogni giorno per mantenere la massa muscolare.\n- Ripartisco il resto delle calorie tra grassi (percentuale raccomandata) e carboidrati (che copriranno l’energia restante).\n- In questo modo avrai una dieta bilanciata e adatta alle tue esigenze di mantenimento.\n\n📊 Risultati intermedi:\n\n1) Proteine\n- Moltiplicatore proteico raccomandato: 0.66 g per kg di peso corporeo (fonte OMS per soggetti sedentari)\n- Proteine totali: 0.66 * 70 = 46 g\n- Kcal da proteine: 46 * 4 = 184 kcal\n- Percentuale sulle kcal totali: (184 / 2173) * 100 = 8%\n\n2) Grassi\n- Range raccomandato: 20-35% delle calorie totali (fonte LARN/SINU)\n- Scelgo l’intermedio (30%): 2173 * 0.30 = 652 kcal dai grassi\n- Grammi di grassi: 652 / 9 = 72 g\n\n3) Carboidrati\n- Calorie residue: 2173 - (652 + 184) = 1337 kcal\n- Grammi di carboidrati: 1337 / 4 = 334 g\n\nRiepilogo macronutrienti:\nKcal totali: 2173 kcal\n- Proteine: 46 g (184 kcal, 8%)\n- Grassi: 72 g (652 kcal, 30%)\n- Carboidrati: 334 g (1337 kcal, 62%)\n\n📚 Fonti utilizzate:\n- Moltiplicatore proteico OMS/WHO (per soggetti sedentari, Phillips et al., 2011)\n- Range grassi secondo LARN/SINU (Società Italiana di Nutrizione Umana)\n- Riparto carboidrati in base alle raccomandazioni internazionali (45-60% energia)\n\n➡️ Conclusione: Questo schema ti permette di mantenere la salute, garantire il corretto apporto di energia e micronutrienti, e supporta le tue abitudini di vita.\n\n❓ Vuoi chiarimenti sui calcoli dei macronutrienti o posso distribuire queste quantità tra i pasti nella FASE 4?",
-          "timestamp": 1751382874.4881244
-        },
-        {
-          "question": "Vai piu veloce",
-          "answer": "Capisco il desiderio di andare più veloce! Ogni fase, però, serve per garantire che il piano alimentare sia davvero su misura per te e che ogni aspetto sia valutato attentamente. In questo modo, ottieni calcoli accurati e un servizio di qualità. \n\nProcedo ora SOLO con la FASE 4, come previsto dal processo.\n\n---\n\n✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\n⚡ Sto elaborando: Ripartizione delle calorie e dei macronutrienti tra i tuoi 4 pasti giornalieri, in base agli orari che mi hai fornito.\n\nCosa sto facendo?\n- Divido le 2173 kcal giornaliere tra colazione, pranzo, spuntino pomeridiano e cena secondo schemi riconosciuti.\n- Distribuisco in proporzione anche proteine, carboidrati e grassi.\n\nDistribuzione tipica per 4 pasti:\n- Colazione: 25% delle calorie totali\n- Pranzo: 35%\n- Spuntino pomeridiano: 10%\n- Cena: 30%\n\nCalcolo quote per pasto:\n- Colazione: 2173 * 0.25 = 543 kcal \n    - Proteine: 46 * 0.25 = 12 g\n    - Carboidrati: 334 * 0.25 = 84 g\n    - Grassi: 72 * 0.25 = 18 g\n\n- Pranzo: 2173 * 0.35 = 761 kcal \n    - Proteine: 46 * 0.35 = 16 g\n    - Carboidrati: 334 * 0.35 = 117 g\n    - Grassi: 72 * 0.35 = 25 g\n\n- Spuntino pomeridiano: 2173 * 0.10 = 217 kcal \n    - Proteine: 46 * 0.10 = 5 g\n    - Carboidrati: 334 * 0.10 = 33 g\n    - Grassi: 72 * 0.10 = 7 g\n\n- Cena: 2173 * 0.30 = 652 kcal \n    - Proteine: 46 * 0.30 = 14 g\n    - Carboidrati: 334 * 0.30 = 100 g\n    - Grassi: 72 * 0.30 = 22 g\n\n📚 Fonti utilizzate:\n- Distribuzione dei pasti secondo linee guida SINU/LARN\n\nOrario | Pasto | Kcal (%) | Proteine | Carboidrati | Grassi  \n--- | --- | --- | --- | --- | ---\n07:30 | Colazione | 543 (25%) | 12 g (25%) | 84 g (25%) | 18 g (25%)\n13:00 | Pranzo | 761 (35%) | 16 g (35%) | 117 g (35%) | 25 g (35%)\n16:30 | Spuntino | 217 (10%) | 5 g (10%) | 33 g (10%) | 7 g (10%)\n20:00 | Cena | 652 (30%) | 14 g (30%) | 100 g (30%) | 22 g (30%)\n\n➡️ Conclusione: Ho suddiviso energia e macronutrienti nella tua giornata per supportare energia, sazietà e varietà.\n\n❓ Domande sulla suddivisione dei pasti? Posso proseguire creando la COLAZIONE (FASE 5) o preferisci chiarimenti?",
-          "timestamp": 1751388443.6226406
-        },
-        {
-          "question": "continua",
-          "answer": "🌅 COLAZIONE (559 kcal)\n\n• **Avena**: 60 g → 🥣 3/4 tazza  \n P: 5 g, C: 40 g, G: 5 g  \n (Sostituti: 60 g muesli, 60 g fette biscottate)\n\n• **Latte parzialmente scremato**: 100 g → 🥛 mezzo bicchiere  \n P: 4 g, C: 5 g, G: 2 g  \n (Sostituti: 110 g yogurt magro, 130 g latte scremato)\n\n• **Banana**: 220 g → 🍌 2 banane piccole  \n P: 3 g, C: 38 g, G: 1 g  \n (Sostituti: 340 g mirtilli, 190 g uva)\n\n• **Mandorle**: 20 g → 🥜 1 manciata (circa 15 mandorle)  \n P: 4 g, C: 1 g, G: 11 g  \n (Sostituti: 20 g nocciole, 20 g arachidi)\n\nTotale pasto: P: 15 g, C: 84 g, G: 18 g\n\n✔ Ricetta/Preparazione: \nPrepara un porridge mescolando l’avena con il latte parzialmente scremato e, se preferisci, riscalda leggermente. Completa con fette di banana e una manciata di mandorle sopra il tutto. Puoi aggiungere un pizzico di cannella per più gusto.\n\n📚 Fonti utilizzate:\n- Ottimizzazione dei pasti tramite Banca Dati CREA (Composizione Alimenti)\n- Target macronutrienti calcolati nelle fasi precedenti\n- Sostituti alimentari suggeriti dal sistema di ottimizzazione porzioni\n\n➡️ Colazione pronta! Vuoi proseguire con la creazione del pranzo o hai domande su questa colazione?",
-          "timestamp": 1751388489.1271772
-        },
-        {
-          "question": "Continua",
-          "answer": "🍽️ PRANZO (720 kcal)\n\n• **Riso**: 140 g → 🍚 1 tazza e mezza  (Sostituti: 150 g riso integrale, 150 g orzo)  \n P: 13 g, C: 116 g, G: 3 g\n\n• **Zucchine**: 160 g → 🥒 1 piatto abbondante  (Sostituti: 160 g verdure miste, 90 g cavolfiore)  \n P: 3 g, C: 3 g, G: 0 g\n\n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai (Sostituti: 20 g burro, 80 g avocado)  \n P: 0 g, C: 0 g, G: 20 g\n\nTotale pasto: P: 16 g, C: 119 g, G: 23 g\n\n✔ Ricetta/Preparazione: \nCuoci il riso e le zucchine separatamente. Unisci le zucchine tagliate a cubetti al riso e condisci il tutto con l’olio extravergine d’oliva a crudo. Per insaporire puoi aggiungere spezie (come prezzemolo, pepe o basilico) secondo gusto.\n\n📚 Fonti utilizzate:\n- Quantitativi e apporto nutrizionale dei cibi dalla Banca Dati CREA\n- Target macronutrienti calcolati nelle fasi precedenti\n- Sostituti suggeriti dal sistema di ottimizzazione porzioni\n\n➡️ Pranzo pronto! Vuoi procedere con lo spuntino pomeridiano o hai domande/domande di modifica su questo pranzo?",
-          "timestamp": 1751389075.6588902
+          "question": "procedi",
+          "answer": "✓ FASE 2 – CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del metabolismo basale (BMR), del fabbisogno energetico totale e verifica di eventuali aggiunte per attività fisica (che non sono presenti nel tuo caso).\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal\n- Fabbisogno energetico totale (con livello di attività “sedentario”): 2173 kcal/giorno\n- LAF (Livello di Attività Fisica) utilizzato: 1.3\n- Attività sportiva: Nessuna (quindi non ci sono calorie da aggiungere)\n\nSpiegazione semplice:\nIl metabolismo basale (BMR) è l’energia che il tuo corpo consuma per le funzioni vitali a riposo. Il fabbisogno energetico totale tiene conto anche dell’attività fisica quotidiana (in questo caso “sedentario”). Sommando tutto, il tuo fabbisogno è di circa 2173 kcal al giorno.\n\n- Calcolo sintetico:\n  Metabolismo basale = 1672 kcal\n  LAF utilizzato = 1.3\n  Fabbisogno totale = 1672 * 1.3 = 2173 kcal/giorno\n\n📚 Fonti utilizzate:\n- Formula Harris-Benedict: Organizzazione Mondiale della Sanità (WHO), linee guida scientifiche standard\n- LAF e stime fabbisogno: Società Italiana di Nutrizione Umana (LARN), SINU\n\n➡️ Conclusione: Sei pronto per il passo successivo, dove stabilirò le quantità precise di macronutrienti (proteine, grassi, carboidrati) adatte al tuo fabbisogno. Se ti interessa approfondire qualche passaggio dei calcoli, chiedimi pure! Vuoi proseguire alla FASE 3?",
+          "timestamp": 1751488146.4189167
         }
       ]
     },
     "lista_interazioni": [
       {
         "numero_interazione": 1,
-        "domanda_utente": "Continua",
-        "risposta_agente": "🍽️ PRANZO (720 kcal)\n\n• **Riso**: 140 g → 🍚 1 tazza e mezza  (Sostituti: 150 g riso integrale, 150 g orzo)  \n P: 13 g, C: 116 g, G: 3 g\n\n• **Zucchine**: 160 g → 🥒 1 piatto abbondante  (Sostituti: 160 g verdure miste, 90 g cavolfiore)  \n P: 3 g, C: 3 g, G: 0 g\n\n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai (Sostituti: 20 g burro, 80 g avocado)  \n P: 0 g, C: 0 g, G: 20 g\n\nTotale pasto: P: 16 g, C: 119 g, G: 23 g\n\n✔ Ricetta/Preparazione: \nCuoci il riso e le zucchine separatamente. Unisci le zucchine tagliate a cubetti al riso e condisci il tutto con l’olio extravergine d’oliva a crudo. Per insaporire puoi aggiungere spezie (come prezzemolo, pepe o basilico) secondo gusto.\n\n📚 Fonti utilizzate:\n- Quantitativi e apporto nutrizionale dei cibi dalla Banca Dati CREA\n- Target macronutrienti calcolati nelle fasi precedenti\n- Sostituti suggeriti dal sistema di ottimizzazione porzioni\n\n➡️ Pranzo pronto! Vuoi procedere con lo spuntino pomeridiano o hai domande/domande di modifica su questo pranzo?",
-        "timestamp": 1751389075.6588902
+        "domanda_utente": "procedi",
+        "risposta_agente": "✓ FASE 2 – CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Calcolo del metabolismo basale (BMR), del fabbisogno energetico totale e verifica di eventuali aggiunte per attività fisica (che non sono presenti nel tuo caso).\n\n📊 Risultati intermedi:\n- Metabolismo basale (BMR): 1672 kcal\n- Fabbisogno energetico totale (con livello di attività “sedentario”): 2173 kcal/giorno\n- LAF (Livello di Attività Fisica) utilizzato: 1.3\n- Attività sportiva: Nessuna (quindi non ci sono calorie da aggiungere)\n\nSpiegazione semplice:\nIl metabolismo basale (BMR) è l’energia che il tuo corpo consuma per le funzioni vitali a riposo. Il fabbisogno energetico totale tiene conto anche dell’attività fisica quotidiana (in questo caso “sedentario”). Sommando tutto, il tuo fabbisogno è di circa 2173 kcal al giorno.\n\n- Calcolo sintetico:\n  Metabolismo basale = 1672 kcal\n  LAF utilizzato = 1.3\n  Fabbisogno totale = 1672 * 1.3 = 2173 kcal/giorno\n\n📚 Fonti utilizzate:\n- Formula Harris-Benedict: Organizzazione Mondiale della Sanità (WHO), linee guida scientifiche standard\n- LAF e stime fabbisogno: Società Italiana di Nutrizione Umana (LARN), SINU\n\n➡️ Conclusione: Sei pronto per il passo successivo, dove stabilirò le quantità precise di macronutrienti (proteine, grassi, carboidrati) adatte al tuo fabbisogno. Se ti interessa approfondire qualche passaggio dei calcoli, chiedimi pure! Vuoi proseguire alla FASE 3?",
+        "timestamp": 1751488146.4189167
       }
     ]
   },
@@ -74,71 +59,34 @@
     "raw_response_formatted": {
       "status": "disponibile",
       "json_valido": true,
-      "contenuto_originale": "\n{\n  \"weekly_diet_day_1\": [\n    {\n      \"nome_pasto\": \"pranzo\",\n      \"alimenti\": [\n        {\n          \"nome_alimento\": \"Riso\",\n          \"quantita_g\": 140,\n          \"misura_casalinga\": \"1 tazza e mezza\",\n          \"sostituti\": \"150 g riso integrale, 150 g orzo\",\n          \"macronutrienti\": {\n            \"proteine\": 13,\n            \"carboidrati\": 116,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Zucchine\",\n          \"quantita_g\": 160,\n          \"misura_casalinga\": \"1 piatto abbondante\",\n          \"sostituti\": \"160 g verdure miste, 90 g cavolfiore\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 3,\n            \"grassi\": 0\n          }\n        },\n        {\n          \"nome_alimento\": \"Olio extravergine di oliva\",\n          \"quantita_g\": 20,\n          \"misura_casalinga\": \"2 cucchiai\",\n          \"sostituti\": \"20 g burro, 80 g avocado\",\n          \"macronutrienti\": {\n            \"proteine\": 0,\n            \"carboidrati\": 0,\n            \"grassi\": 20\n          }\n        }\n      ],\n      \"totali_pasto\": {\n        \"kcal_finali\": 720,\n        \"proteine_totali\": 16,\n        \"carboidrati_totali\": 119,\n        \"grassi_totali\": 23\n      }\n    }\n  ]\n}\n",
-      "contenuto_pulito": "{\n  \"weekly_diet_day_1\": [\n    {\n      \"nome_pasto\": \"pranzo\",\n      \"alimenti\": [\n        {\n          \"nome_alimento\": \"Riso\",\n          \"quantita_g\": 140,\n          \"misura_casalinga\": \"1 tazza e mezza\",\n          \"sostituti\": \"150 g riso integrale, 150 g orzo\",\n          \"macronutrienti\": {\n            \"proteine\": 13,\n            \"carboidrati\": 116,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Zucchine\",\n          \"quantita_g\": 160,\n          \"misura_casalinga\": \"1 piatto abbondante\",\n          \"sostituti\": \"160 g verdure miste, 90 g cavolfiore\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 3,\n            \"grassi\": 0\n          }\n        },\n        {\n          \"nome_alimento\": \"Olio extravergine di oliva\",\n          \"quantita_g\": 20,\n          \"misura_casalinga\": \"2 cucchiai\",\n          \"sostituti\": \"20 g burro, 80 g avocado\",\n          \"macronutrienti\": {\n            \"proteine\": 0,\n            \"carboidrati\": 0,\n            \"grassi\": 20\n          }\n        }\n      ],\n      \"totali_pasto\": {\n        \"kcal_finali\": 720,\n        \"proteine_totali\": 16,\n        \"carboidrati_totali\": 119,\n        \"grassi_totali\": 23\n      }\n    }\n  ]\n}",
-      "contenuto_formattato": "{\n  \"weekly_diet_day_1\": [\n    {\n      \"nome_pasto\": \"pranzo\",\n      \"alimenti\": [\n        {\n          \"nome_alimento\": \"Riso\",\n          \"quantita_g\": 140,\n          \"misura_casalinga\": \"1 tazza e mezza\",\n          \"sostituti\": \"150 g riso integrale, 150 g orzo\",\n          \"macronutrienti\": {\n            \"proteine\": 13,\n            \"carboidrati\": 116,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Zucchine\",\n          \"quantita_g\": 160,\n          \"misura_casalinga\": \"1 piatto abbondante\",\n          \"sostituti\": \"160 g verdure miste, 90 g cavolfiore\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 3,\n            \"grassi\": 0\n          }\n        },\n        {\n          \"nome_alimento\": \"Olio extravergine di oliva\",\n          \"quantita_g\": 20,\n          \"misura_casalinga\": \"2 cucchiai\",\n          \"sostituti\": \"20 g burro, 80 g avocado\",\n          \"macronutrienti\": {\n            \"proteine\": 0,\n            \"carboidrati\": 0,\n            \"grassi\": 20\n          }\n        }\n      ],\n      \"totali_pasto\": {\n        \"kcal_finali\": 720,\n        \"proteine_totali\": 16,\n        \"carboidrati_totali\": 119,\n        \"grassi_totali\": 23\n      }\n    }\n  ]\n}",
+      "contenuto_originale": "\n{\n  \"caloric_needs\": {\n    \"bmr\": 1672,\n    \"fabbisogno_base\": 2173,\n    \"fabbisogno_totale\": 2173,\n    \"laf_utilizzato\": 1.3\n  }\n}\n",
+      "contenuto_pulito": "{\n  \"caloric_needs\": {\n    \"bmr\": 1672,\n    \"fabbisogno_base\": 2173,\n    \"fabbisogno_totale\": 2173,\n    \"laf_utilizzato\": 1.3\n  }\n}",
+      "contenuto_formattato": "{\n  \"caloric_needs\": {\n    \"bmr\": 1672,\n    \"fabbisogno_base\": 2173,\n    \"fabbisogno_totale\": 2173,\n    \"laf_utilizzato\": 1.3\n  }\n}",
       "metadati": {
-        "lunghezza_originale": 1230,
-        "lunghezza_pulita": 1228,
-        "lunghezza_formattata": 1228,
-        "righe_originali": 50,
-        "righe_formattate": 48,
+        "lunghezza_originale": 133,
+        "lunghezza_pulita": 131,
+        "lunghezza_formattata": 131,
+        "righe_originali": 10,
+        "righe_formattate": 8,
         "aveva_markdown_wrapper": false,
         "tipo_contenuto": "JSON valido"
       }
     },
     "dati_estratti_parsed": {
-      "weekly_diet_day_1": [
-        {
-          "nome_pasto": "pranzo",
-          "alimenti": [
-            {
-              "nome_alimento": "Riso",
-              "quantita_g": 140,
-              "misura_casalinga": "1 tazza e mezza",
-              "sostituti": "150 g riso integrale, 150 g orzo",
-              "macronutrienti": {
-                "proteine": 13,
-                "carboidrati": 116,
-                "grassi": 3
-              }
-            },
-            {
-              "nome_alimento": "Zucchine",
-              "quantita_g": 160,
-              "misura_casalinga": "1 piatto abbondante",
-              "sostituti": "160 g verdure miste, 90 g cavolfiore",
-              "macronutrienti": {
-                "proteine": 3,
-                "carboidrati": 3,
-                "grassi": 0
-              }
-            },
-            {
-              "nome_alimento": "Olio extravergine di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai",
-              "sostituti": "20 g burro, 80 g avocado",
-              "macronutrienti": {
-                "proteine": 0,
-                "carboidrati": 0,
-                "grassi": 20
-              }
-            }
-          ],
-          "totali_pasto": {
-            "kcal_finali": 720,
-            "proteine_totali": 16,
-            "carboidrati_totali": 119,
-            "grassi_totali": 23
-          }
-        }
-      ]
+      "caloric_needs": {
+        "bmr": 1672,
+        "fabbisogno_base": 2173,
+        "fabbisogno_totale": 2173,
+        "laf_utilizzato": 1.3,
+        "dispendio_sportivo": 0,
+        "aggiustamento_obiettivo": 0,
+        "fabbisogno_finale": 2173
+      }
     },
     "chiavi_estratte": [
-      "weekly_diet_day_1"
+      "caloric_needs"
     ],
-    "timestamp_estrazione": "2025-07-01T18:58:50.762974"
+    "timestamp_estrazione": "2025-07-02T22:29:14.308794"
   },
   "dati_finali_merged": {
     "caloric_needs": {
@@ -149,154 +97,7 @@
       "dispendio_sportivo": 0,
       "aggiustamento_obiettivo": 0,
       "fabbisogno_finale": 2173
-    },
-    "macros_total": {
-      "kcal_finali": 2173,
-      "proteine_g": 46,
-      "proteine_kcal": 184,
-      "proteine_percentuale": 8,
-      "grassi_g": 72,
-      "grassi_kcal": 652,
-      "grassi_percentuale": 30,
-      "carboidrati_g": 334,
-      "carboidrati_kcal": 1337,
-      "carboidrati_percentuale": 62,
-      "kcal_totali": 2173
-    },
-    "daily_macros": {
-      "numero_pasti": 4,
-      "distribuzione_pasti": {
-        "colazione": {
-          "kcal": 543,
-          "percentuale_kcal": 25,
-          "proteine_g": 12,
-          "carboidrati_g": 84,
-          "grassi_g": 18
-        },
-        "pranzo": {
-          "kcal": 761,
-          "percentuale_kcal": 35,
-          "proteine_g": 16,
-          "carboidrati_g": 117,
-          "grassi_g": 25
-        },
-        "spuntino_pomeridiano": {
-          "kcal": 217,
-          "percentuale_kcal": 10,
-          "proteine_g": 5,
-          "carboidrati_g": 33,
-          "grassi_g": 7
-        },
-        "cena": {
-          "kcal": 652,
-          "percentuale_kcal": 30,
-          "proteine_g": 14,
-          "carboidrati_g": 100,
-          "grassi_g": 22
-        }
-      }
-    },
-    "weekly_diet_day_1": [
-      {
-        "nome_pasto": "colazione",
-        "alimenti": [
-          {
-            "nome_alimento": "Avena",
-            "quantita_g": 60,
-            "misura_casalinga": "3/4 tazza",
-            "sostituti": "60 g muesli, 60 g fette biscottate",
-            "macronutrienti": {
-              "proteine": 5,
-              "carboidrati": 40,
-              "grassi": 5
-            }
-          },
-          {
-            "nome_alimento": "Latte parzialmente scremato",
-            "quantita_g": 100,
-            "misura_casalinga": "mezzo bicchiere",
-            "sostituti": "110 g yogurt magro, 130 g latte scremato",
-            "macronutrienti": {
-              "proteine": 4,
-              "carboidrati": 5,
-              "grassi": 2
-            }
-          },
-          {
-            "nome_alimento": "Banana",
-            "quantita_g": 220,
-            "misura_casalinga": "2 banane piccole",
-            "sostituti": "340 g mirtilli, 190 g uva",
-            "macronutrienti": {
-              "proteine": 3,
-              "carboidrati": 38,
-              "grassi": 1
-            }
-          },
-          {
-            "nome_alimento": "Mandorle",
-            "quantita_g": 20,
-            "misura_casalinga": "1 manciata (circa 15 mandorle)",
-            "sostituti": "20 g nocciole, 20 g arachidi",
-            "macronutrienti": {
-              "proteine": 4,
-              "carboidrati": 1,
-              "grassi": 11
-            }
-          }
-        ],
-        "totali_pasto": {
-          "kcal_finali": 559,
-          "proteine_totali": 15,
-          "carboidrati_totali": 84,
-          "grassi_totali": 18
-        }
-      },
-      {
-        "nome_pasto": "pranzo",
-        "alimenti": [
-          {
-            "nome_alimento": "Riso",
-            "quantita_g": 140,
-            "misura_casalinga": "1 tazza e mezza",
-            "sostituti": "150 g riso integrale, 150 g orzo",
-            "macronutrienti": {
-              "proteine": 13,
-              "carboidrati": 116,
-              "grassi": 3
-            }
-          },
-          {
-            "nome_alimento": "Zucchine",
-            "quantita_g": 160,
-            "misura_casalinga": "1 piatto abbondante",
-            "sostituti": "160 g verdure miste, 90 g cavolfiore",
-            "macronutrienti": {
-              "proteine": 3,
-              "carboidrati": 3,
-              "grassi": 0
-            }
-          },
-          {
-            "nome_alimento": "Olio extravergine di oliva",
-            "quantita_g": 20,
-            "misura_casalinga": "2 cucchiai",
-            "sostituti": "20 g burro, 80 g avocado",
-            "macronutrienti": {
-              "proteine": 0,
-              "carboidrati": 0,
-              "grassi": 20
-            }
-          }
-        ],
-        "totali_pasto": {
-          "kcal_finali": 720,
-          "proteine_totali": 16,
-          "carboidrati_totali": 119,
-          "grassi_totali": 23
-        }
-      }
-    ]
+    }
   },
   "metadati": {
     "versione_debug": "4.0",
