@@ -79,7 +79,26 @@ def load_mobile_css():
     }
 
     /* --- Sidebar Mobile --- */
-    /* La regola con selettore generato è stata rimossa perché instabile */
+    /* Sidebar molto più stretta su mobile per risparmiare spazio */
+    section[data-testid="stSidebar"] {
+        width: 180px !important;
+        min-width: 180px !important;
+    }
+    
+    /* Contenuto sidebar ottimizzato per mobile */
+    section[data-testid="stSidebar"] .css-1d391kg {
+        padding: 0.5rem !important;
+    }
+    
+    /* Radio buttons nella sidebar più compatti */
+    section[data-testid="stSidebar"] .stRadio > div {
+        gap: 0.25rem !important;
+    }
+    
+    section[data-testid="stSidebar"] .stRadio label {
+        font-size: 0.9rem !important;
+        padding: 0.4rem 0 !important;
+    }
     
     /* --- Input Fields Mobile --- */
     .stTextInput > div > div > input,
@@ -279,12 +298,6 @@ def load_mobile_css():
         padding: 1rem !important;
         border-radius: var(--border-radius) !important;
         font-size: 0.95rem !important;
-    }
-
-    /* Rendi la sidebar (colonna sinistra) più stretta */
-    section[data-testid="stSidebar"] {
-        width: 200px !important;
-        min-width: 200px !important;
     }
     """
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True) 
