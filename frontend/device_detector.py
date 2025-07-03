@@ -40,30 +40,36 @@ def is_mobile_user_agent():
 
 def get_device_type():
     """
-    Rileva il tipo di dispositivo SOLO una volta per sessione usando streamlit-js-eval.
-    Se già rilevato, restituisce sempre quello.
+    Rileva il tipo di dispositivo per ogni utente individualmente.
     """
-    # Se già rilevato, restituisci sempre quello
-    device_type = app_state.get('device_type')
+    # Ottieni l'ID utente per salvare device_type specifico per utente
+    user_info = app_state.get_user_info()
+    user_id = user_info.id if user_info else 'anonymous'
+    
+    # Chiave specifica per utente
+    device_key = f'device_type_{user_id}'
+    
+    # Se già rilevato per questo utente, restituisci sempre quello
+    device_type = app_state.get(device_key)
     if device_type:
+        print(f"📱 [DEVICE] Cache per utente {user_id}: {device_type}")
         return device_type
 
-    # Altrimenti, rileva e salva
+    # Altrimenti, rileva e salva per questo utente
     width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
-    print(f"📏 [DEVICE] Width rilevata: {width}")
+    print(f"📏 [DEVICE] Width rilevata per utente {user_id}: {width}")
     if width is None:
         print("⚠️ [DEVICE] Width è None, default desktop")
         return 'desktop'  # Default sicuro
 
     device_type = 'desktop' if width > 768 else 'mobile'
-    print(f"🎯 [DEVICE] {width} > 768? {width > 768} → {device_type}")
-    app_state.set('device_type', device_type)
+    print(f"🎯 [DEVICE] Utente {user_id}: {width} > 768? {width > 768} → {device_type}")
+    app_state.set(device_key, device_type)
     return device_type
 
 def is_mobile():
-    """Restituisce True se il dispositivo è considerato mobile."""
-    # Ora si basa su un valore affidabile nel nostro state manager.
-    return app_state.get('device_type') == 'mobile'
+    """Restituisce True se il dispositivo è considerato mobile per l'utente corrente."""
+    return get_device_type() == 'mobile'
 
 def is_phone():
     """
