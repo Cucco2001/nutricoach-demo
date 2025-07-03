@@ -50,10 +50,13 @@ def get_device_type():
 
     # Altrimenti, rileva e salva
     width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
+    print(f"📏 [DEVICE] Width rilevata: {width}")
     if width is None:
+        print("⚠️ [DEVICE] Width è None, default desktop")
         return 'desktop'  # Default sicuro
 
     device_type = 'desktop' if width > 768 else 'mobile'
+    print(f"🎯 [DEVICE] {width} > 768? {width > 768} → {device_type}")
     app_state.set('device_type', device_type)
     return device_type
 

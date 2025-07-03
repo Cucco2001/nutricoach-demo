@@ -96,6 +96,12 @@ def main():
         st.rerun()
         return
     
+    # RESET DEVICE TYPE AL PRIMO AVVIO
+    if not app_state.get('app_initialized'):
+        print("🔄 [APP] Prima inizializzazione - reset device cache")
+        app_state.delete('device_type')
+        app_state.set('app_initialized', True)
+    
     # Configura l'app con stili adattivi
     setup_responsive_app()
     
