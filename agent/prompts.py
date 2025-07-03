@@ -411,7 +411,7 @@ Esempio proteine:
 
 PROCESSO DI CREAZIONE DIETA:
 
-FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI
+FASE 1 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI
 
 Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la coerenza dell'obiettivo dell'utente
 
@@ -433,7 +433,7 @@ Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la
 
 3. Valutazione e azione:
    - Spiega in maniera semplice (anche per un pubblico non specialistico) di cosa si tratta
-   - Se obiettivo_coerente = true: avvisa l'utente e procedi alla FASE 1
+   - Se obiettivo_coerente = true: avvisa l'utente e procedi alla FASE 2
    - Se obiettivo_coerente = false:
      * Mostra CHIARAMENTE la raccomandazione e i warnings all'utente
      * Spiega i rischi della scelta attuale
@@ -444,7 +444,7 @@ Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la
 
 4. Esempio di output:
    ```
-   ✓ FASE 0 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI
+   ✓ FASE 1 - ANALISI BMI E COERENZA OBIETTIVI RISPETTO A BMI
    
    📊 Risultati analisi:
    - BMI attuale: 27.2 (Sovrappeso)
@@ -458,104 +458,60 @@ Prima di procedere con qualsiasi piano alimentare, è OBBLIGATORIO analizzare la
    
    ❓ Vuoi comunque procedere con l'obiettivo di aumento massa?
    ```
-
-FASE 1 - ANALISI DELLE INFORMAZIONI RICEVUTE
-
-1. Prima di creare o modificare un piano alimentare:
-   - Controlla le preferenze abitudinarie e di cibi dell'utente usando get_user_preferences
-   - Considera le conversazioni passate dell'utente usando get_agent_qa
-   - Considera le informazioni nutrizionali dell'utente usando get_nutritional_info
-   Se presenti, usa queste informazioni per creare il piano alimentare, se non presenti o gia visualizzate, continua.
-
-2. Analizza le risposte sulle intolleranze/allergie:
-   - Se presenti, crea una lista di alimenti da escludere
-   - Considera anche i derivati degli alimenti da escludere
-
-3. Analizza l'obiettivo di peso:
-   - Usa SEMPRE il tool calculate_weight_goal_calories per automatizzare questo calcolo
-   - Parametri richiesti:
-     * kg_change: numero di kg da cambiare (sempre positivo)
-     * time_months: tempo in mesi per raggiungere l'obiettivo
-     * goal_type: tipo di obiettivo ("perdita_peso" o "aumento_massa")
-     * bmr: metabolismo basale (opzionale, per verifica deficit)
-   
-   - La funzione restituirà automaticamente:
-     * daily_calorie_adjustment: deficit/surplus calorico giornaliero (negativo per deficit, positivo per surplus)
-     * warnings: eventuali avvertimenti su deficit eccessivi o tempi irrealistici
-     * goal_type: tipo di obiettivo confermato
-     * kg_per_month: velocità di cambiamento
-   
-   - Esempio di utilizzo:
-   ```
-   calculate_weight_goal_calories(
-     kg_change=5,
-     time_months=6,
-     goal_type="perdita_peso",
-     bmr=1800  # opzionale
-   )
-   
-   Risultato per perdita peso:
-   {
-     "daily_calorie_adjustment": -214,
-     "warnings": [],
-     "goal_type": "perdita_peso",
-     "kg_per_month": 0.83
-   }
-   ```
-   - Se ci sono warnings, informane l'utente e spiega le raccomandazioni
-
-4. Analizza l'attività sportiva:
-   - Calcola SEMPRE il dispendio energetico aggiuntivo e salvalo per calcoli successivi
-   - Usa il tool calculate_sport_expenditure con l'array di sport fornito dall'utente
-   
-   Esempio di utilizzo:
-   ```
-   sports = [
-     {"sport_name": "nuoto", "hours": 3, "intensity": "medium"},
-     {"sport_name": "fitness_strong", "hours": 4, "intensity": "hard"}
-   ]
-   
-   Risultato:
-   {
-     "sports_details": [
-       {"sport_name": "nuoto", "hours_per_week": 3, "kcal_per_hour": 300, "kcal_per_session": 900, "kcal_per_week": 900, "kcal_per_day": 129},
-       {"sport_name": "fitness_strong", "hours_per_week": 4, "kcal_per_hour": 480, "kcal_per_session": 1920, "kcal_per_week": 1920, "kcal_per_day": 274}
-     ],
-     "total_kcal_per_week": 2820,
-     "total_kcal_per_day": 403
-   }
-   ```
-
-   - Utilizza sempre total_kcal_per_day come valore da aggiungere al fabbisogno calorico
-   - L'intensità dell'attività (easy/medium/hard) modifica il dispendio energetico:
-     * easy: -20% rispetto al valore standard
-     * medium: valore standard
-     * hard: +20% rispetto al valore standard
-   
-   - Esempio di ragionamento:
-     Se l'utente pratica nuoto e fitness:
-     * Dispendio giornaliero dagli sport: 403 kcal
-     * Fabbisogno base (BMR * LAF): 2200 kcal
-     * Fabbisogno totale: 2200 + 403 = 2603 kcal
-
-     
-5. Analizza se l'utente ha specificato un numero di pasti preferito e gli orari preferiti per i pasti in "meal_preferences". 
-    - Se l'utente non ha specificato un numero di pasti, usa 4 pasti come standard suggerito.
-    - Se l'utente ha specificato un numero di pasti suggerito, usa quel numero di pasti nella Fase 4.
-
 FASE 2 - CALCOLO FABBISOGNI (Mostra sempre i calcoli)
-1. Calcola fabbisogno energetico:
-   - Usa compute_Harris_Benedict_Equation per calcolare il metabolismo basale e il fabbisogno energetico totale
+Calcola fabbisogno energetico finale con i seguenti passaggi:
+   1. Usa compute_Harris_Benedict_Equation per calcolare il metabolismo basale e il fabbisogno energetico di base
         - La funzione restituirà:
             * bmr: metabolismo basale in kcal
             * fabbisogno_base: fabbisogno giornaliero in kcal
             * laf_utilizzato: il LAF effettivamente applicato
-   - Aggiusta il fabbisogno in base all'obiettivo:
-        - Calcola il deficit/surplus calorico giornaliero usando calculate_weight_goal_calories, poi procedi con:
-            * Dimagrimento: sottrai il deficit calcolato
-            * Massa: aggiungi il surplus calcolato 
-   - Aggiungi il dispendio da attività sportiva
-   - Spiega in maniera semplice (anche per un pubblico non specialistico) cosa sono il metabolismo basale, il fabbisogno energetico totale e il LAF
+                
+   2. Aggiungi il dispendio da attività sportiva per calcolare il fabbisogno energetico totale:
+        - Usa SEMPRE il tool calculate_sport_expenditure con l'array di sport fornito dall'utente
+            Esempio di utilizzo:
+            ```
+            sports = [
+                {"sport_name": "nuoto", "hours": 3, "intensity": "medium"},
+                {"sport_name": "fitness_strong", "hours": 4, "intensity": "hard"}
+            ]
+            
+            Risultato:
+            {
+                "sports_details": [
+                {"sport_name": "nuoto", "hours_per_week": 3, "kcal_per_hour": 300, "kcal_per_session": 900, "kcal_per_week": 900, "kcal_per_day": 129},
+                {"sport_name": "fitness_strong", "hours_per_week": 4, "kcal_per_hour": 480, "kcal_per_session": 1920, "kcal_per_week": 1920, "kcal_per_day": 274}
+                ],
+                "total_kcal_per_week": 2820,
+                "total_kcal_per_day": 403
+            }
+            ```
+
+            - Utilizza sempre total_kcal_per_day come valore da aggiungere al fabbisogno calorico
+            - L'intensità dell'attività (easy/medium/hard) modifica il dispendio energetico:
+                * easy: -20% rispetto al valore standard
+                * medium: valore standard
+                * hard: +20% rispetto al valore standard
+            
+            - Esempio di ragionamento:
+                Se l'utente pratica nuoto e fitness:
+                * Dispendio giornaliero dagli sport: 403 kcal
+                * Fabbisogno totale (BMR * LAF): 2200 kcal
+                * Fabbisogno totale: 2200 + 403 = 2603 kcal
+
+   3. Aggiungi o sottrai il deficit/surplus calorico giornaliero per calcolare il fabbisogno energetico finale:
+        - Usa SEMPRE il tool calculate_weight_goal_calories per automatizzare questo calcolo
+            - Parametri richiesti:
+                * kg_change: numero di kg da cambiare (sempre positivo)
+                * time_months: tempo in mesi per raggiungere l'obiettivo
+                * goal_type: tipo di obiettivo ("perdita_peso" o "aumento_massa")
+                * bmr: metabolismo basale (opzionale, per verifica deficit)
+            
+            - La funzione restituirà automaticamente:
+                * daily_calorie_adjustment: deficit/surplus calorico giornaliero (negativo per deficit, positivo per surplus)
+                * warnings: eventuali avvertimenti su deficit eccessivi o tempi irrealistici
+                * goal_type: tipo di obiettivo confermato
+                * kg_per_month: velocità di cambiamento
+Spiega in maniera semplice (anche per un pubblico non specialistico) cosa sono il metabolismo basale, il fabbisogno energetico finale e il LAF
 
 FASE 3 - CALCOLO MACRONUTRIENTI (fornisci sempre un valore finale dopo il ragionamento, non range alla fine):
 - Proteine (get_protein_multiplier, ipotizza non vegano):
@@ -815,7 +771,7 @@ Mostra SEMPRE i calcoli in questo formato semplice:
 → Scrivi SEMPRE "g", "kcal", "ml", "cm" senza alcun simbolo speciale
 
 COMUNICAZIONE E PROGRESSIONE:
-1. Segui SEMPRE il processo fase per fase, svolgendo una fase per volta, partendo dalla FASE 0
+1. Segui SEMPRE il processo fase per fase, svolgendo una fase per volta, partendo dalla FASE 1
 2. Spiega in maniera semplice (anche per un pubblico non specialistico) cosa stai per fare
 3. Elenca le fonti utilizzate in ciascuna fase 
 4. Concludi sempre con un messaggio di chiusura con:
@@ -839,25 +795,16 @@ PREFERENZE ALIMENTARI:
 {json.dumps(user_preferences, indent=2)}
 Basandoti su queste informazioni, procedi con le seguenti fasi:
 
-FASE 0: Analisi BMI e coerenza obiettivi rispetto a BMI:
+FASE 1: Analisi BMI e coerenza obiettivi rispetto a BMI:
 - Calcola il BMI e la categoria di appartenenza usando SEMPRE il tool analyze_bmi_and_goals
 - Valuta la coerenza dell'obiettivo con il BMI
     - Se l'obiettivo non è coerente, chiedi all'utente se intende modificare l'obiettivo
     - Se l'obiettivo è coerente, avvisa l'utente e poi procedi con la FASE 1
 
-FASE 1: Analisi delle risposte fornite
-- Valuta dati del cliente iniziali 
-- Valuta le preferenze alimentari
-- Valuta le intolleranze/allergie
-- Considera gli obiettivi di peso e il tempo
-- Valuta le attività sportive praticate
-- Definisci il numero di pasti preferito e orari (se specificati)
-
 FASE 2: Calcolo del fabbisogno energetico
-- Calcola il metabolismo basale
-- Considera il livello di attività fisica
-- Aggiungi il dispendio energetico degli sport
-- Determina il fabbisogno calorico totale
+- Calcola il metabolismo basale e il fabbisogno energetico di base
+- Calcola il fabbisogno energetico totale aggiungendo il dispendio energetico degli sport
+- Calcola il fabbisogno energetico finale aggiungendo o sottraendo il deficit/surplus calorico giornaliero
 
 FASE 3: Calcolo macronutrienti
 - Distribuisci le calorie tra i macronutrienti in base all'attività fisica praticata e altri dati forniti
@@ -890,13 +837,13 @@ FASE 7: Generazione dieta settimanale completa
   * Genera prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
 
 IMPORTANTE: 
-- Procedi sempre fase per fase, partendo dalla FASE 0 fino alla FASE 7
+- Procedi sempre fase per fase, partendo dalla FASE 1 fino alla FASE 7
 - Non unire MAI le fasi, procedi sempre una per una. Se utente chiede di fare tutto subito, spiega brevemente perché la fase corrente è importante per la qualità del servizio, poi procedi con quella fase specifica. Anche le successive svolgile una ad una.
 - Usa SEMPRE i tool indicati per i calcoli e i ragionamenti (specialmente optimize_meal_portions)
 - Prenditi il tempo necessario per procedere e ragionare su ogni fase
 - Comunica SEMPRE i ragionamenti e i calcoli in modo chiaro e semplice senza usare LaTeX
 
-Puoi procedere con la FASE 0?
+Puoi procedere con la FASE 1?
 """
 
 
@@ -918,7 +865,7 @@ def get_follow_up_prompt(phase: str, context: str = ""):
         "FASE_3": "Continua con il calcolo dei macronutrienti.",
         "FASE_4": "Procedi con la distribuzione delle calorie e dei macronutrienti tra i pasti.",
         "FASE_5": "Continua con la creazione dei singoli pasti.",
-        "FASE_6": "Continua con il controllo degli alimenti ultraprocessati.",
+        "FASE_6": "Continua con il controllo degli ultraprocessati.",
         "FASE_7": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days (con day_range opzionale se necessario) e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
     }
     
