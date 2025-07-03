@@ -52,11 +52,16 @@ def get_device_type():
     # Se già rilevato per questo utente, restituisci sempre quello
     device_type = app_state.get(device_key)
     if device_type:
-        print(f"📱 [DEVICE] Cache per utente {user_id}: {device_type}")
         return device_type
 
     # Altrimenti, rileva e salva per questo utente
-    width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
+    width = None
+    try:
+        width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
+    except Exception as e:
+        # Nasconde l'errore rosso ma continua con la logica
+        print(f"⚠️ [DEVICE] Errore UI nascosto per {user_id}, continuo rilevamento")
+    
     print(f"📏 [DEVICE] Width rilevata per utente {user_id}: {width}")
     if width is None:
         print("⚠️ [DEVICE] Width è None, default desktop")
