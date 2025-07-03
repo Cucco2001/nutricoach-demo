@@ -199,8 +199,25 @@ def handle_user_input():
     if app_state.is_agent_generating():
         user_input = None
     else:
+        # CSS per ridurre lo spazio tra bottone e chat input
+        st.markdown("""
+        <style>
+        .stButton > button {
+            margin-bottom: -12px !important;
+            padding: 8px 16px !important;
+            height: 36px !important;
+            font-size: 14px !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        # Bottone Continua subito sopra la chat input, senza colonne/container
+        continue_clicked = st.button("▶️ Continua", use_container_width=True, key="continue_btn")
         user_input = st.chat_input("Scrivi un messaggio...")
-    
+        
+        # Se viene premuto il bottone "Continua", simula l'invio di "continua"
+        if continue_clicked:
+            user_input = "continua"
     if user_input:
         # Se l'agente non sta già generando, inizia il processo
         if not app_state.is_agent_generating():
