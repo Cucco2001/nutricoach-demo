@@ -82,7 +82,7 @@ class PrivacyHandler:
                 
         except Exception as e:
             print(f"Errore nel salvataggio consenso privacy per {user_id}: {str(e)}")
-
+    
     def get_privacy_text(self) -> str:
         """Restituisce il testo di privacy e disclaimer."""
         return """

@@ -44,8 +44,7 @@ def handle_login_form(user_data_manager):
                     "username": username
                 }
                 
-                # Sincronizza con entrambi per ora (compatibilità)
-                st.session_state.user_info = user_info_data
+                # Usa solo app_state ora
                 app_state.set_user_info(UserInfo(**user_info_data))
                 
                 # Se ci sono informazioni nutrizionali salvate, caricale
@@ -61,33 +60,23 @@ def handle_login_form(user_data_manager):
                         "preferences": user_data_manager.get_user_preferences(result)
                     })
                     
-                    # Sincronizza con entrambi
-                    st.session_state.user_info = user_info_data
+                    # Usa solo app_state
                     app_state.set_user_info(UserInfo(**user_info_data))
                     
                     # Se ha messaggi in chat, carica normalmente e salta il tutorial
                     if has_chat_messages:
                         # Carica le risposte nutrizionali se presenti
                         if nutritional_info.nutrition_answers:
-                            st.session_state.nutrition_answers = nutritional_info.nutrition_answers
-                            st.session_state.current_question = len(NUTRITION_QUESTIONS)
-                            # Sincronizza con app_state
                             app_state.set_nutrition_answers(nutritional_info.nutrition_answers)
                             app_state.set_current_question(len(NUTRITION_QUESTIONS))
                         
                         # Salta il tutorial perché l'utente ha già una conversazione
-                        tutorial_key = f"tutorial_completed_{result}"
-                        st.session_state[tutorial_key] = True
-                        # Sincronizza anche con il nuovo state manager
                         app_state.set_tutorial_completed(result, True)
                     else:
                         # Se non ha messaggi in chat ma ha nutrition_answers,
                         # significa che era nelle domande iniziali, quindi resetta
                         if nutritional_info.nutrition_answers and len(nutritional_info.nutrition_answers) > 0:
                             # Resetta solo i dati utente relativi alle domande
-                            st.session_state.current_question = 0
-                            st.session_state.nutrition_answers = {}
-                            # Sincronizza con app_state
                             app_state.set_current_question(0)
                             app_state.set_nutrition_answers({})
                             
@@ -114,14 +103,10 @@ def handle_login_form(user_data_manager):
                             user_data_manager.clear_user_preferences(result)
                             
                             # Cancella eventuali variabili di sessione delle preferenze
-                            if 'excluded_foods_list' in st.session_state:
-                                del st.session_state.excluded_foods_list
-                            if 'preferred_foods_list' in st.session_state:
-                                del st.session_state.preferred_foods_list
-                            if 'preferences_prompt' in st.session_state:
-                                del st.session_state.preferences_prompt
-                            if 'prompt_to_add_at_next_message' in st.session_state:
-                                del st.session_state.prompt_to_add_at_next_message
+                            app_state.set_excluded_foods([])
+                            app_state.set_preferred_foods([])
+                            app_state.delete_preferences_prompt()
+                            app_state.delete_prompt_to_add_at_next_message()
                             
                             # Resetta il tutorial per farlo ripartire
                             from frontend.tutorial import reset_tutorial
@@ -165,7 +150,6 @@ def handle_registration_form(user_data_manager):
                 if success:
                     st.success("Registrazione completata! Ora puoi accedere.")
                     # Imposta il flag per il redirect via JS e fai un rerun
-                    st.session_state.registration_successful = True
                     app_state.set_registration_successful(True)
                     st.rerun()
                 else:
@@ -199,14 +183,8 @@ def handle_login_registration(user_data_manager):
         }, 100);
         """
         streamlit_js_eval(js_expressions=js_to_click_tab, key="click_login_tab")
-        # Rimuovi il flag da entrambi
-        if 'registration_successful' in st.session_state:
-            del st.session_state.registration_successful
+        # Rimuovi il flag
         app_state.set_registration_successful(False)
-
-    # Inizializza user_info se non esiste
-    if "user_info" not in st.session_state:
-        st.session_state.user_info = None
 
     # Se l'utente non è autenticato, mostra form di login/registrazione
     if not app_state.is_user_authenticated():
@@ -259,34 +237,25 @@ def handle_logout():
         from frontend.buttons import ButtonHandler
         
         # Crea un handler dei bottoni e chiama la funzione di reset
-        handler = ButtonHandler(
-            st.session_state.user_data_manager,
-            st.session_state.deepseek_manager,
-            st.session_state.chat_manager.create_new_thread
-        )
-        handler._reset_user_session()
+        user_data_manager = app_state.get_user_data_manager()
+        deepseek_manager = app_state.get_deepseek_manager()
+        chat_manager = app_state.get_chat_manager()
+        
+        if user_data_manager and deepseek_manager and chat_manager:
+            handler = ButtonHandler(
+                user_data_manager,
+                deepseek_manager,
+                chat_manager.create_new_thread
+            )
+            handler._reset_user_session()
     
-    # Poi effettua il logout normale - sincronizza entrambi
-    st.session_state.user_info = None
+    # Poi effettua il logout normale
     app_state.set_user_info(None)
-    
-    st.session_state.messages = []
     app_state.clear_messages()
-    
-    st.session_state.current_question = 0
     app_state.set_current_question(0)
-    
-    st.session_state.nutrition_answers = {}
     app_state.set_nutrition_answers({})
-    
-    # Reset anche altri stati che potrebbero essere presenti
-    if "thread_id" in st.session_state:
-        del st.session_state.thread_id
-    if "current_run_id" in st.session_state:
-        st.session_state.current_run_id = None
-    
-    # Resetta lo stato di generazione dell'agente - sincronizza entrambi
-    st.session_state.agent_generating = False
+    app_state.set_thread_id(None)
+    app_state.set_current_run_id(None)
     app_state.set_agent_generating(False)
     
     st.rerun()

@@ -47,8 +47,9 @@ class PianoNutrizionale:
                 if thread.name == f"DeepSeekExtraction-{user_id}" and thread.is_alive():
                     return True
             
-            # Metodo 2: Controlla il session state per indicatori di elaborazione recente
-            if hasattr(st.session_state, 'deepseek_manager'):
+            # Metodo 2: Controlla il deepseek_manager per indicatori di elaborazione recente
+            deepseek_manager = app_state.get_deepseek_manager()
+            if deepseek_manager:
                 # Controlla se c'è stata un'estrazione recente (negli ultimi 30 secondi)
                 last_extraction_time = app_state.get_last_extraction_start(user_id)
                 current_time = time.time()
@@ -80,12 +81,12 @@ class PianoNutrizionale:
             user_info = app_state.get_user_info()
             if user_info:
                 user_id = user_info.id
-                
-                if user_id:
-                    status = deepseek_manager.get_extraction_status(user_id)
-                    if status.get('available', False):
-                        interactions_since_last = status.get('interactions_since_last', 0)
-                        st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
+            
+            if user_id:
+                status = deepseek_manager.get_extraction_status(user_id)
+                if status.get('available', False):
+                    interactions_since_last = status.get('interactions_since_last', 0)
+                    st.caption(f"📊 Interazioni dall'ultima estrazione: {interactions_since_last}")
 
     def display_nutritional_plan(self, user_id):
         """
@@ -109,15 +110,11 @@ class PianoNutrizionale:
             # Auto-refresh ogni 5 secondi solo se è la prima volta che vediamo il processing
             if not app_state.get_deepseek_processing_shown(user_id):
                 app_state.set_deepseek_processing_shown(user_id, True)
-                # Mantieni compatibilità con session_state per ora
-                st.session_state[f"deepseek_processing_shown_{user_id}"] = True
                 time.sleep(2)
                 st.rerun()
         else:
             # Reset del flag quando il processing è finito
             app_state.clear_deepseek_processing_shown(user_id)
-            if f"deepseek_processing_shown_{user_id}" in st.session_state:
-                del st.session_state[f"deepseek_processing_shown_{user_id}"]
         
         try:
             extracted_data = self._load_user_nutritional_data(user_id)

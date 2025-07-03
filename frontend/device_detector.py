@@ -71,8 +71,6 @@ def get_device_type():
             print(f"✅ Dispositivo rilevato: {device_type.upper()} (Larghezza: {width}px)")
         app_state.set('device_type', device_type)
         app_state.set('device_detection_done', True)
-        # Mantieni compatibilità con st.session_state per ora
-        st.session_state.device_type = device_type
 
     return device_type
 
@@ -123,9 +121,6 @@ def show_device_selector():
     )
     
     if selected_device != current_device:
-        st.session_state.force_device_type = selected_device
-        st.session_state.device_choice_made = True
-        # Sincronizza con app_state
         app_state.set_force_device_type(selected_device)
         app_state.set_device_choice_made(True)
         st.rerun()
@@ -137,7 +132,7 @@ def device_info_display():
     Mostra informazioni sul dispositivo attualmente rilevato.
     """
     device_type = get_device_type()
-    is_forced = 'force_device_type' in st.session_state
+    is_forced = app_state.get_force_device_type() is not None
     
     device_icons = {
         'desktop': '🖥️',
@@ -157,5 +152,16 @@ def device_info_display():
             st.rerun()
 
     # Salva il tipo di dispositivo rilevato
-    st.session_state.device_type = device_type
-    app_state.set_device_type(device_type) 
+    app_state.set_device_type(device_type)
+
+def reset_device_detection():
+    """
+    Resetta la rilevazione del dispositivo, forzando un nuovo rilevamento.
+    """
+    # Pulisci dallo state manager
+    app_state.delete('device_type')
+    app_state.delete('device_detection_done')
+    app_state.set_force_device_type('')
+    app_state.set_device_choice_made(False)
+    
+    print("🔄 Rilevazione dispositivo resettata") 

@@ -461,11 +461,13 @@ def get_user_id() -> str:
         logger.info(f"ID utente estratto dal thread DeepSeek: {user_id}")
         return user_id
     
-    # Strategia 2: Streamlit session state
+    # Strategia 2: App state
     try:
-        if "user_info" in st.session_state and "id" in st.session_state.user_info:
-            user_id = st.session_state.user_info["id"]
-            logger.info(f"ID utente estratto da Streamlit session: {user_id}")
+        from services.state_service import app_state
+        user_info = app_state.get_user_info()
+        if user_info and user_info.id:
+            user_id = user_info.id
+            logger.info(f"ID utente estratto da app state: {user_id}")
             return user_id
     except Exception as e:
         logger.warning(f"Non posso accedere al session state Streamlit: {e}")

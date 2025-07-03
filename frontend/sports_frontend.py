@@ -97,8 +97,7 @@ def on_sport_category_change(i):
     print(f"Categoria sport cambiata per sport index {i}")
     
     # Rimuovi la selezione precedente dello sport specifico per forzare una nuova selezione
-    if f"specific_sport_{i}" in st.session_state:
-        del st.session_state[f"specific_sport_{i}"]
+    app_state.delete_specific_sport(i)
     
     # Assicurati che i dati degli sport siano caricati
     sports_data = app_state.get_sports_data()
@@ -111,15 +110,17 @@ def on_sport_category_change(i):
     # Aggiorna la lista degli sport
     sports_list = app_state.get_sports_list()
     if i < len(sports_list):
-        selected_category = st.session_state[f"sport_type_{i}"]
+        selected_category = app_state.get_sport_type(i)
+        
         print(f"Nuova categoria selezionata: {selected_category}")
         
         # Aggiorna la categoria nello sports_list
-        sports_list[i]["sport_type"] = selected_category
+        if selected_category:
+            sports_list[i]["sport_type"] = selected_category
         
-        # Rimuovi lo sport specifico selezionato precedentemente
-        if "specific_sport" in sports_list[i]:
-            del sports_list[i]["specific_sport"]
+            # Rimuovi lo sport specifico selezionato precedentemente
+            if "specific_sport" in sports_list[i]:
+                del sports_list[i]["specific_sport"]
         
-        # Salva la lista aggiornata
-        app_state.set_sports_list(sports_list) 
+            # Salva la lista aggiornata
+            app_state.set_sports_list(sports_list) 

@@ -92,9 +92,6 @@ class InitialInfoHandler:
             
             if st.form_submit_button(button_label, disabled=button_disabled, type="primary"):
                 # Segna il tutorial come completato definitivamente
-                tutorial_key = f"tutorial_completed_{user_id}"
-                st.session_state[tutorial_key] = True
-                # Sincronizza con app_state
                 app_state.set_tutorial_completed(user_id, True)
 
                 self._save_user_info(
@@ -103,7 +100,6 @@ class InitialInfoHandler:
                 )
                 
                 # Imposta il flag per indicare che l'utente ha appena completato le info iniziali
-                st.session_state.just_completed_initial_info = True
                 app_state.set_just_completed_initial_info(True)
                 
                 st.rerun()
@@ -189,19 +185,7 @@ class InitialInfoHandler:
             user_preferences: Preferenze dell'utente
             nutritional_info: Informazioni nutrizionali esistenti
         """
-        # Aggiorna le informazioni dell'utente
-        user_info = {
-            "età": età,
-            "sesso": sesso,
-            "peso": peso,
-            "altezza": altezza,
-            "attività": attività,
-            "obiettivo": obiettivo,
-            "preferences": user_preferences
-        }
-        st.session_state.user_info.update(user_info)
-        
-        # Sincronizza con app_state - prima otteniamo i dati utente correnti
+        # Aggiorna le informazioni dell'utente solo in app_state
         current_user_info = app_state.get_user_info()
         if current_user_info:
             # Aggiorna l'oggetto UserInfo esistente
@@ -218,16 +202,23 @@ class InitialInfoHandler:
                 preferences=user_preferences
             )
             app_state.set_user_info(updated_user_info)
+            
+            # Prepara i dati per il salvataggio
+            user_info = {
+                "età": età,
+                "sesso": sesso,
+                "peso": peso,
+                "altezza": altezza,
+                "attività": attività,
+                "obiettivo": obiettivo,
+                "preferences": user_preferences
+            }
         
         # Salva le informazioni nutrizionali
         self.user_data_manager.save_nutritional_info(user_id, user_info)
         
         # Se ci sono risposte nutrizionali salvate, caricale
         if nutritional_info and nutritional_info.nutrition_answers:
-            st.session_state.nutrition_answers = nutritional_info.nutrition_answers
-            st.session_state.current_question = len(NUTRITION_QUESTIONS)
-            
-            # Sincronizza con app_state
             app_state.set_nutrition_answers(nutritional_info.nutrition_answers)
             app_state.set_current_question(len(NUTRITION_QUESTIONS))
         

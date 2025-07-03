@@ -192,7 +192,7 @@ class NutritionQuestionHandler:
         if field["type"] == "select":
             if field["id"] == "sport_type":
                 # Quando cambia la categoria, usa il callback
-                sport_data[field["id"]] = st.selectbox(
+                selected_category = st.selectbox(
                     "Seleziona",
                     options=field["options"],
                     key=f"{field['id']}_{index}",
@@ -200,6 +200,9 @@ class NutritionQuestionHandler:
                     on_change=on_sport_category_change,
                     args=(index,)
                 )
+                sport_data[field["id"]] = selected_category
+                # Salva anche in app_state per il callback
+                app_state.set_sport_type(index, selected_category)
             elif field["id"] == "specific_sport" and "dynamic_options" in field and field["dynamic_options"]:
                 sport_data = self._handle_dynamic_sport_selection(field, sport_data, sport, index)
             elif field["id"] == "intensity":
@@ -243,18 +246,21 @@ class NutritionQuestionHandler:
         Returns:
             dict: Dati sport aggiornati
         """
-        # Seleziona gli sport in base alla categoria scelta
-        selected_category = sport.get("sport_type", "")
-        if not selected_category and f"sport_type_{index}" in st.session_state:
-            selected_category = st.session_state[f"sport_type_{index}"]
+        # Ottieni la categoria selezionata dall'app_state
+        selected_category = app_state.get_sport_type(index)
         
-        # Usa i dati degli sport dall'app_state
-        sports_by_category = app_state.get_sports_by_category()
-        if sports_by_category and selected_category in sports_by_category:
-            sports_options = sports_by_category[selected_category]
-        else:
-            sports_options = []
+        print(f"Debug - Categoria per sport {index}: {selected_category}")
+        
+        if not selected_category:
+            st.warning("Nessuno sport disponibile per questa categoria. Seleziona prima una categoria.")
+            sport_data[field["id"]] = None
+            return sport_data
+        
+        # Usa get_sports_by_category per ottenere gli sport filtrati per categoria
+        sports_options = get_sports_by_category(selected_category)
         sport_names = [s["name"] for s in sports_options]
+        
+        print(f"Debug - Sport disponibili per '{selected_category}': {len(sport_names)} sport")
         
         # Se non ci sono sport disponibili, mostra un messaggio
         if not sport_names:
@@ -430,8 +436,7 @@ class NutritionQuestionHandler:
             "follow_up": follow_up_answer
         }
         
-        # Sincronizza con entrambi i sistemi
-        st.session_state.nutrition_answers = nutrition_answers
+        # Salva solo in app_state
         app_state.set_nutrition_answers(nutrition_answers)
         
         # Salva le risposte nutrizionali
@@ -444,7 +449,6 @@ class NutritionQuestionHandler:
         )
         
         current_question = app_state.get_current_question() + 1
-        st.session_state.current_question = current_question
         app_state.set_current_question(current_question)
     
     def handle_current_question(self, user_info, user_id):
@@ -463,14 +467,11 @@ class NutritionQuestionHandler:
             return False
         
         current_q = NUTRITION_QUESTIONS[current_question]
-        # Sincronizza anche st.session_state per compatibilità
-        st.session_state.current_question = current_question
         
         # Verifica se la domanda deve essere mostrata
         if not self.should_show_question(current_q, user_info):
             # Salta la domanda se non deve essere mostrata
             current_question += 1
-            st.session_state.current_question = current_question
             app_state.set_current_question(current_question)
             st.rerun()
             return True

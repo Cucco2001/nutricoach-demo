@@ -8,6 +8,7 @@ inclusi reset, riavvii e altre azioni utente.
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
 from frontend.tutorial import reset_tutorial
+from services.state_service import UserInfo
 
 
 class ButtonHandler:
@@ -55,18 +56,12 @@ class ButtonHandler:
         # Sincronizza anche con il nuovo state manager
         app_state.reset_tutorial(user_id)
         
-        # Resetta le informazioni di sessione - sincronizza entrambi
-        st.session_state.user_info = {
-            "id": user_id, 
-            "username": username
-        }
+        # Resetta le informazioni di sessione
+        # Mantieni solo ID e username nell'UserInfo
+        app_state.set_user_info(UserInfo(id=user_id, username=username))
         app_state.set_current_question(0)
         app_state.set_nutrition_answers({})
         app_state.clear_messages()
-        
-        st.session_state.current_question = 0
-        st.session_state.nutrition_answers = {}
-        st.session_state.messages = []
         
         # Reset completo DeepSeek usando il nuovo servizio
         self.deepseek_manager.clear_user_data(user_id)
@@ -93,24 +88,20 @@ class ButtonHandler:
         # Resetta le preferenze utente
         self.user_data_manager.clear_user_preferences(user_id)
         
-        # Cancella anche le variabili di sessione delle preferenze
-        if 'excluded_foods_list' in st.session_state:
-            del st.session_state.excluded_foods_list
-        if 'preferred_foods_list' in st.session_state:
-            del st.session_state.preferred_foods_list
-        if 'preferences_prompt' in st.session_state:
-            del st.session_state.preferences_prompt
-        if 'prompt_to_add_at_next_message' in st.session_state:
-            del st.session_state.prompt_to_add_at_next_message
+        # Pulisci le preferenze dall'app_state
+        app_state.set_excluded_foods([])
+        app_state.set_preferred_foods([])
+        app_state.delete_preferences_prompt()
+        app_state.delete_prompt_to_add_at_next_message()
         
         # Resetta il token tracker se esiste
-        if 'token_tracker' in st.session_state:
+        token_tracker = app_state.get_token_tracker()
+        if token_tracker:
             from services.token_cost_service import TokenCostTracker
-            st.session_state.token_tracker = TokenCostTracker(model="gpt-4")
-            app_state.set_token_tracker(st.session_state.token_tracker)
+            new_tracker = TokenCostTracker(model="gpt-4")
+            app_state.set_token_tracker(new_tracker)
         
-        # Resetta lo stato di generazione dell'agente - sincronizza entrambi
-        st.session_state.agent_generating = False
+        # Resetta lo stato di generazione dell'agente
         app_state.set_agent_generating(False)
         
         # Crea un nuovo thread

@@ -433,26 +433,11 @@ def get_supabase_service() -> SupabaseUserService:
     """
     try:
         # Usa il nuovo sistema di stato dell'app
-        service = app_state.get('supabase_service')
+        service = app_state.get_supabase_service()
         if service is None:
             service = SupabaseUserService()
-            app_state.set('supabase_service', service)
+            app_state.set_supabase_service(service)
         return service
-        
-    except ImportError:
-        # Fallback 1: prova con Streamlit se disponibile
-        try:
-            import streamlit as st
-            if hasattr(st, 'session_state') and st.session_state is not None:
-                if "supabase_service" not in st.session_state:
-                    st.session_state.supabase_service = SupabaseUserService()
-                return st.session_state.supabase_service
-        except:
-            pass
-        
-        # Fallback 2: crea una nuova istanza senza caching
-        logger.warning("⚠️ Sistema di stato non disponibile, creando istanza temporanea SupabaseService")
-        return SupabaseUserService()
         
     except Exception as e:
         # Fallback di sicurezza: crea sempre una nuova istanza

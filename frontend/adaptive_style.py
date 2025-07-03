@@ -66,5 +66,5 @@ def production_mode():
     Configurazione per produzione (rilevamento automatico).
     """
     # Reset forzature manuali se presenti
-    if 'force_device_type' in st.session_state:
-        del st.session_state.force_device_type 
+    from services.state_service import app_state
+    app_state.delete('force_device_type') 

@@ -9,6 +9,9 @@ import streamlit as st
 from typing import Dict, List, Any, Optional
 import threading
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 
 class NotificationManager:
     """Gestore per le notifiche dell'interfaccia utente."""
@@ -33,16 +36,14 @@ class NotificationManager:
     
     def check_and_show_notifications(self) -> None:
         """Controlla e mostra le notifiche DeepSeek se presenti."""
-        if not self._is_streamlit_context_available():
-            return
-            
-        if hasattr(st.session_state, self.notification_key):
-            notification = getattr(st.session_state, self.notification_key)
-            
-            if notification and notification.get("show", False):
-                self._display_notification(notification)
-                # Marca come mostrata
-                notification["show"] = False
+        # Usa app_state come sorgente primaria
+        notification = app_state.get(self.notification_key)
+        
+        if notification and notification.get("show", False):
+            self._display_notification(notification)
+            # Marca come mostrata
+            notification["show"] = False
+            app_state.set(self.notification_key, notification)
     
     def _display_notification(self, notification: Dict[str, Any]) -> None:
         """
@@ -101,31 +102,29 @@ class NotificationManager:
     
     def _set_notification(self, notification_type: str, message: str) -> None:
         """
-        Imposta una notifica nel session state.
+        Imposta una notifica nell'app state.
         
         Args:
             notification_type: Tipo di notifica (success, warning, error, info)
             message: Messaggio da mostrare
         """
-        if not self._is_streamlit_context_available():
-            # Se non siamo nel contesto Streamlit (thread in background), 
-            # logga solo un messaggio invece di accedere al session_state
-            print(f"[NOTIFICATION_MANAGER] {notification_type.upper()}: {message}")
-            return
-            
-        setattr(st.session_state, self.notification_key, {
+        notification = {
             "type": notification_type,
             "message": message,
             "show": True
-        })
+        }
+        
+        # Salva sempre in app_state
+        app_state.set(self.notification_key, notification)
+        
+        if not self._is_streamlit_context_available():
+            # Se non siamo nel contesto Streamlit (thread in background), 
+            # logga solo un messaggio
+            print(f"[NOTIFICATION_MANAGER] {notification_type.upper()}: {message}")
     
     def clear_notifications(self) -> None:
         """Cancella tutte le notifiche pendenti."""
-        if not self._is_streamlit_context_available():
-            return
-            
-        if hasattr(st.session_state, self.notification_key):
-            delattr(st.session_state, self.notification_key)
+        app_state.delete(self.notification_key)
     
     def process_extraction_results(self, results: List[Dict[str, Any]]) -> None:
         """
@@ -151,6 +150,5 @@ class NotificationManager:
             print("[NOTIFICATION_MANAGER] Notifica di avvio estrazione mostrata")
         else:
             # Se siamo in un thread in background, imposta una notifica per dopo
-            # Nota: _set_notification gestirà il fatto che non siamo nel contesto Streamlit
             self.set_info_notification("📊 Estrazione dati nutrizionali avviata in background...")
             print("[NOTIFICATION_MANAGER] Notifica di avvio estrazione programmata per il thread principale") 

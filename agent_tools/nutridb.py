@@ -569,9 +569,11 @@ class NutriDB:
 
     def _get_user_id(self):
         """Estrae l'ID dell'utente dalla sessione Streamlit."""
-        if "user_info" not in st.session_state or "id" not in st.session_state.user_info:
+        from services.state_service import app_state
+        user_info = app_state.get_user_info()
+        if not user_info or not user_info.id:
             raise ValueError("Nessun utente autenticato. ID utente non disponibile.")
-        return st.session_state.user_info["id"]
+        return user_info.id
 
     def _extract_foods_from_user_data(self, user_id):
         """Estrae gli alimenti e le quantità dal file dell'utente."""

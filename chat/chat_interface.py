@@ -41,21 +41,30 @@ def render_user_sidebar():
         
         if not user_info.età or not tutorial_completed:
             # Usa il modulo frontend per gestire il form delle informazioni utente
-            handle_user_info_form(
-                user_id=user_info.id,
-                        user_data_manager=app_state.get_user_data_manager(),
-        create_new_thread_func=app_state.get_chat_manager().create_new_thread
-            )
+            user_data_manager = app_state.get_user_data_manager()
+            chat_manager = app_state.get_chat_manager()
+            
+            if user_data_manager and chat_manager:
+                handle_user_info_form(
+                    user_id=user_info.id,
+                    user_data_manager=user_data_manager,
+                    create_new_thread_func=chat_manager.create_new_thread
+                )
         else:
             # Usa il modulo frontend per mostrare le informazioni utente
             handle_user_info_display(user_info.__dict__)
             
             # Usa il modulo frontend per gestire il bottone "Ricomincia"
-            handle_restart_button(
-                        user_data_manager=app_state.get_user_data_manager(),
-        deepseek_manager=app_state.get_deepseek_manager(),
-        create_new_thread_func=app_state.get_chat_manager().create_new_thread
-            )
+            user_data_manager = app_state.get_user_data_manager()
+            deepseek_manager = app_state.get_deepseek_manager()
+            chat_manager = app_state.get_chat_manager()
+            
+            if user_data_manager and deepseek_manager and chat_manager:
+                handle_restart_button(
+                    user_data_manager=user_data_manager,
+                    deepseek_manager=deepseek_manager,
+                    create_new_thread_func=chat_manager.create_new_thread
+                )
             
 
 
@@ -91,13 +100,12 @@ def initialize_chat_history():
     """
     Inizializza la chat history caricando messaggi esistenti o creando il prompt iniziale.
     """
-    # Inizializza il token tracker se non esiste (ora gestito in initialization.py)
+    # Il token tracker è ora gestito in initialization.py
     token_tracker = app_state.get_token_tracker()
     if not token_tracker:
         from services.token_cost_service import TokenCostTracker
         token_tracker = TokenCostTracker(model="gpt-4")
         app_state.set_token_tracker(token_tracker)
-        st.session_state.token_tracker = token_tracker
     
     messages = app_state.get_messages()
     user_info = app_state.get_user_info()
@@ -114,8 +122,7 @@ def initialize_chat_history():
                 {"role": msg.role, "content": msg.content}
                 for msg in chat_history
             ]
-            app_state.set('messages', messages)
-            st.session_state.messages = messages
+            app_state.set_messages(messages)
             # Traccia i messaggi esistenti per avere statistiche accurate
             for msg in messages:
                 token_tracker.track_message(msg["role"], msg["content"])
@@ -129,7 +136,7 @@ def initialize_chat_history():
             )
             
             # Traccia il prompt iniziale come input
-            st.session_state.token_tracker.track_message("user", initial_prompt)
+            token_tracker.track_message("user", initial_prompt)
             
             # Crea un nuovo thread solo se non esiste già
             chat_manager = app_state.get_chat_manager()
@@ -137,18 +144,21 @@ def initialize_chat_history():
                 st.error("❌ Chat manager non disponibile")
                 return
                 
-            if not app_state.get_thread_id():
-                chat_manager.create_new_thread()
+            thread_id = app_state.get_thread_id()
+            if not thread_id:
+                st.info("🔄 Inizializzazione thread di conversazione...")
+                thread_id = chat_manager.create_new_thread()
+                if not thread_id:
+                    st.error("❌ Impossibile creare thread di conversazione")
+                    return
             
-            # Imposta lo stato di generazione prima di chiamare l'agente - sincronizza entrambi
-            st.session_state.agent_generating = True
+            # Imposta lo stato di generazione prima di chiamare l'agente
             app_state.set_agent_generating(True)
             
             try:
                 # Invia il prompt iniziale usando il manager
                 response = chat_manager.chat_with_assistant(initial_prompt)
                 app_state.add_message("assistant", response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
                 
                 # Traccia la risposta dell'assistente
                 token_tracker.track_message("assistant", response)
@@ -160,13 +170,11 @@ def initialize_chat_history():
                     response
                 )
                 
-                # Rimuovi lo stato di generazione dopo aver completato tutto - sincronizza entrambi
-                st.session_state.agent_generating = False
+                # Rimuovi lo stato di generazione dopo aver completato tutto
                 app_state.set_agent_generating(False)
                 
             except Exception as e:
-                # In caso di errore, assicurati di resettare lo stato - sincronizza entrambi
-                st.session_state.agent_generating = False
+                # In caso di errore, assicurati di resettare lo stato
                 app_state.set_agent_generating(False)
                 raise e
             
@@ -188,17 +196,16 @@ def handle_user_input():
     Gestisce l'input dell'utente e la generazione della risposta.
     """
     # Se l'agente sta generando, mostra un messaggio informativo invece del campo di input
-    if st.session_state.agent_generating:
+    if app_state.is_agent_generating():
         user_input = None
     else:
         user_input = st.chat_input("Scrivi un messaggio...")
     
     if user_input:
         # Se l'agente non sta già generando, inizia il processo
-        if not st.session_state.agent_generating:
+        if not app_state.is_agent_generating():
             # Aggiungi il messaggio dell'utente
             app_state.add_message("user", user_input)
-            st.session_state.messages.append({"role": "user", "content": user_input})
             
             # Traccia il messaggio dell'utente
             token_tracker = app_state.get_token_tracker()
@@ -217,21 +224,19 @@ def handle_user_input():
                     user_input
                 )
             
-            # Imposta lo stato di generazione e salva l'input per il processing - sincronizza entrambi
-            st.session_state.agent_generating = True
+            # Imposta lo stato di generazione e salva l'input per il processing
             app_state.set_agent_generating(True)
-            st.session_state.pending_user_input = user_input
+            app_state.set_pending_user_input(user_input)
             
             # Fai immediatamente un rerun per aggiornare l'interfaccia
             st.rerun()
     
     # Se c'è un input pendente e l'agente sta generando, processalo ora
-    if (st.session_state.agent_generating and 
-        hasattr(st.session_state, 'pending_user_input') and 
-        st.session_state.pending_user_input):
+    pending_input = app_state.get_pending_user_input()
+    if (app_state.is_agent_generating() and pending_input):
         
-        user_input = st.session_state.pending_user_input
-        st.session_state.pending_user_input = None  # Clear the pending input
+        user_input = pending_input
+        app_state.set_pending_user_input(None)  # Clear the pending input
         
         with st.spinner("L'assistente sta elaborando la risposta..."):
             try:
@@ -246,7 +251,6 @@ def handle_user_input():
                     
                 response = chat_manager.chat_with_assistant(user_input)
                 app_state.add_message("assistant", response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
                 
                 # Traccia la risposta dell'assistente
                 token_tracker = app_state.get_token_tracker()
@@ -270,7 +274,7 @@ def handle_user_input():
                         "assistant",
                         response
                     )
-                    
+                
                     # Salva la domanda e risposta dell'agente
                     user_data_manager.save_agent_qa(
                         user_info.id,
@@ -287,13 +291,11 @@ def handle_user_input():
                         user_info=user_info.__dict__
                     )
                 
-                # Rimuovi lo stato di generazione dopo aver completato tutto - sincronizza entrambi
-                st.session_state.agent_generating = False
+                # Rimuovi lo stato di generazione dopo aver completato tutto
                 app_state.set_agent_generating(False)
                 
             except Exception as e:
-                # In caso di errore, assicurati di resettare lo stato - sincronizza entrambi
-                st.session_state.agent_generating = False
+                # In caso di errore, assicurati di resettare lo stato
                 app_state.set_agent_generating(False)
                 raise e
         

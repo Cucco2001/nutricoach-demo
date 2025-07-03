@@ -918,7 +918,7 @@ def get_follow_up_prompt(phase: str, context: str = ""):
         "FASE_3": "Continua con il calcolo dei macronutrienti.",
         "FASE_4": "Procedi con la distribuzione delle calorie e dei macronutrienti tra i pasti.",
         "FASE_5": "Continua con la creazione dei singoli pasti.",
-        "FASE_6": "Continua con il controllo vitaminico e degli ultraprocessati.",
+        "FASE_6": "Continua con il controllo degli alimenti ultraprocessati.",
         "FASE_7": "Procedi con la generazione della dieta settimanale completa utilizzando generate_6_additional_days (con day_range opzionale se necessario) e presenta il piano finale al cliente usando il FORMATO OBBLIGATORIO con emoji, grammature, misure casalinghe e totali nutrizionali per ogni giorno."
     }
     

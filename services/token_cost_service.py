@@ -64,6 +64,9 @@ class TokenCostTracker:
         Returns:
             int: Numero di token
         """
+        if text is None:
+            return 0
+        
         try:
             return len(self.encoding.encode(text))
         except Exception as e:
@@ -82,6 +85,9 @@ class TokenCostTracker:
         Returns:
             Dict con token count per questo messaggio
         """
+        if content is None:
+            content = ""
+            
         tokens = self.count_tokens(content)
         
         if role == "user":

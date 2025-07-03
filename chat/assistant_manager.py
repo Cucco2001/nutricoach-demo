@@ -8,6 +8,9 @@ utilizzato per le conversazioni nutrizionali.
 import streamlit as st
 from agent import available_tools, system_prompt
 
+# Import del nuovo state manager
+from services.state_service import app_state
+
 
 class AssistantManager:
     """Gestisce l'assistente OpenAI per le conversazioni"""
@@ -20,37 +23,58 @@ class AssistantManager:
             openai_client: Client OpenAI configurato
         """
         self.openai_client = openai_client
+        self.assistant = None
+        self.assistant_created = False
     
     def create_assistant(self):
         """
-        Crea o recupera l'assistente dalla sessione.
+        Crea o recupera l'assistente esistente.
         
         Returns:
             Assistant OpenAI o None in caso di errore
         """
-        if "assistant" not in st.session_state:
+        # Prima controlla se c'è già un ID assistente salvato
+        saved_assistant_id = app_state.get('assistant_id')
+        
+        if saved_assistant_id and self.assistant is None:
             try:
-                st.session_state.assistant = self.openai_client.beta.assistants.create(
+                # Prova a recuperare l'assistente esistente
+                self.assistant = self.openai_client.beta.assistants.retrieve(saved_assistant_id)
+                self.assistant_created = True
+                print(f"✅ Assistente recuperato con ID: {self.assistant.id}")
+                return self.assistant
+            except Exception as e:
+                print(f"⚠️ Impossibile recuperare assistente {saved_assistant_id}: {str(e)}")
+                # Se non riusciamo a recuperarlo, ne creiamo uno nuovo
+                app_state.delete('assistant_id')
+        
+        # Se non abbiamo un assistente, ne creiamo uno nuovo
+        if self.assistant is None:
+            try:
+                self.assistant = self.openai_client.beta.assistants.create(
                     name="NutrAICoach Assistant",
                     instructions=system_prompt,
                     tools=available_tools,
                     model="gpt-4.1"
                 )
-                st.session_state.assistant_created = True
+                self.assistant_created = True
+                # Salva l'ID per riutilizzo futuro
+                app_state.set('assistant_id', self.assistant.id)
+                print(f"✅ Nuovo assistente creato con ID: {self.assistant.id}")
             except Exception as e:
                 st.error(f"Errore nella creazione dell'assistente: {str(e)}")
-                st.session_state.assistant_created = False
+                self.assistant_created = False
                 return None
-        return st.session_state.assistant
+        return self.assistant
     
     def get_assistant(self):
         """
-        Ottiene l'assistente corrente dalla sessione.
+        Ottiene l'assistente corrente.
         
         Returns:
             Assistant OpenAI se disponibile, None altrimenti
         """
-        return st.session_state.get('assistant', None)
+        return self.assistant
     
     def is_assistant_created(self):
         """
@@ -59,7 +83,7 @@ class AssistantManager:
         Returns:
             bool: True se l'assistente è stato creato, False altrimenti
         """
-        return st.session_state.get('assistant_created', False)
+        return self.assistant_created
 
 
 def create_assistant(openai_client):

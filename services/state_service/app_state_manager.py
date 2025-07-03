@@ -155,7 +155,13 @@ class AppStateManager:
     
     def get_messages(self) -> list:
         """Ottiene i messaggi della chat"""
-        return self.get('messages', [])
+        messages = self.get('messages', [])
+        # Assicurati che restituisca sempre una lista
+        return messages if messages is not None else []
+    
+    def set_messages(self, messages: list) -> None:
+        """Imposta i messaggi della chat"""
+        self.set('messages', messages)
     
     def add_message(self, role: str, content: str) -> None:
         """Aggiunge un messaggio alla chat"""
@@ -587,6 +593,54 @@ class AppStateManager:
     def set_device_choice_made(self, made: bool) -> None:
         """Imposta se la scelta del dispositivo è stata fatta"""
         self.set('device_choice_made', made)
+
+    # === METODI PER GESTIONE SPORT SPECIFICI ===
+    
+    def get_specific_sport(self, index: int) -> Optional[str]:
+        """Ottiene la selezione specifica di sport per un indice"""
+        return self.get(f'specific_sport_{index}')
+    
+    def set_specific_sport(self, index: int, sport: str) -> None:
+        """Imposta la selezione specifica di sport per un indice"""
+        self.set(f'specific_sport_{index}', sport)
+    
+    def delete_specific_sport(self, index: int) -> None:
+        """Rimuove la selezione specifica di sport per un indice"""
+        self.delete(f'specific_sport_{index}')
+    
+    def get_sport_type(self, index: int) -> Optional[str]:
+        """Ottiene il tipo di sport per un indice"""
+        return self.get(f'sport_type_{index}')
+    
+    def set_sport_type(self, index: int, sport_type: str) -> None:
+        """Imposta il tipo di sport per un indice"""
+        self.set(f'sport_type_{index}', sport_type)
+    
+    # === METODI PER GESTIONE PROMPT PREFERENZE ===
+    
+    def get_preferences_prompt(self) -> Optional[str]:
+        """Ottiene il prompt delle preferenze"""
+        return self.get('preferences_prompt')
+    
+    def set_preferences_prompt(self, prompt: str) -> None:
+        """Imposta il prompt delle preferenze"""
+        self.set('preferences_prompt', prompt)
+    
+    def delete_preferences_prompt(self) -> None:
+        """Rimuove il prompt delle preferenze"""
+        self.delete('preferences_prompt')
+    
+    def get_prompt_to_add_at_next_message(self) -> Optional[str]:
+        """Ottiene il prompt da aggiungere al prossimo messaggio"""
+        return self.get('prompt_to_add_at_next_message')
+    
+    def set_prompt_to_add_at_next_message(self, prompt: str) -> None:
+        """Imposta il prompt da aggiungere al prossimo messaggio"""
+        self.set('prompt_to_add_at_next_message', prompt)
+    
+    def delete_prompt_to_add_at_next_message(self) -> None:
+        """Rimuove il prompt da aggiungere al prossimo messaggio"""
+        self.delete('prompt_to_add_at_next_message')
 
     # === METODI DEBUG ===
     

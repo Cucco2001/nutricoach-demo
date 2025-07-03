@@ -100,8 +100,8 @@ def main():
     setup_responsive_app()
     
     # Se l'utente ha appena completato il form iniziale su mobile, chiudi la sidebar.
-    if app_state.get('just_completed_initial_info', False):
-        if app_state.get('device_type') == 'mobile':
+    if app_state.is_just_completed_initial_info():
+        if app_state.get_device_type() == 'mobile':
             from streamlit_js_eval import streamlit_js_eval
             
             # Esegui JS per trovare e cliccare il bottone di chiusura della sidebar.
@@ -120,7 +120,7 @@ def main():
             streamlit_js_eval(js_expressions=js_code, key="close_sidebar_js")
         
         # Rimuovi il flag per evitare che venga eseguito di nuovo.
-        app_state.delete('just_completed_initial_info')
+        app_state.set_just_completed_initial_info(False)
 
     # === GESTIONE LOGIN/REGISTRAZIONE MODULARE ===
     # Usa il nuovo sistema modulare per gestire l'autenticazione
@@ -182,7 +182,11 @@ def main():
             # Usa l'interfaccia chat modulare
             chat_interface()
         elif page == "Preferenze":
-            app_state.get_preferences_manager().handle_user_preferences(user_id)
+            preferences_manager = app_state.get_preferences_manager()
+            if preferences_manager:
+                preferences_manager.handle_user_preferences(user_id)
+            else:
+                st.error("🔄 Servizio preferenze non disponibile, ricarica la pagina")
         elif page == "Piano Nutrizionale":
             handle_user_data()
 
