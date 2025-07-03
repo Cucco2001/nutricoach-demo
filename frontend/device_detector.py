@@ -40,38 +40,21 @@ def is_mobile_user_agent():
 
 def get_device_type():
     """
-    Rileva il tipo di dispositivo in modo robusto usando streamlit-js-eval.
-    
-    Logica:
-    1. Usa streamlit_js_eval per leggere window.innerWidth.
-    2. Determina il tipo di dispositivo ('desktop' o 'mobile').
-    3. Salva il risultato nel nostro state manager.
+    Rileva il tipo di dispositivo SOLO una volta per sessione usando streamlit-js-eval.
+    Se già rilevato, restituisce sempre quello.
     """
-    # Controllo se è già stato rilevato e salvato nel nostro state manager
-    stored_device_type = app_state.get('device_type')
-    device_detected = app_state.get('device_detection_done', False)
-    
-    # Se abbiamo già fatto la detection, restituisci il valore salvato
-    if device_detected and stored_device_type:
-        return stored_device_type
-    
-    # Rilevamento robusto con streamlit_js_eval
+    # Se già rilevato, restituisci sempre quello
+    device_type = app_state.get('device_type')
+    if device_type:
+        return device_type
+
+    # Altrimenti, rileva e salva
     width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
-
-    # Gestisci il caso in cui `width` è None al primo rendering
     if width is None:
-        return stored_device_type or 'desktop'  # Default sicuro
+        return 'desktop'  # Default sicuro
 
-    # Determina il tipo di dispositivo in base alla larghezza
     device_type = 'desktop' if width > 768 else 'mobile'
-
-    # Salva nel nostro state manager solo se è diverso dal precedente o non è ancora stato fatto
-    if stored_device_type != device_type or not device_detected:
-        if not device_detected:  # Stampa solo la prima volta
-            print(f"✅ Dispositivo rilevato: {device_type.upper()} (Larghezza: {width}px)")
-        app_state.set('device_type', device_type)
-        app_state.set('device_detection_done', True)
-
+    app_state.set('device_type', device_type)
     return device_type
 
 def is_mobile():
