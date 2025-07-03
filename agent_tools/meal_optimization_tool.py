@@ -454,7 +454,8 @@ def get_category_mappings():
         
         # Pesce (sottocategoria)
         "pesce": ["tonno_naturale", "tonno_fresco", "tonno_sottolio_sgocciolato", "merluzzo", 
-                 "salmone_al_naturale", "salmone_affumicato", "orata", "spigola", "pesce_spada", "gamberi"],
+                 "salmone_al_naturale", "salmone_affumicato", "orata", "spigola", "pesce_spada", "gamberi", "scampi",
+                 "sgombro", "sgo"],
         "tonno": ["tonno_naturale", "tonno_fresco", "tonno_sottolio_sgocciolato"],
         "salmone": ["salmone_al_naturale", "salmone_affumicato"],
         

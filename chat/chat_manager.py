@@ -79,7 +79,7 @@ class ChatManager:
                         try:
                             self.openai_client.beta.threads.messages.create(
                                 thread_id=thread.id,
-                                role="assistant",
+                                role="user",
                                 content=initial_prompt
                             )
                         except Exception as e:
@@ -143,22 +143,21 @@ class ChatManager:
                 )
                 
                 # Se il run è ancora in corso, prova ad annullarlo
-                if run_status.status in ["queued", "in_progress", "cancelling"]:
+                if run_status.status in ["queued", "in_progress", "cancelling", "active", "requires_action", "failed", "expired"]:
                     self.openai_client.beta.threads.runs.cancel(
                         thread_id=thread_id,
                         run_id=current_run_id
                     )
                     
-                # Pulisci il run ID corrente
-                app_state.set_current_run_id(None)
-                
             except Exception as e:
                 print(f"Errore durante l'annullamento del run: {e}")
+            finally:
+                # Pulisci sempre il run ID corrente
                 app_state.set_current_run_id(None)
     
     def chat_with_assistant(self, user_message):
         """
-        Invia un messaggio all'assistente e gestisce la risposta.
+        Gestisce la conversazione con l'assistente.
         
         Args:
             user_message: Messaggio dell'utente
@@ -166,96 +165,154 @@ class ChatManager:
         Returns:
             str: Risposta dell'assistente
         """
-        thread_id = app_state.get_thread_id()
-        
-        # Se non esiste un thread, crealo automaticamente
-        if not thread_id:
-            st.info("🔄 Creazione nuovo thread di conversazione...")
-            thread_id = self.create_new_thread()
-            if not thread_id:
-                st.error("❌ Impossibile creare un thread di conversazione")
-                return None
-        
-        # Controlla se c'è un prompt delle preferenze da aggiungere
-        preferences_prompt = app_state.get_preferences_prompt()
-        prompt_to_add = app_state.get_prompt_to_add_at_next_message()
-        
-        if prompt_to_add and preferences_prompt:
-            # Aggiungi il prompt delle preferenze al messaggio
-            user_message = f"{preferences_prompt}\n\n{user_message}"
-            # Pulisci i flag
-            app_state.delete_prompt_to_add_at_next_message()
-            app_state.delete_preferences_prompt()
-        
-        # Invia il messaggio dell'utente
-        self.openai_client.beta.threads.messages.create(
-            thread_id=thread_id,
-            role="user",
-            content=user_message
-        )
-        
-        # Ottieni l'assistente dall'app_state
-        assistant_manager = app_state.get_assistant_manager()
-        if not assistant_manager:
-            st.error("Errore: Assistente non disponibile")
-            return None
-        
-        assistant = assistant_manager.get_assistant()
-        
-        # Crea ed esegui il run
-        run = self.openai_client.beta.threads.runs.create(
-            thread_id=thread_id,
-            assistant_id=assistant.id
-        )
-        app_state.set_current_run_id(run.id)
-        
-        # Aspetta che il run sia completato (con gestione dei tool calls)
-        while True:
-            run_status = self.openai_client.beta.threads.runs.retrieve(
-                thread_id=thread_id,
-                run_id=run.id
-            )
+        try:
+            thread_id = app_state.get_thread_id()
             
-            if run_status.status == "completed":
-                break
-            elif run_status.status == "requires_action":
-                # Gestisci le chiamate ai tool
-                tool_outputs = handle_tool_calls(run_status)
-                
-                # Invia i risultati dei tool se disponibili
-                if tool_outputs:
-                    self.openai_client.beta.threads.runs.submit_tool_outputs(
+            # Se non esiste un thread, creane uno nuovo
+            if not thread_id:
+                thread_id = self.create_new_thread()
+                if not thread_id:
+                    st.error("❌ Impossibile creare un thread di conversazione")
+                    return None
+            
+            # Verifica e cancella eventuali run bloccate
+            self.check_and_cancel_run()
+            
+            # Controlla se è necessario aggiungere il prompt delle preferenze
+            preferences_prompt = app_state.get_preferences_prompt()
+            prompt_to_add = app_state.get_prompt_to_add_at_next_message()
+            
+            if prompt_to_add and preferences_prompt:
+                user_message = f"{preferences_prompt}. {user_message}"
+                # Resetta i flag
+                app_state.delete_prompt_to_add_at_next_message()
+                app_state.delete_preferences_prompt()
+
+            # Aggiungi il messaggio dell'utente al thread
+            try:
+                self.openai_client.beta.threads.messages.create(
+                    thread_id=thread_id,
+                    role="user",
+                    content=user_message
+                )
+            except Exception as e:
+                # Se c'è un errore nel thread, creane uno nuovo e riprova
+                st.info("🔄 Errore thread, creazione nuovo thread...")
+                thread_id = self.create_new_thread()
+                if not thread_id:
+                    return "❌ Impossibile creare nuovo thread"
+                self.openai_client.beta.threads.messages.create(
+                    thread_id=thread_id,
+                    role="user",
+                    content=user_message
+                )
+            
+            max_retries = 3
+            retry_count = 0
+            
+            while retry_count < max_retries:
+                try:
+                    # Ottieni l'assistente dall'app_state
+                    assistant_manager = app_state.get_assistant_manager()
+                    if not assistant_manager:
+                        st.error("Errore: Assistente non disponibile")
+                        return None
+                    assistant = assistant_manager.get_assistant()
+                    
+                    # Crea una run
+                    run = self.openai_client.beta.threads.runs.create(
                         thread_id=thread_id,
-                        run_id=run.id,
-                        tool_outputs=tool_outputs
+                        assistant_id=assistant.id
                     )
-            elif run_status.status in ["failed", "cancelled", "expired"]:
-                app_state.set_current_run_id(None)
-                return f"❌ Errore nella generazione della risposta: {run_status.status}"
-            else:
-                # Aspetta un momento prima di controllare di nuovo
-                time.sleep(1)
-        
-        # Pulisci il run ID
-        app_state.set_current_run_id(None)
-        
-        # Ottieni i messaggi dal thread
-        messages = self.openai_client.beta.threads.messages.list(
-            thread_id=thread_id,
-            order="asc"
-        )
-        
-        # Trova l'ultimo messaggio dell'assistente
-        for message in reversed(messages.data):
-            if message.role == "assistant":
-                response_content = ""
-                for content_part in message.content:
-                    if hasattr(content_part, 'text'):
-                        response_content += content_part.text.value
-                
-                return response_content
-        
-        return "❌ Nessuna risposta ricevuta dall'assistente"
+                    app_state.set_current_run_id(run.id)
+                    
+                    # Attendi il completamento con timeout
+                    start_time = time.time()
+                    timeout = 180  # 3 minuti
+                    
+                    while True:
+                        if time.time() - start_time > timeout:
+                            self.check_and_cancel_run()
+                            st.info("🔄 Timeout, creazione nuovo thread...")
+                            self.create_new_thread()
+                            return "Mi dispiace, l'operazione è durata troppo a lungo. Per favore, riprova."
+                        
+                        try:
+                            run_status = self.openai_client.beta.threads.runs.retrieve(
+                                thread_id=thread_id,
+                                run_id=run.id
+                            )
+                        except Exception:
+                            self.check_and_cancel_run()
+                            self.create_new_thread()
+                            raise Exception("Errore nel recupero dello stato della run")
+                        
+                        if run_status.status == 'completed':
+                            app_state.set_current_run_id(None)
+                            break
+                        elif run_status.status in ['failed', 'expired', 'cancelled']:
+                            self.check_and_cancel_run()
+                            st.info("🔄 Run fallita, creazione nuovo thread...")
+                            self.create_new_thread()
+                            raise Exception(f"Run {run_status.status}")
+                        elif run_status.status == 'requires_action':
+                            # Gestisci le chiamate ai tool
+                            tool_outputs = handle_tool_calls(run_status)
+                            if tool_outputs:
+                                try:
+                                    self.openai_client.beta.threads.runs.submit_tool_outputs(
+                                        thread_id=thread_id,
+                                        run_id=run.id,
+                                        tool_outputs=tool_outputs
+                                    )
+                                except Exception:
+                                    self.check_and_cancel_run()
+                                    self.create_new_thread()
+                                    raise Exception("Errore nell'invio dei risultati dei tool")
+                            else:
+                                self.check_and_cancel_run()
+                                self.create_new_thread()
+                                raise Exception("Errore nella gestione dei tool")
+                        
+                        # Breve pausa prima del prossimo controllo
+                        time.sleep(1)
+                    
+                    # Ottieni la risposta
+                    try:
+                        messages = self.openai_client.beta.threads.messages.list(
+                            thread_id=thread_id,
+                            order="desc",  # Ordine decrescente per avere i più recenti per primi
+                        )
+                        # Trova l'ultimo messaggio dell'assistente (il primo nella lista desc)
+                        for message in messages.data:
+                            if message.role == "assistant":
+                                response_content = ""
+                                for content_part in message.content:
+                                    if hasattr(content_part, 'text'):
+                                        response_content += content_part.text.value
+                                return response_content
+                        return "❌ Nessuna risposta ricevuta dall'assistente"
+                    except Exception:
+                        self.check_and_cancel_run()
+                        self.create_new_thread()
+                        raise Exception("Errore nel recupero dei messaggi")
+                    
+                except Exception as e:
+                    retry_count += 1
+                    self.check_and_cancel_run()
+                    if retry_count >= max_retries:
+                        st.info("🔄 Troppi tentativi falliti, creazione nuovo thread...")
+                        self.create_new_thread()
+                        st.error(f"Errore dopo {max_retries} tentativi: {str(e)}")
+                        return "Mi dispiace, si è verificato un errore. Riprova."
+                    time.sleep(2 ** retry_count)  # Exponential backoff
+            
+        except Exception as e:
+            self.check_and_cancel_run()
+            st.info("🔄 Errore generale, creazione nuovo thread...")
+            self.create_new_thread()
+            st.error(f"Errore nella conversazione: {str(e)}")
+            return "Mi dispiace, si è verificato un errore inaspettato. Riprova."
 
 
 def create_new_thread(openai_client, user_data_manager):
