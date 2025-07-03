@@ -243,8 +243,8 @@ ESTRAI E RESTITUISCI UN JSON NEL SEGUENTE FORMATO OUTPUT CITANDO SOLO I CAMPI PR
 }
 
 IMPORTANTE PER CALORIC_NEEDS:
-- Il "fabbisogno_totale" = "fabbisogno_base"*"laf_utilizzato"+"dispendio_sportivo"
-- "aggiustamento_obiettivo" è la quantità di calorie da aggiungere al fabbisogno totale per raggiungere l'obiettivo
+- Il "fabbisogno_base" = "bmr"*"laf_utilizzato"
+- Il "fabbisogno_totale" = "fabbisogno_base"+"dispendio_sportivo"
 - "fabbisogno_finale" = "fabbisogno_totale" + "aggiustamento_obiettivo"
 - Cerca di estrarre sempre questi campi nella conversazione
 
