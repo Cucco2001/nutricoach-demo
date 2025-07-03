@@ -1001,14 +1001,6 @@
       "latte_intero": {
         "grams": 56.2,
         "similarity_score": 77.5
-      },
-      "insalata": {
-        "grams": 163.6,
-        "similarity_score": 63.8
-      },
-      "rucola": {
-        "grams": 163.6,
-        "similarity_score": 63.8
       }
     },
     "latte_parzialmente_scremato": {
@@ -2242,25 +2234,13 @@
         "grams": 58.6,
         "similarity_score": 79.4
       },
-      "piselli": {
-        "grams": 52.6,
-        "similarity_score": 64.7
+      "lamponi": {
+        "grams": 83.7,
+        "similarity_score": 53.6
       },
-      "fagioli_cannellini": {
-        "grams": 47.7,
-        "similarity_score": 61.8
-      },
-      "ceci": {
-        "grams": 36.9,
-        "similarity_score": 61.0
-      },
-      "insalata": {
-        "grams": 186.4,
-        "similarity_score": 59.4
-      },
-      "rucola": {
-        "grams": 186.4,
-        "similarity_score": 59.4
+      "kiwi": {
+        "grams": 85.4,
+        "similarity_score": 51.7
       }
     },
     "grana_padano": {
@@ -2360,10 +2340,6 @@
         "grams": 95.7,
         "similarity_score": 66.5
       },
-      "latte_scremato": {
-        "grams": 61.1,
-        "similarity_score": 66.3
-      },
       "fagioli_cannellini": {
         "grams": 25.6,
         "similarity_score": 65.7
@@ -2371,6 +2347,10 @@
       "fagiolini": {
         "grams": 91.7,
         "similarity_score": 64.5
+      },
+      "bieta": {
+        "grams": 146.7,
+        "similarity_score": 64.2
       }
     },
     "rucola": {
@@ -2386,10 +2366,6 @@
         "grams": 95.7,
         "similarity_score": 66.5
       },
-      "latte_scremato": {
-        "grams": 61.1,
-        "similarity_score": 66.3
-      },
       "fagioli_cannellini": {
         "grams": 25.6,
         "similarity_score": 65.7
@@ -2397,6 +2373,10 @@
       "fagiolini": {
         "grams": 91.7,
         "similarity_score": 64.5
+      },
+      "bieta": {
+        "grams": 146.7,
+        "similarity_score": 64.2
       }
     },
     "pesce_spada": {

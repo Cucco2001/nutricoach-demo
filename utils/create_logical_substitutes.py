@@ -149,8 +149,10 @@ def _should_exclude_combination(food1: str, food2: str, cat1: str, cat2: str) ->
     # Esclusioni specifiche illogiche
     illogical_combinations = [
         # Verdure non possono sostituire cereali/carboidrati
-        (["verdure"], ["cereali", "cereali_colazione", "tuberi"]),
+        (["verdure"], ["cereali", "cereali_colazione", "tuberi", "latticini", "latte"]),
         # Frutta non può sostituire cereali/carboidrati (tranne in casi molto specifici)
+        (["latte"], ["cereali","verdure", "insalata", "legumi"]),
+        (["latticini"], ["verdure", "insalata", "legumi"]),
         (["frutta"], ["cereali", "cereali_colazione", "tuberi"]),
         # Cereali non possono sostituire verdure
         (["cereali", "cereali_colazione", "tuberi"], ["verdure"]),
