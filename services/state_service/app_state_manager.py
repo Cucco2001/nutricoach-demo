@@ -9,6 +9,7 @@ from typing import Any, Dict, Optional
 import threading
 from dataclasses import dataclass
 from datetime import datetime
+import streamlit as st
 
 
 @dataclass
@@ -32,17 +33,8 @@ class AppStateManager:
     
     Sostituisce gradualmente st.session_state per disaccoppiare
     la logica di business dal frontend Streamlit.
+    Ogni sessione Streamlit ha la sua istanza separata.
     """
-    
-    _instance: Optional['AppStateManager'] = None
-    _lock = threading.Lock()
-    
-    def __new__(cls):
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = super().__new__(cls)
-        return cls._instance
     
     def __init__(self):
         if not hasattr(self, '_initialized'):
@@ -653,8 +645,4 @@ class AppStateManager:
         print("=== APP STATE ===")
         for key, value in self._state.items():
             print(f"{key}: {value}")
-        print("================")
-
-
-# Istanza singleton globale
-app_state = AppStateManager() 
+        print("================") 
