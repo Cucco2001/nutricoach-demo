@@ -16,10 +16,25 @@ def get_app_state() -> AppStateManager:
     """
     if 'app_state_manager' not in st.session_state:
         st.session_state.app_state_manager = AppStateManager()
+        # Debug: stampa l'ID dell'istanza per verificare separazione
+        instance_id = id(st.session_state.app_state_manager)
+        print(f"🆕 [SESSION] Nuova istanza AppStateManager creata: {instance_id}")
+    
     return st.session_state.app_state_manager
 
-# Per compatibilità con il codice esistente
-app_state = get_app_state()
+class AppStateProxy:
+    """
+    Proxy che assicura che ogni chiamata ad app_state 
+    ottenga l'istanza corretta per la sessione attuale.
+    """
+    def __getattr__(self, name):
+        return getattr(get_app_state(), name)
+    
+    def __setattr__(self, name, value):
+        setattr(get_app_state(), name, value)
+
+# Istanza proxy che reindirizza sempre alla sessione corrente
+app_state = AppStateProxy()
 
 __all__ = [
     'AppStateManager',
