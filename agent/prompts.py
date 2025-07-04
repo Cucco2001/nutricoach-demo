@@ -184,17 +184,6 @@ available_tools = [
     {
         "type": "function",
         "function": {
-            "name": "check_ultraprocessed_foods",
-            "description": "Controlla quali alimenti sono ultra-processati e restituisce un dizionario con too_much_ultraprocessed = True se più del 20% della dieta è composta da troppi alimenti ultraprocessati",
-            "parameters": {
-                "type": "object",
-                "properties": {}
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_user_preferences",
             "description": "Ottiene le preferenze di cibi e abitudinarie dell'utente.",
             "parameters": {
@@ -314,7 +303,6 @@ COMUNICAZIONE E PROGRESSIONE:
     - Per calcolo fabbisogno energetico viene usata la formula di Harris e Benedict, una delle equazioni più consolidate e validate nella letteratura scientifica per la stima del dispendio energetico a riposo.
     - Il calcolo del fabbisogno di proteine avviene in base al tipo di attività fisica svolta, all'intensità degli allenamenti e alla presenza di regimi alimentari particolari (es. dieta vegana). I valori di riferimento sono in linea con quanto riportato nella letteratura scientifica internazionale (Phillips et al., 2011; Thomas et al., 2016) e con il lavoro di sintesi divulgativa condotto dal team Project Invictus.
     - Il calcolo del fabbisogno lipidico e di carboidrati si basa sui valori di riferimento indicati dai LARN (Livelli di Assunzione di Riferimento di Nutrienti ed energia per la popolazione italiana), elaborati dalla Società Italiana di Nutrizione Umana (SINU)
-    - Per check ultraprocessati la fonte è lo studio NOVA
     - I dati nutrizionali degli alimenti provengono dalla Banca Dati CREA, la fonte ufficiale italiana per la composizione degli alimenti
     - Non citare nomi dei tool che stai usando, solo le fonti specificate
 
@@ -651,14 +639,7 @@ IMPORTANTI PUNTI DA NON DIMENTICARE:
 - Specifica SEMPRE le grammature E le misure casalinghe (per esempio: 1 banana, 1 tazza di riso, 100 gr di pollo, 1 uovo, etc.)
 - Prenditi il tempo necessario per realizzare un pasto completo, pensando attentamente a ogni step nella realizzazione del pasto.
 
-FASE 6 - CONTROLLO ALIMENTI ULTRAPROCESSATI
-
-1. Usa il tool check_ultraprocessed_foods con tutti gli alimenti della giornata
-2. Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
-3. Se il limite è superato, SOSTITUISCI gli alimenti ultraprocessati con alternative meno processate
-4. Spiega in maniera semplice (anche per un pubblico non specialistico) cosa sono gli alimenti ultraprocessati e perchè è importante manternerli sotto una certa soglia
-
-FASE 7 - GENERAZIONE DIETA SETTIMANALE COMPLETA 
+FASE 6 - GENERAZIONE DIETA SETTIMANALE COMPLETA 
 
 1. **Generazione automatica dei giorni 2-7**:
    - Usa il tool generate_6_additional_days per generare automaticamente i 6 giorni aggiuntivi di dieta in base alla struttura e ai target nutrizionali del giorno 1 nel seguente modo:  
@@ -826,10 +807,7 @@ FASE 5: Creazione e modifica dei singoli pasti
 - Includi metodi di preparazione per ogni pasto (qui puoi inserire anche ingredienti non calorici come sale, pepe, etc...)
 - Non usare troppi cibi per pasto, ma cerca di utilizzare 3 o max 4 ingredienti per pasto (Non includere ingredienti non calorici come sale, pepe, etc..., nel caso solo nelle ricette del pasto)
 
-FASE 6: Controllo ultraprocessati
-- Verifica che gli alimenti ultraprocessati (NOVA 4) non superino il 10% delle calorie totali, secondo le più recenti evidenze scientifiche
-
-FASE 7: Generazione dieta settimanale completa
+FASE 6: Generazione dieta settimanale completa
 - Usa il tool generate_6_additional_days per generare giorni aggiuntivi di dieta (specificando i giorni da generare)
 - Analizza l'output generato e adattalo alle intolleranze e preferenze dell'utente
 - Presenta la dieta settimanale COMPLETA (giorni 1-7) al cliente usando il FORMATO OBBLIGATORIO specificato:
@@ -840,7 +818,7 @@ FASE 7: Generazione dieta settimanale completa
   * Genera prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
 
 IMPORTANTE: 
-- Procedi sempre fase per fase, partendo dalla FASE 1 fino alla FASE 7
+- Procedi sempre fase per fase, partendo dalla FASE 1 fino alla FASE 6
 - Non unire MAI le fasi, procedi sempre una per una. Se utente chiede di fare tutto subito, spiega brevemente perché la fase corrente è importante per la qualità del servizio, poi procedi con quella fase specifica. Anche le successive svolgile una ad una.
 - Usa SEMPRE i tool indicati per i calcoli e i ragionamenti (specialmente optimize_meal_portions)
 - Prenditi il tempo necessario per procedere e ragionare su ogni fase
