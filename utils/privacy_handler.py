@@ -45,8 +45,12 @@ class PrivacyHandler:
             with open(user_file_path, 'r', encoding='utf-8') as f:
                 user_data = json.load(f)
                 privacy_consent = user_data.get("privacy_consent", {})
-                return privacy_consent.get("accepted", False)
-        except Exception:
+                accepted = privacy_consent.get("accepted", False)
+                print(f"🔍 [PRIVACY_CHECK] Consenso trovato: {privacy_consent}")
+                print(f"🔍 [PRIVACY_CHECK] Accepted: {accepted}")
+                return accepted
+        except Exception as e:
+            print(f"🔍 [PRIVACY_CHECK] Errore lettura file: {str(e)}")
             return False
     
     def accept_privacy(self, user_id: str = "default"):

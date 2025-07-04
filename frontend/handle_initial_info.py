@@ -204,15 +204,15 @@ class InitialInfoHandler:
             app_state.set_user_info(updated_user_info)
             
             # Prepara i dati per il salvataggio
-            user_info = {
-                "età": età,
-                "sesso": sesso,
-                "peso": peso,
-                "altezza": altezza,
-                "attività": attività,
-                "obiettivo": obiettivo,
-                "preferences": user_preferences
-            }
+        user_info = {
+            "età": età,
+            "sesso": sesso,
+            "peso": peso,
+            "altezza": altezza,
+            "attività": attività,
+            "obiettivo": obiettivo,
+            "preferences": user_preferences
+        }
         
         # Salva le informazioni nutrizionali
         self.user_data_manager.save_nutritional_info(user_id, user_info)

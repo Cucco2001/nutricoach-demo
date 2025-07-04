@@ -118,7 +118,7 @@ def on_sport_category_change(i):
         if selected_category:
             sports_list[i]["sport_type"] = selected_category
         
-            # Rimuovi lo sport specifico selezionato precedentemente
+        # Rimuovi lo sport specifico selezionato precedentemente
             if "specific_sport" in sports_list[i]:
                 del sports_list[i]["specific_sport"]
         

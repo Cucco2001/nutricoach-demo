@@ -152,6 +152,7 @@ def main():
         # === PRIVACY & DISCLAIMER CHECK PER UTENTE ===
         user_info = app_state.get_user_info()
         user_id = user_info.id if user_info else None
+        
         if not check_privacy_acceptance(user_id):
             st.markdown("# 🥗 NutrAICoach - Privacy & Disclaimer")
             st.markdown(f"**Benvenuto, {user_info.username if user_info else 'Utente'}!**")
@@ -161,8 +162,12 @@ def main():
             col1, col2, col3 = st.columns([1, 1, 1])
             with col2:
                 if st.button("✅ Accetto e Continuo", type="primary", use_container_width=True):
-                    accept_privacy_terms(user_id)
-                    st.rerun()
+                    try:
+                        accept_privacy_terms(user_id)
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ Errore nel salvataggio del consenso: {str(e)}")
+                        st.stop()
             st.stop()
         
         # Sidebar per le funzionalità utente
