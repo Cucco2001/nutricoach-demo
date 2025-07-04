@@ -104,7 +104,6 @@ def main():
         device_key = f'device_type_{user_id}'
         
         if not app_state.get(init_key):
-            print(f"🔄 [APP] Prima inizializzazione utente {user_id} - reset device cache")
             app_state.delete(device_key)
             app_state.set(init_key, True)
     

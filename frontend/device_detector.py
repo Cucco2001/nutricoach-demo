@@ -60,10 +60,9 @@ def get_device_type():
         width = streamlit_js_eval(js_expressions='window.innerWidth', key="WIDTH", want_output=True)
     except Exception as e:
         # Nasconde l'errore rosso ma continua con la logica
-        print(f"⚠️ [DEVICE] Errore UI nascosto per {user_id}, continuo rilevamento")
+        pass
     
     if width is None:
-        print("⚠️ [DEVICE] Width è None, default desktop")
         return 'desktop'  # Default sicuro
 
     device_type = 'desktop' if width > 768 else 'mobile'

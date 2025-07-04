@@ -60,7 +60,6 @@ class AssistantManager:
                 self.assistant_created = True
                 # Salva l'ID per riutilizzo futuro
                 app_state.set('assistant_id', self.assistant.id)
-                print(f"✅ Nuovo assistente creato con ID: {self.assistant.id}")
             except Exception as e:
                 st.error(f"Errore nella creazione dell'assistente: {str(e)}")
                 self.assistant_created = False
