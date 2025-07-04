@@ -62,13 +62,11 @@ def get_device_type():
         # Nasconde l'errore rosso ma continua con la logica
         print(f"⚠️ [DEVICE] Errore UI nascosto per {user_id}, continuo rilevamento")
     
-    print(f"📏 [DEVICE] Width rilevata per utente {user_id}: {width}")
     if width is None:
         print("⚠️ [DEVICE] Width è None, default desktop")
         return 'desktop'  # Default sicuro
 
     device_type = 'desktop' if width > 768 else 'mobile'
-    print(f"🎯 [DEVICE] Utente {user_id}: {width} > 768? {width > 768} → {device_type}")
     app_state.set(device_key, device_type)
     return device_type
 

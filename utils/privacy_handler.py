@@ -46,8 +46,6 @@ class PrivacyHandler:
                 user_data = json.load(f)
                 privacy_consent = user_data.get("privacy_consent", {})
                 accepted = privacy_consent.get("accepted", False)
-                print(f"🔍 [PRIVACY_CHECK] Consenso trovato: {privacy_consent}")
-                print(f"🔍 [PRIVACY_CHECK] Accepted: {accepted}")
                 return accepted
         except Exception as e:
             print(f"🔍 [PRIVACY_CHECK] Errore lettura file: {str(e)}")

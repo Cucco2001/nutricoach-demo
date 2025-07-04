@@ -440,8 +440,16 @@ def get_supabase_service() -> SupabaseUserService:
         return service
         
     except Exception as e:
-        # Fallback di sicurezza: crea sempre una nuova istanza
-        logger.warning(f"⚠️ Errore nell'accesso al sistema di stato: {str(e)}, creando istanza temporanea")
+        # Fallback di sicurezza per thread in background: crea istanza temporanea
+        # Verifica se siamo in un thread DeepSeek per ridurre il noise nei log
+        error_msg = str(e)
+        if "session_state" in error_msg or "ScriptRunContext" in error_msg:
+            # Questo è normale per i thread in background, log solo a debug level
+            logger.debug(f"Thread in background richiede istanza temporanea Supabase: {error_msg}")
+        else:
+            # Altri errori sono più significativi
+            logger.warning(f"⚠️ Errore nell'accesso al sistema di stato: {error_msg}, creando istanza temporanea")
+        
         return SupabaseUserService()
 
 
