@@ -56,12 +56,19 @@ def initialize_app():
         try:
             api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
             if api_key:
-                st.session_state.openai_client = OpenAI(api_key=api_key)
+                st.session_state.openai_client = OpenAI(
+                    api_key=api_key,
+                    default_headers={"OpenAI-Beta": "assistants=v2"}
+                )
             else:
-                st.session_state.openai_client = OpenAI()  # Fallback per sviluppo locale
+                st.session_state.openai_client = OpenAI(
+                    default_headers={"OpenAI-Beta": "assistants=v2"}
+                )  # Fallback per sviluppo locale
         except:
             # Fallback se st.secrets non è disponibile (sviluppo locale)
-            st.session_state.openai_client = OpenAI()
+            st.session_state.openai_client = OpenAI(
+                default_headers={"OpenAI-Beta": "assistants=v2"}
+            )
     if "current_run_id" not in st.session_state:
         st.session_state.current_run_id = None
     if "current_question" not in st.session_state:

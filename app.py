@@ -37,6 +37,7 @@ from frontend.handle_nutrition_questions import handle_nutrition_questions
 from frontend.handle_initial_info import handle_user_info_form, handle_user_info_display
 from frontend.buttons import handle_restart_button
 from frontend.Piano_nutrizionale import handle_user_data
+from frontend.home import handle_home
 
 # Import dell'inizializzazione modulare
 from frontend import initialize_app, initialize_global_variables
@@ -152,14 +153,14 @@ def main():
                 st.info("🤖 L'assistente sta elaborando la risposta, attendi completamento per accedere ad altri tab")
                 # Mantieni la selezione corrente senza permettere cambiamenti
                 if 'current_page' not in st.session_state:
-                    st.session_state.current_page = "Chat"
+                    st.session_state.current_page = "Home"
                 page = st.session_state.current_page
                 st.write(f"**Sezione corrente:** {page}")
             else:
                 # Navigazione normale quando l'agente non sta generando
                 page = st.radio(
                     "Seleziona una sezione",
-                    ["Chat", "Preferenze", "Piano Nutrizionale"]
+                    ["Home", "Chat", "Preferenze", "Piano Nutrizionale"]
                 )
                 # Salva la selezione corrente
                 st.session_state.current_page = page
@@ -167,7 +168,10 @@ def main():
             # Usa il nuovo modulo per gestire il logout
             show_logout_button()
         
-        if page == "Chat":
+        if page == "Home":
+            # Usa l'interfaccia home modulare
+            handle_home()
+        elif page == "Chat":
             # Usa l'interfaccia chat modulare
             chat_interface()
         elif page == "Preferenze":

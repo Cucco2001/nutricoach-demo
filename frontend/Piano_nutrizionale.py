@@ -599,8 +599,7 @@ class PianoNutrizionale:
         
         if available_days:
             st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); 
-                        padding: 15px; border-radius: 12px; margin: 10px 0; color: white; text-align: center;">
+            <div class="home-welcome-gradient">
                 <h4>📊 Piano Settimanale Disponibile</h4>
                 <p><strong>Giorni con dati:</strong> {' • '.join(available_days)}</p>
                 <p><em>Totale giorni pianificati: {len(available_days)}/7</em></p>
@@ -739,8 +738,7 @@ class PianoNutrizionale:
         
         # Header del pasto con stile colorato (senza expander per evitare nesting)
         st.markdown(f'''
-        <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
-                    padding: 15px; border-radius: 12px; margin: 15px 0; color: white;">
+        <div class="home-meal-card">
             <h3>{display_name}</h3>
         </div>
         ''', unsafe_allow_html=True)
@@ -867,8 +865,7 @@ class PianoNutrizionale:
         
         # Header del pasto
         st.markdown(f'''
-        <div style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); 
-                    padding: 15px; border-radius: 12px; margin: 15px 0; color: white;">
+        <div class="home-meal-card">
             <h3>🍽️ {nome_pasto}</h3>
         </div>
         ''', unsafe_allow_html=True)

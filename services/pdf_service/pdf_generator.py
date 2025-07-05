@@ -1403,7 +1403,8 @@ class PDFGenerator:
                 return day_data
             
             # Lista dei pasti che dovrebbero esserci (basati sul giorno 1)
-            expected_meals = set(day1_structure.keys())
+            # Includi solo i pasti che hanno effettivamente alimenti (non liste vuote)
+            expected_meals = set(meal_name for meal_name, food_list in day1_structure.items() if food_list)
             
             # Lista dei pasti attualmente presenti nel giorno (usando mapping dei nomi)
             existing_meals = set()

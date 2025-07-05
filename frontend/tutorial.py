@@ -10,8 +10,8 @@ import streamlit as st
 
 def show_app_tutorial():
     """
-    Mostra il tutorial introduttivo interattivo delle 3 sezioni principali dell'app.
-    L'utente deve visitare tutte e tre le sezioni per completare il tutorial.
+    Mostra il tutorial introduttivo interattivo delle 4 sezioni principali dell'app.
+    L'utente deve visitare tutte e quattro le sezioni per completare il tutorial.
     
     Returns:
         bool: True se il tutorial è stato completato, False se ancora in corso
@@ -24,11 +24,13 @@ def show_app_tutorial():
     
     # Inizializza le chiavi per tracciare i passaggi del tutorial
     user_id = st.session_state.user_info['id']
+    home_visited_key = f"tutorial_home_visited_{user_id}"
     chat_visited_key = f"tutorial_chat_visited_{user_id}"
     preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
     plan_visited_key = f"tutorial_plan_visited_{user_id}"
     
     # Inizializza i valori se non esistono
+    home_visited = st.session_state.get(home_visited_key, False)
     chat_visited = st.session_state.get(chat_visited_key, False)
     preferences_visited = st.session_state.get(preferences_visited_key, False)
     plan_visited = st.session_state.get(plan_visited_key, False)
@@ -36,32 +38,34 @@ def show_app_tutorial():
     # Header del tutorial
     st.markdown("---")
     st.markdown("## 🎯 Benvenuto in NutrAICoach!")
-    st.markdown("### Scopri le funzionalità dell'app visitando ogni sezione")
     
     # Calcola le sezioni completate per la logica di fine tutorial
-    total_sections = 3
-    completed_sections = sum([chat_visited, preferences_visited, plan_visited])
+    total_sections = 4
+    completed_sections = sum([home_visited, chat_visited, preferences_visited, plan_visited])
     
     # Container principale del tutorial
     tutorial_container = st.container()
     
     with tutorial_container:
-        # Introduzione
-        st.markdown("""
-        **NutrAICoach** è il tuo assistente nutrizionale personale! 🥗  
-        Per completare il tutorial, **esplora tutte e 3 le sezioni** cliccando sui pulsanti qui sotto.
-        Ogni sezione si aprirà con informazioni dettagliate.
-        """)
-        
         # Sezioni interattive organizzate verticalmente
         _display_tutorial_section(
-            "💬", "Chat", 
-            "L'agente ti guiderà nella realizzazione di un giorno di dieta tipo in base ai tuoi suggerimenti e spunti. Successivamente, in base alle tue preferenze, genererà un piano nutrizionale settimanale adatto a te!",
+            "🏠", "**Home**", 
+            "La tua dashboard nutrizionale principale!",
+            [
+                "Visualizza la dieta del giorno corrente",
+            ],
+            home_visited_key,
+            home_visited
+        )
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        _display_tutorial_section(
+            "💬", "**Chat**", 
+            "L'agente ti guiderà nella realizzazione di un giorno di dieta tipo in base ai tuoi suggerimenti e spunti.",
             [
                 "Chatta direttamente con il tuo assistente nutrizionale AI",
-                "Ricevi consigli personalizzati e piani alimentari",
-                "Fai domande su nutrizione, ricette e obiettivi",
-                "L'agente ti guiderà passo dopo passo"
+                "Fai domande su nutrizione, ricette e obiettivi"
             ],
             chat_visited_key,
             chat_visited
@@ -70,13 +74,11 @@ def show_app_tutorial():
         st.markdown("<br>", unsafe_allow_html=True)
         
         _display_tutorial_section(
-            "⚙️", "Preferenze",
+            "⚙️", "**Preferenze**",
             "Personalizza ancor di più la tua esperienza!",
             [
                 "Imposta le tue preferenze alimentari",
-                "Gestisci allergie e intolleranze", 
-                "Scegli i tuoi cibi preferiti e quelli da evitare",
-                "Modifica le impostazioni quando necessario"
+                "Gestisci allergie e intolleranze"
             ],
             preferences_visited_key,
             preferences_visited
@@ -85,13 +87,11 @@ def show_app_tutorial():
         st.markdown("<br>", unsafe_allow_html=True)
         
         _display_tutorial_section(
-            "📋", "Piano Nutrizionale",
+            "📋", "**Piano Nutrizionale**",
             "Visualizza il tuo piano personalizzato!",
             [
                 "Visualizza il piano nutrizionale creato dall'agente",
-                "Scarica il PDF del tuo piano settimanale",
-                "Accedi a tutti i dettagli nutrizionali",
-                "Stampa le ricette e le porzioni"
+                "Scarica il PDF del tuo piano settimanale"
             ],
             plan_visited_key,
             plan_visited
@@ -125,11 +125,13 @@ def show_app_tutorial():
         
         if completed_sections == total_sections:
             # Tutte le sezioni sono state visitate
-            st.info("👈 Ora puoi compilare i tuoi dati nella barra laterale e cliccare su **Inizia** per cominciare!")
+            st.info("👈 **Compila** i tuoi dati nella barra laterale e clicca su **Inizia** per cominciare!")
             
         else:
             # Non tutte le sezioni sono state visitate
             missing_sections = []
+            if not home_visited:
+                missing_sections.append("🏠 Home")
             if not chat_visited:
                 missing_sections.append("💬 Chat")
             if not preferences_visited:
@@ -157,8 +159,6 @@ def _display_tutorial_section(emoji, title, subtitle, features, session_key, is_
         is_visited: Se la sezione è già stata visitata
     """
     label = f"{emoji} {title}"
-    if is_visited:
-        label += " ✅"
 
     with st.expander(label):
         st.markdown(f"**{subtitle}**")
@@ -187,11 +187,13 @@ def are_all_sections_visited(user_id: str) -> bool:
     Returns:
         bool: True se tutte le sezioni sono state visitate, False altrimenti
     """
+    home_visited_key = f"tutorial_home_visited_{user_id}"
     chat_visited_key = f"tutorial_chat_visited_{user_id}"
     preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
     plan_visited_key = f"tutorial_plan_visited_{user_id}"
     
-    return (st.session_state.get(chat_visited_key, False) and
+    return (st.session_state.get(home_visited_key, False) and
+            st.session_state.get(chat_visited_key, False) and
             st.session_state.get(preferences_visited_key, False) and
             st.session_state.get(plan_visited_key, False))
 
@@ -218,12 +220,15 @@ def reset_tutorial(user_id: str):
         user_id: ID dell'utente
     """
     tutorial_key = f"tutorial_completed_{user_id}"
+    home_visited_key = f"tutorial_home_visited_{user_id}"
     chat_visited_key = f"tutorial_chat_visited_{user_id}"
     preferences_visited_key = f"tutorial_preferences_visited_{user_id}"
     plan_visited_key = f"tutorial_plan_visited_{user_id}"
 
     if tutorial_key in st.session_state:
         del st.session_state[tutorial_key]
+    if home_visited_key in st.session_state:
+        del st.session_state[home_visited_key]
     if chat_visited_key in st.session_state:
         del st.session_state[chat_visited_key]
     if preferences_visited_key in st.session_state:
