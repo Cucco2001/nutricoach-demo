@@ -8,3 +8,4 @@ requirements.txt
 aws
 secrets.toml
 user_data
+node_modules
