@@ -15,9 +15,10 @@ export interface SendMessageResponse {
   message_id?: string;
 }
 
-export interface ChatHistoryResponse {
-  messages: ChatMessage[];
-  total_messages: number;
+export interface ChatHistoryItem {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: number;
 }
 
 export const chatService = {
@@ -35,10 +36,16 @@ export const chatService = {
   },
 
   // Recupera la cronologia della chat
-  getChatHistory: async (): Promise<ChatHistoryResponse> => {
+  getChatHistory: async (): Promise<{ messages: ChatMessage[] }> => {
     try {
-      const response = await apiClient.get<ChatHistoryResponse>('/chat/history');
-      return response.data;
+      const response = await apiClient.get<ChatHistoryItem[]>('/chat/history');
+      // Converto la struttura del backend al formato del frontend
+      const messages: ChatMessage[] = response.data.map(item => ({
+        role: item.role,
+        content: item.content,
+        timestamp: new Date(item.timestamp * 1000) // Converto timestamp Unix a Date
+      }));
+      return { messages };
     } catch (error) {
       console.error('Error fetching chat history:', error);
       throw error;
