@@ -7,7 +7,7 @@
   color-scheme: light;
   color: #333;
   background-color: #ffffff;
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -83,7 +83,7 @@ input {
 input:focus {
   outline: none;
   border-color: #646cff;
-}
+  }
 
 /* Utility classes */
 .text-center {

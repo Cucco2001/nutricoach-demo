@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { authService } from '../services/authService';
 
 interface User {
@@ -59,7 +59,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (username: string, password: string) => {
     try {
       const response = await authService.login(username, password);
-      setUser(response.user);
+      // Creo l'oggetto user dalla risposta del backend
+      const user = {
+        id: response.user_id,
+        username: response.username,
+        email: '' // Sarà popolato in seguito se necessario
+      };
+      setUser(user);
       localStorage.setItem('token', response.access_token);
       authService.setAuthToken(response.access_token);
     } catch (error) {

@@ -46,7 +46,8 @@ export interface User {
 export interface LoginResponse {
   access_token: string;
   token_type: string;
-  user: User;
+  user_id: string;
+  username: string;
 }
 
 export const authService = {
@@ -88,8 +89,13 @@ export const authService = {
   // Ottieni informazioni utente corrente
   getCurrentUser: async (): Promise<User> => {
     try {
-      const response = await apiClient.get<User>('/auth/me');
-      return response.data;
+      const response = await apiClient.get<{user_id: string, username: string, email: string}>('/auth/me');
+      // Converto la risposta del backend nel formato User del frontend
+      return {
+        id: response.data.user_id,
+        username: response.data.username,
+        email: response.data.email
+      };
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         throw new Error(error.response.data.detail || 'Failed to get user info');

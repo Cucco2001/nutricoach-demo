@@ -1,311 +1,206 @@
-"""
-Backend FastAPI per NutrAICoach - Migrazione da Streamlit
-"""
-
-import os
-import json
-import asyncio
-from datetime import datetime
-from typing import Dict, List, Optional, Any
-from dotenv import load_dotenv
-
 from fastapi import FastAPI, HTTPException, Depends, status
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List, Optional, Dict, Any
+import os
+import sys
+import jwt
+from datetime import datetime, timedelta
+import hashlib
+from pathlib import Path
 
-# Carica le variabili d'ambiente
-load_dotenv()
+# Aggiungo il path del progetto principale per importare UserDataManager
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
-# Inizializza FastAPI
-app = FastAPI(
-    title="NutrAICoach API",
-    description="API per l'assistente nutrizionale NutrAICoach",
-    version="1.0.0"
-)
+from agent_tools.user_data_manager import UserDataManager, ChatMessage
+from config import get_settings
 
-# Configurazione CORS per permettere richieste dal frontend React
+app = FastAPI(title="NutrAICoach API", version="1.0.0")
+settings = get_settings()
+
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # Porte comuni per React dev
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Security per autenticazione
+# Security
 security = HTTPBearer()
 
-# === MODELLI PYDANTIC ===
+# Inizializzo UserDataManager usando la directory user_data del progetto principale
+user_data_manager = UserDataManager(data_dir=os.path.join(os.path.dirname(__file__), '..', '..', 'user_data'))
 
-class UserLogin(BaseModel):
+# Pydantic models
+class LoginRequest(BaseModel):
     username: str
     password: str
 
-class UserRegister(BaseModel):
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user_id: str
     username: str
-    password: str
-    email: Optional[str] = None
-
-class ChatMessage(BaseModel):
-    role: str = Field(..., description="Role del messaggio (user/assistant)")
-    content: str = Field(..., description="Contenuto del messaggio")
-    timestamp: Optional[datetime] = None
-
-class SendMessageRequest(BaseModel):
-    message: str = Field(..., description="Messaggio da inviare all'assistente")
-
-class SendMessageResponse(BaseModel):
-    response: str = Field(..., description="Risposta dell'assistente")
-    message_id: Optional[str] = None
-
-class ChatHistoryResponse(BaseModel):
-    messages: List[ChatMessage] = Field(..., description="Lista dei messaggi della chat")
-    total_messages: int = Field(..., description="Numero totale di messaggi")
 
 class UserInfo(BaseModel):
-    id: str
+    user_id: str
     username: str
-    email: Optional[str] = None
-    età: Optional[int] = None
-    sesso: Optional[str] = None
-    peso: Optional[float] = None
-    altezza: Optional[float] = None
-    attività: Optional[str] = None
-    obiettivo: Optional[str] = None
-    preferences: Optional[Dict[str, Any]] = None
+    email: str
 
-# === GESTIONE AUTENTICAZIONE ===
+class ChatRequest(BaseModel):
+    message: str
 
-# Questo è un sistema di autenticazione semplificato per il demo
-# In produzione, usare un sistema più sicuro con JWT, hash delle password, ecc.
+class ChatResponse(BaseModel):
+    response: str
+    timestamp: float
 
-DEMO_USERS = {
-    "admin": {"password": "admin123", "id": "user_1", "email": "admin@nutricoach.com"},
-    "demo": {"password": "demo123", "id": "user_2", "email": "demo@nutricoach.com"}
-}
+class ChatHistoryItem(BaseModel):
+    role: str
+    content: str
+    timestamp: float
 
-ACTIVE_SESSIONS = {}  # In produzione, usare Redis o database
+# Token functions
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return encoded_jwt
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """
-    Verifica il token di autenticazione e restituisce l'utente corrente
-    """
-    token = credentials.credentials
-    
-    if token not in ACTIVE_SESSIONS:
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return user_id
+    except jwt.InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token non valido o sessione scaduta"
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
-    
-    return ACTIVE_SESSIONS[token]
 
-# === MOCK DATA E SERVIZI ===
-
-# Mock per i dati utente (in produzione, usare database)
-MOCK_USER_DATA = {}
-MOCK_CHAT_HISTORY = {}
-MOCK_THREADS = {}
-
-def get_user_data(user_id: str) -> Optional[Dict[str, Any]]:
-    """Recupera i dati utente dal mock storage"""
-    return MOCK_USER_DATA.get(user_id)
-
-def save_user_data(user_id: str, data: Dict[str, Any]):
-    """Salva i dati utente nel mock storage"""
-    MOCK_USER_DATA[user_id] = data
-
-def get_chat_history(user_id: str) -> List[Dict[str, Any]]:
-    """Recupera la cronologia chat dal mock storage"""
-    return MOCK_CHAT_HISTORY.get(user_id, [])
-
-def save_chat_message(user_id: str, role: str, content: str):
-    """Salva un messaggio nella cronologia chat"""
-    if user_id not in MOCK_CHAT_HISTORY:
-        MOCK_CHAT_HISTORY[user_id] = []
-    
-    MOCK_CHAT_HISTORY[user_id].append({
-        "role": role,
-        "content": content,
-        "timestamp": datetime.now().isoformat()
-    })
-
-# === ENDPOINTS API ===
-
-@app.get("/")
-async def root():
-    return {"message": "NutrAICoach API - Benvenuto!"}
-
+# API Routes
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "timestamp": datetime.now()}
+    return {"status": "healthy"}
 
-# === AUTENTICAZIONE ===
-
-@app.post("/auth/login")
-async def login(user_login: UserLogin):
-    """
-    Endpoint per il login utente
-    """
-    username = user_login.username
-    password = user_login.password
+@app.post("/auth/login", response_model=LoginResponse)
+async def login(login_request: LoginRequest):
+    # Usa UserDataManager per autenticare
+    success, result = user_data_manager.login_user(login_request.username.lower(), login_request.password)
     
-    # Verifica credenziali (sistema semplificato per demo)
-    if username in DEMO_USERS and DEMO_USERS[username]["password"] == password:
-        # Crea un token semplice (in produzione, usare JWT)
-        token = f"token_{username}_{datetime.now().timestamp()}"
-        user_info = {
-            "id": DEMO_USERS[username]["id"],
-            "username": username,
-            "email": DEMO_USERS[username]["email"]
-        }
-        
-        ACTIVE_SESSIONS[token] = user_info
-        
-        return {
-            "access_token": token,
-            "token_type": "bearer",
-            "user": user_info
-        }
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=result,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Credenziali non valide"
+    user_id = result
+    user = user_data_manager.get_user_by_id(user_id)
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user_id}, expires_delta=access_token_expires
+    )
+    
+    return LoginResponse(
+        access_token=access_token,
+        token_type="bearer",
+        user_id=user_id,
+        username=user.username
     )
 
 @app.post("/auth/logout")
-async def logout(current_user: dict = Depends(get_current_user)):
-    """
-    Endpoint per il logout utente
-    """
-    # Rimuovi la sessione attiva
-    tokens_to_remove = []
-    for token, user_info in ACTIVE_SESSIONS.items():
-        if user_info["id"] == current_user["id"]:
-            tokens_to_remove.append(token)
-    
-    for token in tokens_to_remove:
-        del ACTIVE_SESSIONS[token]
-    
-    return {"message": "Logout effettuato con successo"}
+async def logout(current_user: str = Depends(verify_token)):
+    # Per ora non facciamo nulla, il token scade automaticamente
+    return {"message": "Successfully logged out"}
 
-@app.get("/auth/me")
-async def get_current_user_info(current_user: dict = Depends(get_current_user)):
-    """
-    Endpoint per ottenere le informazioni dell'utente corrente
-    """
-    user_id = current_user["id"]
-    user_data = get_user_data(user_id)
-    
-    if user_data:
-        return UserInfo(**user_data)
+@app.get("/auth/me", response_model=UserInfo)
+async def get_current_user(current_user: str = Depends(verify_token)):
+    user = user_data_manager.get_user_by_id(current_user)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
     
     return UserInfo(
-        id=user_id,
-        username=current_user["username"],
-        email=current_user.get("email")
+        user_id=user.user_id,
+        username=user.username,
+        email=user.email
     )
 
-# === CHAT API ===
-
-@app.post("/chat/send", response_model=SendMessageResponse)
-async def send_message(
-    request: SendMessageRequest,
-    current_user: dict = Depends(get_current_user)
+@app.post("/chat/send", response_model=ChatResponse)
+async def send_chat_message(
+    chat_request: ChatRequest,
+    current_user: str = Depends(verify_token)
 ):
-    """
-    Endpoint per inviare un messaggio all'assistente
-    """
-    user_id = current_user["id"]
-    user_message = request.message
-    
     # Salva il messaggio dell'utente
-    save_chat_message(user_id, "user", user_message)
+    user_data_manager.save_chat_message(current_user, "user", chat_request.message)
     
-    # Simula risposta dell'assistente (da implementare con OpenAI)
-    # Per ora, risposta mock
-    assistant_response = f"Grazie per il messaggio: '{user_message}'. Sono il tuo assistente nutrizionale! Come posso aiutarti oggi?"
+    # Simula una risposta dell'assistente (per ora)
+    # TODO: Integrare con OpenAI e il sistema di agent
+    assistant_response = f"Hai scritto: {chat_request.message}. Questa è una risposta di test del sistema React integrato con i dati Streamlit!"
     
     # Salva la risposta dell'assistente
-    save_chat_message(user_id, "assistant", assistant_response)
+    user_data_manager.save_chat_message(current_user, "assistant", assistant_response)
     
-    return SendMessageResponse(
+    return ChatResponse(
         response=assistant_response,
-        message_id=f"msg_{datetime.now().timestamp()}"
+        timestamp=datetime.now().timestamp()
     )
 
-@app.get("/chat/history", response_model=ChatHistoryResponse)
-async def get_chat_history_endpoint(
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Endpoint per recuperare la cronologia della chat
-    """
-    user_id = current_user["id"]
-    messages = get_chat_history(user_id)
-    
-    chat_messages = [
-        ChatMessage(
-            role=msg["role"],
-            content=msg["content"],
-            timestamp=datetime.fromisoformat(msg["timestamp"])
-        ) for msg in messages
+@app.get("/chat/history", response_model=List[ChatHistoryItem])
+async def get_chat_history(current_user: str = Depends(verify_token)):
+    chat_history = user_data_manager.get_chat_history(current_user)
+    return [
+        ChatHistoryItem(
+            role=msg.role,
+            content=msg.content,
+            timestamp=msg.timestamp
+        )
+        for msg in chat_history
     ]
-    
-    return ChatHistoryResponse(
-        messages=chat_messages,
-        total_messages=len(chat_messages)
-    )
 
 @app.delete("/chat/clear")
-async def clear_chat_history(
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Endpoint per cancellare la cronologia della chat
-    """
-    user_id = current_user["id"]
-    MOCK_CHAT_HISTORY[user_id] = []
-    
-    return {"message": "Cronologia chat cancellata"}
-
-# === THREAD MANAGEMENT ===
+async def clear_chat_history(current_user: str = Depends(verify_token)):
+    user_data_manager.clear_chat_history(current_user)
+    return {"message": "Chat history cleared"}
 
 @app.post("/chat/thread/create")
-async def create_new_thread(
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Endpoint per creare un nuovo thread di conversazione
-    """
-    user_id = current_user["id"]
-    thread_id = f"thread_{user_id}_{datetime.now().timestamp()}"
-    
-    # Salva il thread (mock)
-    MOCK_THREADS[user_id] = thread_id
-    
-    return {"thread_id": thread_id}
+async def create_new_thread(current_user: str = Depends(verify_token)):
+    # Per ora equivale a pulire la chat history
+    user_data_manager.clear_chat_history(current_user)
+    return {"message": "New thread created"}
 
 @app.get("/chat/thread/current")
-async def get_current_thread(
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Endpoint per ottenere il thread corrente
-    """
-    user_id = current_user["id"]
-    thread_id = MOCK_THREADS.get(user_id)
-    
-    if not thread_id:
-        # Crea un nuovo thread se non esiste
-        thread_id = f"thread_{user_id}_{datetime.now().timestamp()}"
-        MOCK_THREADS[user_id] = thread_id
-    
-    return {"thread_id": thread_id}
-
-# === MAIN ===
+async def get_current_thread(current_user: str = Depends(verify_token)):
+    # Per ora ritorniamo solo se c'è una history
+    chat_history = user_data_manager.get_chat_history(current_user)
+    return {
+        "thread_id": f"thread_{current_user}",
+        "message_count": len(chat_history)
+    }
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True) 
+    uvicorn.run(app, host="0.0.0.0", port=8000) 
