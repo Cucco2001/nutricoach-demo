@@ -8,14 +8,6 @@ poste agli utenti durante la fase di registrazione iniziale nel sistema NutrAICo
 # Definizione delle domande nutrizionali iniziali
 NUTRITION_QUESTIONS = [
     {
-        "id": "allergies",
-        "question": "Hai qualche intolleranza o allergia alimentare? (Devi specificare anche nelle preferenze alimentari i cibi da escludere in caso)",
-        "type": "radio",
-        "options": ["No", "Sì"],
-        "follow_up": "Specifica quali:",
-        "show_follow_up_on": "Sì"
-    },
-    {
         "id": "weight_goal",
         "question": lambda user_info: f"Quanti kg vuoi {'perdere' if user_info['obiettivo'] == 'Perdita di peso' else 'aumentare'} e in quanto tempo (in mesi)?",
         "type": "number_input",
