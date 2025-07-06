@@ -675,10 +675,9 @@ class PianoNutrizionale:
         }
         day_name = day_names.get(day_num, f"Giorno {day_num}")
         
-        # Header del giorno
+        # Header del giorno - stesso colore verde per tutti i giorni
         st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); 
-                    padding: 20px; border-radius: 15px; margin: 20px 0; color: white; text-align: center;">
+        <div class="home-welcome-gradient">
             <h2>📅 {day_name} (Giorno {day_num})</h2>
             <p><em>{'Piano base creato' if is_weekly_diet_day_1 else 'Piano settimanale generato'}</em></p>
         </div>
@@ -736,10 +735,10 @@ class PianoNutrizionale:
         
         display_name = meal_display_names.get(meal_name, f'🍽️ {meal_name.title()}')
         
-        # Header del pasto con stile colorato (senza expander per evitare nesting)
+        # Header del pasto con stile compatto uniforme
         st.markdown(f'''
         <div class="home-meal-card">
-            <h3>{display_name}</h3>
+            <h4>{display_name}</h4>
         </div>
         ''', unsafe_allow_html=True)
         
@@ -748,13 +747,21 @@ class PianoNutrizionale:
             alimenti = meal_data["alimenti"]
             # Gestisce sia formato lista che formato dizionario
             if isinstance(alimenti, list):
-                # Formato lista: [{"nome_alimento": "...", "quantita_g": ..., "misura_casalinga": "..."}]
+                # Formato lista: [{"nome_alimento": "...", "quantita_g": ..., "misura_casalinga": "...", "sostituti": "..."}]
                 for alimento in alimenti:
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
                     misura = alimento.get('misura_casalinga', '')
+                    sostituti = alimento.get('sostituti', '')
                     
-                    st.markdown(f"- **{nome}**: {quantita}g ({misura})" if misura else f"- **{nome}**: {quantita}g")
+                    # Visualizzazione compatta con sostituti
+                    base_text = f"- **{nome}**: {quantita}g"
+                    if misura and misura != 'N/A':
+                        base_text += f" ({misura})"
+                    if sostituti and sostituti != 'N/A' and sostituti.strip():
+                        base_text += f" ➜ *{sostituti}*"
+                    
+                    st.markdown(base_text)
 
             elif isinstance(alimenti, dict):
                 # Formato dizionario: {"nome_alimento": quantita_g}
@@ -764,8 +771,8 @@ class PianoNutrizionale:
                     else:
                         st.markdown(f"- **{nome_alimento}**: Quantità da definire")
         
-        # Separatore
-        st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
+        # Spazio uniforme tra i pasti
+        st.markdown("")
     
     def _sort_meals_by_time(self, meals_data):
         """
@@ -860,19 +867,31 @@ class PianoNutrizionale:
         """
         nome_pasto = meal.get('nome_pasto', 'Pasto').title()
         
-        # Header del pasto
+        # Mappa emoji per pasti (uniforme con i giorni 2-7)
+        meal_display_names = {
+            'colazione': '🌅 Colazione',
+            'spuntino_mattutino': '🥤 Spuntino Mattutino', 
+            'pranzo': '🍽️ Pranzo',
+            'spuntino_pomeridiano': '🥨 Spuntino Pomeridiano',
+            'cena': '🌙 Cena',
+            'spuntino_serale': '🌃 Spuntino Serale'
+        }
+        
+        canonical_name = nome_pasto.lower().replace(' ', '_')
+        display_name = meal_display_names.get(canonical_name, f'🍽️ {nome_pasto}')
+        
+        # Header del pasto - stile compatto uniforme
         st.markdown(f'''
         <div class="home-meal-card">
-            <h3>🍽️ {nome_pasto}</h3>
+            <h4>{display_name}</h4>
         </div>
         ''', unsafe_allow_html=True)
         
-        # Lista ingredienti
+        # Lista ingredienti uniformi
         self._display_meal_ingredients(meal)
         
-        # Separatore tra i pasti
-        if index < total_meals - 1:
-            st.markdown('<hr style="margin: 20px 0; border: 1px solid #ddd;">', unsafe_allow_html=True)
+        # Spazio uniforme tra i pasti
+        st.markdown("")
     
     def _display_meal_ingredients(self, meal):
         """
@@ -890,15 +909,20 @@ class PianoNutrizionale:
             stato = alimento.get('stato', 'N/A')
             misura = alimento.get('misura_casalinga', 'N/A')
             metodo = alimento.get('metodo_cottura', '')
+            sostituti = alimento.get('sostituti', '')
             
-            st.markdown(f'''
-            <div class="ingredient-card">
-                <strong>{nome}</strong><br>
-                📏 {quantita}g ({stato})<br>
-                🥄 {misura}
-                {f'<br>🔥 {metodo}' if metodo else ''}
-            </div>
-            ''', unsafe_allow_html=True)
+            # Visualizzazione compatta degli ingredienti con sostituti (uniforme ai giorni 2-7)
+            base_text = f"• **{nome}**: {quantita}g"
+            if stato and stato != 'N/A':
+                base_text += f" ({stato})"
+            if misura and misura != 'N/A':
+                base_text += f" - {misura}"
+            if metodo:
+                base_text += f" 🔥 {metodo}"
+            if sostituti and sostituti != 'N/A' and sostituti.strip():
+                base_text += f" ➜ *{sostituti}*"
+            
+            st.markdown(base_text)
     
     def _display_meal_nutritional_totals(self, meal):
         """
