@@ -200,13 +200,16 @@ class Home:
                     quantita = alimento.get('quantita_g', 'N/A')
                     stato = alimento.get('stato', '')
                     misura = alimento.get('misura_casalinga', '')
+                    sostituti = alimento.get('sostituti', '')
                     
-                    # Costruisci la descrizione dell'ingrediente
+                    # Costruisci la descrizione dell'ingrediente con sostituti
                     ingrediente_desc = f"**{nome}** - {quantita}g"
-                    if stato:
+                    if stato and stato != 'N/A':
                         ingrediente_desc += f" ({stato})"
-                    if misura:
+                    if misura and misura != 'N/A':
                         ingrediente_desc += f" - {misura}"
+                    if sostituti and sostituti != 'N/A' and sostituti.strip():
+                        ingrediente_desc += f" ➜ *{sostituti}*"
                     
                     st.markdown(f"• {ingrediente_desc}")
             
@@ -250,11 +253,14 @@ class Home:
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
                     misura = alimento.get('misura_casalinga', '')
+                    sostituti = alimento.get('sostituti', '')
                     
-                    # Costruisci la descrizione dell'ingrediente
+                    # Costruisci la descrizione dell'ingrediente con sostituti
                     ingrediente_desc = f"**{nome}** - {quantita}g"
-                    if misura:
+                    if misura and misura != 'N/A':
                         ingrediente_desc += f" - {misura}"
+                    if sostituti and sostituti != 'N/A' and sostituti.strip():
+                        ingrediente_desc += f" ➜ *{sostituti}*"
                     
                     st.markdown(f"• {ingrediente_desc}")
             
