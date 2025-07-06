@@ -1,5 +1,9 @@
 import streamlit as st
 
+# Disabilita i log molesti di Streamlit
+import logging
+logging.getLogger("streamlit.runtime.scriptrunner.script_run_context").setLevel(logging.ERROR)
+
 # Configurazione della pagina Streamlit - DEVE essere la prima chiamata Streamlit
 st.set_page_config(
     page_title="NutrAICoach - Il tuo assistente nutrizionale personale",

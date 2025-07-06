@@ -433,16 +433,22 @@ def get_supabase_service() -> SupabaseUserService:
     try:
         # Verifica se siamo in un contesto Streamlit valido
         if hasattr(st, 'session_state') and st.session_state is not None:
-            if "supabase_service" not in st.session_state:
-                st.session_state.supabase_service = SupabaseUserService()
-            return st.session_state.supabase_service
+            # Controllo più robusto per evitare errori di attributo
+            try:
+                if not hasattr(st.session_state, 'supabase_service') or st.session_state.supabase_service is None:
+                    st.session_state.supabase_service = SupabaseUserService()
+                return st.session_state.supabase_service
+            except (AttributeError, RuntimeError) as e:
+                # Se il session_state non è completamente inizializzato, usa fallback silenzioso
+                logger.debug(f"💾 Session_state non pronto, usando istanza temporanea: {str(e)}")
+                return SupabaseUserService()
         else:
             # Fallback: crea una nuova istanza senza caching
-            logger.warning("⚠️ session_state non disponibile, creando istanza temporanea SupabaseService")
+            logger.debug("💾 Session_state non disponibile, usando istanza temporanea")
             return SupabaseUserService()
     except Exception as e:
         # Fallback di sicurezza: crea sempre una nuova istanza
-        logger.warning(f"⚠️ Errore nell'accesso a session_state: {str(e)}, creando istanza temporanea")
+        logger.debug(f"💾 Errore generico session_state, usando istanza temporanea: {str(e)}")
         return SupabaseUserService()
 
 

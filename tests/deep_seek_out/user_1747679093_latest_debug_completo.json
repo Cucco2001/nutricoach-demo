@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-07-06T11:11:12.786386",
+  "timestamp": "2025-07-06T11:25:16.473390",
   "user_id": "user_1747679093",
   "debug_type": "conversazione_completa_con_estrazione",
   "interazioni": {
@@ -11,15 +11,65 @@
       "altezza": 170,
       "attività": "Sedentario",
       "obiettivo": "Mantenimento",
-      "nutrition_answers": {},
-      "agent_qa": []
+      "nutrition_answers": {
+        "sports": {
+          "answer": "Sì",
+          "follow_up": [
+            {
+              "sport_type": "Fitness - Allenamento medio (principianti e livello intermedio)",
+              "specific_sport": {
+                "name": "Fitness - allenamento medio",
+                "key": "Fitness - Allenamento medio",
+                "kcal_per_hour": 250,
+                "description": "Allenamento leggero in palestra"
+              },
+              "intensity": "easy",
+              "hours_per_week": 3
+            }
+          ]
+        },
+        "meal_preferences": {
+          "answer": "Personalizza",
+          "follow_up": {
+            "num_meals": 4,
+            "meal_times": {
+              "Colazione": "07:30",
+              "Pranzo": "13:00",
+              "Spuntino pomeridiano": "16:30",
+              "Cena": "20:00"
+            }
+          }
+        }
+      },
+      "agent_qa": [
+        {
+          "question": "continua",
+          "answer": "✓ FASE 2 – CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Cosa sto facendo?\nSto calcolando quante calorie ti servono al giorno per mantenere il tuo peso attuale, sommando tre fattori:\n- Metabolismo basale (quante calorie consumi a riposo)\n- Attività quotidiana (vita sedentaria)\n- Sport praticato (fitness leggero 3 volte a settimana)\n\nEcco come ho calcolato:\n\n1. Metabolismo basale (BMR):\n- Calcolo secondo la formula Harris-Benedict valida e consolidata\n- BMR = 1672 kcal\n\n2. Fabbisogno base (BMR * LAF per vita sedentaria):\n- LAF (Livello Attività Fisica) utilizzato: 1.3\n- Fabbisogno base = 1672 * 1.3 = 2173 kcal\n\n3. Dispendio sportivo:\n- 3 ore/sett di fitness leggero (86 kcal/giorno, calcolato su base settimanale)\n\n4. Fabbisogno calorico totale:\n- Fabbisogno totale = 2173 (fabbisogno base) + 86 (sport) = 2259 kcal/giorno\n\nNon ho applicato surplus o deficit perché il tuo obiettivo è il mantenimento.\n\n📚 Fonti utilizzate:\n- Formula di Harris e Benedict (per BMR)\n- LARN/SINU per LAF e raccomandazioni nutrizionali italiane\n- Compendium of Physical Activities (Ainsworth et al.) per calcolo calorie da sport\n\n➡️ Conclusione:\nIl tuo fabbisogno energetico giornaliero per mantenere il peso è di circa 2260 kcal.\nOra passerò a calcolare come suddividere questa energia tra proteine, grassi e carboidrati (FASE 3).\n\n❓Hai domande sui calcoli o vuoi vedere il dettaglio di un passaggio? Procedo con la ripartizione dei macronutrienti?",
+          "timestamp": 1751793340.1068785
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 3 – CALCOLO MACRONUTRIENTI\n\n⚡ Cosa sto facendo?\nOra suddivido le tue calorie giornaliere (2260 kcal) tra proteine, grassi e carboidrati. Questo passaggio è essenziale per assicurarti energia ottimale, sostegno muscolare e una dieta bilanciata.\n\nProcedo così:\n- Proteine: Il tuo livello di attività suggerisce 1g per kg di peso corporeo (fonte: Project Invictus e principali linee guida internazionali)\n- Grassi: Uso il range raccomandato dai LARN: 20-35% delle calorie totali\n- Carboidrati: Tutte le calorie restanti, garantendo almeno 2g/kg al giorno per un buon apporto energetico\n\nEcco i valori finali:\n\nKcal totali: 2260 kcal\n\n- Proteine:  \n  1 * 70 = 70g  \n  Calorie = 70 * 4 = 280 kcal  \n  Percentuale = (280 / 2260) * 100 = 12%\n\n- Grassi:  \n  Scelgo un valore intermedio: 30% delle kcal  \n  Calorie = 2260 * 0.30 = 678 kcal  \n  Grassi = 678 / 9 = 75g  \n  Percentuale = 30%\n\n- Carboidrati:\n  Calorie rimanenti = 2260 – (280 + 678) = 1302 kcal  \n  Carboidrati = 1302 / 4 = 325g  \n  Percentuale = 58%\n\nRiepilogo per la giornata:\n- Proteine: 70g (280 kcal, 12%)\n- Grassi: 75g (678 kcal, 30%)\n- Carboidrati: 325g (1302 kcal, 58%)\n\n📚 Fonti utilizzate:\n- Project Invictus, Phillips et al. (2011), Thomas et al. (2016) per le proteine in relazione all’attività\n- SINU/LARN per range percentuali grassi e carboidrati\n- CREA: valori energia macronutrienti\n\n➡️ Conclusione:\nHai un piano preciso e bilanciato sulle tue necessità! Passerò a distribuire queste calorie e macronutrienti tra i tuoi 4 pasti quotidiani (FASE 4).\n\n❓Hai domande sui macronutrienti o sui calcoli? Vuoi che proceda con la distribuzione tra i pasti?",
+          "timestamp": 1751793554.9684558
+        },
+        {
+          "question": "procedi",
+          "answer": "✓ FASE 4 – DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\n⚡ Cosa sto facendo?\nDivido le calorie e i macronutrienti (proteine, carboidrati, grassi) tra i tuoi 4 pasti quotidiani, secondo le tue preferenze di orario:\n- Colazione: 07:30\n- Pranzo: 13:00\n- Spuntino pomeridiano: 16:30\n- Cena: 20:00\n\nUso una distribuzione standard per 4 pasti:\n- Colazione: 25%\n- Pranzo: 35%\n- Spuntino pomeridiano: 10%\n- Cena: 30%\n\nEcco come vengono ripartiti:\n\nCALCOLO DELLE QUOTE:\n\nColazione (25%):\n- Kcal: 2260 * 0.25 = 565 kcal\n- Proteine: 70 * 0.25 = 18g\n- Carboidrati: 325 * 0.25 = 81g\n- Grassi: 75 * 0.25 = 19g\n\nPranzo (35%):\n- Kcal: 2260 * 0.35 = 791 kcal\n- Proteine: 70 * 0.35 = 25g\n- Carboidrati: 325 * 0.35 = 114g\n- Grassi: 75 * 0.35 = 26g\n\nSpuntino pomeridiano (10%):\n- Kcal: 2260 * 0.10 = 226 kcal\n- Proteine: 70 * 0.10 = 7g\n- Carboidrati: 325 * 0.10 = 33g\n- Grassi: 75 * 0.10 = 8g\n\nCena (30%):\n- Kcal: 2260 * 0.30 = 678 kcal\n- Proteine: 70 * 0.30 = 21g\n- Carboidrati: 325 * 0.30 = 98g\n- Grassi: 75 * 0.30 = 23g\n\n📊 Riepilogo per pasto:\n- COLAZIONE (07:30): 565 kcal\n  - Proteine: 18g\n  - Carboidrati: 81g\n  - Grassi: 19g\n\n- PRANZO (13:00): 791 kcal\n  - Proteine: 25g\n  - Carboidrati: 114g\n  - Grassi: 26g\n\n- SPUNTINO POMERIDIANO (16:30): 226 kcal\n  - Proteine: 7g\n  - Carboidrati: 33g\n  - Grassi: 8g\n\n- CENA (20:00): 678 kcal\n  - Proteine: 21g\n  - Carboidrati: 98g\n  - Grassi: 23g\n\n📚 Fonti utilizzate:\n- SINU/LARN: raccomandazioni su suddivisione pasti e macronutrienti\n\n➡️ Conclusione:\nOra ogni pasto ha delle linee guida nutrizionali precise e calibrate, senza ancora elencare cibi specifici. Passerò alla creazione dei singoli pasti, uno per volta, con alimenti e porzioni consigliate.\n\n❓Vuoi vedere subito la composizione di un pasto specifico (colazione, pranzo, spuntino o cena) oppure procedo in ordine partendo dalla colazione? Hai domande su questa distribuzione?",
+          "timestamp": 1751793741.240091
+        },
+        {
+          "question": "procedi",
+          "answer": "🌅 COLAZIONE\n\n• Fiocchi di avena: 40g → 🥄 6 cucchiai pieni \n    P: 3g, C: 27g, G: 3g \n    (Sostituti: 40g di muesli, 40g di fette biscottate)\n\n• Latte parzialmente scremato: 200g → 🥛 1 bicchiere abbondante  \n    P: 7g, C: 10g, G: 3g \n    (Sostituti: 220g di yogurt magro, 260g di latte scremato)\n\n• Banana: 230g → 🍌 2 banane piccole  \n    P: 3g, C: 40g, G: 1g \n    (Sostituti: 360g di mirtilli, 200g di uva)\n\n• Mandorle: 20g → 🥜 1 cucchiaio abbondante  \n    P: 4g, C: 1g, G: 11g \n    (Sostituti: 20g di nocciole, 20g di arachidi)\n\nTotale pasto: P: 17g, C: 78g, G: 18g (539 kcal)\n\nIdea di ricetta: Prepara una ciotola con fiocchi di avena, versa il latte freddo o leggermente tiepido sopra. Affetta la banana e aggiungila, poi completa con una manciata di mandorle intere o spezzettate. Puoi aggiungere un pizzico di cannella per più sapore.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA per i valori nutrizionali degli alimenti\n- Parametri target dei macronutrienti dalla fase precedente\n- Sistema sostituti e grammature ottimizzate da banca dati ufficiali\n\n➡️ Conclusione:\nLa tua colazione ti dà la giusta energia con un profilo nutrizionale bilanciato. Latte, avena e banana apportano carboidrati e proteine; le mandorle completano con grassi buoni. Puoi scegliere tra diversi sostituti proposti se vuoi alternare.\n\n❓Vuoi che passi subito al pranzo oppure hai domande o richieste di cambi sulla colazione?",
+          "timestamp": 1751793887.6048725
+        }
+      ]
     },
     "lista_interazioni": [
       {
         "numero_interazione": 1,
-        "domanda_utente": "continua",
-        "risposta_agente": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Cosa sto facendo?\nAdesso suddivido le calorie giornaliere (2170 kcal) tra i tre macronutrienti principali:\n- Proteine (importanti per i muscoli e il mantenimento dei tessuti)\n- Grassi (essenziali per ormoni, cervello, cellule)\n- Carboidrati (forniscono energia rapida, fondamentali per il cervello e l’attività quotidiana)\n\nEcco come suddivido i macronutrienti per una persona sedentaria che deve mantenere il peso:\n\n1. Proteine:\n  - Per stile di vita sedentario, il fabbisogno consigliato è di circa 0.66 g per kg di peso corporeo (riferimento OMS/FAO/WHO)\n  - Calcolo: 0.66 * 70 = 46 g di proteine al giorno\n  - Apporto calorico: 46 g * 4 = 184 kcal\n  - Percentuale: 184 / 2170 * 100 = circa 8%\n\n2. Grassi:\n  - I LARN (Società Italiana di Nutrizione Umana) raccomandano il 20-35% delle calorie totali\n  - Scelgo il valore intermedio (30%): 2170 * 0.30 = 651 kcal, cioè 651 / 9 = 72 g al giorno\n\n3. Carboidrati:\n  - Calorie rimanenti: 2170 - (184 + 651) = 1335 kcal\n  - Grammi di carboidrati: 1335 / 4 = 334 g al giorno\n\n📊 Riepilogo finale macronutrienti:\n- Kcal totali: 2170\n- Proteine: 46 g (184 kcal, 8%)\n- Grassi: 72 g (651 kcal, 30%)\n- Carboidrati: 334 g (1335 kcal, 62%)\n\n📚 Fonti utilizzate:\n- Calcolo proteine: OMS/FAO/WHO, Phillips et al. (2011), Thomas et al. (2016), Project Invictus\n- Calcolo grassi: LARN (SINU)\n- Calcolo carboidrati: percentuale residua raccomandata LARN, SINU\n\n➡️ Conclusione:\nEcco come saranno suddivise le tue calorie tra proteine, grassi e carboidrati. Questo schema garantisce il giusto equilibrio nutrizionale per il mantenimento e supporta salute ed energia.\n\nHai domande su questi calcoli?\nVuoi che proceda con la FASE 4, in cui ti mostro come distribuiremo queste calorie e nutrienti tra i tuoi 4 pasti della giornata?",
-        "timestamp": 1751793054.6875844
+        "domanda_utente": "procedi",
+        "risposta_agente": "🌅 COLAZIONE\n\n• Fiocchi di avena: 40g → 🥄 6 cucchiai pieni \n    P: 3g, C: 27g, G: 3g \n    (Sostituti: 40g di muesli, 40g di fette biscottate)\n\n• Latte parzialmente scremato: 200g → 🥛 1 bicchiere abbondante  \n    P: 7g, C: 10g, G: 3g \n    (Sostituti: 220g di yogurt magro, 260g di latte scremato)\n\n• Banana: 230g → 🍌 2 banane piccole  \n    P: 3g, C: 40g, G: 1g \n    (Sostituti: 360g di mirtilli, 200g di uva)\n\n• Mandorle: 20g → 🥜 1 cucchiaio abbondante  \n    P: 4g, C: 1g, G: 11g \n    (Sostituti: 20g di nocciole, 20g di arachidi)\n\nTotale pasto: P: 17g, C: 78g, G: 18g (539 kcal)\n\nIdea di ricetta: Prepara una ciotola con fiocchi di avena, versa il latte freddo o leggermente tiepido sopra. Affetta la banana e aggiungila, poi completa con una manciata di mandorle intere o spezzettate. Puoi aggiungere un pizzico di cannella per più sapore.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA per i valori nutrizionali degli alimenti\n- Parametri target dei macronutrienti dalla fase precedente\n- Sistema sostituti e grammature ottimizzate da banca dati ufficiali\n\n➡️ Conclusione:\nLa tua colazione ti dà la giusta energia con un profilo nutrizionale bilanciato. Latte, avena e banana apportano carboidrati e proteine; le mandorle completano con grassi buoni. Puoi scegliere tra diversi sostituti proposti se vuoi alternare.\n\n❓Vuoi che passi subito al pranzo oppure hai domande o richieste di cambi sulla colazione?",
+        "timestamp": 1751793887.6048725
       }
     ]
   },
@@ -27,61 +77,196 @@
     "raw_response_formatted": {
       "status": "disponibile",
       "json_valido": true,
-      "contenuto_originale": "\n{\n    \"macros_total\": {\n        \"kcal_finali\": 2170,\n        \"proteine_g\": 46,\n        \"proteine_kcal\": 184,\n        \"proteine_percentuale\": 8,\n        \"grassi_g\": 72,\n        \"grassi_kcal\": 651,\n        \"grassi_percentuale\": 30,\n        \"carboidrati_g\": 334,\n        \"carboidrati_kcal\": 1335,\n        \"carboidrati_percentuale\": 62\n    }\n}\n",
-      "contenuto_pulito": "{\n    \"macros_total\": {\n        \"kcal_finali\": 2170,\n        \"proteine_g\": 46,\n        \"proteine_kcal\": 184,\n        \"proteine_percentuale\": 8,\n        \"grassi_g\": 72,\n        \"grassi_kcal\": 651,\n        \"grassi_percentuale\": 30,\n        \"carboidrati_g\": 334,\n        \"carboidrati_kcal\": 1335,\n        \"carboidrati_percentuale\": 62\n    }\n}",
-      "contenuto_formattato": "{\n  \"macros_total\": {\n    \"kcal_finali\": 2170,\n    \"proteine_g\": 46,\n    \"proteine_kcal\": 184,\n    \"proteine_percentuale\": 8,\n    \"grassi_g\": 72,\n    \"grassi_kcal\": 651,\n    \"grassi_percentuale\": 30,\n    \"carboidrati_g\": 334,\n    \"carboidrati_kcal\": 1335,\n    \"carboidrati_percentuale\": 62\n  }\n}",
+      "contenuto_originale": "\n{\n  \"weekly_diet_day_1\": [\n    {\n      \"nome_pasto\": \"colazione\",\n      \"alimenti\": [\n        {\n          \"nome_alimento\": \"Fiocchi di avena\",\n          \"quantita_g\": 40,\n          \"misura_casalinga\": \"6 cucchiai pieni\",\n          \"sostituti\": \"40g di muesli, 40g di fette biscottate\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 27,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Latte parzialmente scremato\",\n          \"quantita_g\": 200,\n          \"misura_casalinga\": \"1 bicchiere abbondante\",\n          \"sostituti\": \"220g di yogurt magro, 260g di latte scremato\",\n          \"macronutrienti\": {\n            \"proteine\": 7,\n            \"carboidrati\": 10,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Banana\",\n          \"quantita_g\": 230,\n          \"misura_casalinga\": \"2 banane piccole\",\n          \"sostituti\": \"360g di mirtilli, 200g di uva\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 40,\n            \"grassi\": 1\n          }\n        },\n        {\n          \"nome_alimento\": \"Mandorle\",\n          \"quantita_g\": 20,\n          \"misura_casalinga\": \"1 cucchiaio abbondante\",\n          \"sostituti\": \"20g di nocciole, 20g di arachidi\",\n          \"macronutrienti\": {\n            \"proteine\": 4,\n            \"carboidrati\": 1,\n            \"grassi\": 11\n          }\n        }\n      ],\n      \"totali_pasto\": {\n        \"kcal_finali\": 539,\n        \"proteine_totali\": 17,\n        \"carboidrati_totali\": 78,\n        \"grassi_totali\": 18\n      }\n    }\n  ]\n}\n",
+      "contenuto_pulito": "{\n  \"weekly_diet_day_1\": [\n    {\n      \"nome_pasto\": \"colazione\",\n      \"alimenti\": [\n        {\n          \"nome_alimento\": \"Fiocchi di avena\",\n          \"quantita_g\": 40,\n          \"misura_casalinga\": \"6 cucchiai pieni\",\n          \"sostituti\": \"40g di muesli, 40g di fette biscottate\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 27,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Latte parzialmente scremato\",\n          \"quantita_g\": 200,\n          \"misura_casalinga\": \"1 bicchiere abbondante\",\n          \"sostituti\": \"220g di yogurt magro, 260g di latte scremato\",\n          \"macronutrienti\": {\n            \"proteine\": 7,\n            \"carboidrati\": 10,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Banana\",\n          \"quantita_g\": 230,\n          \"misura_casalinga\": \"2 banane piccole\",\n          \"sostituti\": \"360g di mirtilli, 200g di uva\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 40,\n            \"grassi\": 1\n          }\n        },\n        {\n          \"nome_alimento\": \"Mandorle\",\n          \"quantita_g\": 20,\n          \"misura_casalinga\": \"1 cucchiaio abbondante\",\n          \"sostituti\": \"20g di nocciole, 20g di arachidi\",\n          \"macronutrienti\": {\n            \"proteine\": 4,\n            \"carboidrati\": 1,\n            \"grassi\": 11\n          }\n        }\n      ],\n      \"totali_pasto\": {\n        \"kcal_finali\": 539,\n        \"proteine_totali\": 17,\n        \"carboidrati_totali\": 78,\n        \"grassi_totali\": 18\n      }\n    }\n  ]\n}",
+      "contenuto_formattato": "{\n  \"weekly_diet_day_1\": [\n    {\n      \"nome_pasto\": \"colazione\",\n      \"alimenti\": [\n        {\n          \"nome_alimento\": \"Fiocchi di avena\",\n          \"quantita_g\": 40,\n          \"misura_casalinga\": \"6 cucchiai pieni\",\n          \"sostituti\": \"40g di muesli, 40g di fette biscottate\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 27,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Latte parzialmente scremato\",\n          \"quantita_g\": 200,\n          \"misura_casalinga\": \"1 bicchiere abbondante\",\n          \"sostituti\": \"220g di yogurt magro, 260g di latte scremato\",\n          \"macronutrienti\": {\n            \"proteine\": 7,\n            \"carboidrati\": 10,\n            \"grassi\": 3\n          }\n        },\n        {\n          \"nome_alimento\": \"Banana\",\n          \"quantita_g\": 230,\n          \"misura_casalinga\": \"2 banane piccole\",\n          \"sostituti\": \"360g di mirtilli, 200g di uva\",\n          \"macronutrienti\": {\n            \"proteine\": 3,\n            \"carboidrati\": 40,\n            \"grassi\": 1\n          }\n        },\n        {\n          \"nome_alimento\": \"Mandorle\",\n          \"quantita_g\": 20,\n          \"misura_casalinga\": \"1 cucchiaio abbondante\",\n          \"sostituti\": \"20g di nocciole, 20g di arachidi\",\n          \"macronutrienti\": {\n            \"proteine\": 4,\n            \"carboidrati\": 1,\n            \"grassi\": 11\n          }\n        }\n      ],\n      \"totali_pasto\": {\n        \"kcal_finali\": 539,\n        \"proteine_totali\": 17,\n        \"carboidrati_totali\": 78,\n        \"grassi_totali\": 18\n      }\n    }\n  ]\n}",
       "metadati": {
-        "lunghezza_originale": 341,
-        "lunghezza_pulita": 339,
-        "lunghezza_formattata": 295,
-        "righe_originali": 16,
-        "righe_formattate": 14,
+        "lunghezza_originale": 1598,
+        "lunghezza_pulita": 1596,
+        "lunghezza_formattata": 1596,
+        "righe_originali": 61,
+        "righe_formattate": 59,
         "aveva_markdown_wrapper": false,
         "tipo_contenuto": "JSON valido"
       }
     },
     "dati_estratti_parsed": {
-      "macros_total": {
-        "kcal_finali": 2170,
-        "proteine_g": 46,
-        "proteine_kcal": 184,
-        "proteine_percentuale": 8,
-        "grassi_g": 72,
-        "grassi_kcal": 651,
-        "grassi_percentuale": 30,
-        "carboidrati_g": 334,
-        "carboidrati_kcal": 1335,
-        "carboidrati_percentuale": 62,
-        "kcal_totali": 2170
-      }
+      "weekly_diet_day_1": [
+        {
+          "nome_pasto": "colazione",
+          "alimenti": [
+            {
+              "nome_alimento": "Fiocchi di avena",
+              "quantita_g": 40,
+              "misura_casalinga": "6 cucchiai pieni",
+              "sostituti": "40g di muesli, 40g di fette biscottate",
+              "macronutrienti": {
+                "proteine": 3,
+                "carboidrati": 27,
+                "grassi": 3
+              }
+            },
+            {
+              "nome_alimento": "Latte parzialmente scremato",
+              "quantita_g": 200,
+              "misura_casalinga": "1 bicchiere abbondante",
+              "sostituti": "220g di yogurt magro, 260g di latte scremato",
+              "macronutrienti": {
+                "proteine": 7,
+                "carboidrati": 10,
+                "grassi": 3
+              }
+            },
+            {
+              "nome_alimento": "Banana",
+              "quantita_g": 230,
+              "misura_casalinga": "2 banane piccole",
+              "sostituti": "360g di mirtilli, 200g di uva",
+              "macronutrienti": {
+                "proteine": 3,
+                "carboidrati": 40,
+                "grassi": 1
+              }
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 20,
+              "misura_casalinga": "1 cucchiaio abbondante",
+              "sostituti": "20g di nocciole, 20g di arachidi",
+              "macronutrienti": {
+                "proteine": 4,
+                "carboidrati": 1,
+                "grassi": 11
+              }
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 539,
+            "proteine_totali": 17,
+            "carboidrati_totali": 78,
+            "grassi_totali": 18
+          }
+        }
+      ]
     },
     "chiavi_estratte": [
-      "macros_total"
+      "weekly_diet_day_1"
     ],
-    "timestamp_estrazione": "2025-07-06T11:11:12.786386"
+    "timestamp_estrazione": "2025-07-06T11:25:16.473390"
   },
   "dati_finali_merged": {
     "caloric_needs": {
       "bmr": 1672,
       "fabbisogno_base": 2173,
-      "fabbisogno_finale": 2173,
+      "fabbisogno_finale": 2259,
       "laf_utilizzato": 1.3,
-      "dispendio_sportivo": 0,
-      "aggiustamento_obiettivo": 0
+      "dispendio_sportivo": 86,
+      "aggiustamento_obiettivo": 0,
+      "fabbisogno_totale": 2259
     },
     "macros_total": {
-      "kcal_finali": 2170,
-      "proteine_g": 46,
-      "proteine_kcal": 184,
-      "proteine_percentuale": 8,
-      "grassi_g": 72,
-      "grassi_kcal": 651,
+      "kcal_finali": 2260,
+      "proteine_g": 70,
+      "proteine_kcal": 280,
+      "proteine_percentuale": 12,
+      "grassi_g": 75,
+      "grassi_kcal": 678,
       "grassi_percentuale": 30,
-      "carboidrati_g": 334,
-      "carboidrati_kcal": 1335,
-      "carboidrati_percentuale": 62,
-      "kcal_totali": 2170
-    }
+      "carboidrati_g": 325,
+      "carboidrati_kcal": 1302,
+      "carboidrati_percentuale": 58,
+      "kcal_totali": 2260
+    },
+    "daily_macros": {
+      "numero_pasti": 4,
+      "distribuzione_pasti": {
+        "colazione": {
+          "kcal": 565,
+          "percentuale_kcal": 25,
+          "proteine_g": 18,
+          "carboidrati_g": 81,
+          "grassi_g": 19
+        },
+        "pranzo": {
+          "kcal": 791,
+          "percentuale_kcal": 35,
+          "proteine_g": 25,
+          "carboidrati_g": 114,
+          "grassi_g": 26
+        },
+        "spuntino_pomeridiano": {
+          "kcal": 226,
+          "percentuale_kcal": 10,
+          "proteine_g": 7,
+          "carboidrati_g": 33,
+          "grassi_g": 8
+        },
+        "cena": {
+          "kcal": 678,
+          "percentuale_kcal": 30,
+          "proteine_g": 21,
+          "carboidrati_g": 98,
+          "grassi_g": 23
+        }
+      }
+    },
+    "weekly_diet_day_1": [
+      {
+        "nome_pasto": "colazione",
+        "alimenti": [
+          {
+            "nome_alimento": "Fiocchi di avena",
+            "quantita_g": 40,
+            "misura_casalinga": "6 cucchiai pieni",
+            "sostituti": "40g di muesli, 40g di fette biscottate",
+            "macronutrienti": {
+              "proteine": 3,
+              "carboidrati": 27,
+              "grassi": 3
+            }
+          },
+          {
+            "nome_alimento": "Latte parzialmente scremato",
+            "quantita_g": 200,
+            "misura_casalinga": "1 bicchiere abbondante",
+            "sostituti": "220g di yogurt magro, 260g di latte scremato",
+            "macronutrienti": {
+              "proteine": 7,
+              "carboidrati": 10,
+              "grassi": 3
+            }
+          },
+          {
+            "nome_alimento": "Banana",
+            "quantita_g": 230,
+            "misura_casalinga": "2 banane piccole",
+            "sostituti": "360g di mirtilli, 200g di uva",
+            "macronutrienti": {
+              "proteine": 3,
+              "carboidrati": 40,
+              "grassi": 1
+            }
+          },
+          {
+            "nome_alimento": "Mandorle",
+            "quantita_g": 20,
+            "misura_casalinga": "1 cucchiaio abbondante",
+            "sostituti": "20g di nocciole, 20g di arachidi",
+            "macronutrienti": {
+              "proteine": 4,
+              "carboidrati": 1,
+              "grassi": 11
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 539,
+          "proteine_totali": 17,
+          "carboidrati_totali": 78,
+          "grassi_totali": 18
+        }
+      }
+    ]
   },
   "metadati": {
     "versione_debug": "4.0",
