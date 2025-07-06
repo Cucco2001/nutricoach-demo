@@ -75,6 +75,12 @@ def initialize_app():
         st.session_state.current_question = 0
     if "nutrition_answers" not in st.session_state:
         st.session_state.nutrition_answers = {}
+    # === INIZIALIZZAZIONE SERVIZIO SUPABASE ===
+    # IMPORTANTE: Deve essere inizializzato PRIMA di UserDataManager
+    if "supabase_service" not in st.session_state:
+        from services.supabase_service import SupabaseUserService
+        st.session_state.supabase_service = SupabaseUserService()
+
     if "user_data_manager" not in st.session_state:
         st.session_state.user_data_manager = UserDataManager()
 
@@ -102,11 +108,6 @@ def initialize_app():
         st.session_state.preferences_manager = PreferencesManager(
             user_data_manager=st.session_state.user_data_manager
         )
-
-    # === INIZIALIZZAZIONE SERVIZIO SUPABASE ===
-    if "supabase_service" not in st.session_state:
-        from services.supabase_service import SupabaseUserService
-        st.session_state.supabase_service = SupabaseUserService()
 
     # === VARIABILI PER GESTIONE AGENTE IN BACKGROUND ===
     if "agent_generating" not in st.session_state:

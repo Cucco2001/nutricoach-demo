@@ -152,22 +152,21 @@ def main():
                 # Mostra un messaggio informativo e blocca la navigazione
                 st.info("🤖 L'assistente sta elaborando la risposta, attendi completamento per accedere ad altri tab")
                 # Mantieni la selezione corrente senza permettere cambiamenti
-                if 'current_page' not in st.session_state:
-                    st.session_state.current_page = "Home"
-                page = st.session_state.current_page
+                page = st.session_state.get('current_page', 'Chat')
                 st.write(f"**Sezione corrente:** {page}")
             else:
                 # Navigazione normale quando l'agente non sta generando
+                current_selection = st.session_state.get('current_page', 'Chat')
                 page = st.radio(
                     "Seleziona una sezione",
-                    ["Home", "Chat", "Preferenze", "Piano Nutrizionale"]
+                    ["Home", "Chat", "Preferenze", "Piano Nutrizionale"],
+                    index=["Home", "Chat", "Preferenze", "Piano Nutrizionale"].index(current_selection) if current_selection in ["Home", "Chat", "Preferenze", "Piano Nutrizionale"] else 1
                 )
                 # Salva la selezione corrente
                 st.session_state.current_page = page
             
             # Usa il nuovo modulo per gestire il logout
             show_logout_button()
-        
         if page == "Home":
             # Usa l'interfaccia home modulare
             handle_home()
@@ -178,6 +177,9 @@ def main():
             st.session_state.preferences_manager.handle_user_preferences(st.session_state.user_info["id"])
         elif page == "Piano Nutrizionale":
             handle_user_data()
+        else:
+            # Fallback per debugging
+            st.error(f"❌ Pagina non riconosciuta: '{page}'")
 
 
 if __name__ == "__main__":
