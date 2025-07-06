@@ -49,6 +49,19 @@ def show_app_tutorial():
     with tutorial_container:
         # Sezioni interattive organizzate verticalmente
         _display_tutorial_section(
+            "💬", "**Chat**", 
+            "L'agente ti guiderà nella realizzazione di un giorno di dieta tipo in base ai tuoi suggerimenti e spunti.",
+            [
+                "Chatta direttamente con il tuo assistente nutrizionale AI",
+                "Fai domande su nutrizione, ricette e obiettivi"
+            ],
+            chat_visited_key,
+            chat_visited
+        )
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        _display_tutorial_section(
             "🏠", "**Home**", 
             "La tua dashboard nutrizionale principale!",
             [

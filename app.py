@@ -160,23 +160,21 @@ def main():
                 st.write(f"**Sezione corrente:** {page}")
             else:
                 # Navigazione normale quando l'agente non sta generando
-                current_selection = st.session_state.get('current_page', 'Chat')
                 page = st.radio(
                     "Seleziona una sezione",
-                    ["Home", "Chat", "Preferenze", "Piano Nutrizionale"],
-                    index=["Home", "Chat", "Preferenze", "Piano Nutrizionale"].index(current_selection) if current_selection in ["Home", "Chat", "Preferenze", "Piano Nutrizionale"] else 1
+                    ["Chat", "Home", "Preferenze", "Piano Nutrizionale"]
                 )
                 # Salva la selezione corrente
                 st.session_state.current_page = page
             
             # Usa il nuovo modulo per gestire il logout
             show_logout_button()
-        if page == "Home":
-            # Usa l'interfaccia home modulare
-            handle_home()
-        elif page == "Chat":
+        if page == "Chat":
             # Usa l'interfaccia chat modulare
             chat_interface()
+        elif page == "Home":
+            # Usa l'interfaccia home modulare
+            handle_home()
         elif page == "Preferenze":
             st.session_state.preferences_manager.handle_user_preferences(st.session_state.user_info["id"])
         elif page == "Piano Nutrizionale":
