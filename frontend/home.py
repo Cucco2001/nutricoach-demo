@@ -186,32 +186,36 @@ class Home:
         
         # Container per il pasto
         with st.container():
-            # Header del pasto
+            # Header del pasto - Card grande e verde
             st.markdown(f"""
             <div class="home-meal-card">
                 <h4>{emoji_pasto} {nome_pasto}</h4>
             </div>
             """, unsafe_allow_html=True)
             
-            # Mostra ingredienti con stile migliorato
-            if "alimenti" in meal and meal["alimenti"]:
-                for alimento in meal["alimenti"]:
-                    nome = alimento.get('nome_alimento', 'N/A')
-                    quantita = alimento.get('quantita_g', 'N/A')
-                    stato = alimento.get('stato', '')
-                    misura = alimento.get('misura_casalinga', '')
-                    sostituti = alimento.get('sostituti', '')
-                    
-                    # Costruisci la descrizione dell'ingrediente con sostituti
-                    ingrediente_desc = f"**{nome}** - {quantita}g"
-                    if stato and stato != 'N/A':
-                        ingrediente_desc += f" ({stato})"
-                    if misura and misura != 'N/A':
-                        ingrediente_desc += f" - {misura}"
-                    if sostituti and sostituti != 'N/A' and sostituti.strip():
-                        ingrediente_desc += f" ➜ *{sostituti}*"
-                    
-                    st.markdown(f"• {ingrediente_desc}")
+            # Tendina per i dettagli del pasto
+            with st.expander("👀 Vedi alimenti", expanded=False):
+                # Mostra ingredienti con stile migliorato
+                if "alimenti" in meal and meal["alimenti"]:
+                    for alimento in meal["alimenti"]:
+                        nome = alimento.get('nome_alimento', 'N/A')
+                        quantita = alimento.get('quantita_g', 'N/A')
+                        stato = alimento.get('stato', '')
+                        misura = alimento.get('misura_casalinga', '')
+                        sostituti = alimento.get('sostituti', '')
+                        
+                        # Costruisci la descrizione dell'ingrediente con sostituti
+                        ingrediente_desc = f"**{nome}** - {quantita}g"
+                        if stato and stato != 'N/A':
+                            ingrediente_desc += f" ({stato})"
+                        if misura and misura != 'N/A':
+                            ingrediente_desc += f" - {misura}"
+                        if sostituti and sostituti != 'N/A' and sostituti.strip():
+                            ingrediente_desc += f" ➜ *{sostituti}*"
+                        
+                        st.markdown(f"• {ingrediente_desc}")
+                else:
+                    st.info("Nessun ingrediente disponibile per questo pasto.")
             
             # Separatore sottile
             if index < total_meals - 1:
@@ -237,39 +241,43 @@ class Home:
         
         display_name = meal_display_names.get(meal_name, f'🍽️ {meal_name.title()}')
         
-        # Header del pasto
+        # Header del pasto - Card grande e verde
         st.markdown(f"""
         <div class="home-meal-card">
             <h4>{display_name}</h4>
         </div>
         """, unsafe_allow_html=True)
         
-        # Mostra ingredienti con stile migliorato
-        if "alimenti" in meal_data and meal_data["alimenti"]:
-            alimenti = meal_data["alimenti"]
-            
-            if isinstance(alimenti, list):
-                for alimento in alimenti:
-                    nome = alimento.get('nome_alimento', 'N/A')
-                    quantita = alimento.get('quantita_g', 'N/A')
-                    misura = alimento.get('misura_casalinga', '')
-                    sostituti = alimento.get('sostituti', '')
-                    
-                    # Costruisci la descrizione dell'ingrediente con sostituti
-                    ingrediente_desc = f"**{nome}** - {quantita}g"
-                    if misura and misura != 'N/A':
-                        ingrediente_desc += f" - {misura}"
-                    if sostituti and sostituti != 'N/A' and sostituti.strip():
-                        ingrediente_desc += f" ➜ *{sostituti}*"
-                    
-                    st.markdown(f"• {ingrediente_desc}")
-            
-            elif isinstance(alimenti, dict):
-                for nome, quantita in alimenti.items():
-                    if isinstance(quantita, (int, float)) and quantita > 0:
-                        st.markdown(f"• **{nome}** - {quantita}g")
-                    else:
-                        st.markdown(f"• **{nome}** - Quantità da definire")
+        # Tendina per i dettagli del pasto
+        with st.expander("👀 Vedi alimenti", expanded=False):
+            # Mostra ingredienti con stile migliorato
+            if "alimenti" in meal_data and meal_data["alimenti"]:
+                alimenti = meal_data["alimenti"]
+                
+                if isinstance(alimenti, list):
+                    for alimento in alimenti:
+                        nome = alimento.get('nome_alimento', 'N/A')
+                        quantita = alimento.get('quantita_g', 'N/A')
+                        misura = alimento.get('misura_casalinga', '')
+                        sostituti = alimento.get('sostituti', '')
+                        
+                        # Costruisci la descrizione dell'ingrediente con sostituti
+                        ingrediente_desc = f"**{nome}** - {quantita}g"
+                        if misura and misura != 'N/A':
+                            ingrediente_desc += f" - {misura}"
+                        if sostituti and sostituti != 'N/A' and sostituti.strip():
+                            ingrediente_desc += f" ➜ *{sostituti}*"
+                        
+                        st.markdown(f"• {ingrediente_desc}")
+                
+                elif isinstance(alimenti, dict):
+                    for nome, quantita in alimenti.items():
+                        if isinstance(quantita, (int, float)) and quantita > 0:
+                            st.markdown(f"• **{nome}** - {quantita}g")
+                        else:
+                            st.markdown(f"• **{nome}** - Quantità da definire")
+            else:
+                st.info("Nessun ingrediente disponibile per questo pasto.")
         
         # Separatore sottile
         st.markdown('<hr class="home-meal-separator">', unsafe_allow_html=True)
