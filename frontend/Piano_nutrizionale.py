@@ -745,10 +745,7 @@ class PianoNutrizionale:
         
         # Alimenti del pasto
         if "alimenti" in meal_data and meal_data["alimenti"]:
-            st.markdown("**🛒 Ingredienti:**")
-            
             alimenti = meal_data["alimenti"]
-            
             # Gestisce sia formato lista che formato dizionario
             if isinstance(alimenti, list):
                 # Formato lista: [{"nome_alimento": "...", "quantita_g": ..., "misura_casalinga": "..."}]
@@ -886,8 +883,6 @@ class PianoNutrizionale:
         """
         if "alimenti" not in meal or not meal["alimenti"]:
             return
-            
-        st.markdown("**🛒 Ingredienti:**")
         
         for alimento in meal["alimenti"]:
             nome = alimento.get('nome_alimento', 'N/A')

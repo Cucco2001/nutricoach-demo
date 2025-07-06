@@ -662,6 +662,220 @@ class PDFGenerator:
 
         return nutritional_data
     
+    def _save_user_data_to_file(self, user_id: str, data: Dict[str, Any]) -> bool:
+        """
+        Salva i dati dell'utente nel file JSON.
+        
+        Args:
+            user_id: ID dell'utente
+            data: Dati da salvare nel file utente
+            
+        Returns:
+            bool: True se il salvataggio è riuscito, False altrimenti
+        """
+        # Percorsi possibili per il file utente
+        possible_paths = [
+            f"user_data/{user_id}.json",
+            f"user_data/user_{user_id}.json"
+        ]
+        
+        user_file_path = None
+        
+        # Trova il file esistente
+        for path in possible_paths:
+            if os.path.exists(path):
+                user_file_path = path
+                break
+        
+        if not user_file_path:
+            print(f"[PDF_ERROR] File utente non trovato per user_id: {user_id}")
+            return False
+        
+        try:
+            # Carica i dati esistenti
+            with open(user_file_path, 'r', encoding='utf-8') as f:
+                existing_data = json.load(f)
+            
+            # Unisci i dati esistenti con i nuovi dati
+            existing_data.update(data)
+            
+            # Salva i dati aggiornati
+            with open(user_file_path, 'w', encoding='utf-8') as f:
+                json.dump(existing_data, f, ensure_ascii=False, indent=2)
+            
+            print(f"[PDF_INFO] Dati salvati con successo nel file utente: {user_file_path}")
+            return True
+            
+        except Exception as e:
+            print(f"[PDF_ERROR] Errore durante il salvataggio dei dati utente: {str(e)}")
+            return False
+
+    def _save_substitutes_to_user_file(self, user_id: str, day_number: int, meal_name: str, 
+                                     alimento_name: str, substitutes: str) -> bool:
+        """
+        Salva i sostituti generati automaticamente nel file utente.
+        
+        Args:
+            user_id: ID dell'utente
+            day_number: Numero del giorno (1-7)
+            meal_name: Nome del pasto
+            alimento_name: Nome dell'alimento
+            substitutes: Sostituti generati
+            
+        Returns:
+            bool: True se il salvataggio è riuscito, False altrimenti
+        """
+        try:
+            # Percorsi possibili per il file utente
+            possible_paths = [
+                f"user_data/{user_id}.json",
+                f"user_data/user_{user_id}.json"
+            ]
+            
+            user_file_path = None
+            
+            # Trova il file esistente
+            for path in possible_paths:
+                if os.path.exists(path):
+                    user_file_path = path
+                    break
+            
+            if not user_file_path:
+                print(f"[PDF_ERROR] File utente non trovato per user_id: {user_id}")
+                return False
+            
+            # Carica i dati esistenti
+            with open(user_file_path, 'r', encoding='utf-8') as f:
+                user_data = json.load(f)
+            
+            # Naviga alla struttura corretta
+            nutritional_data = user_data.get("nutritional_info_extracted", {})
+            
+            if day_number == 1:
+                # Per il giorno 1, controlla sia weekly_diet_day_1 che weekly_diet
+                if "weekly_diet_day_1" in nutritional_data:
+                    weekly_diet_data = nutritional_data["weekly_diet_day_1"]
+                elif "weekly_diet" in nutritional_data:
+                    weekly_diet_data = nutritional_data["weekly_diet"]
+                else:
+                    print(f"[PDF_WARNING] Struttura weekly_diet non trovata per giorno 1")
+                    return False
+                    
+                # Trova il pasto nella lista
+                for meal in weekly_diet_data:
+                    if meal.get("nome_pasto") == meal_name:
+                        alimenti = meal.get("alimenti", [])
+                        
+                        # Trova l'alimento specifico
+                        for alimento in alimenti:
+                            if alimento.get("nome_alimento") == alimento_name:
+                                alimento["sostituti"] = substitutes
+                                break
+                        break
+            else:
+                # Per i giorni 2-7, usa weekly_diet_days_2_7
+                if "weekly_diet_days_2_7" not in nutritional_data:
+                    print(f"[PDF_WARNING] Struttura weekly_diet_days_2_7 non trovata")
+                    return False
+                
+                day_key = f"giorno_{day_number}"
+                if day_key not in nutritional_data["weekly_diet_days_2_7"]:
+                    print(f"[PDF_WARNING] Giorno {day_number} non trovato in weekly_diet_days_2_7")
+                    return False
+                
+                day_data = nutritional_data["weekly_diet_days_2_7"][day_key]
+                
+                if meal_name not in day_data:
+                    print(f"[PDF_WARNING] Pasto {meal_name} non trovato nel giorno {day_number}")
+                    return False
+                
+                meal_data = day_data[meal_name]
+                if "alimenti" not in meal_data:
+                    print(f"[PDF_WARNING] Alimenti non trovati nel pasto {meal_name}")
+                    return False
+                
+                alimenti = meal_data["alimenti"]
+                
+                # Trova l'alimento specifico
+                for alimento in alimenti:
+                    if alimento.get("nome_alimento") == alimento_name:
+                        alimento["sostituti"] = substitutes
+                        break
+            
+            # Salva i dati aggiornati
+            with open(user_file_path, 'w', encoding='utf-8') as f:
+                json.dump(user_data, f, ensure_ascii=False, indent=2)
+            
+            print(f"[PDF_INFO] Sostituti salvati per {alimento_name} nel pasto {meal_name} del giorno {day_number}")
+            return True
+            
+        except Exception as e:
+            print(f"[PDF_ERROR] Errore durante il salvataggio dei sostituti: {str(e)}")
+            return False
+
+    def _save_meal_to_user_file(self, user_id: str, day_number: int, meal_name: str, 
+                               meal_data: Dict[str, Any]) -> bool:
+        """
+        Salva un pasto generato automaticamente nel file utente.
+        
+        Args:
+            user_id: ID dell'utente
+            day_number: Numero del giorno (2-7)
+            meal_name: Nome del pasto
+            meal_data: Dati del pasto generato
+            
+        Returns:
+            bool: True se il salvataggio è riuscito, False altrimenti
+        """
+        try:
+            # Percorsi possibili per il file utente
+            possible_paths = [
+                f"user_data/{user_id}.json",
+                f"user_data/user_{user_id}.json"
+            ]
+            
+            user_file_path = None
+            
+            # Trova il file esistente
+            for path in possible_paths:
+                if os.path.exists(path):
+                    user_file_path = path
+                    break
+            
+            if not user_file_path:
+                print(f"[PDF_ERROR] File utente non trovato per user_id: {user_id}")
+                return False
+            
+            # Carica i dati esistenti
+            with open(user_file_path, 'r', encoding='utf-8') as f:
+                user_data = json.load(f)
+            
+            # Naviga alla struttura corretta
+            nutritional_data = user_data.get("nutritional_info_extracted", {})
+            
+            if "weekly_diet_days_2_7" not in nutritional_data:
+                print(f"[PDF_WARNING] Struttura weekly_diet_days_2_7 non trovata")
+                return False
+            
+            day_key = f"giorno_{day_number}"
+            if day_key not in nutritional_data["weekly_diet_days_2_7"]:
+                # Crea la struttura del giorno se non esiste
+                nutritional_data["weekly_diet_days_2_7"][day_key] = {}
+            
+            # Aggiungi il pasto generato
+            nutritional_data["weekly_diet_days_2_7"][day_key][meal_name] = meal_data
+            
+            # Salva i dati aggiornati
+            with open(user_file_path, 'w', encoding='utf-8') as f:
+                json.dump(user_data, f, ensure_ascii=False, indent=2)
+            
+            print(f"[PDF_INFO] Pasto {meal_name} salvato nel giorno {day_number}")
+            return True
+            
+        except Exception as e:
+            print(f"[PDF_ERROR] Errore durante il salvataggio del pasto: {str(e)}")
+            return False
+    
     def _add_document_header(self, story: list, user_info: Dict[str, Any], extracted_data: Dict[str, Any]):
         """
         Aggiunge l'header del documento con titolo e informazioni utente.
@@ -1125,7 +1339,8 @@ class PDFGenerator:
         is_compact = meals_count > 4
         
         for meal in sorted_meals:
-            nome_pasto = meal.get('nome_pasto', 'Pasto').title()
+            nome_pasto_originale = meal.get('nome_pasto', 'Pasto')  # Nome originale dal JSON per il salvataggio
+            nome_pasto_display = nome_pasto_originale.title()  # Nome per il display
             
             # Sottotitolo del pasto
             meal_display_names = {
@@ -1137,8 +1352,8 @@ class PDFGenerator:
                 'spuntino_serale': '🌃 Spuntino Serale'
             }
             
-            canonical_name = nome_pasto.lower().replace(' ', '_')
-            display_name = meal_display_names.get(canonical_name, f'🍽️ {nome_pasto}')
+            canonical_name = nome_pasto_originale.lower().replace(' ', '_')
+            display_name = meal_display_names.get(canonical_name, f'🍽️ {nome_pasto_display}')
             
             story.append(Paragraph(display_name, self.styles['CustomSubTitle']))
             
@@ -1163,11 +1378,11 @@ class PDFGenerator:
                         quantita_num = float(quantita) if quantita != 'N/A' else None
                     except (ValueError, TypeError):
                         quantita_num = None
-                    misura = self._clean_misura_casalinga(misura_raw, nome, nome_pasto, quantita_num)  # Pulisce le parentesi e gestisce i cubetti
+                    misura = self._clean_misura_casalinga(misura_raw, nome, nome_pasto_originale, quantita_num)  # Pulisce le parentesi e gestisce i cubetti
                     sostituti_raw = alimento.get('sostituti', 'N/A')
                     
-                    # Se i sostituti non sono presenti, prepara per la generazione automatica
-                    if not sostituti_raw or sostituti_raw == 'N/A':
+                    # Se i sostituti non sono presenti o sono vuoti, prepara per la generazione automatica
+                    if not sostituti_raw or sostituti_raw == 'N/A' or sostituti_raw.strip() == '':
                         has_missing_substitutes = True
                         try:
                             quantita_num = float(quantita) if quantita != 'N/A' else 0
@@ -1205,32 +1420,21 @@ class PDFGenerator:
                                     if quantita > 0:
                                         # Genera sostituti usando il nome ORIGINALE
                                         single_food_dict = {alimento_nome_originale: quantita}
-                                        substitutes_result = self._generate_substitutes_for_meal(nome_pasto, single_food_dict, user_id)
-                                        
-                                        # DEBUG per capire perché non si aggiorna
-                                        if "latte" in alimento_nome_originale.lower():
-                                            print(f"[PDF_DEBUG] Check conditions:")
-                                            print(f"[PDF_DEBUG]   - substitutes_result: '{substitutes_result}'")
-                                            print(f"[PDF_DEBUG]   - bool(substitutes_result): {bool(substitutes_result)}")
-                                            print(f"[PDF_DEBUG]   - substitutes_result != 'N/A': {substitutes_result != 'N/A'}")
-                                            print(f"[PDF_DEBUG]   - row[3] before: '{row[3]}'")
+                                        substitutes_result = self._generate_substitutes_for_meal(nome_pasto_originale, single_food_dict, user_id)
                                         
                                         if substitutes_result and substitutes_result != 'N/A':
                                             row[3] = substitutes_result
                                             
-                                            # DEBUG per confermare l'aggiornamento
-                                            if "latte" in alimento_nome_originale.lower():
-                                                print(f"[PDF_DEBUG]   - row[3] after: '{row[3]}'")
-                                        else:
-                                            if "latte" in alimento_nome_originale.lower():
-                                                print(f"[PDF_DEBUG]   - Condizione fallita, row[3] rimane: '{row[3]}'")
+                                            # Salva i sostituti nel file utente per il giorno 1 usando il nome originale
+                                            if user_id:
+                                                self._save_substitutes_to_user_file(user_id, 1, nome_pasto_originale, alimento_nome_originale, substitutes_result)
                                         
                                 except (ValueError, TypeError) as ve:
                                     print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome_originale}: {str(ve)}")
                                     continue
                                     
                     except Exception as e:
-                        print(f"[PDF_WARNING] Errore nella generazione sostituti per {nome_pasto}: {str(e)}")
+                        print(f"[PDF_WARNING] Errore nella generazione sostituti per {nome_pasto_originale}: {str(e)}")
                 
                 if len(ingredients_data) > 1:
                     # Usa dimensioni compatte se ci sono più di 4 pasti
@@ -1434,6 +1638,10 @@ class PDFGenerator:
                             if missing_meal in generated_day_data and generated_day_data[missing_meal]:
                                 day_data[missing_meal] = generated_day_data[missing_meal] 
                                 print(f"[PDF_INFO] Aggiunto pasto mancante: {missing_meal}")
+                                
+                                # Salva il pasto generato nel file utente
+                                if user_id:
+                                    self._save_meal_to_user_file(user_id, day_number, missing_meal, generated_day_data[missing_meal])
                         
                         print(f"[PDF_INFO] Completata generazione automatica per giorno {day_number}")
                     else:
@@ -1475,16 +1683,16 @@ class PDFGenerator:
         for meal_name in meal_order:
             if meal_name in day_data and day_data[meal_name]:
                 meal_data = day_data[meal_name]
-                self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data, is_compact)
+                self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data, is_compact, day_number)
                 meals_found += 1
         
         # Se non ci sono pasti nell'ordine standard, mostra tutti quelli disponibili
         if meals_found == 0:
             for meal_name, meal_data in day_data.items():
                 if meal_data:
-                    self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data, is_compact)
+                    self._add_weekly_diet_meal_to_pdf(story, meal_name, meal_data, is_compact, day_number)
     
-    def _add_weekly_diet_meal_to_pdf(self, story: list, meal_name: str, meal_data: Dict[str, Any], is_compact: bool = False):
+    def _add_weekly_diet_meal_to_pdf(self, story: list, meal_name: str, meal_data: Dict[str, Any], is_compact: bool = False, day_number: int = None):
         """
         Aggiunge un singolo pasto della weekly diet al PDF.
         
@@ -1493,6 +1701,7 @@ class PDFGenerator:
             meal_name: Nome del pasto
             meal_data: Dati del pasto
             is_compact: Se True, usa layout compatto per molti pasti
+            day_number: Numero del giorno (opzionale, per salvare i sostituti nel file utente)
         """
         # Converti il nome del pasto in forma leggibile
         meal_display_names = {
@@ -1539,8 +1748,8 @@ class PDFGenerator:
                 misura = self._clean_misura_casalinga(misura_raw, nome, meal_name, quantita_num)  # Pulisce le parentesi e gestisce i cubetti
                 sostituti_raw = alimento.get('sostituti', 'N/A')
                 
-                # Se i sostituti non sono presenti, prepara per la generazione automatica
-                if not sostituti_raw or sostituti_raw == 'N/A':
+                # Se i sostituti non sono presenti o sono vuoti, prepara per la generazione automatica
+                if not sostituti_raw or sostituti_raw == 'N/A' or sostituti_raw.strip() == '':
                     has_missing_substitutes = True
                     try:
                         quantita_num = float(quantita) if quantita != 'N/A' else 0
@@ -1594,6 +1803,12 @@ class PDFGenerator:
                                 
                                 if substitutes_result and substitutes_result != 'N/A':
                                     row[3] = substitutes_result
+                                    
+                                    # Salva i sostituti nel file utente se disponibile day_number
+                                    if day_number and user_id:
+                                        # Usa il nome originale dall'alimento (non abbreviato)
+                                        original_name = nome_mapping.get(alimento_nome, alimento_nome)
+                                        self._save_substitutes_to_user_file(user_id, day_number, meal_name, original_name, substitutes_result)
                                     
                         except (ValueError, TypeError) as ve:
                             print(f"[PDF_WARNING] Errore conversione quantità per {alimento_nome}: {str(ve)}")

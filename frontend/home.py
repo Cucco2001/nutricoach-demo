@@ -195,7 +195,6 @@ class Home:
             
             # Mostra ingredienti con stile migliorato
             if "alimenti" in meal and meal["alimenti"]:
-                st.markdown("**🛒 Ingredienti:**")
                 for alimento in meal["alimenti"]:
                     nome = alimento.get('nome_alimento', 'N/A')
                     quantita = alimento.get('quantita_g', 'N/A')
@@ -245,7 +244,6 @@ class Home:
         # Mostra ingredienti con stile migliorato
         if "alimenti" in meal_data and meal_data["alimenti"]:
             alimenti = meal_data["alimenti"]
-            st.markdown("**🛒 Ingredienti:**")
             
             if isinstance(alimenti, list):
                 for alimento in alimenti:
