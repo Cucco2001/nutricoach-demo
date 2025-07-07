@@ -100,14 +100,15 @@ def handle_coach_input():
         st.info("🤖 Il coach sta elaborando la risposta...")
         return
     
-    # Sezione per upload immagini
-    st.markdown("#### 📸 Carica Immagini (opzionale)")
-    uploaded_files = st.file_uploader(
-        "Carica foto del tuo cibo per ricevere consigli personalizzati",
-        accept_multiple_files=True,
-        type=['png', 'jpg', 'jpeg', 'webp'],
-        key="coach_images"
-    )
+    # Sezione per upload immagini - resa più compatta
+    with st.expander("📸 Clicca qui per caricare una foto del tuo pasto"):
+        uploaded_files = st.file_uploader(
+            "Carica una o più immagini",
+            accept_multiple_files=True,
+            type=['png', 'jpg', 'jpeg', 'webp'],
+            key="coach_images",
+            label_visibility="collapsed"
+        )
     
     # Input di testo
     user_input = st.chat_input("Scrivi al tuo coach nutrizionale...")
@@ -175,10 +176,29 @@ def process_coach_response():
                             "content": welcome_msg
                         })
                 
+                # Prepara la cronologia conversazione
+                conversation_history = []
+                if hasattr(st.session_state, 'coach_messages'):
+                    # Converti i messaggi della sessione in formato OpenAI (escludi il messaggio appena aggiunto)
+                    for msg in st.session_state.coach_messages[:-1]:  # Escludi l'ultimo messaggio (quello appena aggiunto)
+                        if msg["role"] in ["user", "assistant"]:
+                            conversation_history.append({
+                                "role": msg["role"],
+                                "content": msg["content"]
+                            })
+                
                 # Ottieni la risposta del coach
-                response = st.session_state.coach_manager.chat_with_coach(
-                    user_input, thread_id, images
+                response_data = st.session_state.coach_manager.get_response(
+                    user_message=user_input,
+                    images=images,
+                    conversation_history=conversation_history
                 )
+                
+                # Estrai il contenuto della risposta
+                if response_data.get("success"):
+                    response = response_data.get("content", "Errore nella risposta del coach")
+                else:
+                    response = response_data.get("content", "Errore nella comunicazione con il coach")
                 
                 # Aggiungi la risposta del coach
                 st.session_state.coach_messages.append({

@@ -101,6 +101,32 @@ class TokenCostTracker:
             "cumulative_total": self.conversation_tokens["total"]
         }
     
+    def track_tokens(self, prompt_tokens: int, completion_tokens: int) -> Dict[str, int]:
+        """
+        Traccia i token direttamente dall'API response di OpenAI.
+        
+        Args:
+            prompt_tokens: Token utilizzati per il prompt (input)
+            completion_tokens: Token utilizzati per la completion (output)
+            
+        Returns:
+            Dict con riepilogo token tracciati
+        """
+        self.conversation_tokens["input"] += prompt_tokens
+        self.conversation_tokens["output"] += completion_tokens
+        self.conversation_tokens["total"] += (prompt_tokens + completion_tokens)
+        self.message_count += 1
+        
+        # Aggiorna i costi
+        self._update_costs()
+        
+        return {
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "total_tokens": prompt_tokens + completion_tokens,
+            "cumulative_total": self.conversation_tokens["total"]
+        }
+    
     def _update_costs(self):
         """Aggiorna i costi basati sui token attuali."""
         pricing = self.PRICING.get(self.model, self.PRICING["gpt-4"])

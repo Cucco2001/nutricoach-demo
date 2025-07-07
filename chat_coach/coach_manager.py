@@ -24,7 +24,7 @@ class CoachManager:
     def __init__(self, openai_client, user_data_manager):
         self.client = openai_client
         self.user_data_manager = user_data_manager
-        self.model = "gpt-4o"
+        self.model = "gpt-4.1"
         self.token_tracker = TokenCostTracker(model=self.model)
         
     def get_response(self, user_message: str, images: List[str] = None, 
@@ -41,6 +41,14 @@ class CoachManager:
             Dict con risposta e metadati
         """
         try:
+            # Debug: Log immagini ricevute
+            if images:
+                logger.info(f"Coach ha ricevuto {len(images)} immagini")
+                for i, img in enumerate(images):
+                    logger.info(f"Immagine {i+1}: {img[:50]}..." if len(img) > 50 else f"Immagine {i+1}: {img}")
+            else:
+                logger.info("Coach: nessuna immagine ricevuta")
+            
             # Prepara i messaggi
             messages = []
             
@@ -83,6 +91,14 @@ class CoachManager:
                     })
             
             messages.append({"role": "user", "content": user_msg_content})
+            
+            # Debug: Log messaggio finale che viene inviato
+            logger.info(f"Coach - Messaggio utente inviato: {len(user_msg_content)} elementi")
+            for i, content in enumerate(user_msg_content):
+                if content.get("type") == "text":
+                    logger.info(f"  Elemento {i+1}: TEXT - {content['text'][:100]}...")
+                elif content.get("type") == "image_url":
+                    logger.info(f"  Elemento {i+1}: IMAGE - {content['image_url']['url'][:50]}...")
             
             # Prima chiamata all'API
             response = self.client.chat.completions.create(
@@ -214,4 +230,23 @@ class CoachManager:
             return current_meal_query_tool()
         except Exception as e:
             logger.error(f"Errore nel recupero informazioni pasto corrente: {str(e)}")
-            return {"error": f"Errore: {str(e)}", "success": False} 
+            return {"error": f"Errore: {str(e)}", "success": False}
+    
+
+    
+    def get_token_stats(self) -> Dict[str, Any]:
+        """
+        Ottiene le statistiche sui token utilizzati.
+        
+        Returns:
+            Dict con statistiche sui token e costi
+        """
+        try:
+            return self.token_tracker.get_conversation_stats()
+        except Exception as e:
+            logger.error(f"Errore nel recupero statistiche token: {str(e)}")
+            return {
+                "tokens": {"input": 0, "output": 0, "total": 0},
+                "costs": {"input_cost_usd": 0, "output_cost_usd": 0, "total_cost_usd": 0},
+                "usage": {"message_count": 0, "duration_minutes": 0}
+            } 
