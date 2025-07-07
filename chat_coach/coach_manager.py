@@ -11,7 +11,7 @@ from typing import Dict, List, Any, Optional
 from openai import OpenAI
 
 from services.token_cost_service import TokenCostTracker
-from .coach_prompts import get_coach_system_prompt, COACH_TOOLS_DEFINITIONS
+from .coach_prompts import get_coach_system_prompt, get_coach_initial_prompt, COACH_TOOLS_DEFINITIONS
 from .coach_tools import current_meal_query_tool, optimize_meal_portions
 
 # Configurazione logging
@@ -48,6 +48,18 @@ class CoachManager:
             system_prompt = get_coach_system_prompt()
             messages.append({"role": "system", "content": system_prompt})
             
+            # Se è la prima conversazione e non c'è cronologia, inizializza con il pasto corrente
+            if not conversation_history:
+                try:
+                    # Ottieni informazioni del pasto corrente
+                    current_meal_info = current_meal_query_tool()
+                    if current_meal_info.get("success"):
+                        # Aggiungi un messaggio iniziale con le informazioni del pasto
+                        initial_prompt = get_coach_initial_prompt(current_meal_info)
+                        messages.append({"role": "user", "content": initial_prompt})
+                except Exception as e:
+                    logger.warning(f"Impossibile pre-caricare informazioni pasto: {str(e)}")
+            
             # Aggiungi la cronologia conversazione
             if conversation_history:
                 messages.extend(conversation_history)
@@ -72,52 +84,57 @@ class CoachManager:
             
             messages.append({"role": "user", "content": user_msg_content})
             
-            # Chiamata a OpenAI
+            # Prima chiamata all'API
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
                 tools=COACH_TOOLS_DEFINITIONS,
                 tool_choice="auto",
-                max_tokens=4000,
-                temperature=0.7
+                temperature=0.3,
+                max_tokens=4000
             )
             
-            # Estrai la risposta
             message = response.choices[0].message
             
             # Traccia i token
-            self.token_tracker.track_message("assistant", message.content or "")
+            self.token_tracker.track_tokens(
+                prompt_tokens=response.usage.prompt_tokens,
+                completion_tokens=response.usage.completion_tokens
+            )
             
-            # Gestisci tool calls
+            # Se ci sono tool calls, eseguili
             if message.tool_calls:
+                # Aggiungi il messaggio dell'assistente con tool calls
+                messages.append(message)
+                
+                # Esegui tutti i tool calls
                 tool_results = []
                 for tool_call in message.tool_calls:
                     result = self._execute_tool_call(tool_call)
                     tool_results.append(result)
-                
-                # Aggiungi il messaggio con tool calls
-                messages.append(message)
-                
-                # Aggiungi i risultati dei tool
-                for i, tool_call in enumerate(message.tool_calls):
+                    
+                    # Aggiungi il risultato del tool
                     messages.append({
                         "role": "tool",
-                        "content": json.dumps(tool_results[i], ensure_ascii=False),
-                        "tool_call_id": tool_call.id
+                        "tool_call_id": tool_call.id,
+                        "content": json.dumps(result, ensure_ascii=False)
                     })
                 
                 # Seconda chiamata per la risposta finale
                 final_response = self.client.chat.completions.create(
                     model=self.model,
                     messages=messages,
-                    max_tokens=4000,
-                    temperature=0.7
+                    temperature=0.3,
+                    max_tokens=4000
                 )
                 
                 final_message = final_response.choices[0].message
                 
                 # Traccia i token della seconda chiamata
-                self.token_tracker.track_message("assistant", final_message.content or "")
+                self.token_tracker.track_tokens(
+                    prompt_tokens=final_response.usage.prompt_tokens,
+                    completion_tokens=final_response.usage.completion_tokens
+                )
                 
                 return {
                     "success": True,
@@ -164,91 +181,37 @@ class CoachManager:
     def initialize_coach_conversation(self, user_info: Dict[str, Any]) -> str:
         """
         Inizializza una conversazione con il coach nutrizionale.
+        Pre-carica le informazioni del pasto corrente.
         
         Args:
             user_info: Informazioni dell'utente
             
         Returns:
-            Messaggio di benvenuto del coach
+            Messaggio di benvenuto del coach con informazioni pasto corrente
         """
         try:
             # Crea un nuovo thread se non esiste
             if 'coach_thread_id' not in st.session_state:
-                # Per ora usiamo un ID semplice, in futuro potremmo usare OpenAI Assistants API
                 import time
                 st.session_state.coach_thread_id = f"coach_thread_{int(time.time())}"
             
-            # Messaggio di benvenuto personalizzato
-            welcome_message = f"""🌟 **Ciao! Sono il tuo Coach Nutrizionale personale!** Dimmi pure cosa hai in mente! 😊"""
-            
-            return welcome_message
+            # Messaggio di benvenuto semplice per l'utente
+            return "🌟 **Ciao! Sono il tuo Coach Nutrizionale.** Mi occuperò di seguirti nel tuo percorso nutrizionale."
             
         except Exception as e:
             logger.error(f"Errore nell'inizializzazione conversazione coach: {str(e)}")
-            return "Ciao! Sono il tuo Coach Nutrizionale. Come posso aiutarti oggi?"
-    
-    def chat_with_coach(self, user_message: str, thread_id: str, images: List[str] = None) -> str:
-        """
-        Gestisce una conversazione con il coach nutrizionale.
-        
-        Args:
-            user_message: Messaggio dell'utente
-            thread_id: ID del thread di conversazione
-            images: Lista di immagini in base64 (opzionale)
+            return "🌟 **Ciao! Sono il tuo Coach Nutrizionale.** Mi occuperò di seguirti nel tuo percorso nutrizionale."
             
+    def get_current_meal_info(self) -> Dict[str, Any]:
+        """
+        Ottiene le informazioni del pasto corrente.
+        Utile per debugging o per l'interfaccia utente.
+        
         Returns:
-            Risposta del coach
+            Dict con informazioni del pasto corrente
         """
         try:
-            # Recupera la cronologia della conversazione dalla sessione
-            conversation_history = []
-            if hasattr(st.session_state, 'coach_messages'):
-                # Converti i messaggi in formato OpenAI
-                for msg in st.session_state.coach_messages:
-                    if msg["role"] in ["user", "assistant"]:
-                        if msg["role"] == "user":
-                            # Gestisci messaggi utente con possibili immagini
-                            content = [{"type": "text", "text": msg["content"]}]
-                            if "images" in msg and msg["images"]:
-                                for image_data in msg["images"]:
-                                    content.append({
-                                        "type": "image_url",
-                                        "image_url": {"url": image_data}
-                                    })
-                            conversation_history.append({"role": "user", "content": content})
-                        else:
-                            conversation_history.append({"role": "assistant", "content": msg["content"]})
-            
-            # Prepara il messaggio corrente dell'utente
-            current_message_content = [{"type": "text", "text": user_message}]
-            
-            # Aggiungi immagini se presenti
-            if images:
-                for image_data in images:
-                    current_message_content.append({
-                        "type": "image_url",
-                        "image_url": {"url": image_data}
-                    })
-            
-            # Traccia il messaggio dell'utente
-            self.token_tracker.track_message("user", user_message)
-            
-            # Usa il metodo get_response esistente
-            result = self.get_response(
-                user_message=user_message,
-                images=images,  # Passa la lista di immagini
-                conversation_history=conversation_history
-            )
-            
-            if result.get("success"):
-                return result["content"]
-            else:
-                return "Mi dispiace, ho avuto un problema nel processare la tua richiesta. Puoi riprovare?"
-                
+            return current_meal_query_tool()
         except Exception as e:
-            logger.error(f"Errore nella chat con il coach: {str(e)}")
-            return "Mi dispiace, ho avuto un problema tecnico. Puoi riprovare?"
-
-    def get_token_stats(self) -> Dict[str, Any]:
-        """Restituisce le statistiche sui token"""
-        return self.token_tracker.get_conversation_stats() 
+            logger.error(f"Errore nel recupero informazioni pasto corrente: {str(e)}")
+            return {"error": f"Errore: {str(e)}", "success": False} 

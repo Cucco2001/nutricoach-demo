@@ -60,8 +60,8 @@ def render_user_sidebar():
             
             # Radio button per la selezione della modalità
             chat_mode = st.radio(
-                "Seleziona cosa vuoi fare:",
-                ["Crea Dieta", "Chiedi al Coach"],
+                "Cosa vuoi fare?",
+                ["Crea/Modifica Dieta", "Chiedi al Coach"],
                 key="chat_mode_selection"
             )
             
@@ -144,7 +144,19 @@ def initialize_chat_history():
             try:
                 # Invia il prompt iniziale usando il manager
                 response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
-                st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # Aggiungi il messaggio di presentazione all'inizio della prima risposta
+                welcome_message = """🌟 **Ciao! Sono il tuo Coach Nutrizionale specializzato nella generazione di diete personalizzate.** 
+
+Il mio compito è creare un piano alimentare su misura per te, basato sui tuoi dati personali, obiettivi e preferenze. Analizzerò tutti i parametri che mi hai fornito e ti guiderò passo dopo passo nella creazione della tua dieta settimanale completa.
+
+---
+
+"""
+                
+                # Combina il messaggio di benvenuto con la risposta dell'agente
+                full_response = welcome_message + response
+                st.session_state.messages.append({"role": "assistant", "content": full_response})
                 
                 # Traccia la risposta dell'assistente
                 st.session_state.token_tracker.track_message("assistant", response)
@@ -153,7 +165,7 @@ def initialize_chat_history():
                 st.session_state.user_data_manager.save_chat_message(
                     st.session_state.user_info["id"],
                     "assistant",
-                    response
+                    full_response
                 )
                 
                 # Rimuovi lo stato di generazione dopo aver completato tutto
