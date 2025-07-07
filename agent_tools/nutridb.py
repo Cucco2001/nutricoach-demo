@@ -301,6 +301,7 @@ class NutriDB:
             "hamburger di manzo": "carne_manzo",
             "sedano": "insalata",  
             "bistecca": "carne_manzo",
+            "carne": "carne_manzo",
             "bistecca manzo": "carne_manzo",
             "bistecca_manzo": "carne_manzo",
             "hamburger_pollo": "pollo_petto",

@@ -14,34 +14,64 @@ from frontend.buttons import handle_restart_button
 from frontend.tutorial import show_app_tutorial, is_tutorial_completed, are_all_sections_visited
 from agent.prompts import get_initial_prompt
 from services.token_cost_service import TokenCostTracker
+from chat_coach.coach_interface import coach_interface
 
 
 
 def render_user_sidebar():
     """
-    Renderizza la sidebar con le informazioni dell'utente.
+    Renderizza la sidebar con le informazioni dell'utente o la scelta della modalità.
     
-    Gestisce il form per inserire le informazioni iniziali o
-    mostra le informazioni esistenti con il pulsante ricomincia.
+    Mostra le informazioni utente prima dell'inizializzazione,
+    poi mostra la scelta della modalità di chat dopo l'inizializzazione.
     """
     with st.sidebar:
-        st.markdown("## 👤 Le Tue Info", unsafe_allow_html=True)
-        
-        # Se il tutorial non è completato, mostra sempre il form anche se ci sono dati salvati
+        # Controlla se il tutorial è completato
         tutorial_completed = is_tutorial_completed(st.session_state.user_info['id'])
         
-        if not st.session_state.user_info.get("età") or not tutorial_completed:
-            # Usa il modulo frontend per gestire il form delle informazioni utente
-            handle_user_info_form(
-                user_id=st.session_state.user_info["id"],
-                user_data_manager=st.session_state.user_data_manager,
-                create_new_thread_func=st.session_state.chat_manager.create_new_thread
-            )
-        else:
-            # Usa il modulo frontend per mostrare le informazioni utente
-            handle_user_info_display(st.session_state.user_info)
+        # Controlla se l'utente ha completato l'inizializzazione
+        user_initialized = (
+            st.session_state.user_info.get("età") and 
+            tutorial_completed and 
+            st.session_state.current_question >= len(NUTRITION_QUESTIONS)
+        )
+        
+        if not user_initialized:
+            # Prima dell'inizializzazione: mostra le informazioni utente
+            st.markdown("## 👤 Le Tue Info", unsafe_allow_html=True)
             
-            # Usa il modulo frontend per gestire il bottone "Ricomincia"
+            if not st.session_state.user_info.get("età") or not tutorial_completed:
+                # Usa il modulo frontend per gestire il form delle informazioni utente
+                handle_user_info_form(
+                    user_id=st.session_state.user_info["id"],
+                    user_data_manager=st.session_state.user_data_manager,
+                    create_new_thread_func=st.session_state.chat_manager.create_new_thread
+                )
+            else:
+                # Usa il modulo frontend per mostrare le informazioni utente
+                handle_user_info_display(st.session_state.user_info)
+        else:
+            # Dopo l'inizializzazione: mostra la scelta della modalità
+            st.markdown("## 🔄 Modalità Chat", unsafe_allow_html=True)
+            
+            # Inizializza la modalità se non esiste
+            if 'chat_mode' not in st.session_state:
+                st.session_state.chat_mode = "Crea Dieta"
+            
+            # Radio button per la selezione della modalità
+            chat_mode = st.radio(
+                "Seleziona cosa vuoi fare:",
+                ["Crea Dieta", "Chiedi al Coach"],
+                key="chat_mode_selection"
+            )
+            
+            # Aggiorna la modalità nella sessione
+            st.session_state.chat_mode = chat_mode
+            
+            # Separatore
+            st.markdown("---")
+            
+            # Pulsante per ricominciare (solo dopo l'inizializzazione)
             handle_restart_button(
                 user_data_manager=st.session_state.user_data_manager,
                 deepseek_manager=st.session_state.deepseek_manager,
@@ -291,6 +321,33 @@ def render_chat_area():
         # (il form sarà visibile nella sidebar)
         pass
 
+
+def render_coach_area():
+    """
+    Renderizza l'area del coach nutrizionale.
+    
+    Gestisce il flusso per la modalità coach dopo il tutorial e le domande nutrizionali.
+    """
+    # Prima controlla se il tutorial è stato completato
+    if not is_tutorial_completed(st.session_state.user_info['id']):
+        # Mostra il tutorial se non è stato completato
+        show_app_tutorial()
+        return
+    
+    if st.session_state.user_info.get("età"):
+        # Se ci sono ancora domande nutrizionali da gestire
+        if handle_nutrition_questions_flow():
+            return
+        
+        # Mostra l'interfaccia del coach
+        coach_interface()
+    else:
+        # Se non ci sono dati età, significa che l'utente deve ancora compilare il form
+        # ma il tutorial è già stato completato, quindi non mostriamo nulla
+        # (il form sarà visibile nella sidebar)
+        pass
+
+
 def chat_interface():
     """
     Interfaccia principale della chat.
@@ -307,8 +364,17 @@ def chat_interface():
     
     # L'assistente è ora creato in initialization.py
     
-    # Renderizza la sidebar delle informazioni utente
+    # Renderizza la sidebar (che ora gestisce anche la scelta della modalità)
     render_user_sidebar()
     
-    # Renderizza l'area principale della chat
-    render_chat_area() 
+    # Renderizza l'interfaccia appropriata in base alla modalità
+    # Se l'utente non ha ancora completato l'inizializzazione, usa la modalità default
+    if 'chat_mode' not in st.session_state:
+        st.session_state.chat_mode = "Crea Dieta"
+    
+    if st.session_state.chat_mode == "Crea Dieta":
+        # Modalità originale - crea/modifica dieta
+        render_chat_area()
+    else:
+        # Modalità Coach - consigli nutrizionali
+        render_coach_area() 
