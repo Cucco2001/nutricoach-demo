@@ -243,12 +243,12 @@ def coach_interface():
     
     # Mostra una breve descrizione
     st.markdown("""
-    💡 **Il tuo coach personale** è qui per aiutarti con consigli nutrizionali in tempo reale!
-    Puoi:
-    - Chiedere cosa mangiare in base all'ora attuale
-    - Caricare foto del tuo cibo per ricevere consigli
-    - Ottimizzare le porzioni dei tuoi pasti
-    - Ricevere suggerimenti personalizzati basati sulla tua dieta
+    **Il tuo Coach Nutrizionale 🚀**
+
+    ⏰ Consigli su cosa mangiare ora  
+    📸 Analisi istantanea del tuo piatto  
+    ⚖️ Porzioni perfette ogni giorno  
+    💬 Suggerimenti personalizzati, sempre per te!
     """)
     
     # Inizializza la conversazione del coach se non è stata inizializzata

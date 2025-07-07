@@ -56,13 +56,14 @@ def render_user_sidebar():
             
             # Inizializza la modalità se non esiste
             if 'chat_mode' not in st.session_state:
-                st.session_state.chat_mode = "Crea Dieta"
+                st.session_state.chat_mode = "Crea/Modifica Dieta"
             
             # Radio button per la selezione della modalità
             chat_mode = st.radio(
                 "Cosa vuoi fare?",
                 ["Crea/Modifica Dieta", "Chiedi al Coach"],
-                key="chat_mode_selection"
+                key="chat_mode_selection",
+                disabled=st.session_state.get('agent_generating', False)
             )
             
             # Aggiorna la modalità nella sessione
@@ -146,7 +147,7 @@ def initialize_chat_history():
                 response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
                 
                 # Aggiungi il messaggio di presentazione all'inizio della prima risposta
-                welcome_message = """🌟 **Ciao! Sono il tuo Coach Nutrizionale specializzato nella generazione di diete personalizzate.** 
+                welcome_message = """🥗 **Ciao! Sono il tuo Coach Nutrizionale specializzato nella generazione di diete personalizzate.** 
 
 Il mio compito è creare un piano alimentare su misura per te, basato sui tuoi dati personali, obiettivi e preferenze. Analizzerò tutti i parametri che mi hai fornito e ti guiderò passo dopo passo nella creazione della tua dieta settimanale completa.
 
@@ -382,9 +383,9 @@ def chat_interface():
     # Renderizza l'interfaccia appropriata in base alla modalità
     # Se l'utente non ha ancora completato l'inizializzazione, usa la modalità default
     if 'chat_mode' not in st.session_state:
-        st.session_state.chat_mode = "Crea Dieta"
+        st.session_state.chat_mode = "Crea/Modifica Dieta"
     
-    if st.session_state.chat_mode == "Crea Dieta":
+    if st.session_state.chat_mode == "Crea/Modifica Dieta":
         # Modalità originale - crea/modifica dieta
         render_chat_area()
     else:

@@ -196,11 +196,11 @@ class CoachManager:
                 st.session_state.coach_thread_id = f"coach_thread_{int(time.time())}"
             
             # Messaggio di benvenuto semplice per l'utente
-            return "🌟 **Ciao! Sono il tuo Coach Nutrizionale.** Mi occuperò di seguirti nel tuo percorso nutrizionale."
+            return "🥗 **Ciao! Sono il tuo Coach Nutrizionale.** Mi occuperò di seguirti nel tuo percorso nutrizionale."
             
         except Exception as e:
             logger.error(f"Errore nell'inizializzazione conversazione coach: {str(e)}")
-            return "🌟 **Ciao! Sono il tuo Coach Nutrizionale.** Mi occuperò di seguirti nel tuo percorso nutrizionale."
+            return "🥗 **Ciao! Sono il tuo Coach Nutrizionale.** Mi occuperò di seguirti nel tuo percorso nutrizionale."
             
     def get_current_meal_info(self) -> Dict[str, Any]:
         """

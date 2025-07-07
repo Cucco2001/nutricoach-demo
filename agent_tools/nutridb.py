@@ -115,7 +115,8 @@ class NutriDB:
             "fiocchi", "fiocchi di", "fiocchi d'", "mista", "miste", "passata", "passate", "passato", "passati", 
             "passata d'", "passato d'", "passate d'", "passati d'", "passata di", "passato di", "passate di", "passati di",
             "spalmabile", "spalmabili", "light", "magro", "magra", "magri", "magre", "grigliato", "grigliati", "grigliata", "grigliate",
-            "Jasmine", "Jasmin"
+            "Jasmine", "Jasmin", "di albicocche", "di fragole", "di ciliegie", "di frutti rossi", "di frutti di bosco", "di frutta",
+            "di mela", "di prugne", "di pesca"
         ]
         
         # Base mapping dalle chiavi del database

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-24T17:11:40.596968",
+  "timestamp": "2025-07-07T18:06:47.669113",
   "user_id": "user_1749307414",
   "debug_type": "conversazione_completa_con_estrazione",
   "interazioni": {
@@ -10,10 +10,17 @@
       "peso": 70,
       "altezza": 170,
       "attività": "Sedentario",
-      "obiettivo": "Mantenimento",
+      "obiettivo": "Aumento di peso",
       "nutrition_answers": {
         "allergies": {
           "answer": "No",
+          "follow_up": null
+        },
+        "weight_goal": {
+          "answer": {
+            "kg": 5,
+            "months": 3
+          },
           "follow_up": null
         },
         "sports": {
@@ -25,14 +32,85 @@
           "follow_up": null
         }
       },
-      "agent_qa": []
+      "agent_qa": [
+        {
+          "question": "continua",
+          "answer": "✓ FASE 2 - CALCOLO DEL FABBISOGNO ENERGETICO\n\n⚡ Sto elaborando: Sto calcolando il tuo metabolismo basale (quante calorie bruci a riposo), il fabbisogno quotidiano in base allo stile di vita sedentario, e poi aggiungo il surplus calorico necessario per raggiungere il tuo obiettivo di aumentare 5 kg in 3 mesi.\n\n📊 Risultati intermedi:\n\n1. Calcolo del metabolismo basale e fabbisogno energetico di base:\n   - Peso: 70 kg\n   - Altezza: 170 cm\n   - Età: 30 anni\n   - Sesso: Maschio\n   - Livello di attività: Sedentario\n   - Formula utilizzata: Harris & Benedict\n\n   Metabolismo basale (BMR) = 1672 kcal/giorno  \n   Fabbisogno energetico quotidiano (BMR * LAF) = 1672 * 1.3 = 2173 kcal/giorno\n\n   Non pratichi sport, quindi il dispendio degli sport è 0 kcal/giorno.\n\n2. Calcolo surplus calorico per aumento peso:\n   - Obiettivo: +5 kg in 3 mesi (circa +1.67 kg/mese)\n   - Surplus calorico suggerito: +428 kcal/giorno\n   - Fabbisogno energetico totale = 2173 + 428 = 2601 kcal/giorno\n\n   Attenzione: L'aumento richiesto (1.7 kg/mese) è superiore al ritmo consigliabile di massimo 1 kg/mese per ridurre l’aumento di grasso rispetto a quello muscolare.\n\n📚 Fonti utilizzate:\n- Formula Harris & Benedict per il metabolismo basale (fonte scientifica consolidata)\n- Valori di attività fisica standardizzati OMS/NIH\n- Calcolo surplus: tool basato su modelli energetici validati nella letteratura scientifica\n\n❓ Ho bisogno del tuo input su:\nVuoi continuare con questo ritmo di aumento (accettando un possibile aumento maggiore di grasso) o preferisci procedere più lentamente per massimizzare i risultati sulla composizione corporea?\n\n➡️ Conclusione:\nSe vuoi proseguire con questo surplus calorico, il tuo fabbisogno sarà 2601 kcal/giorno per aumentare 5 kg in 3 mesi. Fammi sapere se vuoi modificare il ritmo di aumento o se vuoi andare avanti! Hai domande sui calcoli fatti? Vuoi passare alla fase successiva e vedere la suddivisione dei macronutrienti?",
+          "timestamp": 1751634429.6009073
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 3 - CALCOLO MACRONUTRIENTI\n\n⚡ Sto elaborando: Ora distribuisco le calorie tra proteine, grassi e carboidrati, costruendo una base equilibrata per la tua dieta di aumento peso. I valori tengono conto delle linee guida nutrizionali italiane (LARN) e delle attività svolte.\n\n📊 Risultati intermedi:\n\n1. Calorie totali: 2601 kcal/giorno\n\n2. Proteine\n- Fabbisogno proteico = 0.66 g per kg corporeo (valore per persona sedentaria secondo OMS)\n- Calcolo: 0.66 * 70 = 46 g proteine al giorno\n- Kcal da proteine: 46 * 4 = 184 kcal (7% delle calorie totali)\n\n3. Grassi\n- Percentuale consigliata: 25% (nel range LARN di 20-35%)\n- Calcolo: 2601 * 0.25 = 650 kcal da grassi; 650 / 9 = 72 g grassi al giorno\n\n4. Carboidrati\n- Kcal rimanenti per i carboidrati: 2601 - (184 + 650) = 1767 kcal\n- Grammi di carboidrati: 1767 / 4 = 442 g carboidrati al giorno\n\nRiepilogo (arrotondati):\n- Kcal totali: 2601\n- Proteine: 46 g (7%)\n- Grassi: 72 g (25%)\n- Carboidrati: 442 g (68%)\n\n📚 Fonti utilizzate:\n- Fabbisogno proteico: OMS, Phillips et al. 2011, Project Invictus per confronto\n- LARN 2023 (Società Italiana Nutrizione Umana) per livelli consigliati di grassi e carboidrati\n\n❓ Ho bisogno del tuo input su:\nQuesta suddivisione è adatta per sostenere un aumento di peso equilibrato. Se vuoi aumentare leggermente le proteine per aiutare la costruzione muscolare, posso adattare la quota. Vuoi mantenere questi valori o preferisci un aggiustamento (ad esempio proteine più alte)?\n\n➡️ Conclusione:\nSe va bene questa ripartizione, posso procedere con la suddivisione nei pasti della giornata. Hai domande o vuoi modificare qualcosa? Vuoi andare avanti con la suddivisione delle calorie e macronutrienti tra i pasti?",
+          "timestamp": 1751655027.395119
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 4 - DISTRIBUZIONE CALORIE E MACRONUTRIENTI TRA I PASTI\n\n⚡ Cosa sto facendo? \nAdesso distribuisco le calorie totali e i macronutrienti della giornata (proteine, carboidrati, grassi) tra i pasti principali. Non vado ancora a selezionare cibi specifici, ma solo la suddivisione numerica per ogni pasto.\n\nPoiché non hai indicato preferenze su numero o orari dei pasti, seguirò la suddivisione standard con 4 pasti:\n\n- Colazione: 25%\n- Pranzo: 35%\n- Spuntino pomeriggio: 10%\n- Cena: 30%\n\nSuddivisione (approssimata per difetto):\n\nCalorie totali: 2601 kcal\n\n🌅 COLAZIONE (25%): 650 kcal \n- Proteine: 12 g\n- Carboidrati: 111 g\n- Grassi: 18 g\n\n🍽️ PRANZO (35%): 910 kcal \n- Proteine: 16 g\n- Carboidrati: 155 g\n- Grassi: 25 g\n\n🥨 SPUNTINO (10%): 260 kcal \n- Proteine: 5 g\n- Carboidrati: 44 g\n- Grassi: 7 g\n\n🌙 CENA (30%): 780 kcal \n- Proteine: 13 g\n- Carboidrati: 132 g\n- Grassi: 22 g\n\n📚 Fonti utilizzate:\n- Linee guida SINU/LARN (2023) per distribuzione pasti e fabbisogno macronutrienti/energia\n\n❓ Ho bisogno del tuo input su:\nQuesta proposta standard ti va bene, o preferiresti cambiare il numero o la distribuzione dei pasti? (Posso anche adattare in base a colazione/pranzo/cena/spuntini a tua scelta!)\n\n➡️ Conclusione:\nAdesso posso passare a costruire i singoli pasti bilanciati con cibi specifici, uno alla volta. Hai domande su come vengono suddivisi i nutrienti? Vuoi procedere con la creazione della colazione?",
+          "timestamp": 1751902885.7099195
+        },
+        {
+          "question": "continua",
+          "answer": "Sto iniziando a creare la colazione, il primo pasto della giornata, che deve fornire: \n- Circa 650 kcal \n- 12 g proteine\n- 111 g carboidrati\n- 18 g grassi\n\nIn questa fase seleziono 3-4 alimenti della tradizione mediterranea/internazionale (adatti alla colazione) e poi calibrerò le quantità usando un sistema automatico per rispettare i tuoi target nutrizionali.\n\n⚠️ Piccola pausa: sto rivalutando la scelta degli alimenti perché alcuni non sono stati trovati nel database. È normale adattare la combinazione di ingredienti per rispecchiare sia le tue abitudini che le possibilità pratiche.\n\n❓Ti propongo una combinazione collaudata per la colazione:\n- Latte scremato\n- Fette biscottate\n- Marmellata\n\nPosso procedere con questa scelta e ottimizzare le quantità per raggiungere l’obiettivo della colazione? Vuoi cambiarla o aggiungere qualche altro alimento (yogurt, pane, miele, frutta...)?",
+          "timestamp": 1751903096.4678838
+        },
+        {
+          "question": "continua",
+          "answer": "Devo adattare la scelta degli alimenti per la colazione perché la marmellata di albicocche non risulta disponibile nel database.\n\nProcedo con questa combinazione semplice e accessibile:\n- latte scremato\n- fette biscottate\n- miele\n\nPosso procedere così per ottimizzare le quantità? Oppure vuoi indicare tu una preferenza tra miele, zucchero, biscotti secchi o altra fonte zuccherina?",
+          "timestamp": 1751903154.27085
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 5 - CREAZIONE PASTO: COLAZIONE\n\n⚡ Cosa sto facendo?\nHo costruito la tua colazione scegliendo alimenti comuni, ottimizzando con porzioni precise per avvicinarci ai tuoi target di calorie e macronutrienti (seguendo la tradizione mediterranea). Ho anche inserito la frutta secca per raggiungere la quota lipidica.\n\n🌅 COLAZIONE (578 kcal)\n\n• **Latte scremato**: 100 g → 🥛 mezzo bicchiere  \n  P: 3.6 g, C: 5.3 g, G: 0.2 g  \n  (Sostituti: 90 g di yogurt magro, 80 g di latte parzialmente scremato)\n\n• **Fette biscottate**: 60 g → 🍞 8 fette  \n  P: 6.8 g, C: 45.0 g, G: 3.6 g  \n  (Sostituti: 60 g di muesli, 60 g di biscotti secchi)\n\n• **Miele**: 40 g → 🍯 2 cucchiai abbondanti  \n  P: 0.2 g, C: 32.1 g, G: 0 g  \n  (Sostituti: 50 g di marmellata, 30 g di cornflakes)\n\n• **Mandorle**: 30 g → 🥜 1 manciata (circa 20-25 mandorle)  \n  P: 6.6 g, C: 1.4 g, G: 16.6 g  \n  (Sostituti: 30 g di nocciole, 30 g di arachidi)\n\nTotale pasto:  \nP: 17 g, C: 84 g, G: 20 g\n\n💡 Ricetta energizzante:  \nSpalma il miele sulle fette biscottate, accompagnale con il latte freddo o tiepido. Le mandorle puoi gustarle a parte, per masticare consapevolmente.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA: valori nutrizionali degli alimenti tipici italiani\n- LARN/SINU: livelli raccomandati nutrienti\n\n❓ Ho bisogno del tuo input su:\nTi piace questa colazione? Vuoi qualche modifica negli ingredienti (ad esempio nessuna frutta secca, più latte, aggiunta di frutta fresca)? Vuoi vedere ora come verrà strutturato il pranzo?\n\n➡️ Conclusione:\nFammi sapere se preferisci modificare la colazione o se vuoi continuare con il prossimo pasto! Se hai domande su porzioni, sostituti o ricetta, chiedimi pure!",
+          "timestamp": 1751903191.4878185
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 5 - CREAZIONE PASTO: PRANZO\n\n⚡ Cosa sto facendo?\nHo ottimizzato il pranzo per darti energia e varietà durante la giornata, utilizzando alimenti semplici e gustosi tipici della tradizione mediterranea, bilanciati secondo i tuoi target nutrizionali.\n\n🍽️ PRANZO (821 kcal)\n\n• **Riso**: 170 g → 🍚 1 piatto abbondante (circa 1 tazza e mezza cotto)  \n  P: 15.3 g, C: 140.9 g, G: 3.2 g  \n  (Sostituti: 180 g di riso integrale, 180 g di orzo)\n\n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai  \n  P: 0 g, C: 0 g, G: 20 g  \n  (Sostituti: 20 g di burro, 80 g di avocado)\n\n• **Zucchine**: 100 g → 🥒 1 ciotola media  \n  P: 1.9 g, C: 1.7 g, G: 0.1 g  \n  (Sostituti: 100 g di verdure miste, 60 g di cavolfiore)\n\nTotale pasto:  \nP: 17 g, C: 143 g, G: 23 g\n\n💡 Ricetta semplice:\nCuoci il riso, saltalo a fuoco vivace con le zucchine tagliate a rondelle e unisci l’olio a crudo a fine preparazione. Puoi aggiungere erbe aromatiche a piacere (basilico, prezzemolo) per più sapore.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA\n- LARN/SINU (riferimenti nutritivi)\n\n❓ Ho bisogno del tuo input su:\nQuesto pasto fa per te o preferisci inserire una fonte proteica maggiore (ad esempio petto di pollo, fagioli, tonno...)? Vuoi vedere subito la merenda/spuntino o desideri modificare qualche ingrediente o quantità?\n\n➡️ Conclusione:\nFammi sapere se vuoi variare il pranzo o se passo alla creazione dello spuntino pomeridiano! Per qualsiasi dubbio su porzioni, sostituti o ricetta, sono qui per chiarire!",
+          "timestamp": 1751903250.1462986
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 5 - CREAZIONE PASTO: SPUNTINO POMERIDIANO\n\n⚡ Cosa sto facendo?\nHo scelto uno spuntino pratico e leggero che unisce latticini magri, frutta e frutta secca per fornirti energia stabile e bilanciata nel pomeriggio.\n\n🥨 SPUNTINO (182 kcal)\n\n• **Yogurt magro**: 100 g → 🥄 1 vasetto medio  \n  P: 4.3 g, C: 5.6 g, G: 0.1 g  \n  (Sostituti: 110 g di latte scremato, 90 g di latte parzialmente scremato)\n\n• **Mela**: 170 g → 🍏 1 mela grande  \n  P: 0.3 g, C: 18.9 g, G: 0.2 g  \n  (Sostituti: 190 g di albicocche, 160 g di ciliegie)\n\n• **Mandorle**: 10 g → 🥜 7-8 mandorle  \n  P: 2.2 g, C: 0.5 g, G: 5.5 g  \n  (Sostituti: 10 g di nocciole, 10 g di arachidi)\n\nTotale pasto:  \nP: 7 g, C: 25 g, G: 6 g\n\n💡 Idea pratica:\nTaglia la mela a spicchi e gustala con lo yogurt magro, aggiungendo le mandorle per croccantezza. È uno spuntino fresco e saziante!\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (dati nutrizionali)\n- LARN/SINU\n\n❓ Ho bisogno del tuo input su:\nVuoi modificare qualcosa nello spuntino (aggiungere altra frutta, cambiare tipo di yogurt, ecc.) oppure passi alla cena?\n\n➡️ Conclusione:\nSe questo spuntino ti va bene, preparo la cena! Per ogni domanda su misure o sostituti, sono qui per te! Vuoi andare avanti con la cena?",
+          "timestamp": 1751903368.4268181
+        },
+        {
+          "question": "continua",
+          "answer": "✓ FASE 5 - CREAZIONE PASTO: CENA\n\n⚡ Cosa sto facendo?\nHo ottimizzato la cena scegliendo ingredienti tipici e bilanciati, sostituendo il pane integrale con patate per raggiungere meglio la quota di carboidrati prevista. Ho mantenuto una fonte proteica di alta qualità (uova), verdura e grassi buoni.\n\n🌙 CENA (652 kcal)\n\n• **Patate**: 500 g → 🥔 2 patate grandi  \n  P: 10.0 g, C: 80.0 g, G: 0.5 g  \n  (Sostituti: 130 g di pane bianco, 110 g di riso integrale)\n\n• **Uova**: 60 g → 🥚 1 uovo medio  \n  P: 7.4 g, C: 0 g, G: 5.2 g  \n  (Sostituti: 50 g di sgombro, 50 g di ricotta)\n\n• **Spinaci**: 100 g → 🥬 1 piatto abbondante  \n  P: 3.4 g, C: 2.9 g, G: 0.7 g  \n  (Sostituti: 110 g di broccoli, 120 g di cavolfiore)\n\n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai  \n  P: 0 g, C: 0 g, G: 20.0 g  \n  (Sostituti: 20 g di burro, 80 g di avocado)\n\nTotale pasto:  \nP: 21 g, C: 83 g, G: 26 g\n\n💡 Ricetta veloce:\nCuoci le patate al vapore o al forno e condiscile con olio a crudo. Servile insieme a spinaci saltati in padella e una semplice frittata con un uovo. Puoi aggiungere spezie o erbe (pepe, noce moscata, prezzemolo) a piacere.\n\n📚 Fonti utilizzate:\n- Banca Dati CREA (per i valori nutrizionali)\n- LARN/SINU (standard nutrizionali)\n\n❓ Ho bisogno del tuo input su:\nDesideri aumentare la quota proteica della cena (ad esempio aggiungendo un'altra fonte proteica)? Oppure questa proposta ti soddisfa? Se vuoi, posso ora generare la settimana completa.\n\n➡️ Conclusione:\nFammi sapere se vuoi modifiche alla cena, o se vuoi che generi la dieta settimanale completa con variazioni gustose! Hai domande sulle porzioni o vuoi chiarimenti?",
+          "timestamp": 1751903489.7042878
+        },
+        {
+          "question": "continua",
+          "answer": "🗓️ **GIORNO 2 - MARTEDÌ**\n\n🌅 **COLAZIONE**  \n• **Pane integrale**: 120 g → 🍞 4 fette grandi  \n• **Burro di arachidi**: 30 g → 🥄 2 cucchiai  \n• **Marmellata**: 30 g → 🍯 2 cucchiaini abbondanti  \n\n🍽️ **PRANZO**  \n• **Riso basmati**: 70 g → 🍚 1 mezza tazza cotto  \n• **Gamberi**: 70 g → 🍤 8-10 gamberi medi  \n• **Zucchine**: 100 g → 🥒 1 ciotola media  \n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai  \n\n🥨 **SPUNTINO POMERIDIANO**  \n• **Grissini**: 20 g → 🥖 4-5 grissini piccoli  \n• **Parmigiano**: 30 g → 🍢 3 cubetti piccoli  \n\n🌙 **CENA**  \n(Nessun dato fornito in output tool: ti suggerisco di ripetere la cena giorno 1, oppure desideri un suggerimento specifico?)\n\n---\n\n🗓️ **GIORNO 3 - MERCOLEDÌ**\n\n🌅 **COLAZIONE**  \n• **Latte scremato**: 100 g → 🥛 mezzo bicchiere  \n• **Fette biscottate**: 60 g → 🍞 8 fette  \n• **Miele**: 40 g → 🍯 2 cucchiai abbondanti  \n• **Mandorle**: 30 g → 🥜 1 manciata (20-25 mandorle)  \n\n🍽️ **PRANZO**  \n• **Riso**: 170 g → 🍚 1 piatto abbondante  \n• **Pomodorini**: 240 g → 🍅 1 ciotola grande  \n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai  \n\n🥨 **SPUNTINO POMERIDIANO**  \n• **Yogurt magro**: 100 g → 🥄 1 vasetto  \n• **Mela**: 170 g → 🍏 1 mela grande  \n• **Mandorle**: 10 g → 🥜 7-8 mandorle  \n\n🌙 **CENA**  \n(Nessun dato fornito in output tool: preferisci ripetere la struttura del giorno 1 o vuoi suggerimenti diversi?)\n\n---\n\n🗓️ **GIORNO 4 - GIOVEDÌ**\n\n🌅 **COLAZIONE**  \n• **Cornflakes**: 60 g → 🥣 2 tazze  \n• **Latte scremato**: 100 g → 🥛 mezzo bicchiere  \n• **Kiwi**: 300 g → 🥝 3 kiwi medi  \n• **Mandorle**: 30 g → 🥜 1 manciata (20-25 mandorle)  \n\n🍽️ **PRANZO**  \n• **Farro**: 60 g → 🍚 mezza tazza cotto  \n• **Lenticchie**: 100 g → 🥫 4 cucchiai  \n• **Carote**: 100 g → 🥕 1 carota grande  \n• **Avocado**: 10 g → 🥑 1 fetta sottile  \n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai  \n• **Pane**: 60 g → 🍞 2 fette  \n\n🥨 **SPUNTINO POMERIDIANO**  \n• **Pan bauletto**: 60 g → 🍞 2 fette  \n• **Fesa di tacchino**: 50 g → 🍗 2 fette  \n• **Mandorle**: 10 g → 🥜 7-8 mandorle  \n\n🌙 **CENA**  \n(Nessun dato fornito in output tool: suggerisco alternanza tra uova, pesce, carne magra o legumi, vuoi che proponga una struttura specifica?)\n\n---\n\n📚 Fonti utilizzate:  \n- Ottimizzazione porzioni: dati CREA, LARN, tool automatizzato  \n- Misure casalinghe: adattamento standard per chiarezza e praticità  \n\n📄 I sostituti e la tabella completa saranno presenti anche nel PDF finale nella sezione “Piano Nutrizionale”.\n\n❓ Hai preferenze sulle cene mancanti? Vuoi che suggerisca io delle alternative per completare la tua settimana, o vuoi vedere subito giorni 5-7?\n\n➡️ Conclusione:  \nStai trovando utile la varietà proposta? Vuoi cambiare qualcosa nella struttura dei pasti finora? Fammi sapere come vuoi proseguire oppure se desideri adattamenti!",
+          "timestamp": 1751903621.1259558
+        },
+        {
+          "question": "ripeti",
+          "answer": "Certo! Ecco la dieta settimanale dei giorni 2-4 in formato chiaro, con alimenti, grammature e misure casalinghe:\n\n---\n\n🗓️ **GIORNO 2 - MARTEDÌ**\n\n🌅 **COLAZIONE**  \n• **Pane integrale**: 120 g → 🍞 4 fette grandi  \n• **Burro di arachidi**: 30 g → 🥄 2 cucchiai  \n• **Marmellata**: 30 g → 🍯 2 cucchiaini colmi\n\n🍽️ **PRANZO**  \n• **Riso basmati**: 70 g → 🍚 mezza tazza cotto  \n• **Gamberi**: 70 g → 🍤 7-8 gamberi medi  \n• **Zucchine**: 100 g → 🥒 1 ciotola media  \n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai\n\n🥨 **SPUNTINO POMERIDIANO**  \n• **Grissini**: 20 g → 🥖 4-5 grissini piccoli  \n• **Parmigiano**: 30 g → 🧀 3 cubetti o 2 cucchiai abbondanti grattugiato\n\n🌙 **CENA**  \n(Puoi alternare una delle cene proposte nei giorni precedenti o se vuoi ne suggerisco una a parte!)\n\n---\n\n🗓️ **GIORNO 3 - MERCOLEDÌ**\n\n🌅 **COLAZIONE**  \n• **Latte scremato**: 100 g → 🥛 mezzo bicchiere  \n• **Fette biscottate**: 60 g → 🍞 8 fette  \n• **Miele**: 40 g → 🍯 2 cucchiai abbondanti  \n• **Mandorle**: 30 g → 🥜 1 manciata (20-25 mandorle)\n\n🍽️ **PRANZO**  \n• **Riso**: 170 g → 🍚 1 piatto abbondante  \n• **Pomodorini**: 240 g → 🍅 1 ciotola grande  \n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai\n\n🥨 **SPUNTINO POMERIDIANO**  \n• **Yogurt magro**: 100 g → 🥄 1 vasetto  \n• **Mela**: 170 g → 🍏 1 mela grande  \n• **Mandorle**: 10 g → 🥜 7-8 mandorle\n\n🌙 **CENA**  \n(Puoi scegliere se ripetere una delle cene già viste o desideri una nuova proposta?)\n\n---\n\n🗓️ **GIORNO 4 - GIOVEDÌ**\n\n🌅 **COLAZIONE**  \n• **Cornflakes**: 60 g → 🥣 2 tazze  \n• **Latte scremato**: 100 g → 🥛 mezzo bicchiere  \n• **Kiwi**: 300 g → 🥝 3 kiwi medi  \n• **Mandorle**: 30 g → 🥜 1 manciata (20-25 mandorle)\n\n🍽️ **PRANZO**  \n• **Farro**: 60 g → 🍚 mezza tazza cotto  \n• **Lenticchie**: 100 g → 🥫 4 cucchiai  \n• **Carote**: 100 g → 🥕 2 carote piccole  \n• **Avocado**: 10 g → 🥑 1 fettina  \n• **Olio extravergine di oliva**: 20 g → 🫒 2 cucchiai  \n• **Pane**: 60 g → 🍞 2 fette\n\n🥨 **SPUNTINO POMERIDIANO**  \n• **Pan bauletto**: 60 g → 🍞 2 fette  \n• **Fesa di tacchino**: 50 g → 🍗 2 fette grandi  \n• **Mandorle**: 10 g → 🥜 7-8 mandorle\n\n🌙 **CENA**  \n(Se vuoi una cena specifica, chiedimela, oppure alterna tra quelle già proposte!)\n\n---\n\n📚 Fonti utilizzate:  \n- Banca Dati CREA\n- LARN/SINU\n- Tool di ottimizzazione porzioni\n\n📄 Ricorda: tutti i sostituti, dettagli nutrizionali e la settimana completa saranno presenti anche nel PDF finale nella tua area “Piano Nutrizionale”.\n\n❓ Vuoi una proposta cena specifica per questi giorni o preferisci mantenere la struttura già vista? Posso ora generare giorni 5-6-7, ti va bene proseguire così?\n\n➡️ Conclusione:  \nTutto chiaro fin qui? Vuoi modifiche o preferenze sulle cene dei giorni 2, 3, 4? Vuoi procedere alla seconda parte della settimana?",
+          "timestamp": 1751903707.790204
+        },
+        {
+          "question": "mi mostri l'output del tool?",
+          "answer": "Certo! Ecco l’output dettagliato del tool di generazione automatica dei giorni 2-4, con ingredienti, grammature precise e macronutrienti effettivi di ogni pasto (come fornito dal sistema automatico):\n\n---\n\n## GIORNO 2\n\n### COLAZIONE\n- **Pane integrale**: 120 g  \n- **Burro di arachidi**: 30 g  \n- **Marmellata**: 30 g  \n\nTarget pasto: 650 kcal, 12 g proteine, 111 g carboidrati, 18 g grassi  \nValori effettivi: 524.4 kcal, 17.8 g proteine, 72.9 g carboidrati, 17.7 g grassi\n\n### PRANZO\n- **Riso basmati**: 70 g  \n- **Gamberi**: 70 g  \n- **Zucchine**: 100 g  \n- **Olio oliva**: 20 g  \n\nTarget pasto: 910 kcal, 16 g proteine, 155 g carboidrati, 25 g grassi  \nValori effettivi: 503.4 kcal, 17.7 g proteine, 61.8 g carboidrati, 21.8 g grassi\n\n### SPUNTINO POMERIDIANO\n- **Grissini**: 20 g  \n- **Parmigiano**: 30 g  \n\nTarget pasto: 260 kcal, 5 g proteine, 44 g carboidrati, 7 g grassi  \nValori effettivi: 203.3 kcal, 12 g proteine, 13 g carboidrati, 11.7 g grassi\n\n---\n\n## GIORNO 3\n\n### COLAZIONE\n- **Latte scremato**: 100 g  \n- **Fette biscottate**: 60 g  \n- **Miele**: 40 g  \n- **Mandorle**: 30 g  \n\nTarget pasto: 650 kcal, 12 g proteine, 111 g carboidrati, 18 g grassi  \nValori effettivi: 578.2 kcal, 17.2 g proteine, 83.8 g carboidrati, 20.4 g grassi\n\n### PRANZO\n- **Riso**: 170 g  \n- **Pomodorini**: 240 g  \n- **Olio oliva**: 20 g  \n\nTarget pasto: 910 kcal, 16 g proteine, 155 g carboidrati, 25 g grassi  \nValori effettivi: 858.9 kcal, 17.7 g proteine, 149.3 g carboidrati, 23.7 g grassi\n\n### SPUNTINO POMERIDIANO\n- **Yogurt magro**: 100 g  \n- **Mela**: 170 g  \n- **Mandorle**: 10 g  \n\nTarget pasto: 260 kcal, 5 g proteine, 44 g carboidrati, 7 g grassi  \nValori effettivi: 182 kcal, 6.8 g proteine, 24.9 g carboidrati, 5.8 g grassi\n\n---\n\n## GIORNO 4\n\n### COLAZIONE\n- **Cornflakes**: 60 g  \n- **Latte scremato**: 100 g  \n- **Kiwi**: 300 g  \n- **Mandorle**: 30 g  \n\nTarget pasto: 650 kcal, 12 g proteine, 111 g carboidrati, 18 g grassi  \nValori effettivi: 588.6 kcal, 17.8 g proteine, 86.1 g carboidrati, 19.1 g grassi\n\n### PRANZO\n- **Farro**: 60 g  \n- **Lenticchie**: 100 g  \n- **Carote**: 100 g  \n- **Avocado**: 10 g  \n- **Olio oliva**: 20 g  \n- **Pane**: 60 g  \n\nTarget pasto: 910 kcal, 16 g proteine, 155 g carboidrati, 25 g grassi  \nValori effettivi: 708.2 kcal, 20.2 g proteine, 97.6 g carboidrati, 23.9 g grassi\n\n### SPUNTINO POMERIDIANO\n- **Pan bauletto**: 60 g  \n- **Fesa di tacchino**: 50 g  \n- **Mandorle**: 10 g  \n\nTarget pasto: 260 kcal, 5 g proteine, 44 g carboidrati, 7 g grassi  \nValori effettivi: 277.1 kcal, 19.1 g proteine, 36.4 g carboidrati, 6.4 g grassi\n\n---\n\n**Nota:** Le cene per questi giorni non sono state generate dal tool nell’output ricevuto (posso completarle in modo coerente e abbinarle su richiesta).\n\n📚 Fonti utilizzate:  \n- Tool interno di ottimizzazione porzioni (su dati CREA/LARN)\n- Banca dati alimenti ufficiali italiani\n\n❓Vuoi che ti integri le cene di questi giorni? Ti interessa sapere come puoi adattare la giornata per essere più vicino ai target calorici/macronutrienti previsti? Vuoi proseguire con venerdì-sabato-domenica?",
+          "timestamp": 1751903966.988459
+        },
+        {
+          "question": "riprova e vedi se ora ti da la cena",
+          "answer": "Ecco l’output grezzo del tool per i giorni 2-4, comprensivo di tutte le cene e i dettagli nutrizionali:\n\n---\n\n**GIORNO 2**\n\n**Colazione**\n- Pane integrale: 120 g \n- Burro di arachidi: 30 g \n- Marmellata: 30 g \n- Totale: 524.4 kcal, 17.8 g proteine, 72.9 g carboidrati, 17.7 g grassi\n\n**Pranzo**\n- Riso basmati: 70 g \n- Gamberi: 70 g \n- Zucchine: 100 g \n- Olio oliva: 20 g \n- Totale: 503.4 kcal, 17.7 g proteine, 61.8 g carboidrati, 21.8 g grassi\n\n**Spuntino pomeridiano**\n- Grissini: 20 g \n- Parmigiano: 30 g \n- Totale: 203.3 kcal, 12.0 g proteine, 13.0 g carboidrati, 11.7 g grassi\n\n**Cena**\n- Petto di tacchino: 50 g \n- Patate: 230 g \n- Fagiolini: 210 g \n- Olio oliva: 20 g \n- Pane: 60 g \n- Totale: 610.1 kcal, 25.9 g proteine, 77.7 g carboidrati, 21.5 g grassi\n\n---\n\n**GIORNO 3**\n\n**Colazione**\n- Latte scremato: 100 g \n- Fette biscottate: 60 g \n- Miele: 40 g \n- Mandorle: 30 g \n- Totale: 578.2 kcal, 17.2 g proteine, 83.8 g carboidrati, 20.4 g grassi\n\n**Pranzo**\n- Riso: 170 g \n- Pomodorini: 240 g \n- Olio oliva: 20 g \n- Totale: 858.9 kcal, 17.7 g proteine, 149.3 g carboidrati, 23.7 g grassi\n\n**Spuntino pomeridiano**\n- Yogurt magro: 100 g \n- Mela: 170 g \n- Mandorle: 10 g \n- Totale: 182 kcal, 6.8 g proteine, 24.9 g carboidrati, 5.8 g grassi\n\n**Cena**\n- Pesce spada: 70 g \n- Pane bianco: 70 g \n- Asparagi: 100 g \n- Olio oliva: 40 g \n- Totale: 688.0 kcal, 24.1 g proteine, 45.6 g carboidrati, 43.2 g grassi\n\n---\n\n**GIORNO 4**\n\n**Colazione**\n- Cornflakes: 60 g \n- Latte scremato: 100 g \n- Kiwi: 300 g \n- Mandorle: 30 g \n- Totale: 588.6 kcal, 17.8 g proteine, 86.1 g carboidrati, 19.1 g grassi\n\n**Pranzo**\n- Farro: 60 g \n- Lenticchie: 100 g \n- Carote: 100 g \n- Avocado: 10 g \n- Olio oliva: 20 g \n- Pane: 60 g \n- Totale: 708.2 kcal, 20.2 g proteine, 97.6 g carboidrati, 23.9 g grassi\n\n**Spuntino pomeridiano**\n- Pan bauletto: 60 g \n- Fesa di tacchino: 50 g \n- Mandorle: 10 g \n- Totale: 277.1 kcal, 19.1 g proteine, 36.4 g carboidrati, 6.4 g grassi\n\n**Cena**\n- Bistecca di manzo: 70 g \n- Insalata mista: 60 g \n- Pane bianco: 100 g \n- Olio oliva: 30 g \n- Totale: 644.7 kcal, 24.3 g proteine, 61.3 g carboidrati, 34.2 g grassi\n\n---\n\n📚 Fonti dei dati:\n- Banca Dati CREA (composizione alimenti)\n- Tool interno di ottimizzazione porzioni secondo target nutrizionali\n\n❓Vuoi che la trasformi in menù casalingo tradotto in misure comuni? Hai bisogno di chiarimenti su target calorici/macronutrienti? Vuoi andare avanti coi giorni successivi?",
+          "timestamp": 1751904160.5124333
+        },
+        {
+          "question": "continua",
+          "answer": "Ecco l’output completo del tool per i giorni 5-7, così come generato dal sistema automatico:\n\n---\n\n**GIORNO 5**\n\n**Colazione**\n- Latte scremato: 100 g \n- Fette biscottate: 60 g \n- Miele: 40 g \n- Mandorle: 30 g \n- Totale: 578.2 kcal, 17.2 g proteine, 83.8 g carboidrati, 20.4 g grassi\n\n**Pranzo**\n- Riso: 170 g \n- Funghi: 100 g \n- Olio oliva: 20 g \n- Totale: 849.7 kcal, 22.3 g proteine, 142.4 g carboidrati, 23.6 g grassi\n\n**Spuntino pomeridiano**\n- Yogurt magro: 100 g \n- Mela: 170 g \n- Mandorle: 10 g \n- Totale: 182 kcal, 6.8 g proteine, 24.9 g carboidrati, 5.8 g grassi\n\n**Cena**\n- Merluzzo: 70 g \n- Riso integrale: 100 g \n- Melanzane: 240 g \n- Olio oliva: 20 g \n- Totale: 625.7 kcal, 21.8 g proteine, 83.6 g carboidrati, 23.1 g grassi\n\n---\n\n**GIORNO 6**\n\n**Colazione**\n- Cornflakes: 60 g \n- Latte scremato: 100 g \n- Kiwi: 300 g \n- Mandorle: 30 g \n- Totale: 588.6 kcal, 17.8 g proteine, 86.1 g carboidrati, 19.1 g grassi\n\n**Pranzo**\n- Riso basmati: 170 g \n- Zucchine: 400 g \n- Olio oliva: 20 g \n- Totale: 871.7 kcal, 22.9 g proteine, 147.7 g carboidrati, 23.6 g grassi\n\n**Spuntino pomeridiano**\n- Banana: 250 g \n- Burro di arachidi: 10 g \n- Totale: 252.5 kcal, 5.5 g proteine, 44.3 g carboidrati, 6.1 g grassi\n\n**Cena**\n- Piselli: 240 g \n- Pasta: 70 g \n- Olio oliva: 20 g \n- Totale: 605.7 kcal, 22.2 g proteine, 66.5 g carboidrati, 22.3 g grassi\n\n---\n\n**GIORNO 7**\n\n**Colazione**\n- Latte scremato: 100 g \n- Fette biscottate: 60 g \n- Miele: 40 g \n- Mandorle: 30 g \n- Totale: 578.2 kcal, 17.2 g proteine, 83.8 g carboidrati, 20.4 g grassi\n\n**Pranzo**\n- Gnocchi: 80 g \n- Pomodoro: 150 g \n- Mozzarella: 30 g \n- Olio oliva: 20 g \n- Totale: 563.0 kcal, 17.9 g proteine, 63.6 g carboidrati, 27.1 g grassi\n\n**Spuntino pomeridiano**\n- Yogurt magro: 100 g \n- Mela: 170 g \n- Mandorle: 10 g \n- Totale: 182.0 kcal, 6.8 g proteine, 24.9 g carboidrati, 5.8 g grassi\n\n**Cena**\n- Orata: 70 g \n- Riso integrale: 100 g \n- Spinaci: 100 g \n- Olio oliva: 20 g \n- Totale: 640.5 kcal, 25.4 g proteine, 81.0 g carboidrati, 25.2 g grassi\n\n---\n\n📚 Fonti dati:\n- CREA (valori nutrizionali)\n- Tool interno di ottimizzazione digitale\n\n❓Vuoi la traduzione in formato “menù settimanale” con pesi casalinghi (fette, tazze, porzioni)? Desideri adattamenti o chiarimenti su target macronutrienti?\nVuoi vedere un riepilogo riepilogativo finale con tutte le misure pratiche giorno per giorno?",
+          "timestamp": 1751904306.0345747
+        }
+      ]
     },
     "lista_interazioni": [
       {
         "numero_interazione": 1,
-        "domanda_utente": "mi ricalcoli i giorni 5-7",
-        "risposta_agente": "🗓️ **GIORNO 5 - VENERDÌ**\n\n🌅 COLAZIONE  \n• **Avena**: 60g → 🥄 3/4 tazza  \n• **Mela**: 230g → 🍏 1 mela grande e mezza  \n• **Miele**: 40g → 🍯 2 cucchiai e 1/2  \n• **Burro di arachidi**: 20g → 🥄 1 cucchiaio abbondante  \n• **Proteine in polvere**: 20g → 🥄 3 cucchiai rasi  \n\n🥨 SPUNTINO MATTUTINO  \n• **Pane integrale**: 60g → 🍞 2 fette grandi  \n• **Bresaola**: 50g → 🥩 6-7 fette sottili  \n\n🍽️ PRANZO  \n• **Pasta**: 140g → 🍝 1 porzione abbondante  \n• **Funghi**: 150g → 🍄 1 porzione media saltata  \n• **Parmigiano**: 30g → 🧀 2 cucchiai colmi grattugiato  \n• **Olio extravergine di oliva**: 20g → 🥄 2 cucchiai abbondanti  \n\n🥨 SPUNTINO POMERIDIANO  \n• **Pane bianco**: 60g → 🍞 2 fette grandi  \n• **Fesa di tacchino**: 50g → 🍖 5-6 fette  \n• **Mandorle**: 10g → 🥜 1 cucchiaio colmo  \n\n🌙 CENA  \n• **Merluzzo**: 110g → 🐟 1 filetto grande  \n• **Riso integrale**: 130g → 🍚 1 tazza  \n• **Melanzane**: 250g → 🍆 1 media grigliata  \n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n\n---\n\n🗓️ **GIORNO 6 - SABATO**\n\n🌅 COLAZIONE  \n• **Cornflakes**: 60g → 🥣 1 tazza colma  \n• **Kiwi**: 260g → 🥝 2 frutti grandi  \n• **Mandorle**: 20g → 🥜 2 cucchiai  \n\n🥨 SPUNTINO MATTUTINO  \n• **Pera**: 190g → 🍐 1 pera grande  \n• **Noci sgusciate**: 10g → 🥜 1 cucchiaio  \n\n🍽️ PRANZO  \n• **Pasta**: 140g → 🍝 1 porzione abbondante  \n• **Pollo petto**: 70g → 🍗 1 fetta/cubo medio  \n• **Zucchine**: 190g → 🥒 1 ciotola grande  \n• **Olio extravergine di oliva**: 20g → 🥄 2 cucchiai  \n\n🥨 SPUNTINO POMERIDIANO  \n• **Banana**: 80g → 🍌 mezza banana  \n• **Burro di arachidi**: 10g → 🥄 1 cucchiaino \n\n🌙 CENA  \n• **Piselli**: 310g → 🥄 10 cucchiai abbondanti  \n• **Pasta**: 110g → 🍝 1 porzione medio-abbondante  \n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n\n---\n\n🗓️ **GIORNO 7 - DOMENICA**\n\n🌅 COLAZIONE  \n• **Avena**: 60g → 🥄 3/4 tazza  \n• **Mela**: 230g → 🍎 1 mela grande e mezza  \n• **Miele**: 40g → 🍯 2 cucchiai e 1/2  \n• **Burro di arachidi**: 20g → 🥄 1 cucchiaio abbondante  \n• **Proteine in polvere**: 20g → 🥄 3 cucchiai rasi  \n\n🥨 SPUNTINO MATTUTINO  \n• **Pane integrale**: 60g → 🍞 2 fette grandi  \n• **Bresaola**: 50g → 🥩 6-7 fette sottili  \n\n🍽️ PRANZO  \n• **Gnocchi**: 120g → 🍠 1 piatto medio  \n• **Mozzarella**: 130g → 🧀 1 mozzarella media  \n• **Insalata**: 260g → 🥗 1 piatto grande  \n\n🥨 SPUNTINO POMERIDIANO  \n• **Pane bianco**: 60g → 🍞 2 fette grandi  \n• **Fesa di tacchino**: 50g → 🍖 5-6 fette  \n• **Mandorle**: 10g → 🥜 1 cucchiaio colmo  \n\n🌙 CENA  \n• **Orata**: 70g → 🐟 1 filetto piccolo  \n• **Riso integrale**: 120g → 🍚 1 tazza scarsa  \n• **Spinaci**: 230g → 🥬 1 ciotola colma  \n• **Olio extravergine di oliva**: 30g → 🥄 3 cucchiai  \n\n---\n\n**Nota:** I sostituti per ogni alimento, con grammature, sono disponibili nel PDF finale. Gli alimenti esclusi (latte, yogurt, pomodori, cipolla) sono stati evitati in tutti i giorni.\n\n📚 Fonti utilizzate:  \n- Ottimizzazione automatica delle porzioni  \n- Banca Dati CREA (valori nutrizionali)  \n- LARN/SINU per struttura pasti e target  \n\n➡️ Conclusione: Ecco i giorni 5-7 ricalcolati e ottimizzati. Se vuoi vedere il riepilogo nutrizionale settimanale oppure vuoi modifiche su uno qualunque dei pasti, scrivimi pure!  \nHai altre domande o vuoi analizzare altre parti della settimana?",
-        "timestamp": 1750777796.3564818
+        "domanda_utente": "continua",
+        "risposta_agente": "Ecco l’output completo del tool per i giorni 5-7, così come generato dal sistema automatico:\n\n---\n\n**GIORNO 5**\n\n**Colazione**\n- Latte scremato: 100 g \n- Fette biscottate: 60 g \n- Miele: 40 g \n- Mandorle: 30 g \n- Totale: 578.2 kcal, 17.2 g proteine, 83.8 g carboidrati, 20.4 g grassi\n\n**Pranzo**\n- Riso: 170 g \n- Funghi: 100 g \n- Olio oliva: 20 g \n- Totale: 849.7 kcal, 22.3 g proteine, 142.4 g carboidrati, 23.6 g grassi\n\n**Spuntino pomeridiano**\n- Yogurt magro: 100 g \n- Mela: 170 g \n- Mandorle: 10 g \n- Totale: 182 kcal, 6.8 g proteine, 24.9 g carboidrati, 5.8 g grassi\n\n**Cena**\n- Merluzzo: 70 g \n- Riso integrale: 100 g \n- Melanzane: 240 g \n- Olio oliva: 20 g \n- Totale: 625.7 kcal, 21.8 g proteine, 83.6 g carboidrati, 23.1 g grassi\n\n---\n\n**GIORNO 6**\n\n**Colazione**\n- Cornflakes: 60 g \n- Latte scremato: 100 g \n- Kiwi: 300 g \n- Mandorle: 30 g \n- Totale: 588.6 kcal, 17.8 g proteine, 86.1 g carboidrati, 19.1 g grassi\n\n**Pranzo**\n- Riso basmati: 170 g \n- Zucchine: 400 g \n- Olio oliva: 20 g \n- Totale: 871.7 kcal, 22.9 g proteine, 147.7 g carboidrati, 23.6 g grassi\n\n**Spuntino pomeridiano**\n- Banana: 250 g \n- Burro di arachidi: 10 g \n- Totale: 252.5 kcal, 5.5 g proteine, 44.3 g carboidrati, 6.1 g grassi\n\n**Cena**\n- Piselli: 240 g \n- Pasta: 70 g \n- Olio oliva: 20 g \n- Totale: 605.7 kcal, 22.2 g proteine, 66.5 g carboidrati, 22.3 g grassi\n\n---\n\n**GIORNO 7**\n\n**Colazione**\n- Latte scremato: 100 g \n- Fette biscottate: 60 g \n- Miele: 40 g \n- Mandorle: 30 g \n- Totale: 578.2 kcal, 17.2 g proteine, 83.8 g carboidrati, 20.4 g grassi\n\n**Pranzo**\n- Gnocchi: 80 g \n- Pomodoro: 150 g \n- Mozzarella: 30 g \n- Olio oliva: 20 g \n- Totale: 563.0 kcal, 17.9 g proteine, 63.6 g carboidrati, 27.1 g grassi\n\n**Spuntino pomeridiano**\n- Yogurt magro: 100 g \n- Mela: 170 g \n- Mandorle: 10 g \n- Totale: 182.0 kcal, 6.8 g proteine, 24.9 g carboidrati, 5.8 g grassi\n\n**Cena**\n- Orata: 70 g \n- Riso integrale: 100 g \n- Spinaci: 100 g \n- Olio oliva: 20 g \n- Totale: 640.5 kcal, 25.4 g proteine, 81.0 g carboidrati, 25.2 g grassi\n\n---\n\n📚 Fonti dati:\n- CREA (valori nutrizionali)\n- Tool interno di ottimizzazione digitale\n\n❓Vuoi la traduzione in formato “menù settimanale” con pesi casalinghi (fette, tazze, porzioni)? Desideri adattamenti o chiarimenti su target macronutrienti?\nVuoi vedere un riepilogo riepilogativo finale con tutte le misure pratiche giorno per giorno?",
+        "timestamp": 1751904306.0345747
       }
     ]
   },
@@ -40,15 +118,15 @@
     "raw_response_formatted": {
       "status": "disponibile",
       "json_valido": true,
-      "contenuto_originale": "\n{\n  \"weekly_diet_days_2_7\": {\n    \"giorno_5\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Avena\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"3/4 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 mela grande e mezza\"\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40,\n            \"misura_casalinga\": \"2 cucchiai e 1/2\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"1 cucchiaio abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Proteine in polvere\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"3 cucchiai rasi\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane integrale\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Bresaola\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"6-7 fette sottili\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 140,\n            \"misura_casalinga\": \"1 porzione abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Funghi\",\n            \"quantita_g\": 150,\n            \"misura_casalinga\": \"1 porzione media saltata\"\n          },\n          {\n            \"nome_alimento\": \"Parmigiano\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"2 cucchiai colmi grattugiato\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai abbondanti\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane bianco\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Fesa di tacchino\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"5-6 fette\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio colmo\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Merluzzo\",\n            \"quantita_g\": 110,\n            \"misura_casalinga\": \"1 filetto grande\"\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 130,\n            \"misura_casalinga\": \"1 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Melanzane\",\n            \"quantita_g\": 250,\n            \"misura_casalinga\": \"1 media grigliata\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    },\n    \"giorno_6\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Cornflakes\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"1 tazza colma\"\n          },\n          {\n            \"nome_alimento\": \"Kiwi\",\n            \"quantita_g\": 260,\n            \"misura_casalinga\": \"2 frutti grandi\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pera\",\n            \"quantita_g\": 190,\n            \"misura_casalinga\": \"1 pera grande\"\n          },\n          {\n            \"nome_alimento\": \"Noci sgusciate\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 140,\n            \"misura_casalinga\": \"1 porzione abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Pollo petto\",\n            \"quantita_g\": 70,\n            \"misura_casalinga\": \"1 fetta/cubo medio\"\n          },\n          {\n            \"nome_alimento\": \"Zucchine\",\n            \"quantita_g\": 190,\n            \"misura_casalinga\": \"1 ciotola grande\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Banana\",\n            \"quantita_g\": 80,\n            \"misura_casalinga\": \"mezza banana\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaino\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Piselli\",\n            \"quantita_g\": 310,\n            \"misura_casalinga\": \"10 cucchiai abbondanti\"\n          },\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 110,\n            \"misura_casalinga\": \"1 porzione medio-abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    },\n    \"giorno_7\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Avena\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"3/4 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 mela grande e mezza\"\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40,\n            \"misura_casalinga\": \"2 cucchiai e 1/2\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"1 cucchiaio abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Proteine in polvere\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"3 cucchiai rasi\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane integrale\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Bresaola\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"6-7 fette sottili\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Gnocchi\",\n            \"quantita_g\": 120,\n            \"misura_casalinga\": \"1 piatto medio\"\n          },\n          {\n            \"nome_alimento\": \"Mozzarella\",\n            \"quantita_g\": 130,\n            \"misura_casalinga\": \"1 mozzarella media\"\n          },\n          {\n            \"nome_alimento\": \"Insalata\",\n            \"quantita_g\": 260,\n            \"misura_casalinga\": \"1 piatto grande\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane bianco\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Fesa di tacchino\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"5-6 fette\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio colmo\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Orata\",\n            \"quantita_g\": 70,\n            \"misura_casalinga\": \"1 filetto piccolo\"\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 120,\n            \"misura_casalinga\": \"1 tazza scarsa\"\n          },\n          {\n            \"nome_alimento\": \"Spinaci\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 ciotola colma\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    }\n  }\n}\n",
-      "contenuto_pulito": "{\n  \"weekly_diet_days_2_7\": {\n    \"giorno_5\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Avena\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"3/4 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 mela grande e mezza\"\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40,\n            \"misura_casalinga\": \"2 cucchiai e 1/2\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"1 cucchiaio abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Proteine in polvere\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"3 cucchiai rasi\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane integrale\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Bresaola\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"6-7 fette sottili\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 140,\n            \"misura_casalinga\": \"1 porzione abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Funghi\",\n            \"quantita_g\": 150,\n            \"misura_casalinga\": \"1 porzione media saltata\"\n          },\n          {\n            \"nome_alimento\": \"Parmigiano\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"2 cucchiai colmi grattugiato\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai abbondanti\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane bianco\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Fesa di tacchino\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"5-6 fette\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio colmo\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Merluzzo\",\n            \"quantita_g\": 110,\n            \"misura_casalinga\": \"1 filetto grande\"\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 130,\n            \"misura_casalinga\": \"1 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Melanzane\",\n            \"quantita_g\": 250,\n            \"misura_casalinga\": \"1 media grigliata\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    },\n    \"giorno_6\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Cornflakes\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"1 tazza colma\"\n          },\n          {\n            \"nome_alimento\": \"Kiwi\",\n            \"quantita_g\": 260,\n            \"misura_casalinga\": \"2 frutti grandi\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pera\",\n            \"quantita_g\": 190,\n            \"misura_casalinga\": \"1 pera grande\"\n          },\n          {\n            \"nome_alimento\": \"Noci sgusciate\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 140,\n            \"misura_casalinga\": \"1 porzione abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Pollo petto\",\n            \"quantita_g\": 70,\n            \"misura_casalinga\": \"1 fetta/cubo medio\"\n          },\n          {\n            \"nome_alimento\": \"Zucchine\",\n            \"quantita_g\": 190,\n            \"misura_casalinga\": \"1 ciotola grande\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Banana\",\n            \"quantita_g\": 80,\n            \"misura_casalinga\": \"mezza banana\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaino\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Piselli\",\n            \"quantita_g\": 310,\n            \"misura_casalinga\": \"10 cucchiai abbondanti\"\n          },\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 110,\n            \"misura_casalinga\": \"1 porzione medio-abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    },\n    \"giorno_7\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Avena\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"3/4 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 mela grande e mezza\"\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40,\n            \"misura_casalinga\": \"2 cucchiai e 1/2\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"1 cucchiaio abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Proteine in polvere\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"3 cucchiai rasi\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane integrale\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Bresaola\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"6-7 fette sottili\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Gnocchi\",\n            \"quantita_g\": 120,\n            \"misura_casalinga\": \"1 piatto medio\"\n          },\n          {\n            \"nome_alimento\": \"Mozzarella\",\n            \"quantita_g\": 130,\n            \"misura_casalinga\": \"1 mozzarella media\"\n          },\n          {\n            \"nome_alimento\": \"Insalata\",\n            \"quantita_g\": 260,\n            \"misura_casalinga\": \"1 piatto grande\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane bianco\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Fesa di tacchino\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"5-6 fette\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio colmo\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Orata\",\n            \"quantita_g\": 70,\n            \"misura_casalinga\": \"1 filetto piccolo\"\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 120,\n            \"misura_casalinga\": \"1 tazza scarsa\"\n          },\n          {\n            \"nome_alimento\": \"Spinaci\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 ciotola colma\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    }\n  }\n}",
-      "contenuto_formattato": "{\n  \"weekly_diet_days_2_7\": {\n    \"giorno_5\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Avena\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"3/4 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 mela grande e mezza\"\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40,\n            \"misura_casalinga\": \"2 cucchiai e 1/2\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"1 cucchiaio abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Proteine in polvere\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"3 cucchiai rasi\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane integrale\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Bresaola\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"6-7 fette sottili\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 140,\n            \"misura_casalinga\": \"1 porzione abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Funghi\",\n            \"quantita_g\": 150,\n            \"misura_casalinga\": \"1 porzione media saltata\"\n          },\n          {\n            \"nome_alimento\": \"Parmigiano\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"2 cucchiai colmi grattugiato\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai abbondanti\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane bianco\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Fesa di tacchino\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"5-6 fette\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio colmo\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Merluzzo\",\n            \"quantita_g\": 110,\n            \"misura_casalinga\": \"1 filetto grande\"\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 130,\n            \"misura_casalinga\": \"1 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Melanzane\",\n            \"quantita_g\": 250,\n            \"misura_casalinga\": \"1 media grigliata\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    },\n    \"giorno_6\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Cornflakes\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"1 tazza colma\"\n          },\n          {\n            \"nome_alimento\": \"Kiwi\",\n            \"quantita_g\": 260,\n            \"misura_casalinga\": \"2 frutti grandi\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pera\",\n            \"quantita_g\": 190,\n            \"misura_casalinga\": \"1 pera grande\"\n          },\n          {\n            \"nome_alimento\": \"Noci sgusciate\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 140,\n            \"misura_casalinga\": \"1 porzione abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Pollo petto\",\n            \"quantita_g\": 70,\n            \"misura_casalinga\": \"1 fetta/cubo medio\"\n          },\n          {\n            \"nome_alimento\": \"Zucchine\",\n            \"quantita_g\": 190,\n            \"misura_casalinga\": \"1 ciotola grande\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"2 cucchiai\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Banana\",\n            \"quantita_g\": 80,\n            \"misura_casalinga\": \"mezza banana\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaino\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Piselli\",\n            \"quantita_g\": 310,\n            \"misura_casalinga\": \"10 cucchiai abbondanti\"\n          },\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 110,\n            \"misura_casalinga\": \"1 porzione medio-abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    },\n    \"giorno_7\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Avena\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"3/4 tazza\"\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 mela grande e mezza\"\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40,\n            \"misura_casalinga\": \"2 cucchiai e 1/2\"\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"1 cucchiaio abbondante\"\n          },\n          {\n            \"nome_alimento\": \"Proteine in polvere\",\n            \"quantita_g\": 20,\n            \"misura_casalinga\": \"3 cucchiai rasi\"\n          }\n        ]\n      },\n      \"spuntino_mattutino\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane integrale\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Bresaola\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"6-7 fette sottili\"\n          }\n        ]\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Gnocchi\",\n            \"quantita_g\": 120,\n            \"misura_casalinga\": \"1 piatto medio\"\n          },\n          {\n            \"nome_alimento\": \"Mozzarella\",\n            \"quantita_g\": 130,\n            \"misura_casalinga\": \"1 mozzarella media\"\n          },\n          {\n            \"nome_alimento\": \"Insalata\",\n            \"quantita_g\": 260,\n            \"misura_casalinga\": \"1 piatto grande\"\n          }\n        ]\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Pane bianco\",\n            \"quantita_g\": 60,\n            \"misura_casalinga\": \"2 fette grandi\"\n          },\n          {\n            \"nome_alimento\": \"Fesa di tacchino\",\n            \"quantita_g\": 50,\n            \"misura_casalinga\": \"5-6 fette\"\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10,\n            \"misura_casalinga\": \"1 cucchiaio colmo\"\n          }\n        ]\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Orata\",\n            \"quantita_g\": 70,\n            \"misura_casalinga\": \"1 filetto piccolo\"\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 120,\n            \"misura_casalinga\": \"1 tazza scarsa\"\n          },\n          {\n            \"nome_alimento\": \"Spinaci\",\n            \"quantita_g\": 230,\n            \"misura_casalinga\": \"1 ciotola colma\"\n          },\n          {\n            \"nome_alimento\": \"Olio extravergine di oliva\",\n            \"quantita_g\": 30,\n            \"misura_casalinga\": \"3 cucchiai\"\n          }\n        ]\n      }\n    }\n  }\n}",
+      "contenuto_originale": "\n{\n  \"weekly_diet_days_2_7\": {\n    \"giorno_5\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Fette biscottate\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 578.2,\n          \"proteine_totali\": 17.2,\n          \"carboidrati_totali\": 83.8,\n          \"grassi_totali\": 20.4\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Riso\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Funghi\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 849.7,\n          \"proteine_totali\": 22.3,\n          \"carboidrati_totali\": 142.4,\n          \"grassi_totali\": 23.6\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Yogurt magro\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 182,\n          \"proteine_totali\": 6.8,\n          \"carboidrati_totali\": 24.9,\n          \"grassi_totali\": 5.8\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Merluzzo\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Melanzane\",\n            \"quantita_g\": 240\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 625.7,\n          \"proteine_totali\": 21.8,\n          \"carboidrati_totali\": 83.6,\n          \"grassi_totali\": 23.1\n        }\n      }\n    },\n    \"giorno_6\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Cornflakes\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Kiwi\",\n            \"quantita_g\": 300\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 588.6,\n          \"proteine_totali\": 17.8,\n          \"carboidrati_totali\": 86.1,\n          \"grassi_totali\": 19.1\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Riso basmati\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Zucchine\",\n            \"quantita_g\": 400\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 871.7,\n          \"proteine_totali\": 22.9,\n          \"carboidrati_totali\": 147.7,\n          \"grassi_totali\": 23.6\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Banana\",\n            \"quantita_g\": 250\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 252.5,\n          \"proteine_totali\": 5.5,\n          \"carboidrati_totali\": 44.3,\n          \"grassi_totali\": 6.1\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Piselli\",\n            \"quantita_g\": 240\n          },\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 605.7,\n          \"proteine_totali\": 22.2,\n          \"carboidrati_totali\": 66.5,\n          \"grassi_totali\": 22.3\n        }\n      }\n    },\n    \"giorno_7\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Fette biscottate\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 578.2,\n          \"proteine_totali\": 17.2,\n          \"carboidrati_totali\": 83.8,\n          \"grassi_totali\": 20.4\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Gnocchi\",\n            \"quantita_g\": 80\n          },\n          {\n            \"nome_alimento\": \"Pomodoro\",\n            \"quantita_g\": 150\n          },\n          {\n            \"nome_alimento\": \"Mozzarella\",\n            \"quantita_g\": 30\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 563,\n          \"proteine_totali\": 17.9,\n          \"carboidrati_totali\": 63.6,\n          \"grassi_totali\": 27.1\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Yogurt magro\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 182,\n          \"proteine_totali\": 6.8,\n          \"carboidrati_totali\": 24.9,\n          \"grassi_totali\": 5.8\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Orata\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Spinaci\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 640.5,\n          \"proteine_totali\": 25.4,\n          \"carboidrati_totali\": 81,\n          \"grassi_totali\": 25.2\n        }\n      }\n    }\n  }\n}\n",
+      "contenuto_pulito": "{\n  \"weekly_diet_days_2_7\": {\n    \"giorno_5\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Fette biscottate\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 578.2,\n          \"proteine_totali\": 17.2,\n          \"carboidrati_totali\": 83.8,\n          \"grassi_totali\": 20.4\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Riso\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Funghi\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 849.7,\n          \"proteine_totali\": 22.3,\n          \"carboidrati_totali\": 142.4,\n          \"grassi_totali\": 23.6\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Yogurt magro\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 182,\n          \"proteine_totali\": 6.8,\n          \"carboidrati_totali\": 24.9,\n          \"grassi_totali\": 5.8\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Merluzzo\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Melanzane\",\n            \"quantita_g\": 240\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 625.7,\n          \"proteine_totali\": 21.8,\n          \"carboidrati_totali\": 83.6,\n          \"grassi_totali\": 23.1\n        }\n      }\n    },\n    \"giorno_6\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Cornflakes\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Kiwi\",\n            \"quantita_g\": 300\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 588.6,\n          \"proteine_totali\": 17.8,\n          \"carboidrati_totali\": 86.1,\n          \"grassi_totali\": 19.1\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Riso basmati\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Zucchine\",\n            \"quantita_g\": 400\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 871.7,\n          \"proteine_totali\": 22.9,\n          \"carboidrati_totali\": 147.7,\n          \"grassi_totali\": 23.6\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Banana\",\n            \"quantita_g\": 250\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 252.5,\n          \"proteine_totali\": 5.5,\n          \"carboidrati_totali\": 44.3,\n          \"grassi_totali\": 6.1\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Piselli\",\n            \"quantita_g\": 240\n          },\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 605.7,\n          \"proteine_totali\": 22.2,\n          \"carboidrati_totali\": 66.5,\n          \"grassi_totali\": 22.3\n        }\n      }\n    },\n    \"giorno_7\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Fette biscottate\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 578.2,\n          \"proteine_totali\": 17.2,\n          \"carboidrati_totali\": 83.8,\n          \"grassi_totali\": 20.4\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Gnocchi\",\n            \"quantita_g\": 80\n          },\n          {\n            \"nome_alimento\": \"Pomodoro\",\n            \"quantita_g\": 150\n          },\n          {\n            \"nome_alimento\": \"Mozzarella\",\n            \"quantita_g\": 30\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 563,\n          \"proteine_totali\": 17.9,\n          \"carboidrati_totali\": 63.6,\n          \"grassi_totali\": 27.1\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Yogurt magro\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 182,\n          \"proteine_totali\": 6.8,\n          \"carboidrati_totali\": 24.9,\n          \"grassi_totali\": 5.8\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Orata\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Spinaci\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 640.5,\n          \"proteine_totali\": 25.4,\n          \"carboidrati_totali\": 81,\n          \"grassi_totali\": 25.2\n        }\n      }\n    }\n  }\n}",
+      "contenuto_formattato": "{\n  \"weekly_diet_days_2_7\": {\n    \"giorno_5\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Fette biscottate\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 578.2,\n          \"proteine_totali\": 17.2,\n          \"carboidrati_totali\": 83.8,\n          \"grassi_totali\": 20.4\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Riso\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Funghi\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 849.7,\n          \"proteine_totali\": 22.3,\n          \"carboidrati_totali\": 142.4,\n          \"grassi_totali\": 23.6\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Yogurt magro\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 182,\n          \"proteine_totali\": 6.8,\n          \"carboidrati_totali\": 24.9,\n          \"grassi_totali\": 5.8\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Merluzzo\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Melanzane\",\n            \"quantita_g\": 240\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 625.7,\n          \"proteine_totali\": 21.8,\n          \"carboidrati_totali\": 83.6,\n          \"grassi_totali\": 23.1\n        }\n      }\n    },\n    \"giorno_6\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Cornflakes\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Kiwi\",\n            \"quantita_g\": 300\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 588.6,\n          \"proteine_totali\": 17.8,\n          \"carboidrati_totali\": 86.1,\n          \"grassi_totali\": 19.1\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Riso basmati\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Zucchine\",\n            \"quantita_g\": 400\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 871.7,\n          \"proteine_totali\": 22.9,\n          \"carboidrati_totali\": 147.7,\n          \"grassi_totali\": 23.6\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Banana\",\n            \"quantita_g\": 250\n          },\n          {\n            \"nome_alimento\": \"Burro di arachidi\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 252.5,\n          \"proteine_totali\": 5.5,\n          \"carboidrati_totali\": 44.3,\n          \"grassi_totali\": 6.1\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Piselli\",\n            \"quantita_g\": 240\n          },\n          {\n            \"nome_alimento\": \"Pasta\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 605.7,\n          \"proteine_totali\": 22.2,\n          \"carboidrati_totali\": 66.5,\n          \"grassi_totali\": 22.3\n        }\n      }\n    },\n    \"giorno_7\": {\n      \"colazione\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Latte scremato\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Fette biscottate\",\n            \"quantita_g\": 60\n          },\n          {\n            \"nome_alimento\": \"Miele\",\n            \"quantita_g\": 40\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 30\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 578.2,\n          \"proteine_totali\": 17.2,\n          \"carboidrati_totali\": 83.8,\n          \"grassi_totali\": 20.4\n        }\n      },\n      \"pranzo\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Gnocchi\",\n            \"quantita_g\": 80\n          },\n          {\n            \"nome_alimento\": \"Pomodoro\",\n            \"quantita_g\": 150\n          },\n          {\n            \"nome_alimento\": \"Mozzarella\",\n            \"quantita_g\": 30\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 563,\n          \"proteine_totali\": 17.9,\n          \"carboidrati_totali\": 63.6,\n          \"grassi_totali\": 27.1\n        }\n      },\n      \"spuntino_pomeridiano\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Yogurt magro\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Mela\",\n            \"quantita_g\": 170\n          },\n          {\n            \"nome_alimento\": \"Mandorle\",\n            \"quantita_g\": 10\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 182,\n          \"proteine_totali\": 6.8,\n          \"carboidrati_totali\": 24.9,\n          \"grassi_totali\": 5.8\n        }\n      },\n      \"cena\": {\n        \"alimenti\": [\n          {\n            \"nome_alimento\": \"Orata\",\n            \"quantita_g\": 70\n          },\n          {\n            \"nome_alimento\": \"Riso integrale\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Spinaci\",\n            \"quantita_g\": 100\n          },\n          {\n            \"nome_alimento\": \"Olio oliva\",\n            \"quantita_g\": 20\n          }\n        ],\n        \"totali_pasto\": {\n          \"kcal_finali\": 640.5,\n          \"proteine_totali\": 25.4,\n          \"carboidrati_totali\": 81,\n          \"grassi_totali\": 25.2\n        }\n      }\n    }\n  }\n}",
       "metadati": {
-        "lunghezza_originale": 8415,
-        "lunghezza_pulita": 8413,
-        "lunghezza_formattata": 8413,
-        "righe_originali": 317,
-        "righe_formattate": 315,
+        "lunghezza_originale": 6888,
+        "lunghezza_pulita": 6886,
+        "lunghezza_formattata": 6886,
+        "righe_originali": 296,
+        "righe_formattate": 294,
         "aveva_markdown_wrapper": false,
         "tipo_contenuto": "JSON valido"
       }
@@ -59,112 +137,98 @@
           "colazione": {
             "alimenti": [
               {
-                "nome_alimento": "Avena",
-                "quantita_g": 60,
-                "misura_casalinga": "3/4 tazza"
+                "nome_alimento": "Latte scremato",
+                "quantita_g": 100
               },
               {
-                "nome_alimento": "Mela",
-                "quantita_g": 230,
-                "misura_casalinga": "1 mela grande e mezza"
+                "nome_alimento": "Fette biscottate",
+                "quantita_g": 60
               },
               {
                 "nome_alimento": "Miele",
-                "quantita_g": 40,
-                "misura_casalinga": "2 cucchiai e 1/2"
+                "quantita_g": 40
               },
               {
-                "nome_alimento": "Burro di arachidi",
-                "quantita_g": 20,
-                "misura_casalinga": "1 cucchiaio abbondante"
-              },
-              {
-                "nome_alimento": "Proteine in polvere",
-                "quantita_g": 20,
-                "misura_casalinga": "3 cucchiai rasi"
+                "nome_alimento": "Mandorle",
+                "quantita_g": 30
               }
-            ]
-          },
-          "spuntino_mattutino": {
-            "alimenti": [
-              {
-                "nome_alimento": "Pane integrale",
-                "quantita_g": 60,
-                "misura_casalinga": "2 fette grandi"
-              },
-              {
-                "nome_alimento": "Bresaola",
-                "quantita_g": 50,
-                "misura_casalinga": "6-7 fette sottili"
-              }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 578.2,
+              "proteine_totali": 17.2,
+              "carboidrati_totali": 83.8,
+              "grassi_totali": 20.4
+            }
           },
           "pranzo": {
             "alimenti": [
               {
-                "nome_alimento": "Pasta",
-                "quantita_g": 140,
-                "misura_casalinga": "1 porzione abbondante"
+                "nome_alimento": "Riso",
+                "quantita_g": 170
               },
               {
                 "nome_alimento": "Funghi",
-                "quantita_g": 150,
-                "misura_casalinga": "1 porzione media saltata"
+                "quantita_g": 100
               },
               {
-                "nome_alimento": "Parmigiano",
-                "quantita_g": 30,
-                "misura_casalinga": "2 cucchiai colmi grattugiato"
-              },
-              {
-                "nome_alimento": "Olio extravergine di oliva",
-                "quantita_g": 20,
-                "misura_casalinga": "2 cucchiai abbondanti"
+                "nome_alimento": "Olio oliva",
+                "quantita_g": 20
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 849.7,
+              "proteine_totali": 22.3,
+              "carboidrati_totali": 142.4,
+              "grassi_totali": 23.6
+            }
           },
           "spuntino_pomeridiano": {
             "alimenti": [
               {
-                "nome_alimento": "Pane bianco",
-                "quantita_g": 60,
-                "misura_casalinga": "2 fette grandi"
+                "nome_alimento": "Yogurt magro",
+                "quantita_g": 100
               },
               {
-                "nome_alimento": "Fesa di tacchino",
-                "quantita_g": 50,
-                "misura_casalinga": "5-6 fette"
+                "nome_alimento": "Mela",
+                "quantita_g": 170
               },
               {
                 "nome_alimento": "Mandorle",
-                "quantita_g": 10,
-                "misura_casalinga": "1 cucchiaio colmo"
+                "quantita_g": 10
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 182,
+              "proteine_totali": 6.8,
+              "carboidrati_totali": 24.9,
+              "grassi_totali": 5.8
+            }
           },
           "cena": {
             "alimenti": [
               {
                 "nome_alimento": "Merluzzo",
-                "quantita_g": 110,
-                "misura_casalinga": "1 filetto grande"
+                "quantita_g": 70
               },
               {
                 "nome_alimento": "Riso integrale",
-                "quantita_g": 130,
-                "misura_casalinga": "1 tazza"
+                "quantita_g": 100
               },
               {
                 "nome_alimento": "Melanzane",
-                "quantita_g": 250,
-                "misura_casalinga": "1 media grigliata"
+                "quantita_g": 240
               },
               {
-                "nome_alimento": "Olio extravergine di oliva",
-                "quantita_g": 30,
-                "misura_casalinga": "3 cucchiai"
+                "nome_alimento": "Olio oliva",
+                "quantita_g": 20
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 625.7,
+              "proteine_totali": 21.8,
+              "carboidrati_totali": 83.6,
+              "grassi_totali": 23.1
+            }
           }
         },
         "giorno_6": {
@@ -172,198 +236,191 @@
             "alimenti": [
               {
                 "nome_alimento": "Cornflakes",
-                "quantita_g": 60,
-                "misura_casalinga": "1 tazza colma"
+                "quantita_g": 60
+              },
+              {
+                "nome_alimento": "Latte scremato",
+                "quantita_g": 100
               },
               {
                 "nome_alimento": "Kiwi",
-                "quantita_g": 260,
-                "misura_casalinga": "2 frutti grandi"
+                "quantita_g": 300
               },
               {
                 "nome_alimento": "Mandorle",
-                "quantita_g": 20,
-                "misura_casalinga": "2 cucchiai"
+                "quantita_g": 30
               }
-            ]
-          },
-          "spuntino_mattutino": {
-            "alimenti": [
-              {
-                "nome_alimento": "Pera",
-                "quantita_g": 190,
-                "misura_casalinga": "1 pera grande"
-              },
-              {
-                "nome_alimento": "Noci sgusciate",
-                "quantita_g": 10,
-                "misura_casalinga": "1 cucchiaio"
-              }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 588.6,
+              "proteine_totali": 17.8,
+              "carboidrati_totali": 86.1,
+              "grassi_totali": 19.1
+            }
           },
           "pranzo": {
             "alimenti": [
               {
-                "nome_alimento": "Pasta",
-                "quantita_g": 140,
-                "misura_casalinga": "1 porzione abbondante"
-              },
-              {
-                "nome_alimento": "Pollo petto",
-                "quantita_g": 70,
-                "misura_casalinga": "1 fetta/cubo medio"
+                "nome_alimento": "Riso basmati",
+                "quantita_g": 170
               },
               {
                 "nome_alimento": "Zucchine",
-                "quantita_g": 190,
-                "misura_casalinga": "1 ciotola grande"
+                "quantita_g": 400
               },
               {
-                "nome_alimento": "Olio extravergine di oliva",
-                "quantita_g": 20,
-                "misura_casalinga": "2 cucchiai"
+                "nome_alimento": "Olio oliva",
+                "quantita_g": 20
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 871.7,
+              "proteine_totali": 22.9,
+              "carboidrati_totali": 147.7,
+              "grassi_totali": 23.6
+            }
           },
           "spuntino_pomeridiano": {
             "alimenti": [
               {
                 "nome_alimento": "Banana",
-                "quantita_g": 80,
-                "misura_casalinga": "mezza banana"
+                "quantita_g": 250
               },
               {
                 "nome_alimento": "Burro di arachidi",
-                "quantita_g": 10,
-                "misura_casalinga": "1 cucchiaino"
+                "quantita_g": 10
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 252.5,
+              "proteine_totali": 5.5,
+              "carboidrati_totali": 44.3,
+              "grassi_totali": 6.1
+            }
           },
           "cena": {
             "alimenti": [
               {
                 "nome_alimento": "Piselli",
-                "quantita_g": 310,
-                "misura_casalinga": "10 cucchiai abbondanti"
+                "quantita_g": 240
               },
               {
                 "nome_alimento": "Pasta",
-                "quantita_g": 110,
-                "misura_casalinga": "1 porzione medio-abbondante"
+                "quantita_g": 70
               },
               {
-                "nome_alimento": "Olio extravergine di oliva",
-                "quantita_g": 30,
-                "misura_casalinga": "3 cucchiai"
+                "nome_alimento": "Olio oliva",
+                "quantita_g": 20
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 605.7,
+              "proteine_totali": 22.2,
+              "carboidrati_totali": 66.5,
+              "grassi_totali": 22.3
+            }
           }
         },
         "giorno_7": {
           "colazione": {
             "alimenti": [
               {
-                "nome_alimento": "Avena",
-                "quantita_g": 60,
-                "misura_casalinga": "3/4 tazza"
+                "nome_alimento": "Latte scremato",
+                "quantita_g": 100
               },
               {
-                "nome_alimento": "Mela",
-                "quantita_g": 230,
-                "misura_casalinga": "1 mela grande e mezza"
+                "nome_alimento": "Fette biscottate",
+                "quantita_g": 60
               },
               {
                 "nome_alimento": "Miele",
-                "quantita_g": 40,
-                "misura_casalinga": "2 cucchiai e 1/2"
+                "quantita_g": 40
               },
               {
-                "nome_alimento": "Burro di arachidi",
-                "quantita_g": 20,
-                "misura_casalinga": "1 cucchiaio abbondante"
-              },
-              {
-                "nome_alimento": "Proteine in polvere",
-                "quantita_g": 20,
-                "misura_casalinga": "3 cucchiai rasi"
+                "nome_alimento": "Mandorle",
+                "quantita_g": 30
               }
-            ]
-          },
-          "spuntino_mattutino": {
-            "alimenti": [
-              {
-                "nome_alimento": "Pane integrale",
-                "quantita_g": 60,
-                "misura_casalinga": "2 fette grandi"
-              },
-              {
-                "nome_alimento": "Bresaola",
-                "quantita_g": 50,
-                "misura_casalinga": "6-7 fette sottili"
-              }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 578.2,
+              "proteine_totali": 17.2,
+              "carboidrati_totali": 83.8,
+              "grassi_totali": 20.4
+            }
           },
           "pranzo": {
             "alimenti": [
               {
                 "nome_alimento": "Gnocchi",
-                "quantita_g": 120,
-                "misura_casalinga": "1 piatto medio"
+                "quantita_g": 80
+              },
+              {
+                "nome_alimento": "Pomodoro",
+                "quantita_g": 150
               },
               {
                 "nome_alimento": "Mozzarella",
-                "quantita_g": 130,
-                "misura_casalinga": "1 mozzarella media"
+                "quantita_g": 30
               },
               {
-                "nome_alimento": "Insalata",
-                "quantita_g": 260,
-                "misura_casalinga": "1 piatto grande"
+                "nome_alimento": "Olio oliva",
+                "quantita_g": 20
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 563,
+              "proteine_totali": 17.9,
+              "carboidrati_totali": 63.6,
+              "grassi_totali": 27.1
+            }
           },
           "spuntino_pomeridiano": {
             "alimenti": [
               {
-                "nome_alimento": "Pane bianco",
-                "quantita_g": 60,
-                "misura_casalinga": "2 fette grandi"
+                "nome_alimento": "Yogurt magro",
+                "quantita_g": 100
               },
               {
-                "nome_alimento": "Fesa di tacchino",
-                "quantita_g": 50,
-                "misura_casalinga": "5-6 fette"
+                "nome_alimento": "Mela",
+                "quantita_g": 170
               },
               {
                 "nome_alimento": "Mandorle",
-                "quantita_g": 10,
-                "misura_casalinga": "1 cucchiaio colmo"
+                "quantita_g": 10
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 182,
+              "proteine_totali": 6.8,
+              "carboidrati_totali": 24.9,
+              "grassi_totali": 5.8
+            }
           },
           "cena": {
             "alimenti": [
               {
                 "nome_alimento": "Orata",
-                "quantita_g": 70,
-                "misura_casalinga": "1 filetto piccolo"
+                "quantita_g": 70
               },
               {
                 "nome_alimento": "Riso integrale",
-                "quantita_g": 120,
-                "misura_casalinga": "1 tazza scarsa"
+                "quantita_g": 100
               },
               {
                 "nome_alimento": "Spinaci",
-                "quantita_g": 230,
-                "misura_casalinga": "1 ciotola colma"
+                "quantita_g": 100
               },
               {
-                "nome_alimento": "Olio extravergine di oliva",
-                "quantita_g": 30,
-                "misura_casalinga": "3 cucchiai"
+                "nome_alimento": "Olio oliva",
+                "quantita_g": 20
               }
-            ]
+            ],
+            "totali_pasto": {
+              "kcal_finali": 640.5,
+              "proteine_totali": 25.4,
+              "carboidrati_totali": 81,
+              "grassi_totali": 25.2
+            }
           }
         }
       }
@@ -371,120 +428,668 @@
     "chiavi_estratte": [
       "weekly_diet_days_2_7"
     ],
-    "timestamp_estrazione": "2025-06-24T17:11:40.596968"
+    "timestamp_estrazione": "2025-07-07T18:06:47.670115"
   },
   "dati_finali_merged": {
+    "caloric_needs": {
+      "bmr": 1672,
+      "fabbisogno_base": 2173,
+      "dispendio_sportivo": 0,
+      "fabbisogno_totale": 2173,
+      "aggiustamento_obiettivo": 428,
+      "fabbisogno_finale": 2601,
+      "laf_utilizzato": 1.3
+    },
+    "macros_total": {
+      "kcal_finali": 2601,
+      "proteine_g": 46,
+      "proteine_kcal": 184,
+      "proteine_percentuale": 7,
+      "grassi_g": 72,
+      "grassi_kcal": 650,
+      "grassi_percentuale": 25,
+      "carboidrati_g": 442,
+      "carboidrati_kcal": 1767,
+      "carboidrati_percentuale": 68,
+      "kcal_totali": 2601
+    },
+    "daily_macros": {
+      "numero_pasti": 4,
+      "distribuzione_pasti": {
+        "colazione": {
+          "kcal": 650,
+          "percentuale_kcal": 25,
+          "proteine_g": 12,
+          "carboidrati_g": 111,
+          "grassi_g": 18
+        },
+        "pranzo": {
+          "kcal": 910,
+          "percentuale_kcal": 35,
+          "proteine_g": 16,
+          "carboidrati_g": 155,
+          "grassi_g": 25
+        },
+        "spuntino_pomeridiano": {
+          "kcal": 260,
+          "percentuale_kcal": 10,
+          "proteine_g": 5,
+          "carboidrati_g": 44,
+          "grassi_g": 7
+        },
+        "cena": {
+          "kcal": 652,
+          "percentuale_kcal": 30,
+          "proteine_g": 21,
+          "carboidrati_g": 83,
+          "grassi_g": 26
+        }
+      }
+    },
+    "weekly_diet_day_1": [
+      {
+        "nome_pasto": "colazione",
+        "alimenti": [
+          {
+            "nome_alimento": "Latte scremato",
+            "quantita_g": 100,
+            "misura_casalinga": "mezzo bicchiere",
+            "sostituti": "90 g di yogurt magro, 80 g di latte parzialmente scremato",
+            "macronutrienti": {
+              "proteine": 3.6,
+              "carboidrati": 5.3,
+              "grassi": 0.2
+            }
+          },
+          {
+            "nome_alimento": "Fette biscottate",
+            "quantita_g": 60,
+            "misura_casalinga": "8 fette",
+            "sostituti": "60 g di muesli, 60 g di biscotti secchi",
+            "macronutrienti": {
+              "proteine": 6.8,
+              "carboidrati": 45.0,
+              "grassi": 3.6
+            }
+          },
+          {
+            "nome_alimento": "Miele",
+            "quantita_g": 40,
+            "misura_casalinga": "2 cucchiai abbondanti",
+            "sostituti": "50 g di marmellata, 30 g di cornflakes",
+            "macronutrienti": {
+              "proteine": 0.2,
+              "carboidrati": 32.1,
+              "grassi": 0
+            }
+          },
+          {
+            "nome_alimento": "Mandorle",
+            "quantita_g": 30,
+            "misura_casalinga": "1 manciata (circa 20-25 mandorle)",
+            "sostituti": "30 g di nocciole, 30 g di arachidi",
+            "macronutrienti": {
+              "proteine": 6.6,
+              "carboidrati": 1.4,
+              "grassi": 16.6
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 578,
+          "proteine_totali": 17,
+          "carboidrati_totali": 84,
+          "grassi_totali": 20
+        }
+      },
+      {
+        "nome_pasto": "pranzo",
+        "alimenti": [
+          {
+            "nome_alimento": "Riso",
+            "quantita_g": 170,
+            "misura_casalinga": "1 piatto abbondante (circa 1 tazza e mezza cotto)",
+            "sostituti": "180 g di riso integrale, 180 g di orzo",
+            "macronutrienti": {
+              "proteine": 15.3,
+              "carboidrati": 140.9,
+              "grassi": 3.2
+            }
+          },
+          {
+            "nome_alimento": "Olio extravergine di oliva",
+            "quantita_g": 20,
+            "misura_casalinga": "2 cucchiai",
+            "sostituti": "20 g di burro, 80 g di avocado",
+            "macronutrienti": {
+              "proteine": 0,
+              "carboidrati": 0,
+              "grassi": 20
+            }
+          },
+          {
+            "nome_alimento": "Zucchine",
+            "quantita_g": 100,
+            "misura_casalinga": "1 ciotola media",
+            "sostituti": "100 g di verdure miste, 60 g di cavolfiore",
+            "macronutrienti": {
+              "proteine": 1.9,
+              "carboidrati": 1.7,
+              "grassi": 0.1
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 821,
+          "proteine_totali": 17,
+          "carboidrati_totali": 143,
+          "grassi_totali": 23
+        }
+      },
+      {
+        "nome_pasto": "spuntino_pomeridiano",
+        "alimenti": [
+          {
+            "nome_alimento": "Yogurt magro",
+            "quantita_g": 100,
+            "misura_casalinga": "1 vasetto medio",
+            "sostituti": "110 g di latte scremato, 90 g di latte parzialmente scremato",
+            "macronutrienti": {
+              "proteine": 4.3,
+              "carboidrati": 5.6,
+              "grassi": 0.1
+            }
+          },
+          {
+            "nome_alimento": "Mela",
+            "quantita_g": 170,
+            "misura_casalinga": "1 mela grande",
+            "sostituti": "190 g di albicocche, 160 g di ciliegie",
+            "macronutrienti": {
+              "proteine": 0.3,
+              "carboidrati": 18.9,
+              "grassi": 0.2
+            }
+          },
+          {
+            "nome_alimento": "Mandorle",
+            "quantita_g": 10,
+            "misura_casalinga": "7-8 mandorle",
+            "sostituti": "10 g di nocciole, 10 g di arachidi",
+            "macronutrienti": {
+              "proteine": 2.2,
+              "carboidrati": 0.5,
+              "grassi": 5.5
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 182,
+          "proteine_totali": 7,
+          "carboidrati_totali": 25,
+          "grassi_totali": 6
+        }
+      },
+      {
+        "nome_pasto": "cena",
+        "alimenti": [
+          {
+            "nome_alimento": "Patate",
+            "quantita_g": 500,
+            "misura_casalinga": "2 patate grandi",
+            "sostituti": "130 g di pane bianco, 110 g di riso integrale",
+            "macronutrienti": {
+              "proteine": 10.0,
+              "carboidrati": 80.0,
+              "grassi": 0.5
+            }
+          },
+          {
+            "nome_alimento": "Uova",
+            "quantita_g": 60,
+            "misura_casalinga": "1 uovo medio",
+            "sostituti": "50 g di sgombro, 50 g di ricotta",
+            "macronutrienti": {
+              "proteine": 7.4,
+              "carboidrati": 0,
+              "grassi": 5.2
+            }
+          },
+          {
+            "nome_alimento": "Spinaci",
+            "quantita_g": 100,
+            "misura_casalinga": "1 piatto abbondante",
+            "sostituti": "110 g di broccoli, 120 g di cavolfiore",
+            "macronutrienti": {
+              "proteine": 3.4,
+              "carboidrati": 2.9,
+              "grassi": 0.7
+            }
+          },
+          {
+            "nome_alimento": "Olio extravergine di oliva",
+            "quantita_g": 20,
+            "misura_casalinga": "2 cucchiai",
+            "sostituti": "20 g di burro, 80 g di avocado",
+            "macronutrienti": {
+              "proteine": 0,
+              "carboidrati": 0,
+              "grassi": 20.0
+            }
+          }
+        ],
+        "totali_pasto": {
+          "kcal_finali": 652,
+          "proteine_totali": 21,
+          "carboidrati_totali": 83,
+          "grassi_totali": 26
+        }
+      }
+    ],
     "weekly_diet_days_2_7": {
-      "giorno_5": {
+      "giorno_2": {
         "colazione": {
           "alimenti": [
             {
-              "nome_alimento": "Avena",
-              "quantita_g": 60,
-              "misura_casalinga": "3/4 tazza"
-            },
-            {
-              "nome_alimento": "Mela",
-              "quantita_g": 230,
-              "misura_casalinga": "1 mela grande e mezza"
-            },
-            {
-              "nome_alimento": "Miele",
-              "quantita_g": 40,
-              "misura_casalinga": "2 cucchiai e 1/2"
+              "nome_alimento": "Pane integrale",
+              "quantita_g": 120,
+              "misura_casalinga": "4 fette grandi"
             },
             {
               "nome_alimento": "Burro di arachidi",
-              "quantita_g": 20,
-              "misura_casalinga": "1 cucchiaio abbondante"
+              "quantita_g": 30,
+              "misura_casalinga": "2 cucchiai"
             },
             {
-              "nome_alimento": "Proteine in polvere",
-              "quantita_g": 20,
-              "misura_casalinga": "3 cucchiai rasi"
-            }
-          ]
-        },
-        "spuntino_mattutino": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pane integrale",
-              "quantita_g": 60,
-              "misura_casalinga": "2 fette grandi"
-            },
-            {
-              "nome_alimento": "Bresaola",
-              "quantita_g": 50,
-              "misura_casalinga": "6-7 fette sottili"
+              "nome_alimento": "Marmellata",
+              "quantita_g": 30,
+              "misura_casalinga": "2 cucchiaini abbondanti"
             }
           ]
         },
         "pranzo": {
           "alimenti": [
             {
-              "nome_alimento": "Pasta",
-              "quantita_g": 140,
-              "misura_casalinga": "1 porzione abbondante"
+              "nome_alimento": "Riso basmati",
+              "quantita_g": 70
             },
             {
-              "nome_alimento": "Funghi",
-              "quantita_g": 150,
-              "misura_casalinga": "1 porzione media saltata"
+              "nome_alimento": "Gamberi",
+              "quantita_g": 70
             },
             {
-              "nome_alimento": "Parmigiano",
-              "quantita_g": 30,
-              "misura_casalinga": "2 cucchiai colmi grattugiato"
+              "nome_alimento": "Zucchine",
+              "quantita_g": 100
             },
             {
-              "nome_alimento": "Olio extravergine di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai abbondanti"
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
             }
-          ]
+          ],
+          "target_nutrients": {
+            "kcal": 910,
+            "proteine": 16,
+            "carboidrati": 155,
+            "grassi": 25
+          },
+          "valori_effettivi": {
+            "kcal": 503.4,
+            "proteine": 17.7,
+            "carboidrati": 61.8,
+            "grassi": 21.8
+          }
         },
         "spuntino_pomeridiano": {
           "alimenti": [
             {
-              "nome_alimento": "Pane bianco",
-              "quantita_g": 60,
-              "misura_casalinga": "2 fette grandi"
+              "nome_alimento": "Grissini",
+              "quantita_g": 20,
+              "misura_casalinga": "4-5 grissini piccoli"
             },
             {
-              "nome_alimento": "Fesa di tacchino",
-              "quantita_g": 50,
-              "misura_casalinga": "5-6 fette"
-            },
-            {
-              "nome_alimento": "Mandorle",
-              "quantita_g": 10,
-              "misura_casalinga": "1 cucchiaio colmo"
+              "nome_alimento": "Parmigiano",
+              "quantita_g": 30,
+              "misura_casalinga": "3 cubetti piccoli"
             }
           ]
         },
         "cena": {
           "alimenti": [
             {
+              "nome_alimento": "Petto di tacchino",
+              "quantita_g": 50
+            },
+            {
+              "nome_alimento": "Patate",
+              "quantita_g": 230
+            },
+            {
+              "nome_alimento": "Fagiolini",
+              "quantita_g": 210
+            },
+            {
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
+            },
+            {
+              "nome_alimento": "Pane",
+              "quantita_g": 60
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 610.1,
+            "proteine_totali": 25.9,
+            "carboidrati_totali": 77.7,
+            "grassi_totali": 21.5
+          }
+        }
+      },
+      "giorno_3": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 100,
+              "misura_casalinga": "mezzo bicchiere"
+            },
+            {
+              "nome_alimento": "Fette biscottate",
+              "quantita_g": 60,
+              "misura_casalinga": "8 fette"
+            },
+            {
+              "nome_alimento": "Miele",
+              "quantita_g": 40,
+              "misura_casalinga": "2 cucchiai abbondanti"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 30,
+              "misura_casalinga": "1 manciata (20-25 mandorle)"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Riso",
+              "quantita_g": 170
+            },
+            {
+              "nome_alimento": "Pomodorini",
+              "quantita_g": 240
+            },
+            {
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
+            }
+          ],
+          "target_nutrients": {
+            "kcal": 910,
+            "proteine": 16,
+            "carboidrati": 155,
+            "grassi": 25
+          },
+          "valori_effettivi": {
+            "kcal": 858.9,
+            "proteine": 17.7,
+            "carboidrati": 149.3,
+            "grassi": 23.7
+          }
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Yogurt magro",
+              "quantita_g": 100,
+              "misura_casalinga": "1 vasetto"
+            },
+            {
+              "nome_alimento": "Mela",
+              "quantita_g": 170,
+              "misura_casalinga": "1 mela grande"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 10,
+              "misura_casalinga": "7-8 mandorle"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pesce spada",
+              "quantita_g": 70
+            },
+            {
+              "nome_alimento": "Pane bianco",
+              "quantita_g": 70
+            },
+            {
+              "nome_alimento": "Asparagi",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 40
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 688.0,
+            "proteine_totali": 24.1,
+            "carboidrati_totali": 45.6,
+            "grassi_totali": 43.2
+          }
+        }
+      },
+      "giorno_4": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Cornflakes",
+              "quantita_g": 60,
+              "misura_casalinga": "2 tazze"
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 100,
+              "misura_casalinga": "mezzo bicchiere"
+            },
+            {
+              "nome_alimento": "Kiwi",
+              "quantita_g": 300,
+              "misura_casalinga": "3 kiwi medi"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 30,
+              "misura_casalinga": "1 manciata (20-25 mandorle)"
+            }
+          ]
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Farro",
+              "quantita_g": 60
+            },
+            {
+              "nome_alimento": "Lenticchie",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Carote",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Avocado",
+              "quantita_g": 10
+            },
+            {
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
+            },
+            {
+              "nome_alimento": "Pane",
+              "quantita_g": 60
+            }
+          ],
+          "target_nutrients": {
+            "kcal": 910,
+            "proteine": 16,
+            "carboidrati": 155,
+            "grassi": 25
+          },
+          "valori_effettivi": {
+            "kcal": 708.2,
+            "proteine": 20.2,
+            "carboidrati": 97.6,
+            "grassi": 23.9
+          }
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Pan bauletto",
+              "quantita_g": 60,
+              "misura_casalinga": "2 fette"
+            },
+            {
+              "nome_alimento": "Fesa di tacchino",
+              "quantita_g": 50,
+              "misura_casalinga": "2 fette"
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 10,
+              "misura_casalinga": "7-8 mandorle"
+            }
+          ]
+        },
+        "cena": {
+          "alimenti": [
+            {
+              "nome_alimento": "Bistecca di manzo",
+              "quantita_g": 70
+            },
+            {
+              "nome_alimento": "Insalata mista",
+              "quantita_g": 60
+            },
+            {
+              "nome_alimento": "Pane bianco",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 30
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 644.7,
+            "proteine_totali": 24.3,
+            "carboidrati_totali": 61.3,
+            "grassi_totali": 34.2
+          }
+        }
+      },
+      "giorno_5": {
+        "colazione": {
+          "alimenti": [
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Fette biscottate",
+              "quantita_g": 60
+            },
+            {
+              "nome_alimento": "Miele",
+              "quantita_g": 40
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 30
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 578.2,
+            "proteine_totali": 17.2,
+            "carboidrati_totali": 83.8,
+            "grassi_totali": 20.4
+          }
+        },
+        "pranzo": {
+          "alimenti": [
+            {
+              "nome_alimento": "Riso",
+              "quantita_g": 170
+            },
+            {
+              "nome_alimento": "Funghi",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 849.7,
+            "proteine_totali": 22.3,
+            "carboidrati_totali": 142.4,
+            "grassi_totali": 23.6
+          }
+        },
+        "spuntino_pomeridiano": {
+          "alimenti": [
+            {
+              "nome_alimento": "Yogurt magro",
+              "quantita_g": 100
+            },
+            {
+              "nome_alimento": "Mela",
+              "quantita_g": 170
+            },
+            {
+              "nome_alimento": "Mandorle",
+              "quantita_g": 10
+            }
+          ],
+          "totali_pasto": {
+            "kcal_finali": 182,
+            "proteine_totali": 6.8,
+            "carboidrati_totali": 24.9,
+            "grassi_totali": 5.8
+          }
+        },
+        "cena": {
+          "alimenti": [
+            {
               "nome_alimento": "Merluzzo",
-              "quantita_g": 110,
-              "misura_casalinga": "1 filetto grande"
+              "quantita_g": 70
             },
             {
               "nome_alimento": "Riso integrale",
-              "quantita_g": 130,
-              "misura_casalinga": "1 tazza"
+              "quantita_g": 100
             },
             {
               "nome_alimento": "Melanzane",
-              "quantita_g": 250,
-              "misura_casalinga": "1 media grigliata"
+              "quantita_g": 240
             },
             {
-              "nome_alimento": "Olio extravergine di oliva",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 625.7,
+            "proteine_totali": 21.8,
+            "carboidrati_totali": 83.6,
+            "grassi_totali": 23.1
+          }
         }
       },
       "giorno_6": {
@@ -492,198 +1097,191 @@
           "alimenti": [
             {
               "nome_alimento": "Cornflakes",
-              "quantita_g": 60,
-              "misura_casalinga": "1 tazza colma"
+              "quantita_g": 60
+            },
+            {
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 100
             },
             {
               "nome_alimento": "Kiwi",
-              "quantita_g": 260,
-              "misura_casalinga": "2 frutti grandi"
+              "quantita_g": 300
             },
             {
               "nome_alimento": "Mandorle",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
+              "quantita_g": 30
             }
-          ]
-        },
-        "spuntino_mattutino": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pera",
-              "quantita_g": 190,
-              "misura_casalinga": "1 pera grande"
-            },
-            {
-              "nome_alimento": "Noci sgusciate",
-              "quantita_g": 10,
-              "misura_casalinga": "1 cucchiaio"
-            }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 588.6,
+            "proteine_totali": 17.8,
+            "carboidrati_totali": 86.1,
+            "grassi_totali": 19.1
+          }
         },
         "pranzo": {
           "alimenti": [
             {
-              "nome_alimento": "Pasta",
-              "quantita_g": 140,
-              "misura_casalinga": "1 porzione abbondante"
-            },
-            {
-              "nome_alimento": "Pollo petto",
-              "quantita_g": 70,
-              "misura_casalinga": "1 fetta/cubo medio"
+              "nome_alimento": "Riso basmati",
+              "quantita_g": 170
             },
             {
               "nome_alimento": "Zucchine",
-              "quantita_g": 190,
-              "misura_casalinga": "1 ciotola grande"
+              "quantita_g": 400
             },
             {
-              "nome_alimento": "Olio extravergine di oliva",
-              "quantita_g": 20,
-              "misura_casalinga": "2 cucchiai"
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 871.7,
+            "proteine_totali": 22.9,
+            "carboidrati_totali": 147.7,
+            "grassi_totali": 23.6
+          }
         },
         "spuntino_pomeridiano": {
           "alimenti": [
             {
               "nome_alimento": "Banana",
-              "quantita_g": 80,
-              "misura_casalinga": "mezza banana"
+              "quantita_g": 250
             },
             {
               "nome_alimento": "Burro di arachidi",
-              "quantita_g": 10,
-              "misura_casalinga": "1 cucchiaino"
+              "quantita_g": 10
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 252.5,
+            "proteine_totali": 5.5,
+            "carboidrati_totali": 44.3,
+            "grassi_totali": 6.1
+          }
         },
         "cena": {
           "alimenti": [
             {
               "nome_alimento": "Piselli",
-              "quantita_g": 310,
-              "misura_casalinga": "10 cucchiai abbondanti"
+              "quantita_g": 240
             },
             {
               "nome_alimento": "Pasta",
-              "quantita_g": 110,
-              "misura_casalinga": "1 porzione medio-abbondante"
+              "quantita_g": 70
             },
             {
-              "nome_alimento": "Olio extravergine di oliva",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 605.7,
+            "proteine_totali": 22.2,
+            "carboidrati_totali": 66.5,
+            "grassi_totali": 22.3
+          }
         }
       },
       "giorno_7": {
         "colazione": {
           "alimenti": [
             {
-              "nome_alimento": "Avena",
-              "quantita_g": 60,
-              "misura_casalinga": "3/4 tazza"
+              "nome_alimento": "Latte scremato",
+              "quantita_g": 100
             },
             {
-              "nome_alimento": "Mela",
-              "quantita_g": 230,
-              "misura_casalinga": "1 mela grande e mezza"
+              "nome_alimento": "Fette biscottate",
+              "quantita_g": 60
             },
             {
               "nome_alimento": "Miele",
-              "quantita_g": 40,
-              "misura_casalinga": "2 cucchiai e 1/2"
+              "quantita_g": 40
             },
             {
-              "nome_alimento": "Burro di arachidi",
-              "quantita_g": 20,
-              "misura_casalinga": "1 cucchiaio abbondante"
-            },
-            {
-              "nome_alimento": "Proteine in polvere",
-              "quantita_g": 20,
-              "misura_casalinga": "3 cucchiai rasi"
+              "nome_alimento": "Mandorle",
+              "quantita_g": 30
             }
-          ]
-        },
-        "spuntino_mattutino": {
-          "alimenti": [
-            {
-              "nome_alimento": "Pane integrale",
-              "quantita_g": 60,
-              "misura_casalinga": "2 fette grandi"
-            },
-            {
-              "nome_alimento": "Bresaola",
-              "quantita_g": 50,
-              "misura_casalinga": "6-7 fette sottili"
-            }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 578.2,
+            "proteine_totali": 17.2,
+            "carboidrati_totali": 83.8,
+            "grassi_totali": 20.4
+          }
         },
         "pranzo": {
           "alimenti": [
             {
               "nome_alimento": "Gnocchi",
-              "quantita_g": 120,
-              "misura_casalinga": "1 piatto medio"
+              "quantita_g": 80
+            },
+            {
+              "nome_alimento": "Pomodoro",
+              "quantita_g": 150
             },
             {
               "nome_alimento": "Mozzarella",
-              "quantita_g": 130,
-              "misura_casalinga": "1 mozzarella media"
+              "quantita_g": 30
             },
             {
-              "nome_alimento": "Insalata",
-              "quantita_g": 260,
-              "misura_casalinga": "1 piatto grande"
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 563,
+            "proteine_totali": 17.9,
+            "carboidrati_totali": 63.6,
+            "grassi_totali": 27.1
+          }
         },
         "spuntino_pomeridiano": {
           "alimenti": [
             {
-              "nome_alimento": "Pane bianco",
-              "quantita_g": 60,
-              "misura_casalinga": "2 fette grandi"
+              "nome_alimento": "Yogurt magro",
+              "quantita_g": 100
             },
             {
-              "nome_alimento": "Fesa di tacchino",
-              "quantita_g": 50,
-              "misura_casalinga": "5-6 fette"
+              "nome_alimento": "Mela",
+              "quantita_g": 170
             },
             {
               "nome_alimento": "Mandorle",
-              "quantita_g": 10,
-              "misura_casalinga": "1 cucchiaio colmo"
+              "quantita_g": 10
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 182,
+            "proteine_totali": 6.8,
+            "carboidrati_totali": 24.9,
+            "grassi_totali": 5.8
+          }
         },
         "cena": {
           "alimenti": [
             {
               "nome_alimento": "Orata",
-              "quantita_g": 70,
-              "misura_casalinga": "1 filetto piccolo"
+              "quantita_g": 70
             },
             {
               "nome_alimento": "Riso integrale",
-              "quantita_g": 120,
-              "misura_casalinga": "1 tazza scarsa"
+              "quantita_g": 100
             },
             {
               "nome_alimento": "Spinaci",
-              "quantita_g": 230,
-              "misura_casalinga": "1 ciotola colma"
+              "quantita_g": 100
             },
             {
-              "nome_alimento": "Olio extravergine di oliva",
-              "quantita_g": 30,
-              "misura_casalinga": "3 cucchiai"
+              "nome_alimento": "Olio oliva",
+              "quantita_g": 20
             }
-          ]
+          ],
+          "totali_pasto": {
+            "kcal_finali": 640.5,
+            "proteine_totali": 25.4,
+            "carboidrati_totali": 81,
+            "grassi_totali": 25.2
+          }
         }
       }
     }

@@ -293,34 +293,23 @@ def calculate_user_daily_proteins(user_id: str) -> float:
 
 def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
     """
-    Estrae la struttura dei pasti del giorno 1 dal file utente.
+    Estrae la struttura dei pasti da daily_macros invece che da weekly_diet_day_1.
     
     STRUTTURA OUTPUT:
     {
-        "colazione": ["nome_alimento_1", "nome_alimento_2", ...],          # Lista alimenti per colazione
-        "spuntino_mattutino": ["nome_alimento_1", ...],                    # Lista alimenti per spuntino mattutino
-        "pranzo": ["nome_alimento_1", "nome_alimento_2", ...],             # Lista alimenti per pranzo
-        "spuntino_pomeridiano": ["nome_alimento_1", ...],                  # Lista alimenti per spuntino pomeridiano
-        "cena": ["nome_alimento_1", "nome_alimento_2", ...],               # Lista alimenti per cena
-        "spuntino_serale": ["nome_alimento_1", ...]                        # Lista alimenti per spuntino serale
+        "colazione": ["placeholder"],           # Pasto sempre presente se definito in daily_macros
+        "spuntino_mattutino": [],              # Pasto presente solo se definito
+        "pranzo": ["placeholder"],             # Pasto sempre presente se definito in daily_macros  
+        "spuntino_pomeridiano": ["placeholder"], # Pasto presente solo se definito
+        "cena": ["placeholder"],               # Pasto sempre presente se definito in daily_macros
+        "spuntino_serale": []                  # Pasto presente solo se definito
     }
     
     LOGICA:
-    - Cerca in user_data/user_{user_id}.json -> nutritional_info_extracted -> weekly_diet_day_1
-    - Per ogni pasto registrato, estrae solo gli alimenti con quantita_g > 0
-    - Normalizza i nomi dei pasti usando get_canonical_meal_name()
-    - Include solo i pasti che hanno almeno un alimento valido
-    - I pasti vuoti risultano come liste vuote []
-    
-    ESEMPIO OUTPUT REALE:
-    {
-        "colazione": ["fiocchi d'avena", "latte scremato", "uva", "burro di arachidi"],
-        "spuntino_mattutino": [],           # Pasto non registrato o senza alimenti
-        "pranzo": [],                       # Pasto non registrato o senza alimenti
-        "spuntino_pomeridiano": [],         # Pasto non registrato o senza alimenti
-        "cena": [],                         # Pasto non registrato o senza alimenti
-        "spuntino_serale": []               # Pasto non registrato o senza alimenti
-    }
+    - Usa daily_macros.distribuzione_pasti come fonte di verità per la struttura dei pasti
+    - Questa struttura è sempre completa e definita, a differenza di weekly_diet_day_1
+    - Per ogni pasto presente in daily_macros, crea una voce con placeholder
+    - Garantisce che tutti i pasti pianificati (inclusa la cena) siano inclusi
     
     Args:
         user_id: ID dell'utente per cui estrarre la struttura
@@ -342,58 +331,33 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
         with open(user_file_path, 'r', encoding='utf-8') as f:
             user_data = json.load(f)
         
-        # Estrai i pasti registrati dalla struttura del file utente
+        # Estrai la struttura dai daily_macros invece che da weekly_diet_day_1
         nutritional_info = user_data.get("nutritional_info_extracted", {})
-        weekly_diet_day_1 = nutritional_info.get("weekly_diet_day_1", [])
+        daily_macros = nutritional_info.get("daily_macros", {})
+        distribuzione_pasti = daily_macros.get("distribuzione_pasti", {})
         
-        if not weekly_diet_day_1:
-            logger.warning("Nessun pasto registrato trovato nel file utente")
+        if not distribuzione_pasti:
+            logger.warning("Nessuna distribuzione pasti trovata in daily_macros")
             return None
         
-        # Inizializza la struttura del giorno 1
-        day1_structure = {
-            "colazione": [],
-            "spuntino_mattutino": [],
-            "pranzo": [],
-            "spuntino_pomeridiano": [],
-            "cena": [],
-            "spuntino_serale": []
-        }
+        # Inizializza la struttura usando i pasti definiti in daily_macros
+        day1_structure = {}
         
-        # Estrai gli alimenti da ogni pasto registrato
-        for meal in weekly_diet_day_1:
-            meal_name = meal.get("nome_pasto", "").lower()
-            alimenti = meal.get("alimenti", [])
-            
-            # Ottieni il nome canonico del pasto usando lo stesso mapping del meal_optimization_tool
+        # Per ogni pasto definito in daily_macros, crea una voce
+        for meal_name in distribuzione_pasti.keys():
+            # Ottieni il nome canonico del pasto
             canonical_meal_name = get_canonical_meal_name(meal_name)
             
-            # Verifica se il nome canonico corrisponde a uno dei pasti standard
-            if canonical_meal_name in day1_structure:
-                # Estrai solo gli alimenti con quantità > 0 (pasti effettivamente completati)
-                food_list = []
-                for alimento in alimenti:
-                    quantita = alimento.get("quantita_g", 0)
-                    if quantita > 0:
-                        nome_alimento = alimento.get("nome_alimento", "")
-                        if nome_alimento:
-                            food_list.append(nome_alimento)
-                
-                if food_list:
-                    day1_structure[canonical_meal_name] = food_list
-                    logger.info(f"Estratto {canonical_meal_name} (da '{meal_name}'): {food_list}")
-                else:
-                    logger.info(f"Pasto {canonical_meal_name} saltato (quantità 0 o vuoto)")
-            else:
-                logger.warning(f"Nome pasto '{meal_name}' (canonico: '{canonical_meal_name}') non riconosciuto")
+            # Aggiungi il pasto con un placeholder (indica che il pasto è previsto)
+            day1_structure[canonical_meal_name] = ["placeholder"]
+            logger.info(f"Aggiunto pasto {canonical_meal_name} (da daily_macros)")
         
         # Verifica che almeno un pasto sia stato estratto
-        total_foods = sum(len(foods) for foods in day1_structure.values())
-        if total_foods == 0:
-            logger.warning("Nessun alimento valido estratto dai pasti registrati")
+        if not day1_structure:
+            logger.warning("Nessun pasto trovato in daily_macros")
             return None
         
-        logger.info(f"Struttura giorno 1 estratta con successo: {total_foods} alimenti totali")
+        logger.info(f"Struttura estratta da daily_macros: {list(day1_structure.keys())}")
         return day1_structure
         
     except Exception as e:
@@ -404,7 +368,7 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
 def adapt_meals_to_day1_structure(predefined_day: Dict[str, List[str]], 
                                 day1_structure: Dict[str, List[str]]) -> Dict[str, List[str]]:
     """
-    Adatta i pasti di un giorno predefinito alla struttura del giorno 1, escludendo i pasti vuoti.
+    Adatta i pasti di un giorno predefinito alla struttura definita in daily_macros.
     
     STRUTTURA INPUT:
     predefined_day = {
@@ -416,56 +380,50 @@ def adapt_meals_to_day1_structure(predefined_day: Dict[str, List[str]],
     }
     
     day1_structure = {
-        "colazione": ["fiocchi d'avena", "latte scremato", "uva", "burro di arachidi"],  # NON VUOTO
-        "spuntino_mattutino": [],                                                        # VUOTO
-        "pranzo": [],                                                                    # VUOTO
-        "spuntino_pomeridiano": [],                                                      # VUOTO
-        "cena": [],                                                                      # VUOTO
-        "spuntino_serale": []                                                            # VUOTO
+        "colazione": ["placeholder"],           # Presente in daily_macros
+        "pranzo": ["placeholder"],             # Presente in daily_macros
+        "spuntino_pomeridiano": ["placeholder"], # Presente in daily_macros
+        "cena": ["placeholder"]                # Presente in daily_macros
     }
     
     STRUTTURA OUTPUT:
     {
-        "colazione": ["avena", "banana", "mandorle", "latte_scremato"]  # Solo questo pasto viene incluso
-        # Altri pasti NON vengono inclusi perché vuoti nel day1_structure
+        "colazione": ["avena", "banana", "mandorle", "latte_scremato"],
+        "pranzo": ["riso_basmati", "pollo_petto", "zucchine", "olio_oliva"],
+        "spuntino_pomeridiano": ["mela", "noci"],
+        "cena": ["salmone", "patate_dolci", "broccoli", "olio_oliva"]
     }
     
     LOGICA:
-    1. Itera sui pasti del GIORNO 1 (day1_structure)
-    2. Per ogni pasto del giorno 1:
-       - Se ha alimenti (lista NON vuota):
-         * Cerca lo stesso pasto nel giorno predefinito
-         * Se lo trova: copia gli alimenti del predefinito nell'output
-         * Se non lo trova: crea un pasto vuoto nell'output
-       - Se è vuoto (lista vuota):
-         * SALTA completamente (non appare nell'output)
-    3. I pasti del predefinito non presenti nel giorno 1 vengono IGNORATI
+    1. Itera sui pasti definiti in daily_macros (day1_structure)
+    2. Per ogni pasto definito:
+       - Cerca lo stesso pasto nel giorno predefinito
+       - Se lo trova: copia gli alimenti del predefinito nell'output
+       - Se non lo trova: crea un pasto vuoto nell'output
+    3. Tutti i pasti definiti in daily_macros vengono sempre inclusi
     
     CASO D'USO:
-    - Serve per mantenere la stessa struttura temporale dei pasti dell'utente
-    - Evita di generare pasti che l'utente normalmente non consuma
-    - Garantisce coerenza tra giorno 1 (esistente) e giorni generati
+    - Garantisce che tutti i pasti pianificati (inclusa la cena) siano generati
+    - Mantiene la struttura definita dall'utente in daily_macros
+    - Risolve il problema delle cene mancanti
     
     Args:
         predefined_day: Giorno predefinito con pasti completi
-        day1_structure: Struttura estratta dal giorno 1 dell'utente
+        day1_structure: Struttura estratta da daily_macros
         
     Returns:
-        Dict con solo i pasti corrispondenti a quelli non vuoti del giorno 1
+        Dict con tutti i pasti definiti in daily_macros
     """
     adapted_day = {}
     
-    for meal_name, food_list in day1_structure.items():
-        # Includi solo i pasti che hanno alimenti nel giorno 1
-        if food_list:  # Se la lista non è vuota
-            if meal_name in predefined_day:
-                adapted_day[meal_name] = predefined_day[meal_name]
-                logger.info(f"Adattato {meal_name} dal giorno predefinito")
-            else:
-                adapted_day[meal_name] = []
-                logger.warning(f"Pasto '{meal_name}' non trovato nel giorno predefinito")
+    # Includi tutti i pasti definiti in daily_macros (tutti hanno placeholder)
+    for meal_name in day1_structure.keys():
+        if meal_name in predefined_day:
+            adapted_day[meal_name] = predefined_day[meal_name]
+            logger.info(f"Adattato {meal_name} dal giorno predefinito")
         else:
-            logger.info(f"Saltato {meal_name} (vuoto nel giorno 1)")
+            adapted_day[meal_name] = []
+            logger.warning(f"Pasto '{meal_name}' non trovato nel giorno predefinito")
     
     return adapted_day
 

@@ -79,7 +79,7 @@ class Home:
         
         st.markdown(f"""
         <div class="home-welcome-gradient">
-            <h1>🌟 {greeting}, {username}!</h1>
+            <h1>🥗 {greeting}, {username}!</h1>
             <p style="font-size: 8em; font-weight: 900; line-height: 1.0; opacity: 0.98; margin: 0.3em 0;">
                 📅 {current_day}
             </p>
