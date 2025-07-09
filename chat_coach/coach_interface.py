@@ -258,23 +258,24 @@ def coach_interface():
     # Inizializza la sessione del coach
     initialize_coach_session()
     
-    # Mostra il titolo
-    st.markdown("# NutrAICoach")
-    
-    # Mostra una breve descrizione
-    st.markdown("""###
-                
-    **Il tuo Coach Nutrizionale 🚀**
+    # Mostra il titolo stiloso
+    st.markdown("""
+    <div class="welcome-header">
+        <h1>🤖 <span class="gradient-text">NutrAICoach</span></h1>
+        <p class="section-subtitle">
+            Il tuo <b>Coach Nutrizionale</b> personale
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    ⏰ Consigli su cosa mangiare ora
-                  
-    📸 Analisi istantanenea del tuo pasto o delle alternative  
-                
-    ⚖️ Porzioni adattate modificate in base a come procede la giornata
-                
-
-
-    """)
+    # Breve descrizione con icone e layout gradevole
+    st.markdown("""
+    <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; font-size: 1.08rem;">
+        <div>⏰ <b>Consigli istantanei</b> su cosa mangiare ora</div>
+        <div>📸 <b>Analisi smart</b> del tuo pasto o delle alternative</div>
+        <div>⚖️ <b>Porzioni adattate</b> in base alla tua giornata</div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Inizializza la conversazione del coach se non è stata inizializzata
     if not st.session_state.coach_initialized:
