@@ -57,7 +57,7 @@ def load_css():
     /* --- Login --- */
     .login-wrapper {
         max-width: 450px;
-        margin: 4rem auto;
+        margin: 2rem auto;
     }
 
     /* --- Form --- */

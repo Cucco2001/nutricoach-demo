@@ -66,7 +66,7 @@ def load_mobile_css():
     /* --- Login Mobile --- */
     .login-wrapper {
         max-width: 100%;
-        margin: 2rem auto;
+        margin: 1rem auto;
         padding: 0 var(--mobile-padding);
     }
 
