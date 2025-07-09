@@ -79,6 +79,12 @@ def load_css():
         opacity: 0.85;
     }
 
+    /* Stile specifico per bottone submit nel form per sovrascrivere il default */
+    .stForm .stButton > button {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
     /* --- Chat --- */
     div[data-testid="stChatMessage"]:has([aria-label="assistant avatar"]) [data-testid="stChatMessageContent"] {
         background-color: #f0f2f6;

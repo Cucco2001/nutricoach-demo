@@ -86,6 +86,12 @@ def load_mobile_css():
         opacity: 0.85;
     }
 
+    /* Stile specifico per bottone submit nel form per sovrascrivere il default */
+    .stForm .stButton > button {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
     /* --- Sidebar Mobile --- */
     /* La regola con selettore generato è stata rimossa perché instabile */
     
