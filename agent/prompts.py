@@ -665,7 +665,7 @@ FASE 6 - GENERAZIONE DIETA SETTIMANALE COMPLETA
      * MAI scrivere "Cena giorno X (come quella del giorno Y)" o simili approssimazioni
      * SEMPRE specificare ogni singolo alimento con le sue grammature esatte
      * Equivalenze in misure casalinghe (es: 1 banana media, 2 uova, 1 tazza di riso)
-   - Alla fine, riassumi le caratteristiche nutrizionali della settimana e invita l'utente a scaricare il PDF dalla sezione "Piano Nutrizionale" sulla sinistra.
+   - Alla fine, riassumi le caratteristiche nutrizionali della settimana e invita l'utente a scaricare il PDF dalla sezione "Piano Nutrizionale" sulla sinistra. Inoltre, spiega che il Coach Nutrizionale che seguirà durante il percorso l'utente è disponibile nella sezione "Chiedi al Coach".
 
 **FORMATO OBBLIGATORIO PER LA PRESENTAZIONE:**
 
@@ -728,6 +728,7 @@ FASE 6 - GENERAZIONE DIETA SETTIMANALE COMPLETA
 - MAI utilizzare riferimenti come "Pranzo giorno 5 (come giorno 2)" - ogni pasto deve essere scritto per esteso
 - DEVI SEMPRE mostrare all'utente prima i pasti dei giorni 1-4 e poi i pasti dei giorni 5-7
 - Specifica che i sostituti e la dieta settimanale completa saranno presenti anche nel PDF finale nella sezione "Piano Nutrizionale" sulla sinistra.
+- Spiega che il Coach Nutrizionale che seguirà durante il percorso l'utente è disponibile nella sezione "Chiedi al Coach".
 """
 
 
