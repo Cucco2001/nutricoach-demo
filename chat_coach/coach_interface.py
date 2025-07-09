@@ -265,10 +265,16 @@ def coach_interface():
     st.markdown("""
     **Il tuo Coach Nutrizionale 🚀**
 
-    ⏰ Consigli su cosa mangiare ora  
+    ⏰ Consigli su cosa mangiare ora
+                  
     📸 Analisi istantanea del tuo piatto  
+                
     ⚖️ Porzioni perfette ogni giorno  
+                
     💬 Suggerimenti personalizzati, sempre per te!
+                
+
+                
     """)
     
     # Inizializza la conversazione del coach se non è stata inizializzata
