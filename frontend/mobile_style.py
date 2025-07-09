@@ -336,6 +336,25 @@ def load_mobile_css():
         box-shadow: 0 6px 15px rgba(0,0,0,0.12);
     }
     
+    /* Card specifiche per le preferenze (Mobile) */
+    .preferences-card {
+        background: linear-gradient(135deg, var(--meal-green-dark) 0%, var(--meal-green-light) 100%);
+        padding: 12px;
+        border-radius: 10px;
+        margin: 8px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border: 1px solid var(--border-color);
+        color: white;
+        height: 100%;
+    }
+
+    .preferences-card h3 {
+        color: white !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 6px;
+        margin-top: 0;
+    }
+    
     .home-meal-card {
         background: linear-gradient(135deg, var(--meal-green-dark) 0%, var(--meal-green-light) 100%);
         padding: 8px 12px;

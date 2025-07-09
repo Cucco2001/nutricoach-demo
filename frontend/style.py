@@ -163,6 +163,25 @@ def load_css():
         box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
     
+    /* Card specifiche per le preferenze */
+    .preferences-card {
+        background: linear-gradient(135deg, var(--meal-green-dark) 0%, var(--meal-green-light) 100%);
+        padding: 15px;
+        border-radius: 12px;
+        margin: 12px 0;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        border: 1px solid var(--border-color);
+        color: white;
+        height: 100%;
+    }
+
+    .preferences-card h3 {
+        color: white !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 8px;
+        margin-top: 0;
+    }
+    
     .home-meal-card {
         background: linear-gradient(135deg, var(--meal-green-dark) 0%, var(--meal-green-light) 100%);
         padding: 10px 15px;
