@@ -262,19 +262,18 @@ def coach_interface():
     st.markdown("# NutrAICoach")
     
     # Mostra una breve descrizione
-    st.markdown("""
+    st.markdown("""###
+                
     **Il tuo Coach Nutrizionale 🚀**
 
     ⏰ Consigli su cosa mangiare ora
                   
-    📸 Analisi istantanea del tuo piatto  
+    📸 Analisi istantanenea del tuo pasto o delle alternative  
                 
-    ⚖️ Porzioni perfette ogni giorno  
-                
-    💬 Suggerimenti personalizzati, sempre per te!
+    ⚖️ Porzioni adattate modificate in base a come procede la giornata
                 
 
-                
+
     """)
     
     # Inizializza la conversazione del coach se non è stata inizializzata

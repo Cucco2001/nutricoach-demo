@@ -50,10 +50,10 @@ def show_app_tutorial():
         # Sezioni interattive organizzate verticalmente
         _display_tutorial_section(
             "💬", "**Chat**", 
-            "L'agente ti guiderà nella realizzazione di una dieta tipo in base ai tuoi suggerimenti e spunti e poi ti guiderà durante il tuo percorso nutrizionale.",
+            "Due modalità di agente:",
             [
-                "L'agente ti guiderà nella realizzazione della dieta nella sezione Crea/Modifica Dieta",
-                "L'agente ti guiderà durante il tuo percorso nutrizionale nella sezione di Coaching"
+                "Crea/Modifica dieta: L'agente ti guiderà nella realizzazione di una dieta tipo in base alle tue abitudini e necessità",
+                "Coaching: L'agente ti guiderà durante il tuo percorso nutrizionale, chiedigli di analizzare il tuo pasto o le alternative!"
             ],
             chat_visited_key,
             chat_visited
