@@ -275,6 +275,7 @@ def coach_interface():
         <div>📸 <b>Analisi smart</b> del tuo pasto o delle alternative</div>
         <div>⚖️ <b>Porzioni adattate</b> in base alla tua giornata</div>
     </div>
+    <div style="height: 2.5rem;"></div>
     """, unsafe_allow_html=True)
     
     # Inizializza la conversazione del coach se non è stata inizializzata
