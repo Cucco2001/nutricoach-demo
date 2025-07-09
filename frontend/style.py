@@ -60,6 +60,13 @@ def load_css():
         margin: 4rem auto;
     }
 
+    /* --- Form --- */
+    .stForm {
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+
     /* --- Bottoni --- */
     .stButton > button {
         background-color: var(--primary-color);

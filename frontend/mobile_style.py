@@ -274,10 +274,9 @@ def load_mobile_css():
     
     /* --- Form Elements Mobile --- */
     .stForm {
-        padding: 1rem !important;
-        border-radius: var(--border-radius) !important;
-        background-color: var(--card-background-color) !important;
-        border: 1px solid var(--border-color) !important;
+        padding: 0 !important;
+        background-color: transparent !important;
+        border: none !important;
         margin-bottom: 1rem !important;
     }
     
