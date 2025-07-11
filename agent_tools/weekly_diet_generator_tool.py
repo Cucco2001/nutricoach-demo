@@ -365,6 +365,121 @@ def extract_day1_meal_structure(user_id: str) -> Optional[Dict[str, List[str]]]:
         return None
 
 
+def extract_day1_real_meals(user_id: str) -> Optional[Dict[str, List[str]]]:
+    """
+    Estrae gli alimenti REALI dal giorno 1 dell'utente (non placeholder).
+    
+    SCOPO:
+    Diversamente da extract_day1_meal_structure che estrae solo la struttura dei pasti,
+    questa funzione estrae gli alimenti concreti registrati nel weekly_diet_day_1.
+    
+    STRUTTURA INPUT:
+    user_data/user_{user_id}.json → nutritional_info_extracted → weekly_diet_day_1
+    [
+        {"nome_pasto": "colazione", "alimenti": [{"nome_alimento": "Avena", "quantita_g": 100}]},
+        {"nome_pasto": "pranzo", "alimenti": [{"nome_alimento": "Pollo", "quantita_g": 110}, ...]},
+        {"nome_pasto": "spuntino_pomeridiano", "alimenti": [{"nome_alimento": "Grissini", "quantita_g": 60}]},
+        {"nome_pasto": "cena", "alimenti": [{"nome_alimento": "Salmone al forno", "quantita_g": 150}]}
+    ]
+    
+    STRUTTURA OUTPUT:
+    {
+        "colazione": ["avena"],
+        "pranzo": ["pollo", "zucchine", "olio_oliva"],
+        "spuntino_pomeridiano": ["grissini"],
+        "cena": ["salmone_al_forno", "patate_dolci", "broccoli"]
+    }
+    
+    LOGICA:
+    1. Legge weekly_diet_day_1 dal file utente
+    2. Per ogni pasto registrato:
+       - Estrae tutti i nomi degli alimenti
+       - Normalizza i nomi per la compatibilità con il database
+       - Salta alimenti con quantità 0 o nulle
+    3. Restituisce solo pasti con alimenti effettivi
+    
+    DIFFERENZA CON extract_day1_meal_structure:
+    - extract_day1_meal_structure: restituisce {"colazione": ["placeholder"]}
+    - extract_day1_real_meals: restituisce {"colazione": ["avena", "latte_scremato"]}
+    
+    USO:
+    Questa funzione è destinata ad apply_special_rules_for_days_357 per copiare
+    gli alimenti REALI del giorno 1 ai giorni 3, 5, 7.
+    
+    Args:
+        user_id: ID dell'utente per cui estrarre gli alimenti reali
+        
+    Returns:
+        Dict con liste di alimenti reali per ogni pasto o None se errore
+    """
+    # Fix: Handle user_id that may already contain 'user_' prefix
+    if user_id.startswith("user_"):
+        user_file_path = f"user_data/{user_id}.json"
+    else:
+        user_file_path = f"user_data/user_{user_id}.json"
+    
+    if not os.path.exists(user_file_path):
+        logger.error(f"File utente {user_id} non trovato.")
+        return None
+    
+    try:
+        with open(user_file_path, 'r', encoding='utf-8') as f:
+            user_data = json.load(f)
+        
+        # Estrai i pasti reali dal weekly_diet_day_1
+        nutritional_info = user_data.get("nutritional_info_extracted", {})
+        weekly_diet_day_1 = nutritional_info.get("weekly_diet_day_1", [])
+        
+        if not weekly_diet_day_1:
+            logger.warning("Nessun pasto trovato in weekly_diet_day_1")
+            return None
+        
+        # Inizializza la struttura per gli alimenti reali
+        day1_real_meals = {}
+        
+        # Per ogni pasto registrato nel giorno 1
+        for meal_data in weekly_diet_day_1:
+            meal_name = meal_data.get("nome_pasto", "")
+            alimenti = meal_data.get("alimenti", [])
+            
+            if not meal_name or not alimenti:
+                continue
+            
+            # Ottieni il nome canonico del pasto
+            canonical_meal_name = get_canonical_meal_name(meal_name)
+            
+            # Estrai i nomi degli alimenti
+            food_names = []
+            for alimento in alimenti:
+                nome_alimento = alimento.get("nome_alimento", "")
+                quantita = alimento.get("quantita_g", 0)
+                
+                # Salta alimenti vuoti o con quantità 0
+                if not nome_alimento or quantita <= 0:
+                    continue
+                
+                # Normalizza il nome dell'alimento
+                normalized_name = nome_alimento.lower().replace(" ", "_")
+                food_names.append(normalized_name)
+            
+            # Aggiungi il pasto solo se ha alimenti
+            if food_names:
+                day1_real_meals[canonical_meal_name] = food_names
+                logger.info(f"Estratti {len(food_names)} alimenti per {canonical_meal_name}")
+        
+        # Verifica che almeno un pasto sia stato estratto
+        if not day1_real_meals:
+            logger.warning("Nessun alimento reale trovato in weekly_diet_day_1")
+            return None
+        
+        logger.info(f"Alimenti reali estratti dal giorno 1: {list(day1_real_meals.keys())}")
+        return day1_real_meals
+        
+    except Exception as e:
+        logger.error(f"Errore nell'estrazione degli alimenti reali: {str(e)}")
+        return None
+
+
 def adapt_meals_to_day1_structure(predefined_day: Dict[str, List[str]], 
                                 day1_structure: Dict[str, List[str]]) -> Dict[str, List[str]]:
     """
@@ -429,13 +544,18 @@ def adapt_meals_to_day1_structure(predefined_day: Dict[str, List[str]],
 
 
 def apply_special_rules_for_days_357(days_dict: Dict[str, Dict[str, List[str]]],
-                                   day1_structure: Dict[str, List[str]]) -> Dict[str, Dict[str, List[str]]]:
+                                   day1_structure: Dict[str, List[str]], 
+                                   user_id: str) -> Dict[str, Dict[str, List[str]]]:
     """
     Applica le regole speciali per i giorni 3, 5, 7: copia specifici pasti dal giorno 1.
     
     SCOPO:
-    Crea coerenza nella settimana copiando colazione e spuntini dal giorno 1 
+    Crea coerenza nella settimana copiando colazione e spuntini REALI dal giorno 1 
     ai giorni 3, 5, 7, mantenendo varietà solo per pranzo e cena.
+    
+    MODIFICA IMPORTANTE:
+    Ora questa funzione copia gli alimenti REALI dal giorno 1, non i placeholder.
+    Usa extract_day1_real_meals per ottenere gli alimenti effettivi registrati.
     
     STRUTTURA INPUT:
     days_dict = {
@@ -445,60 +565,76 @@ def apply_special_rules_for_days_357(days_dict: Dict[str, Dict[str, List[str]]],
     }
     
     day1_structure = {
-        "colazione": ["avena", "latte"],              # Verrà copiato
-        "spuntino_mattutino": ["yogurt"],             # Verrà copiato  
-        "spuntino_pomeridiano": ["frutta"],           # Verrà copiato
-        "spuntino_serale": ["tisana"],                # Verrà copiato (AGGIUNTO)
-        "pranzo": ["pasta"],                          # NON verrà copiato
-        "cena": ["pollo"]                             # NON verrà copiato
+        "colazione": ["placeholder"],              # NON viene più usato per la copia
+        "spuntino_mattutino": ["placeholder"],     # NON viene più usato per la copia  
+        ...
+    }
+    
+    user_id = "1749309652"  # Usato per estrarre alimenti reali
+    
+    STRUTTURA ESTRATTA (day1_real_meals):
+    {
+        "colazione": ["avena", "latte_scremato"],         # Alimenti REALI dal giorno 1
+        "spuntino_mattutino": ["yogurt_greco"],           # Alimenti REALI dal giorno 1  
+        "spuntino_pomeridiano": ["grissini", "parmigiano"], # Alimenti REALI dal giorno 1
+        "pranzo": ["pollo", "zucchine", "olio_oliva"],    # NON verrà copiato
+        "cena": ["salmone", "patate", "broccoli"]         # NON verrà copiato
     }
     
     STRUTTURA OUTPUT:
     days_dict = {
-        "giorno_2": {"colazione": ["cereali"], ...},           # INVARIATO
-        "giorno_3": {"colazione": ["avena", "latte"], ...},    # MODIFICATO: copiato dal giorno 1
-        "giorno_4": {"colazione": ["pane"], ...},              # INVARIATO
-        "giorno_5": {"colazione": ["avena", "latte"], ...},    # MODIFICATO: copiato dal giorno 1
-        "giorno_6": {"colazione": ["toast"], ...},             # INVARIATO
-        "giorno_7": {"colazione": ["avena", "latte"], ...}     # MODIFICATO: copiato dal giorno 1
+        "giorno_2": {"colazione": ["cereali"], ...},                    # INVARIATO
+        "giorno_3": {"colazione": ["avena", "latte_scremato"], ...},    # MODIFICATO: alimenti reali dal giorno 1
+        "giorno_4": {"colazione": ["pane"], ...},                       # INVARIATO
+        "giorno_5": {"colazione": ["avena", "latte_scremato"], ...},    # MODIFICATO: alimenti reali dal giorno 1
+        "giorno_6": {"colazione": ["toast"], ...},                      # INVARIATO
+        "giorno_7": {"colazione": ["avena", "latte_scremato"], ...}     # MODIFICATO: alimenti reali dal giorno 1
     }
     
     LOGICA:
-    1. Identifica giorni speciali: ["giorno_3", "giorno_5", "giorno_7"]
-    2. Identifica pasti da copiare: ["colazione", "spuntino_mattutino", "spuntino_pomeridiano", "spuntino_serale"]
-    3. Per ogni giorno speciale:
+    1. Estrae gli alimenti REALI dal giorno 1 usando extract_day1_real_meals
+    2. Identifica giorni speciali: ["giorno_3", "giorno_5", "giorno_7"]
+    3. Identifica pasti da copiare: ["colazione", "spuntino_mattutino", "spuntino_pomeridiano", "spuntino_serale"]
+    4. Per ogni giorno speciale:
        - Per ogni pasto da copiare:
-         * Copia ESATTAMENTE la lista alimenti dal day1_structure
+         * Copia ESATTAMENTE la lista alimenti REALI dal giorno 1
          * SOVRASCRIVE completamente il contenuto esistente
          * Mantiene invariati pranzo e cena (varietà)
     
-    MODIFICA RECENTE:
-    - Aggiunto "spuntino_serale" alla lista meals_to_copy
-    - Ora i giorni 3, 5, 7 avranno anche lo spuntino serale identico al giorno 1
-    - Maggiore coerenza negli spuntini durante la settimana
-    
     BENEFICI:
-    • Pattern riconoscibile: giorni 1,3,5,7 hanno colazione/spuntini identici
-    • Abitudini consolidate: rispetta le preferenze per i pasti minori
-    • Varietà mantenuta: pranzo e cena rimangono diversificati
-    • Semplificazione: meno decisioni per pasti di routine
+    • Risolve il problema dei "placeholder" nell'ottimizzazione
+    • Garantisce che i giorni 3, 5, 7 abbiano alimenti identici al giorno 1
+    • Mantiene pattern riconoscibili e abitudini consolidate
+    • Evita errori di "alimenti non trovati nel database"
     
     Args:
         days_dict: Dizionario con tutti i giorni già adattati
-        day1_structure: Struttura pasti del giorno 1 di riferimento
+        day1_structure: Struttura pasti del giorno 1 (per controllo compatibilità)
+        user_id: ID utente per estrarre alimenti reali dal giorno 1
         
     Returns:
         Dizionario modificato con regole speciali applicate ai giorni 3, 5, 7
     """
+    # Estrai gli alimenti REALI dal giorno 1
+    day1_real_meals = extract_day1_real_meals(user_id)
+    
+    if not day1_real_meals:
+        logger.warning("Impossibile estrarre alimenti reali dal giorno 1, uso fallback ai giorni predefiniti")
+        return days_dict
+    
     special_days = ["giorno_3", "giorno_5", "giorno_7"]
     meals_to_copy = ["colazione", "spuntino_mattutino", "spuntino_pomeridiano", "spuntino_serale"]
     
     for day_key in special_days:
         if day_key in days_dict:
             for meal in meals_to_copy:
-                if meal in day1_structure:
-                    days_dict[day_key][meal] = day1_structure[meal].copy()
-                    logger.info(f"Copiato {meal} dal giorno 1 al {day_key}")
+                # Copia gli alimenti REALI se disponibili
+                if meal in day1_real_meals:
+                    days_dict[day_key][meal] = day1_real_meals[meal].copy()
+                    logger.info(f"Copiati {len(day1_real_meals[meal])} alimenti reali di {meal} dal giorno 1 al {day_key}")
+                # Fallback: mantieni la struttura se il pasto esiste ma non ha alimenti reali
+                elif meal in day1_structure:
+                    logger.info(f"Mantenuto {meal} predefinito per {day_key} (nessun alimento reale nel giorno 1)")
     
     return days_dict
 
@@ -681,7 +817,7 @@ def generate_6_additional_days(user_id: Optional[str] = None, day_range: Optiona
             adapted_days[day_key] = adapt_meals_to_day1_structure(day_meals, day1_structure)
         logger.info("Adattati giorni alla struttura del giorno 1")
         
-        adapted_days = apply_special_rules_for_days_357(adapted_days, day1_structure)
+        adapted_days = apply_special_rules_for_days_357(adapted_days, day1_structure, user_id)
         logger.info("Applicate regole speciali per giorni 3, 5, 7")
         
         final_days = {}
