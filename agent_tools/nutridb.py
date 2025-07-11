@@ -187,6 +187,7 @@ class NutriDB:
             "yogurt greco 2%": "yogurt_greco_2percento",
             "yogurt greco 2 percento": "yogurt_greco_2percento",
             "yogurt naturale": "yogurt_greco_2percento",
+            "yogurt greco magro": "yogurt_magro",
             "yogurt": "yogurt_greco_2percento",
             "proteine in polvere": "iso_fuji_yamamoto",
             "shake proteico": "iso_fuji_yamamoto",
