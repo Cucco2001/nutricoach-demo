@@ -134,6 +134,58 @@ body {
     line-height: 1.6;
 }
 
+.demo-tabs {
+    margin: 3rem 0;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tab-button {
+    padding: 1rem 2rem;
+    border: 2px solid #27ae60;
+    background: transparent;
+    color: #27ae60;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button.active,
+.tab-button:hover {
+    background: #27ae60;
+    color: white;
+}
+
+.tab-content {
+    position: relative;
+}
+
+.tab-panel {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab-panel.active {
+    display: flex;
+}
+
+.demo-video {
+    max-width: 800px;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    border: 3px solid #ffffff;
+}
+
 .hero-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -654,6 +706,26 @@ body {
     }
     .subtitle {
         font-size: 1.8rem;
+    }
+    
+    .tab-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .tab-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .demo-video {
+        max-width: 100%;
+        border-radius: 15px;
+        border: 2px solid #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 }
 

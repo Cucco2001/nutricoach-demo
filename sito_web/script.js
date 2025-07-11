@@ -190,6 +190,35 @@ function toggleMobileMenu() {
     navMenu.classList.toggle('active');
 }
 
+// Gestione tab demo
+function showTab(tabName) {
+    // Nascondi tutti i tab panels
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    tabPanels.forEach(panel => panel.classList.remove('active'));
+    
+    // Rimuovi classe active da tutti i bottoni
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => button.classList.remove('active'));
+    
+    // Mostra il tab selezionato
+    const selectedPanel = document.getElementById(tabName + '-tab');
+    if (selectedPanel) {
+        selectedPanel.classList.add('active');
+    }
+    
+    // Attiva il bottone corrispondente
+    const activeButton = event.target;
+    activeButton.classList.add('active');
+    
+    // Pausa tutti i video tranne quello attivo
+    const allVideos = document.querySelectorAll('.demo-video');
+    allVideos.forEach(video => {
+        if (!video.closest('.tab-panel').classList.contains('active')) {
+            video.pause();
+        }
+    });
+}
+
 // Debug info
 console.log('NutrAICoach Landing Page loaded successfully!');
 console.log('Streamlit URL:', STREAMLIT_URL); 

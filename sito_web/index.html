@@ -38,6 +38,28 @@
                 <p class="hero-description">
                     NutrAICoach non ti dà solo una dieta, ti guida in un percorso. Attraverso un dialogo interattivo con il nostro AI, basato sulle più recenti ricerche scientifiche, costruirai un piano nutrizionale che funziona davvero per te. Inizia oggi il tuo viaggio verso il benessere.
                 </p>
+                
+                <div class="demo-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="showTab('coach')">Chiedi al Coach</button>
+                        <button class="tab-button" onclick="showTab('diet')">Crea/Modifica Dieta</button>
+                    </div>
+                    <div class="tab-content">
+                        <div id="coach-tab" class="tab-panel active">
+                            <video id="coach-video" class="demo-video" controls>
+                                <source src="video/VideoFrigo.mp4" type="video/mp4">
+                                Il tuo browser non supporta il tag video.
+                            </video>
+                        </div>
+                        <div id="diet-tab" class="tab-panel">
+                            <video id="diet-video" class="demo-video" controls>
+                                <source src="video/Video_pesce.mp4" type="video/mp4">
+                                Il tuo browser non supporta il tag video.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="hero-stats">
                     <div class="stat">
                         <span class="stat-number">100%</span>
