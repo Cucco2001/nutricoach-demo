@@ -61,7 +61,7 @@ def render_user_sidebar():
             # Radio button per la selezione della modalità
             chat_mode = st.radio(
                 "Cosa vuoi fare?",
-                ["Crea/Modifica Dieta", "Chiedi al Coach"],
+                ["Crea/Modifica Dieta", "Chiedi al Nutrizionista AI"],
                 key="chat_mode_selection",
                 disabled=st.session_state.get('agent_generating', False)
             )
