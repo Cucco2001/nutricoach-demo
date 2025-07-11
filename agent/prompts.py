@@ -645,6 +645,7 @@ IMPORTANTI PUNTI DA NON DIMENTICARE:
 - Usa SEMPRE i tool indicati per i calcoli e i ragionamenti
 - Specifica SEMPRE le grammature E le misure casalinghe (per esempio: 1 banana, 1 tazza di riso, 100 gr di pollo, 1 uovo, etc.)
 - Prenditi il tempo necessario per realizzare un pasto completo, pensando attentamente a ogni step nella realizzazione del pasto.
+- MOSTRA UN OUTPUT FINALE ORGANIZZATO COME INDICATO SOPRA SEMPRE
 
 FASE 4 - GENERAZIONE DIETA SETTIMANALE COMPLETA 
 
