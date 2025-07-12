@@ -7,6 +7,7 @@ utilizzato per le conversazioni nutrizionali.
 
 import streamlit as st
 from agent import available_tools, system_prompt
+from agent.prompts import system_prompt_pdf_diet
 
 
 class AssistantManager:
@@ -21,26 +22,79 @@ class AssistantManager:
         """
         self.openai_client = openai_client
     
+    def _has_uploaded_pdf(self) -> bool:
+        """
+        Verifica se l'utente ha caricato un PDF di dieta esistente.
+        
+        Returns:
+            bool: True se l'utente ha caricato un PDF, False altrimenti
+        """
+        if not hasattr(st.session_state, 'nutrition_answers'):
+            return False
+        
+        # Cerca la risposta alla domanda di upload PDF
+        upload_answer = st.session_state.nutrition_answers.get('existing_diet_upload', {})
+        
+        if upload_answer.get('answer') == 'Sì':
+            # Verifica se c'è effettivamente un file caricato
+            follow_up = upload_answer.get('follow_up', {})
+            if follow_up and follow_up.get('diet_pdf', {}).get('uploaded'):
+                return True
+        
+        return False
+    
     def create_assistant(self):
         """
         Crea o recupera l'assistente dalla sessione.
+        Sceglie il tipo di assistente in base a se l'utente ha caricato un PDF.
         
         Returns:
             Assistant OpenAI o None in caso di errore
         """
-        if "assistant" not in st.session_state:
+        # Determina il tipo di assistente necessario
+        has_pdf = self._has_uploaded_pdf()
+        assistant_type = "pdf_diet" if has_pdf else "standard"
+        
+        # Chiave univoca per il tipo di assistente
+        assistant_key = f"assistant_{assistant_type}"
+        
+        if assistant_key not in st.session_state:
             try:
-                st.session_state.assistant = self.openai_client.beta.assistants.create(
-                    name="NutrAICoach Assistant",
-                    instructions=system_prompt,
-                    tools=available_tools,
-                    model="gpt-4.1"
-                )
+                if has_pdf:
+                    # Crea assistente per analisi PDF con tool limitati
+                    limited_tools = [tool for tool in available_tools 
+                                   if tool["function"]["name"] in ["calculate_kcal_from_foods"]]
+                    
+                    st.session_state[assistant_key] = self.openai_client.beta.assistants.create(
+                        name="NutrAICoach PDF Analyzer",
+                        instructions=system_prompt_pdf_diet,
+                        tools=limited_tools,
+                        model="gpt-4.1"
+                    )
+                    st.session_state.assistant_type = "pdf_diet"
+                else:
+                    # Crea assistente standard
+                    st.session_state[assistant_key] = self.openai_client.beta.assistants.create(
+                        name="NutrAICoach Assistant",
+                        instructions=system_prompt,
+                        tools=available_tools,
+                        model="gpt-4.1"
+                    )
+                    st.session_state.assistant_type = "standard"
+                
+                # Imposta l'assistente corrente
+                st.session_state.assistant = st.session_state[assistant_key]
                 st.session_state.assistant_created = True
+                
             except Exception as e:
                 st.error(f"Errore nella creazione dell'assistente: {str(e)}")
                 st.session_state.assistant_created = False
                 return None
+        else:
+            # Recupera l'assistente esistente
+            st.session_state.assistant = st.session_state[assistant_key]
+            st.session_state.assistant_type = assistant_type
+        
         return st.session_state.assistant
     
     def get_assistant(self):
@@ -60,6 +114,15 @@ class AssistantManager:
             bool: True se l'assistente è stato creato, False altrimenti
         """
         return st.session_state.get('assistant_created', False)
+    
+    def get_assistant_type(self):
+        """
+        Ottiene il tipo di assistente corrente.
+        
+        Returns:
+            str: "standard" o "pdf_diet"
+        """
+        return st.session_state.get('assistant_type', 'standard')
 
 
 def create_assistant(openai_client):

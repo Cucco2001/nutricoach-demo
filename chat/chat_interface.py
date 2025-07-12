@@ -12,7 +12,7 @@ from frontend.handle_nutrition_questions import handle_nutrition_questions
 from frontend.handle_initial_info import handle_user_info_form, handle_user_info_display
 from frontend.buttons import handle_restart_button
 from frontend.tutorial import show_app_tutorial, is_tutorial_completed, are_all_sections_visited
-from agent.prompts import get_initial_prompt
+from agent.prompts import get_initial_prompt, get_initial_prompt_pdf_diet
 from services.token_cost_service import TokenCostTracker
 from chat_coach.coach_interface import coach_interface
 
@@ -126,11 +126,21 @@ def initialize_chat_history():
                 st.session_state.token_tracker.track_message(msg["role"], msg["content"])
         else:
             # Se non c'è history, invia il prompt iniziale
-            initial_prompt = get_initial_prompt(
-                user_info=st.session_state.user_info,
-                nutrition_answers=st.session_state.nutrition_answers,
-                user_preferences=st.session_state.user_info['preferences']
-            )
+            if st.session_state.chat_manager._is_pdf_diet_mode():
+                # Modalità PDF: usa prompt per analisi PDF
+                pdf_content = st.session_state.chat_manager._extract_pdf_content()
+                initial_prompt = get_initial_prompt_pdf_diet(
+                    user_info=st.session_state.user_info,
+                    nutrition_answers=st.session_state.nutrition_answers,
+                    pdf_content=pdf_content
+                )
+            else:
+                # Modalità standard: usa prompt normale
+                initial_prompt = get_initial_prompt(
+                    user_info=st.session_state.user_info,
+                    nutrition_answers=st.session_state.nutrition_answers,
+                    user_preferences=st.session_state.user_info['preferences']
+                )
             
             # Traccia il prompt iniziale come input
             st.session_state.token_tracker.track_message("user", initial_prompt)
@@ -146,8 +156,17 @@ def initialize_chat_history():
                 # Invia il prompt iniziale usando il manager
                 response = st.session_state.chat_manager.chat_with_assistant(initial_prompt)
                 
-                # Aggiungi il messaggio di presentazione all'inizio della prima risposta
-                welcome_message = """🥗 **Ciao! Sono il tuo Coach Nutrizionale specializzato nella generazione di diete personalizzate.** 
+                # Aggiungi il messaggio di presentazione appropriato
+                if st.session_state.chat_manager._is_pdf_diet_mode():
+                    welcome_message = """📄 **Ciao! Sono il tuo Coach Nutrizionale specializzato nell'analisi di diete esistenti.** 
+
+Il mio compito è analizzare la dieta che hai caricato, estrarre tutti gli alimenti e calcolare le statistiche nutrizionali complete. Ti guiderò attraverso un'analisi dettagliata della tua dieta per aiutarti a comprenderla meglio.
+
+---
+
+"""
+                else:
+                    welcome_message = """🥗 **Ciao! Sono il tuo Coach Nutrizionale specializzato nella generazione di diete personalizzate.** 
 
 Il mio compito è creare un piano alimentare su misura per te, basato sui tuoi dati personali, obiettivi e preferenze. Analizzerò tutti i parametri che mi hai fornito e ti guiderò passo dopo passo nella creazione della tua dieta settimanale completa.
 
@@ -167,6 +186,20 @@ Il mio compito è creare un piano alimentare su misura per te, basato sui tuoi d
                     st.session_state.user_info["id"],
                     "assistant",
                     full_response
+                )
+                
+                # Salva la prima risposta dell'agente in agent_qa con question vuota
+                st.session_state.user_data_manager.save_agent_qa(
+                    st.session_state.user_info["id"],
+                    "",  # Question vuota per la prima risposta automatica
+                    full_response
+                )
+                
+                # Controlla se è necessario estrarre dati nutrizionali con DeepSeek per la prima risposta
+                st.session_state.deepseek_manager.check_and_extract_if_needed(
+                    user_id=st.session_state.user_info["id"],
+                    user_data_manager=st.session_state.user_data_manager,
+                    user_info=st.session_state.user_info
                 )
                 
                 # Rimuovi lo stato di generazione dopo aver completato tutto

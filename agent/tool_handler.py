@@ -19,6 +19,7 @@ from agent_tools.user_data_tool import (
     get_user_preferences, get_agent_qa, get_nutritional_info
 )
 from agent_tools.meal_optimization_tool import optimize_meal_portions
+from agent_tools.calculate_kcal_from_foods_tool import calculate_kcal_from_foods
 from agent_tools.weekly_diet_generator_tool import generate_6_additional_days
 
 
@@ -51,6 +52,9 @@ class ToolHandler:
             
             # Tool per ottimizzazione porzioni pasti
             "optimize_meal_portions": optimize_meal_portions,
+            
+            # Tool per calcolo calorie da alimenti
+            "calculate_kcal_from_foods": calculate_kcal_from_foods,
             
             # Tool per generazione settimanale diete
             "generate_6_additional_days": generate_6_additional_days,

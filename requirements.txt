@@ -1,9 +1,18 @@
-streamlit==1.31.0
-openai>=1.40.0
-python-dotenv==1.0.0
-pandas>=2.0.0
-reportlab>=4.0.0
-scipy>=1.10.0
-supabase==2.6.0
-tiktoken>=0.5.0 
-streamlit-js-eval
+# Core dependencies
+streamlit
+openai
+python-dotenv
+pandas
+numpy
+scipy
+
+# PDF processing libraries
+PyPDF2>=3.0.0
+pdfplumber>=0.7.0
+
+# Database and storage
+supabase
+
+# Other utilities
+requests
+python-multipart

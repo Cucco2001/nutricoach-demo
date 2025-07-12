@@ -8,6 +8,25 @@ poste agli utenti durante la fase di registrazione iniziale nel sistema NutrAICo
 # Definizione delle domande nutrizionali iniziali
 NUTRITION_QUESTIONS = [
     {
+        "id": "existing_diet_upload",
+        "question": "Hai già una dieta che vuoi caricare?",
+        "type": "radio",
+        "options": ["No", "Sì"],
+        "follow_up": {
+            "type": "pdf_upload",
+            "fields": [
+                {
+                    "id": "diet_pdf",
+                    "label": "Carica il PDF della tua dieta",
+                    "type": "file_uploader",
+                    "accepted_types": ["pdf"],
+                    "help": "Carica il PDF della dieta che vuoi analizzare e ottimizzare"
+                }
+            ]
+        },
+        "show_follow_up_on": "Sì"
+    },
+    {
         "id": "weight_goal",
         "question": lambda user_info: f"Quanti kg vuoi {'perdere' if user_info['obiettivo'] == 'Perdita di peso' else 'aumentare'} e in quanto tempo (in mesi)?",
         "type": "number_input",
@@ -34,6 +53,7 @@ NUTRITION_QUESTIONS = [
         "question": "Pratichi sport?",
         "type": "radio",
         "options": ["No", "Sì"],
+        "default": "No",
         "follow_up": {
             "type": "multiple_sports",
             "fields": [

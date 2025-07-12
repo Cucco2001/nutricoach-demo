@@ -112,6 +112,8 @@ class NutritionQuestionHandler:
         elif isinstance(question["follow_up"], dict):
             if question["follow_up"].get("type") == "multiple_sports":
                 return self._handle_multiple_sports(question)
+            elif question["follow_up"].get("type") == "pdf_upload":
+                return self._handle_pdf_upload(question)
             else:
                 return self._handle_structured_follow_up(question)
         
@@ -307,6 +309,56 @@ class NutritionQuestionHandler:
         
         return sport_data
     
+    def _handle_pdf_upload(self, question):
+        """
+        Gestisce l'upload di file PDF per la dieta esistente.
+        
+        Args:
+            question: Oggetto domanda
+            
+        Returns:
+            dict: Informazioni sul file caricato
+        """
+        follow_up_answer = {}
+        
+        for field in question["follow_up"]["fields"]:
+            if field["type"] == "file_uploader":
+                st.markdown(f"### {field['label']}")
+                if field.get("help"):
+                    # Usa st.caption invece di st.help per evitare problemi di rendering
+                    st.caption(field["help"])
+                
+                uploaded_file = st.file_uploader(
+                    "Seleziona file",
+                    type=field.get("accepted_types", ["pdf"]),
+                    label_visibility="collapsed",
+                    key=f"pdf_upload_{field['id']}"
+                )
+                
+                if uploaded_file is not None:
+                    # Salva il file nel session state per uso successivo
+                    if "uploaded_diet_pdf" not in st.session_state:
+                        st.session_state.uploaded_diet_pdf = {}
+                    
+                    # Leggi il contenuto del file
+                    file_content = uploaded_file.read()
+                    st.session_state.uploaded_diet_pdf = {
+                        "name": uploaded_file.name,
+                        "content": file_content,
+                        "size": len(file_content)
+                    }
+                    
+                    follow_up_answer[field["id"]] = {
+                        "name": uploaded_file.name,
+                        "size": len(file_content),
+                        "uploaded": True
+                    }
+                    
+                else:
+                    follow_up_answer[field["id"]] = None
+        
+        return follow_up_answer
+    
     def _handle_structured_follow_up(self, question):
         """
         Gestisce follow-up strutturati (non sport).
@@ -340,6 +392,25 @@ class NutritionQuestionHandler:
                     )
                 elif field["type"] == "text":
                     follow_up_answer[field["id"]] = st.text_input("")
+                elif field["type"] == "file_uploader":
+                    if field.get("help"):
+                        # Usa st.caption invece di st.help per evitare problemi di rendering
+                        st.caption(field["help"])
+                    
+                    uploaded_file = st.file_uploader(
+                        "Seleziona file",
+                        type=field.get("accepted_types", ["pdf"]),
+                        label_visibility="collapsed"
+                    )
+                    
+                    if uploaded_file is not None:
+                        follow_up_answer[field["id"]] = {
+                            "name": uploaded_file.name,
+                            "size": uploaded_file.size,
+                            "uploaded": True
+                        }
+                    else:
+                        follow_up_answer[field["id"]] = None
                 elif field["type"] == "dynamic_time":
                     follow_up_answer[field["id"]] = self._handle_dynamic_time_input(follow_up_answer, question, field)
         

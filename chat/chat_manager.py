@@ -7,9 +7,21 @@ delle conversazioni con retry logic e gestione degli errori.
 
 import streamlit as st
 import time
+import io
 from agent.tool_handler import handle_tool_calls
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
-from agent.prompts import get_initial_prompt
+from agent.prompts import get_initial_prompt, get_initial_prompt_pdf_diet
+
+# Try to import PDF processing libraries
+try:
+    import PyPDF2
+    PDF_EXTRACTION_AVAILABLE = True
+except ImportError:
+    try:
+        import pdfplumber
+        PDF_EXTRACTION_AVAILABLE = True
+    except ImportError:
+        PDF_EXTRACTION_AVAILABLE = False
 
 
 class ChatManager:
@@ -25,6 +37,164 @@ class ChatManager:
         """
         self.openai_client = openai_client
         self.user_data_manager = user_data_manager
+    
+    def _extract_pdf_content(self) -> str:
+        """
+        Estrae il contenuto testuale del PDF caricato dall'utente.
+        
+        Returns:
+            str: Contenuto del PDF estratto o messaggio di errore
+        """
+        try:
+            if "uploaded_diet_pdf" not in st.session_state or not st.session_state.uploaded_diet_pdf:
+                return "[PDF non disponibile nel session state]"
+            
+            pdf_data = st.session_state.uploaded_diet_pdf
+            file_content = pdf_data.get('content')
+            
+            if not file_content:
+                return "[Contenuto PDF non disponibile]"
+            
+            # Prova ad estrarre il testo dal PDF
+            if not PDF_EXTRACTION_AVAILABLE:
+                return f"""
+PDF CARICATO: {pdf_data['name']}
+DIMENSIONE: {pdf_data['size']} bytes
+
+[ERRORE: Librerie per estrazione PDF non disponibili. 
+Installare PyPDF2 o pdfplumber: pip install PyPDF2 pdfplumber]
+
+ISTRUZIONI PER L'AGENTE:
+- Il PDF non può essere letto automaticamente
+- Procedi come se il PDF contenesse una dieta settimanale completa
+- Simula l'estrazione di alimenti tipici di una dieta mediterranea
+- Organizza i 7 giorni con pasti bilanciati
+- Usa il tool calculate_kcal_from_foods per tutti i calcoli
+"""
+            
+            try:
+                # Prova con PyPDF2
+                if 'PyPDF2' in globals():
+                    extracted_text = self._extract_with_pypdf2(file_content)
+                else:
+                    # Fallback a pdfplumber se disponibile
+                    extracted_text = self._extract_with_pdfplumber(file_content)
+                
+                if extracted_text.strip():
+                    return f"""
+PDF CARICATO: {pdf_data['name']}
+DIMENSIONE: {pdf_data['size']} bytes
+
+CONTENUTO ESTRATTO DAL PDF:
+{extracted_text}
+
+ISTRUZIONI PER L'AGENTE:
+- Analizza attentamente il contenuto sopra estratto dal PDF
+- Estrai TUTTI gli alimenti menzionati nel testo
+- Organizza una settimana completa di 7 giorni
+- Se il PDF contiene meno di 7 giorni, espandi tu la settimana usando gli alimenti presenti
+- Usa il tool calculate_kcal_from_foods per tutti i calcoli
+"""
+                else:
+                    return f"""
+PDF CARICATO: {pdf_data['name']}
+DIMENSIONE: {pdf_data['size']} bytes
+
+[AVVISO: Non è stato possibile estrarre testo leggibile dal PDF]
+
+ISTRUZIONI PER L'AGENTE:
+- Il PDF potrebbe essere un'immagine scansionata o protetto
+- Procedi come se il PDF contenesse una dieta settimanale completa
+- Simula l'estrazione di alimenti tipici di una dieta mediterranea
+- Organizza i 7 giorni con pasti bilanciati
+- Usa il tool calculate_kcal_from_foods per tutti i calcoli
+"""
+                
+            except Exception as e:
+                return f"""
+PDF CARICATO: {pdf_data['name']}
+DIMENSIONE: {pdf_data['size']} bytes
+
+[ERRORE NELL'ESTRAZIONE: {str(e)}]
+
+ISTRUZIONI PER L'AGENTE:
+- Si è verificato un errore nell'estrazione del testo dal PDF
+- Procedi come se il PDF contenesse una dieta settimanale completa
+- Simula l'estrazione di alimenti tipici di una dieta mediterranea
+- Organizza i 7 giorni con pasti bilanciati
+- Usa il tool calculate_kcal_from_foods per tutti i calcoli
+"""
+                
+        except Exception as e:
+            return f"[Errore generale nell'elaborazione del PDF: {str(e)}]"
+    
+    def _extract_with_pypdf2(self, file_content: bytes) -> str:
+        """
+        Estrae il testo usando PyPDF2.
+        
+        Args:
+            file_content: Contenuto binario del PDF
+            
+        Returns:
+            str: Testo estratto
+        """
+        text_content = ""
+        
+        # Crea un file-like object dai bytes
+        pdf_file = io.BytesIO(file_content)
+        
+        # Leggi il PDF
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        
+        # Estrai il testo da tutte le pagine
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            page_text = page.extract_text()
+            text_content += f"\n--- PAGINA {page_num + 1} ---\n"
+            text_content += page_text
+        
+        return text_content.strip()
+    
+    def _extract_with_pdfplumber(self, file_content: bytes) -> str:
+        """
+        Estrae il testo usando pdfplumber (alternativa più robusta).
+        
+        Args:
+            file_content: Contenuto binario del PDF
+            
+        Returns:
+            str: Testo estratto
+        """
+        import pdfplumber
+        
+        text_content = ""
+        
+        # Crea un file-like object dai bytes
+        pdf_file = io.BytesIO(file_content)
+        
+        # Leggi il PDF con pdfplumber
+        with pdfplumber.open(pdf_file) as pdf:
+            for page_num, page in enumerate(pdf.pages):
+                page_text = page.extract_text()
+                if page_text:
+                    text_content += f"\n--- PAGINA {page_num + 1} ---\n"
+                    text_content += page_text
+        
+        return text_content.strip()
+    
+    def _is_pdf_diet_mode(self) -> bool:
+        """
+        Verifica se siamo in modalità analisi PDF.
+        
+        Returns:
+            bool: True se l'utente ha caricato un PDF
+        """
+        if not hasattr(st.session_state, 'nutrition_answers'):
+            return False
+        
+        upload_answer = st.session_state.nutrition_answers.get('existing_diet_upload', {})
+        return (upload_answer.get('answer') == 'Sì' and 
+                upload_answer.get('follow_up', {}).get('diet_pdf', {}).get('uploaded'))
     
     def create_new_thread(self):
         """
@@ -64,12 +234,22 @@ class ChatManager:
                     # Se c'è una chat history e l'utente ha completato le domande nutrizionali,
                     # aggiungi l'initial prompt come primo messaggio
                     if nutritional_info and nutritional_info.nutrition_answers:
-                        # Genera l'initial prompt con le informazioni dell'utente
-                        initial_prompt = get_initial_prompt(
-                            user_info=st.session_state.user_info,
-                            nutrition_answers=st.session_state.nutrition_answers,
-                            user_preferences=st.session_state.user_info.get('preferences', {})
-                        )
+                        # Genera l'initial prompt appropriato (PDF o standard)
+                        if self._is_pdf_diet_mode():
+                            # Modalità PDF: usa prompt per analisi PDF
+                            pdf_content = self._extract_pdf_content()
+                            initial_prompt = get_initial_prompt_pdf_diet(
+                                user_info=st.session_state.user_info,
+                                nutrition_answers=st.session_state.nutrition_answers,
+                                pdf_content=pdf_content
+                            )
+                        else:
+                            # Modalità standard: usa prompt normale
+                            initial_prompt = get_initial_prompt(
+                                user_info=st.session_state.user_info,
+                                nutrition_answers=st.session_state.nutrition_answers,
+                                user_preferences=st.session_state.user_info.get('preferences', {})
+                            )
                         
                         # Aggiungi l'initial prompt come primo messaggio
                         try:
