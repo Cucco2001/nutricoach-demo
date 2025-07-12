@@ -247,7 +247,7 @@ class UserDataManager:
 
     def save_chat_message(self, user_id: str, role: str, content: str) -> None:
         """
-        Salva un messaggio della chat nella history dell'utente
+        Salva un messaggio della chat nella history dell'utente e incrementa il contatore interazioni
         
         Args:
             user_id: ID dell'utente
@@ -264,7 +264,13 @@ class UserDataManager:
         )
         
         self._chat_history[user_id].append(message)
-        self._save_user_data(user_id)
+        
+        # Incrementa il contatore interazioni solo per i messaggi dell'utente
+        if role == "user":
+            self.increment_interactions(user_id)
+        else:
+            # Per i messaggi dell'assistente, salva solo i dati senza incrementare
+            self._save_user_data(user_id)
 
     def get_chat_history(self, user_id: str) -> List[ChatMessage]:
         """
@@ -381,11 +387,12 @@ class UserDataManager:
         """Salva i dati dell'utente su file preservando sempre i dati DeepSeek e sincronizza con Supabase"""
         user_file = self.data_dir / f"{user_id}.json"
         
-        # PRESERVA i dati DeepSeek, costi e privacy esistenti se presenti
+        # PRESERVA i dati DeepSeek, costi, privacy e interazioni esistenti se presenti
         existing_deepseek_data = None
         existing_cost_data = None
         existing_last_cost_update = None
         existing_privacy_consent = None
+        existing_interazioni = None
         if user_file.exists():
             try:
                 with open(user_file, 'r', encoding='utf-8') as f:
@@ -394,6 +401,7 @@ class UserDataManager:
                     existing_cost_data = existing_data.get("conversation_costs")
                     existing_last_cost_update = existing_data.get("last_cost_update")
                     existing_privacy_consent = existing_data.get("privacy_consent")
+                    existing_interazioni = existing_data.get("interazioni")
             except Exception as e:
                 print(f"[USER_DATA_MANAGER] Errore nel leggere dati esistenti: {str(e)}")
         
@@ -427,6 +435,13 @@ class UserDataManager:
         # RESTAURA il consenso privacy se esisteva
         if existing_privacy_consent:
             data["privacy_consent"] = existing_privacy_consent
+        
+        # INIZIALIZZA o RESTAURA il contatore interazioni
+        if existing_interazioni is not None:
+            data["interazioni"] = existing_interazioni
+        else:
+            # Per nuovi utenti, inizializza con 0
+            data["interazioni"] = 0
  
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
@@ -559,4 +574,62 @@ class UserDataManager:
         # Salva i dati aggiornati
         with open(user_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    def increment_interactions(self, user_id: str) -> None:
+        """
+        Incrementa il contatore delle interazioni dell'utente.
+        Questo include sia le interazioni con l'agente principale che con il coach.
+        
+        Args:
+            user_id: ID dell'utente
+        """
+        user_file = self.data_dir / f"{user_id}.json"
+        
+        # Carica i dati esistenti
+        data = {}
+        if user_file.exists():
+            try:
+                with open(user_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+            except Exception as e:
+                print(f"[USER_DATA_MANAGER] Errore nel leggere dati per incremento interazioni: {str(e)}")
+                data = {}
+        
+        # Incrementa il contatore interazioni
+        current_interactions = data.get("interazioni", 0)
+        data["interazioni"] = current_interactions + 1
+        
+        # Salva i dati aggiornati
+        try:
+            with open(user_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            
+            # Sincronizzazione automatica con Supabase
+            auto_sync_user_data(user_id, data)
+            
+        except Exception as e:
+            print(f"[USER_DATA_MANAGER] Errore nel salvare incremento interazioni: {str(e)}")
+    
+    def get_interactions_count(self, user_id: str) -> int:
+        """
+        Recupera il numero totale di interazioni dell'utente.
+        
+        Args:
+            user_id: ID dell'utente
+            
+        Returns:
+            int: Numero totale di interazioni
+        """
+        user_file = self.data_dir / f"{user_id}.json"
+        
+        if not user_file.exists():
+            return 0
+        
+        try:
+            with open(user_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return data.get("interazioni", 0)
+        except Exception as e:
+            print(f"[USER_DATA_MANAGER] Errore nel leggere contatore interazioni: {str(e)}")
+            return 0
          

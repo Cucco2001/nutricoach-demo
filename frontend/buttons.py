@@ -95,10 +95,8 @@ class ButtonHandler:
         if 'prompt_to_add_at_next_message' in st.session_state:
             del st.session_state.prompt_to_add_at_next_message
         
-        # Resetta il token tracker se esiste
-        if 'token_tracker' in st.session_state:
-            from services.token_cost_service import TokenCostTracker
-            st.session_state.token_tracker = TokenCostTracker(model="gpt-4")
+        # NON resettare il token tracker per preservare i conversation_costs
+        # Il token tracker mantiene la cronologia dei costi che vogliamo preservare
         
         # Crea un nuovo thread
         self.create_new_thread_func()
