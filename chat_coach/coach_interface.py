@@ -206,6 +206,11 @@ def process_coach_response():
                     "content": response
                 })
                 
+                # Incrementa il contatore interazioni per la conversazione con il coach
+                st.session_state.user_data_manager.increment_interactions(
+                    st.session_state.user_info["id"]
+                )
+                
                 # Salva le statistiche dei costi
                 stats = st.session_state.coach_manager.get_token_stats()
                 st.session_state.user_data_manager.save_cost_stats(
