@@ -72,12 +72,13 @@ def render_user_sidebar():
             # Separatore
             st.markdown("---")
             
-            # Pulsante per ricominciare (solo dopo l'inizializzazione)
-            handle_restart_button(
-                user_data_manager=st.session_state.user_data_manager,
-                deepseek_manager=st.session_state.deepseek_manager,
-                create_new_thread_func=st.session_state.chat_manager.create_new_thread
-            )
+            # Pulsante per ricominciare (solo in modalità "Crea/Modifica Dieta")
+            if chat_mode == "Crea/Modifica Dieta":
+                handle_restart_button(
+                    user_data_manager=st.session_state.user_data_manager,
+                    deepseek_manager=st.session_state.deepseek_manager,
+                    create_new_thread_func=st.session_state.chat_manager.create_new_thread
+                )
             
 
 

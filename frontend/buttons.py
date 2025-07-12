@@ -28,15 +28,47 @@ class ButtonHandler:
     
     def handle_restart_button(self):
         """
-        Gestisce il bottone "Ricomincia".
+        Gestisce il bottone "Ricomincia" con conferma.
         
         Resetta tutte le informazioni dell'utente e riavvia il processo.
         """
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Ricomincia"):
-                self._reset_user_session()
-                st.rerun()
+                # Mostra il dialog di conferma
+                self._show_restart_confirmation()
+    
+    def _show_restart_confirmation(self):
+        """
+        Mostra un dialog di conferma prima di procedere con il reset.
+        """
+        # Usa st.dialog per creare un popup di conferma
+        @st.dialog("⚠️ Conferma Reset")
+        def confirm_restart():
+            st.write("**Sei sicuro di voler eliminare la tua dieta attuale?**")
+            st.write("")
+            st.write("Questa operazione:")
+            st.write("• 🗑️ Cancellerà tutta la conversazione con l'assistente")
+            st.write("• 🥗 Rimuoverà la dieta generata")
+            st.write("• ⚙️ Resetterà le tue preferenze alimentari")
+            st.write("• 🔄 Ti riporterà al punto di partenza")
+            st.write("")
+            st.write("**⚠️ I tuoi dati di accesso verranno preservati.**")
+            
+            col1, col2, col3 = st.columns([1, 1, 1])
+            
+            with col1:
+                if st.button("❌ Annulla", use_container_width=True):
+                    st.rerun()
+            
+            with col3:
+                if st.button("✅ Conferma Reset", use_container_width=True, type="primary"):
+                    # Procedi con il reset
+                    self._reset_user_session()
+                    st.rerun()
+        
+        # Mostra il dialog
+        confirm_restart()
     
     def _reset_user_session(self):
         """
