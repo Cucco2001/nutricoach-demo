@@ -36,11 +36,13 @@ from .login import (
     handle_registration_form,
     handle_login_registration,
     handle_logout,
-    show_logout_button,
+    handle_google_auth,
+    show_google_auth_button,
     get_current_user,
     is_user_authenticated,
     get_user_id,
-    get_username
+    get_username,
+    show_logout_button
 )
 
 # Gestione del tutorial
@@ -67,11 +69,13 @@ __all__ = [
     'handle_registration_form',
     'handle_login_registration',
     'handle_logout',
-    'show_logout_button',
+    'handle_google_auth',
+    'show_google_auth_button',
     'get_current_user',
     'is_user_authenticated',
     'get_user_id',
     'get_username',
+    'show_logout_button',
     'show_app_tutorial',
     'reset_tutorial',
     'check_tutorial_in_chat',

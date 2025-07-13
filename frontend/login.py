@@ -9,6 +9,174 @@ import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
 
 
+def handle_google_auth(user_data_manager):
+    """
+    Gestisce l'autenticazione con Google.
+    
+    Args:
+        user_data_manager: Gestore dei dati utente
+        
+    Returns:
+        bool: True se l'autenticazione è riuscita, False altrimenti
+    """
+    try:
+        from services.google_auth_service import get_google_auth_service
+        
+        google_auth = get_google_auth_service()
+        
+        if not google_auth.is_available():
+            st.warning("⚠️ Autenticazione Google non configurata")
+            return False
+        
+        # Controlla se c'è un callback da processare
+        query_params = st.query_params
+        
+        if 'code' in query_params:
+            # Processa il callback OAuth2
+            current_url = f"http://localhost:8501/"
+            
+            # Costruisci l'URL completo con tutti i parametri
+            params = []
+            for key, value in query_params.items():
+                if isinstance(value, list):
+                    for v in value:
+                        params.append(f"{key}={v}")
+                else:
+                    params.append(f"{key}={value}")
+            
+            if params:
+                current_url += "?" + "&".join(params)
+            
+            user_info = google_auth.handle_callback(current_url)
+            
+            if user_info:
+                # Registra o effettua login dell'utente
+                success, result = google_auth.register_or_login_google_user(user_info, user_data_manager)
+                
+                if success:
+                    # Carica le informazioni utente
+                    user_id = result
+                    nutritional_info = user_data_manager.get_nutritional_info(user_id)
+                    chat_history = user_data_manager.get_chat_history(user_id)
+                    has_chat_messages = len(chat_history) > 0
+                    
+                    # Imposta le informazioni dell'utente
+                    st.session_state.user_info = {
+                        "id": user_id,
+                        "username": user_info.get('name', user_info.get('email', 'Utente Google')),
+                        "email": user_info.get('email'),
+                        "auth_type": "google"
+                    }
+                    
+                    # Carica dati nutrizionali se esistono
+                    if nutritional_info:
+                        st.session_state.user_info.update({
+                            "età": nutritional_info.età,
+                            "sesso": nutritional_info.sesso,
+                            "peso": nutritional_info.peso,
+                            "altezza": nutritional_info.altezza,
+                            "attività": nutritional_info.attività,
+                            "obiettivo": nutritional_info.obiettivo,
+                            "preferences": user_data_manager.get_user_preferences(user_id)
+                        })
+                        
+                        # Gestisci tutorial e chat history
+                        if has_chat_messages:
+                            if nutritional_info.nutrition_answers:
+                                st.session_state.nutrition_answers = nutritional_info.nutrition_answers
+                                st.session_state.current_question = len(NUTRITION_QUESTIONS)
+                            
+                            tutorial_key = f"tutorial_completed_{user_id}"
+                            st.session_state[tutorial_key] = True
+                    
+                    # Pulisci i parametri della query
+                    st.query_params.clear()
+                    st.success(f"✅ Accesso effettuato con Google: {user_info.get('name', user_info.get('email'))}")
+                    st.rerun()
+                    return True
+                else:
+                    st.error(f"Errore nell'autenticazione Google: {result}")
+                    return False
+            else:
+                st.error("Errore nell'ottenere informazioni da Google")
+                return False
+        
+        return False
+        
+    except ImportError:
+        st.warning("⚠️ Servizio Google Auth non disponibile")
+        return False
+    except Exception as e:
+        st.error(f"Errore nell'autenticazione Google: {str(e)}")
+        return False
+
+
+def show_google_auth_button():
+    """
+    Mostra il bottone per l'autenticazione Google.
+    """
+    try:
+        from services.google_auth_service import get_google_auth_service
+        
+        google_auth = get_google_auth_service()
+        
+        if not google_auth.is_available():
+            return
+        
+        # Stile per il bottone Google
+        st.markdown("""
+        <style>
+        .google-auth-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #4285f4;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .google-auth-button:hover {
+            background: #357ae8;
+            color: white;
+            text-decoration: none;
+        }
+        .google-auth-button svg {
+            margin-right: 8px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Genera URL di autorizzazione
+        auth_url = google_auth.get_authorization_url()
+        
+        if auth_url:
+            st.markdown(f"""
+            <div style="text-align: center; margin: 15px 0;">
+                <div style="margin: 10px 0; color: #666; font-size: 14px;">oppure</div>
+                <a href="{auth_url}" class="google-auth-button" target="_self">
+                    <svg width="18" height="18" viewBox="0 0 18 18">
+                        <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
+                        <path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.04a4.8 4.8 0 0 1-2.7.75 4.8 4.8 0 0 1-4.52-3.36H1.83v2.07A8 8 0 0 0 8.98 17z"/>
+                        <path fill="#FBBC05" d="M4.46 10.41a4.8 4.8 0 0 1 0-2.82V5.52H1.83a8 8 0 0 0 0 7.17l2.63-2.07z"/>
+                        <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.52L4.46 7.6a4.8 4.8 0 0 1 4.52-3.42z"/>
+                    </svg>
+                    Continua con Google
+                </a>
+            </div>
+            """, unsafe_allow_html=True)
+        
+    except ImportError:
+        pass
+    except Exception as e:
+        st.error(f"Errore nel mostrare bottone Google: {str(e)}")
+
+
 def handle_login_form(user_data_manager):
     """
     Gestisce il form di login dell'utente.
@@ -38,7 +206,8 @@ def handle_login_form(user_data_manager):
                 # Imposta le informazioni dell'utente
                 st.session_state.user_info = {
                     "id": result,
-                    "username": username
+                    "username": username,
+                    "auth_type": "standard"
                 }
                 
                 # Se ci sono informazioni nutrizionali salvate, caricale
@@ -114,6 +283,9 @@ def handle_login_form(user_data_manager):
                 st.error(result)
                 return False
     
+    # Mostra il bottone Google Auth sotto il form
+    show_google_auth_button()
+    
     return False
 
 
@@ -150,6 +322,9 @@ def handle_registration_form(user_data_manager):
                     st.error(result)
                     return False
     
+    # Mostra il bottone Google Auth sotto il form
+    show_google_auth_button()
+    
     return False
 
 
@@ -163,6 +338,10 @@ def handle_login_registration(user_data_manager):
     Returns:
         bool: True se l'utente è autenticato, False altrimenti
     """
+    # Controlla prima se c'è un callback Google da processare
+    if handle_google_auth(user_data_manager):
+        return True
+    
     # Se la registrazione è appena avvenuta, esegui JS per switchare al tab di login
     if st.session_state.get('registration_successful', False):
         from streamlit_js_eval import streamlit_js_eval

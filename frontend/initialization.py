@@ -109,6 +109,20 @@ def initialize_app():
             user_data_manager=st.session_state.user_data_manager
         )
 
+    # === INIZIALIZZAZIONE SERVIZIO GOOGLE AUTH ===
+    if "google_auth_service" not in st.session_state:
+        try:
+            from services.google_auth_service import get_google_auth_service
+            st.session_state.google_auth_service = get_google_auth_service()
+            if not st.session_state.google_auth_service.is_available():
+                st.session_state.google_auth_available = False
+            else:
+                st.session_state.google_auth_available = True
+        except ImportError:
+            st.session_state.google_auth_available = False
+        except Exception as e:
+            st.session_state.google_auth_available = False
+
     # === VARIABILI PER GESTIONE AGENTE IN BACKGROUND ===
     if "agent_generating" not in st.session_state:
         st.session_state.agent_generating = False
