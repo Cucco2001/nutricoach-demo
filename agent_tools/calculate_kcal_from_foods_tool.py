@@ -123,6 +123,13 @@ def calculate_kcal_from_foods(foods_with_grams: Union[List[Dict[str, Union[str, 
                     # Ottieni i macronutrienti per 100g dell'alimento
                     macros_per_100g = db.get_macros(food_name, 100)
                     
+                    # Verifica che i macronutrienti siano validi
+                    if macros_per_100g is None:
+                        logger.warning(f"Macronutrienti nulli per {food_name}")
+                        if food_name not in foods_not_found:
+                            foods_not_found.append(food_name)
+                        continue
+                    
                     # Calcola i nutrienti per la quantità specificata
                     food_nutrients = {
                         "kcal": float(macros_per_100g.get("energia_kcal", 0)) * grams / 100,
@@ -131,7 +138,14 @@ def calculate_kcal_from_foods(foods_with_grams: Union[List[Dict[str, Union[str, 
                         "grassi_g": float(macros_per_100g.get("grassi_g", 0)) * grams / 100
                     }
                     
-                    # Aggiungi al breakdown
+                    # Verifica che i nutrienti calcolati siano validi
+                    if any(value < 0 for value in food_nutrients.values()):
+                        logger.warning(f"Valori nutrizionali negativi per {food_name}: {food_nutrients}")
+                        if food_name not in foods_not_found:
+                            foods_not_found.append(food_name)
+                        continue
+                    
+                    # Aggiungi al breakdown solo se tutto è valido
                     foods_breakdown[food_name] = {
                         "grams": grams,
                         "nutrients": food_nutrients

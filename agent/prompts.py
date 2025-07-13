@@ -807,6 +807,7 @@ FASE 1 - ESTRAZIONE COMPLETA ALIMENTI DAL PDF
    - **CONSERVA L'ACCURATEZZA**: Rispetta le quantità originali del PDF quando disponibili
    - **GESTIONE OLIO**: Se nel PDF è specificato un totale di olio giornaliero (es: "30g olio al giorno"), SUDDIVIDI SEMPRE questa quantità equamente tra pranzo e cena (es: 15g a pranzo, 15g a cena)
    - **NON MOSTRARE MAI** una riga generica "Olio giornaliero: 30g" - deve essere assegnato ai pasti specifici
+   - Non estrarre i sostituti, solo gli alimenti principali
 
 3. **Organizzazione 7 giorni COMPLETI**:
    - **OBBLIGO ASSOLUTO**: La dieta finale DEVE contenere 7 giorni completi
@@ -814,6 +815,7 @@ FASE 1 - ESTRAZIONE COMPLETA ALIMENTI DAL PDF
    - Se il PDF contiene meno di 7 giorni, ORGANIZZA tu i giorni mancanti usando gli alimenti estratti
    - Se il PDF contiene solo esempi (es: 3 colazioni), ESPANDI creando una settimana completa
    - Assicurati che ogni giorno abbia tutti i pasti necessari (colazione, pranzo, cena, eventuali spuntini)
+   - Non includere i sostituti, solo gli alimenti principali
    
 4. **FORMATO OBBLIGATORIO PER LA PRESENTAZIONE**:
    L'output DEVE seguire questo formato per garantire coerenza e leggibilità.
