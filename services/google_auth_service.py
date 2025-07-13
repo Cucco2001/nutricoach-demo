@@ -38,6 +38,9 @@ class GoogleAuthService:
             Dict: Configurazione del client OAuth2
         """
         try:
+            # Carica le variabili d'ambiente dal file .env
+            from dotenv import load_dotenv
+            load_dotenv()
             # Prova prima con st.secrets (per Streamlit Cloud)
             if hasattr(st, 'secrets') and 'google_oauth' in st.secrets:
                 return {
@@ -56,6 +59,7 @@ class GoogleAuthService:
             redirect_uri = os.getenv('GOOGLE_REDIRECT_URI', 'http://localhost:8501')
             
             if not client_id or not client_secret:
+                print(f"❌ Credenziali Google mancanti - CLIENT_ID: {bool(client_id)}, CLIENT_SECRET: {bool(client_secret)}")
                 return None
                 
             return {
