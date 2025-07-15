@@ -7,6 +7,81 @@ logout e caricamento delle informazioni utente salvate.
 
 import streamlit as st
 from frontend.nutrition_questions import NUTRITION_QUESTIONS
+from services.login_persistence_service import get_login_persistence_service
+
+
+def load_user_from_cookie(user_data_manager):
+    """
+    Carica l'utente dal cookie se esiste una sessione persistente valida.
+    
+    Args:
+        user_data_manager: Gestore dei dati utente
+        
+    Returns:
+        bool: True se l'utente è stato caricato dal cookie, False altrimenti
+    """
+    try:
+        persistence_service = get_login_persistence_service()
+        session_data = persistence_service.load_login_session(user_data_manager)
+        
+        if not session_data:
+            return False
+            
+        user_id, auth_type = session_data
+        
+        # Carica le informazioni utente
+        nutritional_info = user_data_manager.get_nutritional_info(user_id)
+        chat_history = user_data_manager.get_chat_history(user_id)
+        has_chat_messages = len(chat_history) > 0
+        
+        # Ottieni informazioni base dell'utente
+        user = user_data_manager.get_user_by_id(user_id)
+        if not user:
+            return False
+            
+        # Imposta le informazioni dell'utente in base al tipo di auth
+        if auth_type == "google":
+            # Per utenti Google, prova a ottenere info aggiuntive
+            st.session_state.user_info = {
+                "id": user_id,
+                "username": user.username,
+                "email": user.email if hasattr(user, 'email') else None,
+                "auth_type": "google"
+            }
+        else:
+            # Per utenti standard
+            st.session_state.user_info = {
+                "id": user_id,
+                "username": user.username,
+                "auth_type": "standard"
+            }
+        
+        # Carica dati nutrizionali se esistono
+        if nutritional_info:
+            st.session_state.user_info.update({
+                "età": nutritional_info.età,
+                "sesso": nutritional_info.sesso,
+                "peso": nutritional_info.peso,
+                "altezza": nutritional_info.altezza,
+                "attività": nutritional_info.attività,
+                "obiettivo": nutritional_info.obiettivo,
+                "preferences": user_data_manager.get_user_preferences(user_id)
+            })
+            
+            # Gestisci tutorial e chat history
+            if has_chat_messages:
+                if nutritional_info.nutrition_answers:
+                    st.session_state.nutrition_answers = nutritional_info.nutrition_answers
+                    st.session_state.current_question = len(NUTRITION_QUESTIONS)
+                
+                tutorial_key = f"tutorial_completed_{user_id}"
+                st.session_state[tutorial_key] = True
+        
+        return True
+        
+    except Exception as e:
+        st.error(f"Errore nel caricamento sessione dal cookie: {e}")
+        return False
 
 
 def handle_google_auth(user_data_manager):
@@ -90,6 +165,13 @@ def handle_google_auth(user_data_manager):
                             
                             tutorial_key = f"tutorial_completed_{user_id}"
                             st.session_state[tutorial_key] = True
+                    
+                    # Salva la sessione nei cookies per la persistenza
+                    try:
+                        persistence_service = get_login_persistence_service()
+                        persistence_service.save_login_session(user_id, "google")
+                    except Exception as e:
+                        st.error(f"Errore nel salvare sessione persistente: {e}")
                     
                     # Pulisci i parametri della query
                     st.query_params.clear()
@@ -280,6 +362,13 @@ def handle_login_form(user_data_manager):
                             from frontend.tutorial import reset_tutorial
                             reset_tutorial(result)
                 
+                # Salva la sessione nei cookies per la persistenza
+                try:
+                    persistence_service = get_login_persistence_service()
+                    persistence_service.save_login_session(result, "standard")
+                except Exception as e:
+                    st.error(f"Errore nel salvare sessione persistente: {e}")
+                
                 st.rerun()
                 return True
             else:
@@ -365,6 +454,13 @@ def handle_login_registration(user_data_manager):
     if "user_info" not in st.session_state:
         st.session_state.user_info = None
 
+    # Controlla prima se c'è una sessione persistente nei cookies
+    if not st.session_state.user_info:
+        if load_user_from_cookie(user_data_manager):
+            st.success("✅ Accesso automatico dal cookie completato!")
+            st.rerun()
+            return True
+
     # Se l'utente non è autenticato, mostra form di login/registrazione
     if not st.session_state.user_info:
         
@@ -434,6 +530,13 @@ def handle_logout():
         del st.session_state.thread_id
     if "current_run_id" in st.session_state:
         st.session_state.current_run_id = None
+    
+    # Pulisci anche la sessione persistente nei cookies
+    try:
+        persistence_service = get_login_persistence_service()
+        persistence_service.clear_login_session()
+    except Exception as e:
+        st.error(f"Errore nella pulizia sessione persistente: {e}")
     
     st.rerun()
 

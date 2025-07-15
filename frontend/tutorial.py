@@ -37,7 +37,7 @@ def show_app_tutorial():
     
     # Header del tutorial
     st.markdown("---")
-    st.markdown("## 🎯 Benvenuto in NutrAICoach!")
+    st.markdown("# 🎯 Benvenuto in NutrAICoach!")
     
     # Calcola le sezioni completate per la logica di fine tutorial
     total_sections = 4
