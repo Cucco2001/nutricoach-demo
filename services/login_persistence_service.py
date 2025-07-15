@@ -17,15 +17,15 @@ from pathlib import Path
 class LoginPersistenceService:
     """Servizio per la persistenza del login tramite cookies"""
     
-    def __init__(self, cookie_name: str = "nutricoach_auth", default_expiry_days: int = 2):
+    def __init__(self, cookie_name_prefix: str = "nutricoach_auth", default_expiry_days: int = 2):
         """
         Inizializza il servizio di persistenza login.
         
         Args:
-            cookie_name: Nome del cookie per l'autenticazione
+            cookie_name_prefix: Prefisso per il nome del cookie
             default_expiry_days: Giorni di validità del cookie (default: 2)
         """
-        self.cookie_name = cookie_name
+        self.cookie_name_prefix = cookie_name_prefix
         self.default_expiry_days = default_expiry_days
         self.controller = self._get_cookie_controller()
         self.token_store_path = Path("user_data/auth_tokens")
@@ -198,6 +198,67 @@ class LoginPersistenceService:
         except Exception as e:
             st.error(f"Errore nella pulizia token: {e}")
     
+    def _get_unique_cookie_name(self, user_id: str, device_fingerprint: str) -> str:
+        """
+        Genera un nome di cookie unico per la combinazione user + device.
+        
+        Args:
+            user_id: ID dell'utente
+            device_fingerprint: Fingerprint del device
+            
+        Returns:
+            str: Nome cookie unico
+        """
+        # Crea un hash della combinazione user_id + device_fingerprint
+        combined = f"{user_id}:{device_fingerprint}"
+        cookie_hash = hashlib.md5(combined.encode()).hexdigest()[:8]
+        return f"{self.cookie_name_prefix}_{cookie_hash}"
+        
+    def _find_user_cookie(self) -> Optional[Tuple[str, Dict]]:
+        """
+        Cerca il cookie dell'utente corrente tra tutti i cookie salvati.
+        
+        Returns:
+            Tuple[str, Dict]: (cookie_name, cookie_data) se trovato, None altrimenti
+        """
+        if not self.controller:
+            return None
+            
+        try:
+            current_device_fingerprint = self._get_device_fingerprint()
+            
+            # Cerca tra tutti i cookie che iniziano con il nostro prefisso
+            all_cookies = self.controller.getAll()
+            
+            for cookie_name, cookie_value in all_cookies.items():
+                if not cookie_name.startswith(self.cookie_name_prefix):
+                    continue
+                    
+                try:
+                    cookie_data = json.loads(cookie_value)
+                    token = cookie_data.get('token')
+                    
+                    if not token:
+                        continue
+                        
+                    # Verifica se questo token appartiene al device corrente
+                    token_info = self._load_token_info(token)
+                    if not token_info:
+                        continue
+                        
+                    saved_fingerprint = token_info.get('device_fingerprint')
+                    if saved_fingerprint == current_device_fingerprint:
+                        return cookie_name, cookie_data
+                        
+                except (json.JSONDecodeError, Exception):
+                    continue
+                    
+            return None
+            
+        except Exception as e:
+            st.error(f"Errore nella ricerca cookie: {e}")
+            return None
+
     def save_login_session(self, user_id: str, auth_type: str = "standard", 
                           expiry_days: Optional[int] = None) -> bool:
         """
@@ -221,6 +282,9 @@ class LoginPersistenceService:
             # Genera device fingerprint
             device_fingerprint = self._get_device_fingerprint()
             
+            # Genera nome cookie unico per questo user + device
+            cookie_name = self._get_unique_cookie_name(user_id, device_fingerprint)
+            
             # Genera token sicuro
             token = self._generate_secure_token(user_id, device_fingerprint)
             
@@ -230,7 +294,7 @@ class LoginPersistenceService:
             # Salva informazioni token
             self._save_token_info(token, user_id, auth_type, expires_at)
             
-            # Salva nel cookie
+            # Salva nel cookie specifico
             cookie_data = {
                 'token': token,
                 'user_id': user_id,
@@ -240,7 +304,7 @@ class LoginPersistenceService:
             # Imposta cookie con scadenza
             max_age = days * 24 * 60 * 60  # In secondi
             self.controller.set(
-                self.cookie_name, 
+                cookie_name, 
                 json.dumps(cookie_data), 
                 max_age=max_age
             )
@@ -268,14 +332,14 @@ class LoginPersistenceService:
             return None
         
         try:
-            # Ottieni cookie
-            cookie_value = self.controller.get(self.cookie_name)
+            # Cerca il cookie dell'utente corrente
+            cookie_result = self._find_user_cookie()
             
-            if not cookie_value:
+            if not cookie_result:
                 return None
+                
+            cookie_name, cookie_data = cookie_result
             
-            # Parse dati cookie
-            cookie_data = json.loads(cookie_value)
             token = cookie_data.get('token')
             user_id = cookie_data.get('user_id')
             auth_type = cookie_data.get('auth_type', 'standard')
@@ -288,39 +352,40 @@ class LoginPersistenceService:
             
             if not token_info:
                 # Token non valido, rimuovi cookie
-                self.clear_login_session()
+                self._clear_specific_cookie(cookie_name)
                 return None
             
             # Verifica che user_id corrisponda
             if token_info.get('user_id') != user_id:
-                self.clear_login_session()
+                self._clear_specific_cookie(cookie_name)
                 return None
                 
-            # NUOVA VERIFICA: Controlla che il device fingerprint corrisponda
+            # Verifica device fingerprint
             saved_fingerprint = token_info.get('device_fingerprint')
             if saved_fingerprint and not self._verify_device_fingerprint(saved_fingerprint):
-                # Device fingerprint non corrisponde - possibile sessione condivisa
-                self.clear_login_session()
+                # Device fingerprint non corrisponde
+                self._clear_specific_cookie(cookie_name)
                 return None
             
             # Verifica che l'utente esista ancora nel sistema
             existing_user = user_data_manager.get_user_by_id(user_id)
             if not existing_user:
-                self.clear_login_session()
+                self._clear_specific_cookie(cookie_name)
                 return None
             
             return user_id, auth_type
             
         except Exception as e:
             st.error(f"Errore nel caricare sessione: {e}")
-            # In caso di errore, pulisci il cookie
-            self.clear_login_session()
             return None
     
-    def clear_login_session(self) -> bool:
+    def _clear_specific_cookie(self, cookie_name: str) -> bool:
         """
-        Pulisce la sessione di login rimuovendo il cookie e i dati associati.
+        Pulisce un cookie specifico e i dati associati.
         
+        Args:
+            cookie_name: Nome del cookie da rimuovere
+            
         Returns:
             bool: True se pulito con successo
         """
@@ -329,7 +394,7 @@ class LoginPersistenceService:
         
         try:
             # Ottieni cookie per rimuovere anche il token file
-            cookie_value = self.controller.get(self.cookie_name)
+            cookie_value = self.controller.get(cookie_name)
             
             if cookie_value:
                 try:
@@ -346,9 +411,30 @@ class LoginPersistenceService:
                     pass  # Ignora errori nella pulizia file
             
             # Rimuovi cookie
-            self.controller.remove(self.cookie_name)
+            self.controller.remove(cookie_name)
             
             return True
+            
+        except Exception as e:
+            st.error(f"Errore nella pulizia cookie {cookie_name}: {e}")
+            return False
+
+    def clear_login_session(self) -> bool:
+        """
+        Pulisce la sessione di login corrente rimuovendo il cookie e i dati associati.
+        
+        Returns:
+            bool: True se pulito con successo
+        """
+        try:
+            # Cerca il cookie dell'utente corrente
+            cookie_result = self._find_user_cookie()
+            
+            if not cookie_result:
+                return True  # Nessun cookie da rimuovere
+                
+            cookie_name, _ = cookie_result
+            return self._clear_specific_cookie(cookie_name)
             
         except Exception as e:
             st.error(f"Errore nella pulizia sessione: {e}")
@@ -368,13 +454,13 @@ class LoginPersistenceService:
             return False
         
         try:
-            # Ottieni sessione corrente
-            cookie_value = self.controller.get(self.cookie_name)
+            # Cerca il cookie dell'utente corrente
+            cookie_result = self._find_user_cookie()
             
-            if not cookie_value:
+            if not cookie_result:
                 return False
-            
-            cookie_data = json.loads(cookie_value)
+                
+            cookie_name, cookie_data = cookie_result
             user_id = cookie_data.get('user_id')
             auth_type = cookie_data.get('auth_type', 'standard')
             
@@ -382,7 +468,7 @@ class LoginPersistenceService:
                 return False
             
             # Rimuovi sessione corrente
-            self.clear_login_session()
+            self._clear_specific_cookie(cookie_name)
             
             # Crea nuova sessione con nuova scadenza
             return self.save_login_session(user_id, auth_type, expiry_days)
