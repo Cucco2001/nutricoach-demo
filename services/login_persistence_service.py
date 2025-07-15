@@ -82,12 +82,40 @@ class LoginPersistenceService:
         Returns:
             str: Fingerprint del dispositivo
         """
-        # Usa informazioni dalla sessione e user agent (se disponibile)
+        # Usa informazioni dalla sessione (più stabile senza time.time())
         session_info = str(st.session_state.get('_session_id', 'unknown'))
         
-        # Crea un fingerprint semplice ma sufficientemente unico
-        fingerprint_data = f"streamlit:{session_info}:{time.time()}"
-        return hashlib.md5(fingerprint_data.encode()).hexdigest()[:12]
+        # Tenta di ottenere user agent se disponibile
+        try:
+            # Prova a ottenere user agent dalla query params se disponibile
+            user_agent = st.context.headers.get('user-agent', 'no-ua')
+        except:
+            user_agent = 'no-ua'
+            
+        # Crea un fingerprint più stabile e specifico
+        fingerprint_data = f"streamlit:{session_info}:{user_agent}"
+        
+        # Se session_info è unknown, aggiungi un identificativo più specifico
+        if session_info == 'unknown':
+            # Usa un hash della combinazione di informazioni disponibili
+            import platform
+            system_info = f"{platform.system()}:{platform.release()}"
+            fingerprint_data += f":{system_info}"
+            
+        return hashlib.md5(fingerprint_data.encode()).hexdigest()[:16]
+        
+    def _verify_device_fingerprint(self, saved_fingerprint: str) -> bool:
+        """
+        Verifica se il fingerprint del device corrente corrisponde a quello salvato.
+        
+        Args:
+            saved_fingerprint: Fingerprint salvato nel token
+            
+        Returns:
+            bool: True se il fingerprint corrisponde
+        """
+        current_fingerprint = self._get_device_fingerprint()
+        return current_fingerprint == saved_fingerprint
     
     def _save_token_info(self, token: str, user_id: str, auth_type: str, expires_at: float) -> None:
         """
@@ -265,6 +293,13 @@ class LoginPersistenceService:
             
             # Verifica che user_id corrisponda
             if token_info.get('user_id') != user_id:
+                self.clear_login_session()
+                return None
+                
+            # NUOVA VERIFICA: Controlla che il device fingerprint corrisponda
+            saved_fingerprint = token_info.get('device_fingerprint')
+            if saved_fingerprint and not self._verify_device_fingerprint(saved_fingerprint):
+                # Device fingerprint non corrisponde - possibile sessione condivisa
                 self.clear_login_session()
                 return None
             
