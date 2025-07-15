@@ -16,3 +16,8 @@ supabase
 # Other utilities
 requests
 python-multipart
+
+# Google Authentication
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
