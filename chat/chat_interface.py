@@ -56,12 +56,12 @@ def render_user_sidebar():
             
             # Inizializza la modalità se non esiste
             if 'chat_mode' not in st.session_state:
-                st.session_state.chat_mode = "Crea/Modifica Dieta"
+                st.session_state.chat_mode = "Carica Dieta (o creala nuova!)"
             
             # Radio button per la selezione della modalità
             chat_mode = st.radio(
                 "Cosa vuoi fare?",
-                ["Crea/Modifica Dieta", "Chiedi al Nutrizionista AI"],
+                ["Carica Dieta (o creala nuova!)", "Chiedi al Nutrizionista AI"],
                 key="chat_mode_selection",
                 disabled=st.session_state.get('agent_generating', False)
             )
@@ -72,8 +72,8 @@ def render_user_sidebar():
             # Separatore
             st.markdown("---")
             
-            # Pulsante per ricominciare (solo in modalità "Crea/Modifica Dieta")
-            if chat_mode == "Crea/Modifica Dieta":
+            # Pulsante per ricominciare (solo in modalità "Carica Dieta (o creala nuova!)")
+            if chat_mode == "Carica Dieta (o creala nuova!)":
                 handle_restart_button(
                     user_data_manager=st.session_state.user_data_manager,
                     deepseek_manager=st.session_state.deepseek_manager,
@@ -417,10 +417,10 @@ def chat_interface():
     # Renderizza l'interfaccia appropriata in base alla modalità
     # Se l'utente non ha ancora completato l'inizializzazione, usa la modalità default
     if 'chat_mode' not in st.session_state:
-        st.session_state.chat_mode = "Crea/Modifica Dieta"
+        st.session_state.chat_mode = "Carica Dieta (o creala nuova!)"
     
-    if st.session_state.chat_mode == "Crea/Modifica Dieta":
-        # Modalità originale - crea/modifica dieta
+    if st.session_state.chat_mode == "Carica Dieta (o creala nuova!)":
+        # Modalità originale - Carica Dieta (o creala nuova!)
         render_chat_area()
     else:
         # Modalità Coach - consigli nutrizionali
