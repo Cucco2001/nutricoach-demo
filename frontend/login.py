@@ -218,7 +218,7 @@ def show_google_auth_button():
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #4285f4;
+            background: #34a853;
             color: white;
             padding: 12px 24px;
             border-radius: 8px;
@@ -230,7 +230,7 @@ def show_google_auth_button():
             transition: background-color 0.3s ease;
         }
         .google-auth-button:hover {
-            background: #357ae8;
+            background: #2d8e47;
             color: white;
             text-decoration: none;
         }
