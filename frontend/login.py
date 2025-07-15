@@ -33,7 +33,9 @@ def handle_google_auth(user_data_manager):
         
         if 'code' in query_params:
             # Processa il callback OAuth2
-            current_url = f"http://localhost:8501/"
+            # Usa la variabile d'ambiente GOOGLE_REDIRECT_URI
+            import os
+            current_url = os.getenv('GOOGLE_REDIRECT_URI', 'http://localhost:8501')
             
             # Costruisci l'URL completo con tutti i parametri
             params = []
