@@ -105,8 +105,8 @@ def handle_google_auth(user_data_manager):
         
         return False
         
-    except ImportError:
-        st.warning("⚠️ Servizio Google Auth non disponibile")
+    except ImportError as e:
+        st.warning(f"⚠️ Servizio Google Auth non disponibile: {str(e)}")
         return False
     except Exception as e:
         st.error(f"Errore nell'autenticazione Google: {str(e)}")
@@ -173,7 +173,8 @@ def show_google_auth_button():
             </div>
             """, unsafe_allow_html=True)
         
-    except ImportError:
+    except ImportError as e:
+        st.warning(f"⚠️ Servizio Google Auth non disponibile: {str(e)}")
         pass
     except Exception as e:
         st.error(f"Errore nel mostrare bottone Google: {str(e)}")
