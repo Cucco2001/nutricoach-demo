@@ -41,28 +41,19 @@ class GoogleAuthService:
             # Carica le variabili d'ambiente dal file .env
             from dotenv import load_dotenv
             load_dotenv()
-            # Prova prima con st.secrets (per Streamlit Cloud)
-            if hasattr(st, 'secrets') and 'google_oauth' in st.secrets:
-                return {
-                    "web": {
-                        "client_id": st.secrets.google_oauth.client_id,
-                        "client_secret": st.secrets.google_oauth.client_secret,
-                        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                        "token_uri": "https://oauth2.googleapis.com/token",
-                        "redirect_uris": [st.secrets.google_oauth.get("redirect_uri", "http://localhost:8501")]
-                    }
-                }
             
-            # Fallback con variabili d'ambiente
+            # Usa direttamente le variabili d'ambiente
             client_id = os.getenv('GOOGLE_CLIENT_ID')
             client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
             redirect_uri = os.getenv('GOOGLE_REDIRECT_URI', 'http://localhost:8501')
             
             if not client_id or not client_secret:
                 print(f"❌ Credenziali Google mancanti - CLIENT_ID: {bool(client_id)}, CLIENT_SECRET: {bool(client_secret)}")
+                print(f"CLIENT_ID: {client_id}")
+                print(f"CLIENT_SECRET: {'***' if client_secret else 'None'}")
                 return None
                 
-            return {
+            config = {
                 "web": {
                     "client_id": client_id,
                     "client_secret": client_secret,
@@ -71,6 +62,8 @@ class GoogleAuthService:
                     "redirect_uris": [redirect_uri]
                 }
             }
+            print(f"✅ Configurazione Google OAuth caricata - CLIENT_ID: {client_id[:10]}..., REDIRECT_URI: {redirect_uri}")
+            return config
             
         except Exception as e:
             st.error(f"Errore nella configurazione OAuth Google: {e}")
