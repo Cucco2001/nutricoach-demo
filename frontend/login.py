@@ -29,6 +29,10 @@ def load_user_from_cookie(user_data_manager):
             
         user_id, auth_type = session_data
         
+        # IMPORTANTE: Carica i dati dell'utente nella memoria del manager
+        # come fa il login normale - questo era quello che mancava!
+        user_data_manager._load_user_data(user_id)
+        
         # Carica le informazioni utente
         nutritional_info = user_data_manager.get_nutritional_info(user_id)
         chat_history = user_data_manager.get_chat_history(user_id)
