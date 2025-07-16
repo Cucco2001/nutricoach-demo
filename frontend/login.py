@@ -254,7 +254,7 @@ def show_google_auth_button():
                         <path fill="#FBBC05" d="M4.46 10.41a4.8 4.8 0 0 1 0-2.82V5.52H1.83a8 8 0 0 0 0 7.17l2.63-2.07z"/>
                         <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.52L4.46 7.6a4.8 4.8 0 0 1 4.52-3.42z"/>
                     </svg>
-                    Continua con Google
+                    <span style="color: #fff;">Continua con Google</span>
                 </a>
             </div>
             """, unsafe_allow_html=True)
