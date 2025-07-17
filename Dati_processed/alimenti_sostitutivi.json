@@ -11,7 +11,7 @@
       "grassi_aggiunti": 4,
       "frutta": 11,
       "uova": 2,
-      "latte": 3,
+      "latte": 5,
       "formaggi": 8,
       "legumi": 5,
       "zucchero": 1,
@@ -813,6 +813,90 @@
         "similarity_score": 57.5
       }
     },
+    "latte_di_soia": {
+      "latte_di_avena": {
+        "grams": 100.0,
+        "similarity_score": 130.0
+      },
+      "fiocchi_latte": {
+        "grams": 25.0,
+        "similarity_score": 118.1
+      },
+      "ricotta": {
+        "grams": 17.1,
+        "similarity_score": 113.9
+      },
+      "latte_intero": {
+        "grams": 39.1,
+        "similarity_score": 111.8
+      },
+      "grana_padano": {
+        "grams": 6.4,
+        "similarity_score": 110.2
+      },
+      "mozzarella": {
+        "grams": 9.9,
+        "similarity_score": 79.2
+      },
+      "parmigiano_reggiano": {
+        "grams": 6.3,
+        "similarity_score": 78.6
+      },
+      "feta": {
+        "grams": 10.0,
+        "similarity_score": 76.6
+      },
+      "pecorino": {
+        "grams": 6.2,
+        "similarity_score": 75.4
+      },
+      "asiago": {
+        "grams": 6.6,
+        "similarity_score": 72.2
+      }
+    },
+    "latte_di_avena": {
+      "latte_di_soia": {
+        "grams": 100.0,
+        "similarity_score": 130.0
+      },
+      "fiocchi_latte": {
+        "grams": 25.0,
+        "similarity_score": 118.1
+      },
+      "ricotta": {
+        "grams": 17.1,
+        "similarity_score": 113.9
+      },
+      "latte_intero": {
+        "grams": 39.1,
+        "similarity_score": 111.8
+      },
+      "grana_padano": {
+        "grams": 6.4,
+        "similarity_score": 110.2
+      },
+      "mozzarella": {
+        "grams": 9.9,
+        "similarity_score": 79.2
+      },
+      "parmigiano_reggiano": {
+        "grams": 6.3,
+        "similarity_score": 78.6
+      },
+      "feta": {
+        "grams": 10.0,
+        "similarity_score": 76.6
+      },
+      "pecorino": {
+        "grams": 6.2,
+        "similarity_score": 75.4
+      },
+      "asiago": {
+        "grams": 6.6,
+        "similarity_score": 72.2
+      }
+    },
     "latte_intero": {
       "fiocchi_latte": {
         "grams": 64.0,
@@ -834,6 +918,14 @@
         "grams": 16.3,
         "similarity_score": 106.5
       },
+      "latte_di_soia": {
+        "grams": 256.0,
+        "similarity_score": 77.3
+      },
+      "latte_di_avena": {
+        "grams": 256.0,
+        "similarity_score": 77.3
+      },
       "parmigiano_reggiano": {
         "grams": 16.1,
         "similarity_score": 75.6
@@ -845,14 +937,6 @@
       "asiago": {
         "grams": 16.8,
         "similarity_score": 73.3
-      },
-      "latte_parzialmente_scremato": {
-        "grams": 139.1,
-        "similarity_score": 73.3
-      },
-      "yogurt_greco_2percento": {
-        "grams": 91.4,
-        "similarity_score": 62.6
       }
     },
     "parmigiano_reggiano": {
@@ -1728,13 +1812,13 @@
         "grams": 228.1,
         "similarity_score": 77.2
       },
-      "uova": {
-        "grams": 114.1,
-        "similarity_score": 65.5
+      "latte_di_soia": {
+        "grams": 584.0,
+        "similarity_score": 69.4
       },
-      "sgombro": {
-        "grams": 85.9,
-        "similarity_score": 64.1
+      "latte_di_avena": {
+        "grams": 584.0,
+        "similarity_score": 69.4
       }
     },
     "fiocchi_latte": {
@@ -1750,13 +1834,21 @@
         "grams": 142.9,
         "similarity_score": 106.3
       },
+      "latte_di_soia": {
+        "grams": 400.0,
+        "similarity_score": 105.6
+      },
+      "latte_di_avena": {
+        "grams": 400.0,
+        "similarity_score": 105.6
+      },
       "grana_padano": {
         "grams": 25.5,
-        "similarity_score": 104.5
+        "similarity_score": 79.5
       },
       "parmigiano_reggiano": {
         "grams": 25.2,
-        "similarity_score": 102.9
+        "similarity_score": 77.9
       },
       "mozzarella": {
         "grams": 39.5,
@@ -1769,14 +1861,6 @@
       "pecorino": {
         "grams": 24.8,
         "similarity_score": 74.7
-      },
-      "asiago": {
-        "grams": 26.2,
-        "similarity_score": 71.5
-      },
-      "latte_parzialmente_scremato": {
-        "grams": 217.4,
-        "similarity_score": 65.8
       }
     },
     "feta": {
