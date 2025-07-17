@@ -219,6 +219,17 @@
     "nova_group": 1,
     "categoria": "latte"
   },
+  "latte_di_avena": {
+    "energia_kcal": 25,
+    "proteine_g": 2.5,
+    "carboidrati_g": 0.3,
+    "zuccheri_g": 0.0,
+    "grassi_g": 1.5,
+    "grassi_saturi_g": 0.1,
+    "fibra_g": 0.0,
+    "nova_group": 1,
+    "categoria": "latte"
+  },
   "latte_intero": {
     "energia_kcal": 64,
     "proteine_g": 3.3,
