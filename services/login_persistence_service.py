@@ -92,13 +92,23 @@ class LoginPersistenceService:
         except:
             user_agent = 'no-ua'
             
-        # Estrai versione iOS se è un iPhone per distinguere meglio
+        # Estrai versione iOS e modello iPhone se è un iPhone per distinguere meglio
         ios_version = ""
         if 'iphone' in user_agent.lower():
             import re
             ios_match = re.search(r'os (\d+)_(\d+)', user_agent.lower())
             if ios_match:
                 ios_version = f":ios_{ios_match.group(1)}_{ios_match.group(2)}"
+            
+            # Estrai anche il modello specifico dell'iPhone se disponibile
+            model_match = re.search(r'iphone[,\s]?(\d+)', user_agent.lower())
+            if model_match:
+                ios_version += f":iphone{model_match.group(1)}"
+            
+            # Aggiungi un ID unico per questa sessione browser per distinguere tra dispositivi identici
+            if '_session_browser_id' not in st.session_state:
+                st.session_state._session_browser_id = hashlib.md5(str(time.time()).encode()).hexdigest()[:8]
+            ios_version += f":{st.session_state._session_browser_id}"
             
         # Crea un fingerprint più stabile e specifico
         fingerprint_data = f"streamlit:{session_info}:{user_agent}{ios_version}"
