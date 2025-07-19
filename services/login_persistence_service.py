@@ -92,8 +92,16 @@ class LoginPersistenceService:
         except:
             user_agent = 'no-ua'
             
+        # Estrai versione iOS se è un iPhone per distinguere meglio
+        ios_version = ""
+        if 'iphone' in user_agent.lower():
+            import re
+            ios_match = re.search(r'os (\d+)_(\d+)', user_agent.lower())
+            if ios_match:
+                ios_version = f":ios_{ios_match.group(1)}_{ios_match.group(2)}"
+            
         # Crea un fingerprint più stabile e specifico
-        fingerprint_data = f"streamlit:{session_info}:{user_agent}"
+        fingerprint_data = f"streamlit:{session_info}:{user_agent}{ios_version}"
         
         # Se session_info è unknown, aggiungi un identificativo più specifico
         if session_info == 'unknown':
