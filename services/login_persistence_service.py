@@ -75,7 +75,24 @@ class LoginPersistenceService:
         
         return f"{token_hash}:{timestamp}:{salt}"
     
-    def _get_device_fingerprint(self) -> str:
+    def get_or_create_fingerprint():
+    cookie_name = "nutraicoach_fingerprint"
+    fingerprint = None
+    # Streamlit non gestisce direttamente cookies, ma puoi usare streamlit-cookies-manager o streamlit-browser-cookie
+    try:
+        from st_cookies_manager import CookieManager
+        cm = CookieManager()
+        fingerprint = cm.get(cookie_name)
+        if not fingerprint:
+            import uuid
+            fingerprint = str(uuid.uuid4())
+            cm.set(cookie_name, fingerprint, max_age_days=365)
+    except:
+        # fallback: session or user-agent hash
+        fingerprint = fallback_fingerprint()
+    return fingerprint
+    
+    def fallback_fingerprint(self) -> str:
         """
         Genera un fingerprint del dispositivo basato su informazioni disponibili.
         
