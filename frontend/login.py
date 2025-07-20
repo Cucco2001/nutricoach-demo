@@ -183,6 +183,7 @@ def handle_google_auth(user_data_manager):
                     st.rerun()
                     return True
                 else:
+                    st.info("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
                     return False
             else:
                 st.info("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
@@ -191,8 +192,10 @@ def handle_google_auth(user_data_manager):
         return False
         
     except ImportError as e:
+        st.info("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
         return False
     except Exception as e:
+        st.info("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
         return False
 
 

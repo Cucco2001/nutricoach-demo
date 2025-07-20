@@ -147,7 +147,6 @@ class GoogleAuthService:
             return user_info
             
         except Exception as e:
-            st.error(f"Errore nel callback OAuth2: {e}")
             return None
     
     def _get_user_info(self, credentials: Credentials) -> Dict:
