@@ -186,7 +186,6 @@ def handle_google_auth(user_data_manager):
                     st.markdown("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
                     return False
             else:
-                st.markdown("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
                 return False
         
         return False
