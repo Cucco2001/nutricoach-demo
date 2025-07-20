@@ -183,19 +183,16 @@ def handle_google_auth(user_data_manager):
                     st.rerun()
                     return True
                 else:
-                    st.error(f"Errore nell'autenticazione Google: {result}")
                     return False
             else:
-                st.error("Errore nell'ottenere informazioni da Google")
+                st.info("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
                 return False
         
         return False
         
     except ImportError as e:
-        st.warning(f"⚠️ Servizio Google Auth non disponibile: {str(e)}")
         return False
     except Exception as e:
-        st.error(f"Errore nell'autenticazione Google: {str(e)}")
         return False
 
 
