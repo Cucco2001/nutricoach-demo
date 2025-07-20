@@ -90,6 +90,7 @@ class LoginPersistenceService:
     except:
         # fallback: session or user-agent hash
         fingerprint = fallback_fingerprint()
+        print(f"Fallback fingerprint: {fingerprint}")
     return fingerprint
     
     def fallback_fingerprint(self) -> str:
