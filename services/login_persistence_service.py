@@ -93,7 +93,7 @@ class LoginPersistenceService:
             print(f"Fallback fingerprint: {fingerprint}")
         return fingerprint
     
-    def fallback_fingerprint(self) -> str:
+    def fallback_fingerprint():
         """
         Genera un fingerprint del dispositivo basato su informazioni disponibili.
         
