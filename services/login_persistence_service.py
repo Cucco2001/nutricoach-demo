@@ -89,11 +89,11 @@ class LoginPersistenceService:
                 cm.set(cookie_name, fingerprint, max_age_days=365)
         except:
             # fallback: session or user-agent hash
-            fingerprint = fallback_fingerprint()
+            fingerprint = self._fallback_fingerprint()
             print(f"Fallback fingerprint: {fingerprint}")
         return fingerprint
     
-    def fallback_fingerprint():
+    def _fallback_fingerprint(self):
         """
         Genera un fingerprint del dispositivo basato su informazioni disponibili.
         
