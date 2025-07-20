@@ -183,7 +183,7 @@ def handle_google_auth(user_data_manager):
                     st.rerun()
                     return True
                 else:
-                    st.markdown("✅ Ora sei registrato!<br>🔁 Per favore, <b>clicca di nuovo su 'Continua con Google' per accedere</b>.", unsafe_allow_html=True)
+                    st.info("✅ Ora sei registrato!\n🔁 Per favore, clicca di nuovo su 'Continua con Google' per accedere.")
                     return False
             else:
                 return False
